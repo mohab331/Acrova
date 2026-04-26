@@ -20,5 +20,11 @@
   "forceUpdateTitle": "Update Required",
   "forceUpdateMessage": "A newer app version is required to continue. Please update now.",
   "forceUpdateButton": "Update",
-  "forceUpdateOpenStoreFailed": "Unable to open the store. Please try again."
+  "forceUpdateOpenStoreFailed": "Unable to open the store. Please try again.",
+  "welcomeTitlePrefix": "Design Your",
+  "welcomeTitleHighlight": "Future",
+  "welcomeTitleSuffix": "Home",
+  "welcomeSubtitle": "Enter an exclusive realm of bespoke architectural curation and elite real estate.",
+  "welcomeContinueButton": "CONTINUE",
+  "welcomeFooter": "THE SOVEREIGN COLLECTOR"
 }

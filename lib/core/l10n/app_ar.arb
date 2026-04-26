@@ -20,5 +20,11 @@
   "forceUpdateTitle": "التحديث مطلوب",
   "forceUpdateMessage": "يتطلب الاستمرار تحديث التطبيق إلى إصدار أحدث. يرجى التحديث الآن.",
   "forceUpdateButton": "تحديث",
-  "forceUpdateOpenStoreFailed": "تعذر فتح المتجر. يرجى المحاولة مرة أخرى."
+  "forceUpdateOpenStoreFailed": "تعذر فتح المتجر. يرجى المحاولة مرة أخرى.",
+  "welcomeTitlePrefix": "صمم",
+  "welcomeTitleHighlight": "مستقبل",
+  "welcomeTitleSuffix": "منزلك",
+  "welcomeSubtitle": "ادخل عالمًا حصريًا من التنسيق المعماري الفاخر والعقارات الراقية.",
+  "welcomeContinueButton": "متابعة",
+  "welcomeFooter": "THE SOVEREIGN COLLECTOR"
 }
