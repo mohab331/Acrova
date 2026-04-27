@@ -20,7 +20,7 @@ class SplashPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Resources.colors.primary,
+      backgroundColor: Resources.colors.luxuryBackground,
       body: BlocListener<SplashCubit, SplashState>(
         listener: _handleSplashStateListener,
         child: const SizedBox(

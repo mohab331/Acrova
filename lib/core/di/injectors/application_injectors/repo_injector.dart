@@ -10,6 +10,10 @@ import 'package:acrova/data/repository/notifications/fcm_token_repo_impl.dart';
 import 'package:acrova/domain/repository/auth/base_auth_repo.dart';
 import 'package:acrova/domain/repository/config/base_app_config_repo.dart';
 import 'package:acrova/domain/repository/notifications/base_fcm_token_repo.dart';
+import 'package:acrova/domain/repository/localization/base_localization_repo.dart';
+import 'package:acrova/data/repository/localization/localization_repo_impl.dart';
+import 'package:acrova/domain/repository/notifications/base_notification_provider_repo.dart';
+import 'package:acrova/data/repository/notifications/notification_provider_repo_impl.dart';
 
 /// [ReposInjector] hold all application repos dependencies
 class ReposInjector implements BaseInjector {
@@ -33,6 +37,16 @@ class ReposInjector implements BaseInjector {
         appConfigService: serviceLocatorInstance<AppConfigService>(),
       ),
     ),
+
+    () => serviceLocatorInstance.registerLazySingleton<BaseLocalizationRepo>(
+      () => LocalizationRepoImpl(
+        localStorage: serviceLocatorInstance<BaseLocalStorage>(),
+      ),
+    ),
+    () => serviceLocatorInstance
+        .registerLazySingleton<BaseNotificationProviderRepo>(
+          () => NotificationProviderRepoImpl(),
+        ),
   ];
 
   /// iterate and inject all repos
