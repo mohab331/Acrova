@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:acrova/presentation/features/cubit/auth/auth_cubit.dart';
+import 'package:acrova/presentation/features/ui/auth/welcome/welcome_page.dart';
 import 'package:acrova/presentation/features/ui/splash/splash/splash_page.dart';
 import 'package:flutter/foundation.dart';
 import 'package:go_router/go_router.dart';
@@ -26,6 +27,11 @@ class AppRouter {
         path: AppRouteEnum.splashPage.path,
         name: AppRouteEnum.splashPage.name,
         builder: (_, state) => const SplashPage(),
+      ),
+      GoRoute(
+        path: AppRouteEnum.welcomePage.path,
+        name: AppRouteEnum.welcomePage.name,
+        builder: (_, state) => const WelcomePage(),
       ),
     ],
   );

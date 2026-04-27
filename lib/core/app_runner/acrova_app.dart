@@ -38,9 +38,6 @@ class AcrovaApp extends StatelessWidget {
         builder: (final context, final child) {
           return ToastificationWrapper(
             child: MaterialApp.router(
-              theme: Resources.theme.lightTheme(
-                _selectFontFamily(context.watch<LocalizationCubit>().state),
-              ),
               routerConfig: AppRouter.router,
               title: AppConstants.appName,
               locale: context.watch<LocalizationCubit>().state,
@@ -50,24 +47,25 @@ class AcrovaApp extends StatelessWidget {
               supportedLocales: context
                   .read<LocalizationCubit>()
                   .supportedLocales,
-              builder: (final context, final child) => MediaQuery(
-                data: MediaQuery.of(context).copyWith(
-                  textScaler: const TextScaler.linear(1.0),
-                  boldText: false,
-                ),
-                child: SafeArea(child: child ?? const Placeholder()),
-              ),
+              builder: (final context, final child) {
+                final locale = Localizations.localeOf(context);
+                return MediaQuery(
+                  data: MediaQuery.of(context).copyWith(
+                    textScaler: const TextScaler.linear(1.0),
+                    boldText: false,
+                  ),
+                  child: SafeArea(
+                    child: Theme(
+                      data: Resources.theme.lightTheme(locale),
+                      child: child ?? const SizedBox.shrink(),
+                    ),
+                  ),
+                );
+              },
             ),
           );
         },
       ),
     );
   }
-}
-
-String _selectFontFamily(final Locale locale) {
-  if (locale.languageCode == LocalizationCubit.localeAr.languageCode) {
-    return Resources.fonts.ibmPlexSansArabic;
-  }
-  return Resources.fonts.ibmPlexSans;
 }

@@ -20,5 +20,10 @@
   "forceUpdateTitle": "التحديث مطلوب",
   "forceUpdateMessage": "يتطلب الاستمرار تحديث التطبيق إلى إصدار أحدث. يرجى التحديث الآن.",
   "forceUpdateButton": "تحديث",
-  "forceUpdateOpenStoreFailed": "تعذر فتح المتجر. يرجى المحاولة مرة أخرى."
+  "forceUpdateOpenStoreFailed": "تعذر فتح المتجر. يرجى المحاولة مرة أخرى.",
+  "welcome_title_line1": "رؤيتك",
+  "welcome_title_line2": "خبرتنا",
+  "welcome_subtitle": "حوّل أرضك إلى مشروع جاهز للتنفيذ",
+  "cta": "ابدأ الآن",
+  "footer": "خصوصية. أمان. تحكم كامل"
 }

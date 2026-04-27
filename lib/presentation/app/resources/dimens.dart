@@ -2,8 +2,8 @@ part of 'resources.dart';
 
 class _AppDimens {
   const _AppDimens();
-  final double designWidth = 375;
-  final double designHeight = 812;
+  final double designWidth = 390;
+  final double designHeight = 884;
 }
 
 class _HorizontalDimens {
@@ -40,6 +40,7 @@ class _HorizontalDimens {
   double get $70 => 70.w;
   double get $75 => 75.w;
   double get $80 => 80.w;
+  double get $100 => 100.w;
   double get $104 => 104.w;
   double get $120 => 120.w;
   double get $122 => 122.w;

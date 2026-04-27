@@ -8,16 +8,14 @@ part 'drawables.dart';
 part 'elevations.dart';
 part 'font_sizes.dart';
 part 'font_weights.dart';
-part 'fonts.dart';
+part 'app_fonts.dart';
 part 'gradient_colors.dart';
-part 'images.dart';
 part 'letter_spacing.dart';
 part 'radius.dart';
 
 class Resources {
   const Resources._();
   static const _AppFonts fonts = _AppFonts();
-  static const _AppImages images = _AppImages();
   static const _AppColors colors = _AppColors();
   static const _AppDimens dimens = _AppDimens();
   static _AppTheme theme = _AppTheme();
