@@ -9,6 +9,8 @@ class CommonScreen extends StatelessWidget {
     this.resizeToAvoidBottomInset,
     this.bottomNavigationBar,
     this.backGroundColor,
+    this.bottomPadding,
+    this.padding,
     super.key,
   });
 
@@ -18,24 +20,32 @@ class CommonScreen extends StatelessWidget {
   final bool? resizeToAvoidBottomInset;
 
   final PreferredSizeWidget? appBar;
+
+  final double? bottomPadding;
+  final EdgeInsets? padding;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: backGroundColor ?? Resources.colors.luxuryBackground,
-      extendBodyBehindAppBar: true,
       appBar: appBar,
       bottomNavigationBar: bottomNavigationBar,
       resizeToAvoidBottomInset: resizeToAvoidBottomInset,
       body: Directionality(
         textDirection: context.isRtl ? TextDirection.rtl : TextDirection.ltr,
-        child: Padding(
-          padding: EdgeInsetsDirectional.only(
-            start: Resources.horizontalDims.$20,
-            end: Resources.horizontalDims.$20,
-            top: Resources.verticalDims.$16,
-            bottom: Resources.verticalDims.$32,
+        child: GestureDetector(
+          behavior: HitTestBehavior.translucent,
+          onTap: () {
+            FocusManager.instance.primaryFocus?.unfocus();
+          },
+          child: Padding(
+            padding: padding ?? EdgeInsetsDirectional.only(
+              start: Resources.horizontalDims.$20,
+              end: Resources.horizontalDims.$20,
+              top: Resources.verticalDims.$16,
+              bottom: bottomPadding ?? Resources.verticalDims.$60,
+            ),
+            child: child,
           ),
-          child: child,
         ),
       ),
     );

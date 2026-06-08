@@ -1,119 +1,186 @@
 part of 'resources.dart';
 
-class _AppFonts {
-  const _AppFonts();
-  static TextTheme textTheme(Locale locale) {
-    final isAr = locale.languageCode == 'ar';
+/// Exact font sizes (px) from Figma — do not alter without updating Figma first.
+abstract final class AppTextTokens {
+  // ── Display / Heading ──────────────────────────────────────────────────────
+  static const double displayL = 57.0;
+  static const double displayM = 45.0;
+  static const double displayS = 36.0;
 
-    final primaryFont = isAr ? 'IBMPlexArabic' : 'Manrope';
-    final headingFont = isAr ? 'IBMPlexArabic' : 'NotoSerif';
+  static const double headlineL = 32.0;
+  static const double headlineM = 28.0;
+  static const double headlineS = 24.0;
 
-    final base = ThemeData.light().textTheme;
+  // ── Brand / Section ────────────────────────────────────────────────────────
+  static const double brandMark =
+      20.0; // NotoSerif 400, lh 28, ls +6, UPPERCASE
+  static const double sectionTitle = 20.0; // NotoSerif 700, lh 28, ls -0.5
+  static const double cardTitle = 16.0; // NotoSerif 700, lh 24
+  static const double galleryTitle = 16.0; // NotoSerif 600, lh 24
 
-    return base.copyWith(
-      displayLarge: _style(
-        headingFont,
-        AppTextTokens.displayXL,
-        FontWeight.w700,
-        isAr,
-      ),
-      displayMedium: _style(
-        headingFont,
-        AppTextTokens.displayL,
-        FontWeight.w600,
-        isAr,
-      ),
-      displaySmall: _style(
-        headingFont,
-        AppTextTokens.displayM,
-        FontWeight.w600,
-        isAr,
-      ),
+  // ── Titles ─────────────────────────────────────────────────────────────────
+  /// TextTheme.titleLarge  → NotoSerif 700, 20px
+  static const double titleL = 22.0;
 
-      titleLarge: _style(
-        headingFont,
-        AppTextTokens.titleL,
-        FontWeight.w600,
-        isAr,
-      ),
-      titleMedium: _style(
-        primaryFont,
-        AppTextTokens.titleM,
-        FontWeight.w600,
-        isAr,
-      ),
+  /// TextTheme.titleMedium → NotoSerif 700, 16px (card title)
+  static const double titleM = 16.0;
 
-      bodyLarge: _style(
-        primaryFont,
-        AppTextTokens.bodyL,
-        FontWeight.w400,
-        isAr,
-      ),
-      bodyMedium: _style(
-        primaryFont,
-        AppTextTokens.bodyM,
-        FontWeight.w400,
-        isAr,
-      ),
-      bodySmall: _style(
-        primaryFont,
-        AppTextTokens.bodyS,
-        FontWeight.w400,
-        isAr,
-      ),
+  /// TextTheme.titleSmall  → Manrope 300, 18px (welcome subtitle)
+  static const double titleS = 14.0;
 
-      labelLarge: _style(
-        primaryFont,
-        AppTextTokens.labelL,
-        FontWeight.w600,
-        isAr,
-      ),
-      labelMedium: _style(
-        primaryFont,
-        AppTextTokens.labelM,
-        FontWeight.w500,
-        isAr,
-      ),
-    );
-  }
+  // ── Body ───────────────────────────────────────────────────────────────────
+  static const double bodyL = 16.0;
+  static const double bodyM = 14.0;
+  static const double bodyS = 12.0;
 
-  static TextStyle _style(
-    String font,
-    double size,
-    FontWeight weight,
-    bool isAr,
-  ) {
-    return TextStyle(
-      fontFamily: font,
-      fontSize: size,
-      fontWeight: weight,
-      height: _lineHeight(size, isAr),
-      letterSpacing: isAr ? 0 : _letterSpacing(size),
-    );
-  }
+  // ── Labels / Captions ─────────────────────────────────────────────────────
+  static const double caption = 12.0;
+  static const double labelL = 14.0;
+  static const double labelM = 12.0;
+  static const double labelS = 11.0;
 
-  static double _lineHeight(double size, bool isAr) {
-    if (size >= 28) return isAr ? 1.4 : 1.25;
-    if (size >= 16) return isAr ? 1.6 : 1.35;
-    return isAr ? 1.5 : 1.3;
-  }
-
-  static double _letterSpacing(double size) {
-    if (size >= 28) return 0.2;
-    if (size >= 16) return 0.15;
-    return 0.1;
-  }
+  // ── Special ────────────────────────────────────────────────────────────────
+  static const double otpDigit = 24.0;
+  static const double timer = 36.0;
+  static const double buttonPrimary = 14.0;
+  static const double buttonSecondary = 16.0;
 }
 
-class AppTextTokens {
-  static const displayXL = 40.0;
-  static const displayL = 34.0;
-  static const displayM = 28.0;
-  static const titleL = 22.0;
-  static const titleM = 18.0;
-  static const bodyL = 16.0;
-  static const bodyM = 14.0;
-  static const bodyS = 12.0;
-  static const labelL = 14.0;
-  static const labelM = 12.0;
+class _AppFonts {
+  const _AppFonts();
+
+  /// Builds the full [TextTheme] from Figma tokens, locale-aware.
+  static TextTheme textTheme(Locale locale) {
+    final bool isAr = locale.languageCode == 'ar';
+    final String body = isAr ? 'IBMPlexArabic' : 'Manrope';
+    final String heading = isAr ? 'IBMPlexArabic' : 'NotoSerif';
+
+    return ThemeData.light().textTheme.copyWith(
+      displayLarge: _ts(
+        family: heading,
+        size: AppTextTokens.displayL,
+        weight: FontWeight.w400,
+        height: 60 / 48,
+        letterSpacing: isAr ? 0 : -1.2,
+      ),
+      displayMedium: _ts(
+        family: heading,
+        size: AppTextTokens.displayL,
+        weight: FontWeight.w400,
+        height: 50 / 40,
+      ),
+      displaySmall: _ts(
+        family: heading,
+        size: AppTextTokens.displayM,
+        weight: FontWeight.w400,
+        height: 40 / 32,
+      ),
+
+      headlineLarge: _ts(
+        family: heading,
+        size: AppTextTokens.headlineL,
+        weight: FontWeight.w400,
+        height: 40 / 32,
+      ),
+      headlineMedium: _ts(
+        family: heading,
+        size: AppTextTokens.headlineM,
+        weight: FontWeight.w400,
+        height: 40 / 32,
+      ),
+      headlineSmall: _ts(
+        family: heading,
+        size: AppTextTokens.headlineS,
+        weight: FontWeight.w400,
+        height: 40 / 32,
+      ),
+
+      titleLarge: _ts(
+        family: heading,
+        size: AppTextTokens.titleL,
+        weight: FontWeight.w500,
+        height: 28 / 20,
+        letterSpacing: isAr ? 0 : -0.5,
+      ),
+
+      titleMedium: _ts(
+        family: heading,
+        size: AppTextTokens.titleM,
+        weight: FontWeight.w500,
+        height: 24 / 16,
+      ),
+
+      titleSmall: _ts(
+        family: body,
+        size: AppTextTokens.titleS,
+        weight: FontWeight.w500,
+        height: 29.25 / 18,
+      ),
+
+      bodyLarge: _ts(
+        family: body,
+        size: AppTextTokens.bodyL,
+        weight: FontWeight.w400,
+        height: 1.24,
+        letterSpacing: 0.15
+      ),
+
+      bodyMedium: _ts(
+        family: body,
+        size: AppTextTokens.bodyM,
+        weight: FontWeight.w400,
+        height: 1.2,
+        letterSpacing: 0.25,
+      ),
+
+      bodySmall: _ts(
+        family: body,
+        size: AppTextTokens.bodyS,
+        weight: FontWeight.w400,
+        height: 1.16,
+        letterSpacing: 0.4
+      ),
+
+      labelLarge: _ts(
+        family: body,
+        size: AppTextTokens.labelL,
+        weight: FontWeight.w500,
+        height: 1.2,
+        letterSpacing: isAr ? 0 : 0.1,
+      ),
+
+      labelMedium: _ts(
+        family: body,
+        size: AppTextTokens.labelM,
+        weight: FontWeight.w500,
+        height: 1.16,
+        letterSpacing: isAr ? 0 : 0.5,
+      ),
+
+      labelSmall: _ts(
+        family: body,
+
+        size: AppTextTokens.labelS,
+        weight: FontWeight.w500,
+        height: 1.16,
+        letterSpacing: isAr ? 0 : 0.5,
+      ),
+    );
+  }
+
+  static TextStyle _ts({
+    required String family,
+    required double size,
+    required FontWeight weight,
+    required double height,
+    double letterSpacing = 0,
+  }) {
+    return TextStyle(
+      fontFamily: family,
+      fontSize: size,
+      fontWeight: weight,
+      height: height,
+      letterSpacing: letterSpacing,
+    );
+  }
 }

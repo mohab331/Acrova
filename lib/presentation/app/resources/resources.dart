@@ -10,6 +10,7 @@ part 'font_sizes.dart';
 part 'font_weights.dart';
 part 'app_fonts.dart';
 part 'gradient_colors.dart';
+part 'app_shadows.dart';
 part 'letter_spacing.dart';
 part 'radius.dart';
 

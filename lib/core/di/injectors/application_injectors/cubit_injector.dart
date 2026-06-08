@@ -5,8 +5,11 @@ import 'package:acrova/domain/repository/config/base_app_config_repo.dart';
 import 'package:acrova/domain/repository/localization/base_localization_repo.dart';
 import 'package:acrova/domain/repository/notifications/base_fcm_token_repo.dart';
 import 'package:acrova/domain/repository/notifications/base_notification_provider_repo.dart';
+import 'package:acrova/domain/repository/project/base_project_repo.dart';
 import 'package:acrova/presentation/features/cubit/auth/auth_cubit.dart';
+import 'package:acrova/presentation/features/cubit/dashboard/dashboard_cubit.dart';
 import 'package:acrova/presentation/features/cubit/localization/localization_cubit.dart';
+import 'package:acrova/presentation/features/cubit/projects/projects_cubit.dart';
 import 'package:acrova/presentation/features/ui/splash/splash/cubit/splash_cubit.dart';
 
 /// [CubitsInjector] hold all application global singleton cubits dependencies
@@ -21,6 +24,18 @@ class CubitsInjector implements BaseInjector {
       () => AuthCubit(
         baseAuthRepo: serviceLocatorInstance<BaseAuthRepo>(),
         baseFCMTokenRepo: serviceLocatorInstance<BaseFCMTokenRepo>(),
+      ),
+    ),
+
+    () => serviceLocatorInstance.registerLazySingleton<DashboardCubit>(
+      () => DashboardCubit(
+        projectRepo: serviceLocatorInstance<BaseProjectRepo>(),
+      ),
+    ),
+
+    () => serviceLocatorInstance.registerLazySingleton<ProjectsCubit>(
+      () => ProjectsCubit(
+        projectRepo: serviceLocatorInstance<BaseProjectRepo>(),
       ),
     ),
 

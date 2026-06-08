@@ -10,19 +10,19 @@ import '../../../utils/helpers/safe_async_call.dart';
 import '../../../utils/logging/app_logger.dart';
 import '../../data_source/local/secure_storage/base_secure_storage.dart';
 import '../../data_source/remote/network/models/network_response.dart';
-import '../../data_source/remote/services/auth/auth_service.dart';
+import '../../data_source/base/base_auth_data_source.dart';
 
 class FcmTokenRepoImpl implements BaseFCMTokenRepo {
   FcmTokenRepoImpl({
     required BaseSecureStorage secureStorage,
-    required AuthService authService,
+    required BaseAuthDataSource authDataSource,
   }) : _fm = FirebaseMessaging.instance,
-       _authService = authService,
+       _authDataSource = authDataSource,
        _secureStorage = secureStorage;
 
   final FirebaseMessaging _fm;
   final BaseSecureStorage _secureStorage;
-  final AuthService _authService;
+  final BaseAuthDataSource _authDataSource;
   StreamSubscription<String>? _refreshSub;
 
   @override

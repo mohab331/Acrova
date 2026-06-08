@@ -4,6 +4,9 @@ class _Radius {
   const _Radius();
 
   double get $r0 => 0.r;
+  /// CRITICAL — buttons and inputs (architectural, near-square)
+  double get $r2 => 2.r;
+  double get $r4 => 4.r;
   double get $r5 => 5.r;
   double get $r6 => 6.r;
   double get $r8 => 8.r;

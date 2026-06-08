@@ -40,6 +40,7 @@ class AcrovaApp extends StatelessWidget {
             child: MaterialApp.router(
               routerConfig: AppRouter.router,
               title: AppConstants.appName,
+              debugShowCheckedModeBanner: false,
               locale: context.watch<LocalizationCubit>().state,
               localizationsDelegates: context
                   .read<LocalizationCubit>()
