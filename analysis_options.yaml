@@ -61,12 +61,12 @@ linter:
     always_declare_return_types: true
     unnecessary_this: true
     unnecessary_lambdas: true
+    file_names: true
 
     # =========================
     # 📦 NAMING & STRUCTURE
     # =========================
     camel_case_types: true
-    file_names: true
     constant_identifier_names: true
     library_private_types_in_public_api: true
 

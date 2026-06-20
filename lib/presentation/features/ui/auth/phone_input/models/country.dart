@@ -1,3 +1,5 @@
+import 'package:acrova/core/l10n/app_localizations.dart';
+
 /// Phone number country definition.
 class Country {
   const Country({
@@ -77,13 +79,17 @@ abstract final class PhoneFormatter {
 }
 
 abstract final class PhoneValidator {
-  static String? validate(String input, Country country) {
+  static String? validate(
+    String input,
+    Country country,
+    AppLocalizations l10n,
+  ) {
     final digits = input.replaceAll(RegExp(r'\D'), '');
-    if (digits.isEmpty) return 'Phone number is required';
-    if (digits.length < country.minLength) return 'Number is too short';
-    if (digits.length > country.maxLength) return 'Number is too long';
+    if (digits.isEmpty) return l10n.phoneValidationRequired;
+    if (digits.length < country.minLength) return l10n.phoneValidationTooShort;
+    if (digits.length > country.maxLength) return l10n.phoneValidationTooLong;
     if (country.iso2 == 'SA' && !digits.startsWith('5')) {
-      return 'Saudi numbers must start with 5';
+      return l10n.phoneValidationSaStart;
     }
     return null;
   }

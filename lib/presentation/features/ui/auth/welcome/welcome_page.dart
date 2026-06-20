@@ -1,12 +1,9 @@
-import 'package:acrova/presentation/app/navigation/app_route_enum.dart';
 import 'package:acrova/presentation/app/resources/resources.dart';
 import 'package:acrova/presentation/features/common_widgets/app_logo/app_logo.dart';
-import 'package:acrova/presentation/features/common_widgets/buttons/app_primary_button.dart';
 import 'package:acrova/presentation/features/common_widgets/common_screen/common_screen.dart';
+import 'package:acrova/presentation/features/ui/auth/welcome/widgets/welcome_continue_button.dart';
 import 'package:acrova/presentation/features/ui/auth/welcome/widgets/welcome_title_subtitle_widget.dart';
 import 'package:acrova/utils/extensions/localization_extension.dart';
-import 'package:acrova/utils/extensions/navigation_extension.dart';
-import 'package:acrova/utils/extensions/primary_button_theme_X.dart';
 import 'package:acrova/utils/extensions/theme_extension.dart';
 import 'package:flutter/material.dart';
 
@@ -24,7 +21,7 @@ class WelcomePage extends StatelessWidget {
           SizedBox(height: Resources.verticalDims.$95),
           const WelcomeTitleSubtitleWidget(),
           const Spacer(),
-          _ContinueButton(),
+          const WelcomeContinueButton(),
           SizedBox(height: Resources.verticalDims.$32),
           Text(
             localization.footer,
@@ -35,23 +32,6 @@ class WelcomePage extends StatelessWidget {
           ),
           SizedBox(height: Resources.verticalDims.$32),
         ],
-      ),
-    );
-  }
-}
-
-class _ContinueButton extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      height: Resources.verticalDims.$55,
-      width: double.infinity,
-      child: AppPrimaryButton(
-        onPressed: () {
-          context.pushReplacement(AppRouteEnum.phonePage.name);
-        },
-        label: context.localization.cta.toUpperCase(),
-
       ),
     );
   }

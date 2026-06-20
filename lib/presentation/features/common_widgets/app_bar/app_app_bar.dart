@@ -1,14 +1,9 @@
 import 'package:acrova/presentation/app/resources/resources.dart';
+import 'package:acrova/presentation/features/common_widgets/app_bar/app_app_bar_back_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 /// Standard app bar — back arrow + centered NotoSerif title + optional actions.
-///
-/// Design tokens:
-/// - Background: luxuryBackground (#F8F9FA) — transparent over scaffold
-/// - Title: NotoSerif 700 20px (titleLarge)
-/// - Back icon: luxuryNavy
-/// - Elevation: 0
 class AppAppBar extends StatelessWidget implements PreferredSizeWidget {
   const AppAppBar({
     this.title,
@@ -54,9 +49,10 @@ class AppAppBar extends StatelessWidget implements PreferredSizeWidget {
       automaticallyImplyLeading: false,
       leading: showBack
           ? (leading ??
-              _BackButton(
+              AppAppBarBackButton(
                 color: iconColor,
-                onPressed: onBackPressed ?? () => Navigator.of(context).maybePop(),
+                onPressed: onBackPressed ??
+                    () => Navigator.of(context).maybePop(),
               ))
           : leading,
       centerTitle: true,
@@ -70,22 +66,6 @@ class AppAppBar extends StatelessWidget implements PreferredSizeWidget {
                 )
               : null),
       actions: actions,
-    );
-  }
-}
-
-class _BackButton extends StatelessWidget {
-  const _BackButton({required this.color, this.onPressed});
-
-  final Color color;
-  final VoidCallback? onPressed;
-
-  @override
-  Widget build(BuildContext context) {
-    return IconButton(
-      icon: Icon(Icons.arrow_back_ios_new_rounded, color: color, size: 20),
-      onPressed: onPressed ?? () => Navigator.of(context).maybePop(),
-      tooltip: MaterialLocalizations.of(context).backButtonTooltip,
     );
   }
 }

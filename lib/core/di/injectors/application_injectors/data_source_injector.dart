@@ -1,3 +1,4 @@
+import 'package:acrova/core/config/mock_config.dart';
 import 'package:acrova/core/di/dependency_injector.dart';
 import 'package:acrova/core/di/injectors/base_injector.dart';
 import 'package:acrova/data/data_source/local/local_storage/base_local_storage.dart';
@@ -36,7 +37,7 @@ class DataSourcesInjector implements BaseInjector {
 
     () => serviceLocatorInstance.registerLazySingleton<BaseAuthDataSource>(
       () {
-        const useMockSystem = true;
+        final useMockSystem = EnvironmentConfig.enableMock;
         if (useMockSystem) {
           return MockAuthDataSource();
         } else {
@@ -49,7 +50,7 @@ class DataSourcesInjector implements BaseInjector {
 
     () => serviceLocatorInstance.registerLazySingleton<BaseDashboardDataSource>(
       () {
-        const useMockSystem = true;
+        final useMockSystem = EnvironmentConfig.enableMock;
         if (useMockSystem) {
           return MockDashboardDataSource();
         } else {

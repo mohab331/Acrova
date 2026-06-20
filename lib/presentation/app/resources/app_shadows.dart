@@ -59,4 +59,22 @@ abstract final class AppShadows {
       offset: Offset(0, 8),
     ),
   ];
+
+  /// Featured project card elevated shadow
+  static const List<BoxShadow> featuredCard = [
+    BoxShadow(
+      color: Color(0x0A191C1D),
+      blurRadius: 32,
+      offset: Offset(0, 4),
+    ),
+  ];
+
+  /// Content panel / bottom sheet lift shadow (luxuryInk @ 8%)
+  static const List<BoxShadow> sheet = [
+    BoxShadow(
+      color: Color(0x14000615),
+      blurRadius: 30,
+      offset: Offset(0, -8),
+    ),
+  ];
 }

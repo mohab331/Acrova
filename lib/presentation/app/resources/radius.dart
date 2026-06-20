@@ -25,4 +25,6 @@ class _Radius {
   double get $r40 => 40.r;
   double get $r48 => 48.r;
   double get $r60 => 60.r;
+  /// Full pill / stadium shape
+  double get $r100 => 100.r;
 }

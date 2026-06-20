@@ -49,6 +49,16 @@ abstract final class AppTextTokens {
 class _AppFonts {
   const _AppFonts();
 
+  // ── Font Family Constants ───────────────────────────────────────────────────
+  /// Body / label font (English + fallback)
+  final String manrope = 'Manrope';
+
+  /// Heading / display font (English)
+  final String notoSerif = 'NotoSerif';
+
+  /// Body + heading font (Arabic)
+  final String ibmPlexArabic = 'IBMPlexArabic';
+
   /// Builds the full [TextTheme] from Figma tokens, locale-aware.
   static TextTheme textTheme(Locale locale) {
     final bool isAr = locale.languageCode == 'ar';

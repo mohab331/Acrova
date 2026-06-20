@@ -45,7 +45,7 @@ class AppTextLinkButton extends StatelessWidget {
       child: Text(
         label,
         style: context.textTheme.bodyLarge?.copyWith(
-          fontSize: 10.sp,
+          fontSize: Resources.fontSizes.$10,
           fontWeight: Resources.fontWeights.semiBold,
           color: effectiveColor,
           letterSpacing: letterSpacing ?? Resources.letterSpacing.$0,

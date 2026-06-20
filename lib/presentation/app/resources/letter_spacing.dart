@@ -22,6 +22,10 @@ class _LetterSpacing {
   // ── Zero ────────────────────────────────────────────────────────────────────
   final double $0     = 0;
 
+  // ── Body / subtitle tracking ────────────────────────────────────────────────
+  /// bodyMedium / subtitle tracking: 0.25px
+  final double $0_25  = 0.25;
+
   // ── Positive (labels / captions / buttons / brand) ──────────────────────────
   /// Legacy values kept for compatibility
   final double $0_14  = 0.14;

@@ -13,6 +13,7 @@ import '../../../../../utils/logging/app_logger.dart';
 import '../../../cubit/localization/localization_cubit.dart';
 import 'cubit/splash_cubit.dart';
 import 'cubit/splash_state.dart';
+import 'splash_page_content.dart';
 
 class SplashPage extends StatelessWidget {
   const SplashPage({super.key});
@@ -23,11 +24,7 @@ class SplashPage extends StatelessWidget {
       backgroundColor: Resources.colors.luxuryBackground,
       body: BlocListener<SplashCubit, SplashState>(
         listener: _handleSplashStateListener,
-        child: const SizedBox(
-          height: double.infinity,
-          width: double.infinity,
-          child: Column(mainAxisAlignment: MainAxisAlignment.center),
-        ),
+        child: const SplashPageContent(),
       ),
     );
   }

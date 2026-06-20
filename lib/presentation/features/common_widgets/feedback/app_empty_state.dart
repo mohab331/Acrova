@@ -36,7 +36,7 @@ class AppEmptyState extends StatelessWidget {
         children: [
           Icon(
             icon,
-            size: 64,
+            size: Resources.iconSizes.$64,
             color: iconColor ?? Resources.colors.luxuryNavy.withValues(alpha: 0.3),
           ),
           SizedBox(height: Resources.verticalDims.$24),

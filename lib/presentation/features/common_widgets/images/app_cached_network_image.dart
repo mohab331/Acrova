@@ -60,7 +60,7 @@ class AppCachedNetworkImage extends StatelessWidget {
           child: Center(
             child: Icon(
               Icons.apartment_outlined,
-              size: 32.sp,
+              size: Resources.iconSizes.$32,
               color: Resources.colors.luxuryGoldLight.withValues(alpha: 0.5),
             ),
           ),

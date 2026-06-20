@@ -14,13 +14,13 @@ class WelcomeTitleSubtitleWidget extends StatelessWidget {
     final titlePrimary = context.textTheme.headlineLarge?.copyWith(
       color: Resources.colors.luxuryInk,
       fontWeight: Resources.fontWeights.semiBold,
-      height: 1.3,
+      height: Resources.lineHeights.$1_3,
     );
 
     final titleSecondary = context.textTheme.headlineLarge?.copyWith(
       color: Resources.colors.luxuryGold,
       fontWeight: Resources.fontWeights.semiBold,
-      height: 1.2,
+      height: Resources.lineHeights.$1_2,
     );
 
     return Column(

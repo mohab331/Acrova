@@ -2,9 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 part 'app_theme.dart';
+part 'aspect_ratios.dart';
+part 'border_widths.dart';
 part 'colors.dart';
 part 'dimens.dart';
 part 'drawables.dart';
+part 'durations.dart';
 part 'elevations.dart';
 part 'font_sizes.dart';
 part 'font_weights.dart';
@@ -12,6 +15,7 @@ part 'app_fonts.dart';
 part 'gradient_colors.dart';
 part 'app_shadows.dart';
 part 'letter_spacing.dart';
+part 'line_heights.dart';
 part 'radius.dart';
 
 class Resources {
@@ -29,5 +33,8 @@ class Resources {
   static const _HorizontalDimens horizontalDims = _HorizontalDimens();
   static const _VerticalDimens verticalDims = _VerticalDimens();
   static const _IconSizes iconSizes = _IconSizes();
+  static const _SquareDimens squareDims = _SquareDimens();
+  static const _AppLineHeights lineHeights = _AppLineHeights();
   static const _AppGradientColors gradientColors = _AppGradientColors();
+  // AppBorderWidths, AppDurations, AppAspectRatios are accessed via static members directly
 }

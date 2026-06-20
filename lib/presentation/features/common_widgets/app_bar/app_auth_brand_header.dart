@@ -1,6 +1,6 @@
 import 'package:acrova/presentation/app/resources/resources.dart';
+import 'package:acrova/presentation/features/common_widgets/app_bar/app_back_button.dart';
 import 'package:acrova/utils/constants/app_constants.dart';
-import 'package:acrova/utils/extensions/navigation_extension.dart';
 import 'package:acrova/utils/extensions/theme_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -58,28 +58,3 @@ class AppAuthBrandHeader extends StatelessWidget
   }
 }
 
-class CustomBackButton extends StatelessWidget {
-  const CustomBackButton({this.onBack});
-
-  final VoidCallback? onBack;
-
-  @override
-  Widget build(BuildContext context) {
-    return Material(
-      color: Resources.colors.luxuryBackground,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(Resources.radius.$r8),
-        side: BorderSide(color: Resources.colors.luxuryBorder),
-      ),
-      child: InkWell(
-        borderRadius: BorderRadius.circular(Resources.radius.$r8),
-        onTap: onBack ?? () => context.pop(),
-        child: Icon(
-          Icons.arrow_back_ios_new_rounded,
-          size: Resources.iconSizes.$16,
-          color: Resources.colors.luxuryNavy,
-        ),
-      ),
-    );
-  }
-}

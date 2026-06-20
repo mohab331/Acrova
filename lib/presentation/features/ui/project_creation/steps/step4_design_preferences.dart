@@ -93,7 +93,7 @@ class _Step4DesignPreferencesState extends State<Step4DesignPreferences> {
                   return GestureDetector(
                     onTap: () => cubit.selectStyle(style),
                     child: AnimatedContainer(
-                      duration: const Duration(milliseconds: 180),
+                      duration: AppDurations.fast,
                       padding: EdgeInsets.symmetric(
                         horizontal: Resources.horizontalDims.$18,
                         vertical: Resources.verticalDims.$10,
@@ -183,7 +183,7 @@ class _Step4DesignPreferencesState extends State<Step4DesignPreferences> {
                       borderRadius: BorderRadius.circular(Resources.radius.$r2),
                       borderSide: BorderSide(
                         color: Resources.colors.luxuryGoldLight,
-                        width: 1.5,
+                        width: AppBorderWidths.$1_5,
                       ),
                     ),
                     enabledBorder: InputBorder.none,

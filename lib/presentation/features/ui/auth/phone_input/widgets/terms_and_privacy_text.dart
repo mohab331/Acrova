@@ -21,53 +21,23 @@ class TermsAndPrivacyText extends StatelessWidget {
     );
 
     final loc = context.localization;
-    final isAr = Localizations.localeOf(context).languageCode == 'ar';
-
-    if (isAr) {
-      return Text.rich(
-        TextSpan(
-          children: [
-            TextSpan(
-              text: 'بالاستمرار، فإنك توافق على ',
-              style: bodyStyle,
-            ),
-            TextSpan(
-              text: loc.termsOfService,
-              style: linkStyle,
-              recognizer: TapGestureRecognizer()..onTap = () {},
-            ),
-            TextSpan(text: ' و ', style: bodyStyle),
-            TextSpan(
-              text: loc.privacyPolicy,
-              style: linkStyle,
-              recognizer: TapGestureRecognizer()..onTap = () {},
-            ),
-            TextSpan(text: ' الخاصة بـ أركوفا.', style: bodyStyle),
-          ],
-        ),
-        textAlign: TextAlign.center,
-      );
-    }
 
     return Text.rich(
       TextSpan(
         children: [
-          TextSpan(
-            text: 'By continuing, you agree to Acrova\'s\n',
-            style: bodyStyle,
-          ),
+          TextSpan(text: loc.termsPrefix, style: bodyStyle),
           TextSpan(
             text: loc.termsOfService,
             style: linkStyle,
             recognizer: TapGestureRecognizer()..onTap = () {},
           ),
-          TextSpan(text: ' and ', style: bodyStyle),
+          TextSpan(text: loc.termsConnector, style: bodyStyle),
           TextSpan(
             text: loc.privacyPolicy,
             style: linkStyle,
             recognizer: TapGestureRecognizer()..onTap = () {},
           ),
-          TextSpan(text: '.', style: bodyStyle),
+          TextSpan(text: loc.termsSuffix, style: bodyStyle),
         ],
       ),
       textAlign: TextAlign.center,

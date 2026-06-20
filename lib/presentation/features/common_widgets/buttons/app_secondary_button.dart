@@ -86,7 +86,7 @@ class AppSecondaryButton extends StatelessWidget {
                   Text(
                     label,
                     style: TextStyle(
-                      fontFamily: 'Manrope',
+                      fontFamily: Resources.fonts.manrope,
                       fontSize: Resources.fontSizes.$16,
                       fontWeight: Resources.fontWeights.semiBold,
                       letterSpacing: Resources.letterSpacing.$0_4,

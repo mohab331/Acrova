@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:acrova/data/data_source/local/constants/secure_constants.dart';
+import 'package:acrova/utils/constants/secure_constants.dart';
 import 'package:acrova/data/models/request/fcm_notification/fcm_notification_request_model.dart';
 import 'package:acrova/domain/repository/notifications/base_fcm_token_repo.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';

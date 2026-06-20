@@ -1,5 +1,8 @@
 import 'package:acrova/presentation/app/resources/resources.dart';
+import 'package:acrova/presentation/features/common_widgets/feedback/skeleton_box.dart';
 import 'package:flutter/material.dart';
+
+export 'skeleton_box.dart';
 
 /// Shimmer skeleton loader wrapper.
 ///
@@ -37,7 +40,7 @@ class _AppSkeletonLoaderState extends State<AppSkeletonLoader>
     super.initState();
     _controller = AnimationController(
       vsync: this,
-      duration: const Duration(milliseconds: 1400),
+      duration: AppDurations.shimmer,
     )..repeat();
 
     _shimmer = Tween<double>(begin: -1.5, end: 1.5).animate(
@@ -82,30 +85,3 @@ class _AppSkeletonLoaderState extends State<AppSkeletonLoader>
   }
 }
 
-/// Convenience placeholder box used inside [AppSkeletonLoader].
-class SkeletonBox extends StatelessWidget {
-  const SkeletonBox({
-    required this.width,
-    required this.height,
-    this.radius,
-    this.color,
-    super.key,
-  });
-
-  final double width;
-  final double height;
-  final double? radius;
-  final Color? color;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: width,
-      height: height,
-      decoration: BoxDecoration(
-        color: color ?? Resources.colors.luxuryProgressTrack,
-        borderRadius: BorderRadius.circular(radius ?? Resources.radius.$r4),
-      ),
-    );
-  }
-}

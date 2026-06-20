@@ -1,6 +1,7 @@
 import 'package:acrova/presentation/app/resources/resources.dart';
 import 'package:acrova/presentation/features/ui/auth/phone_input/models/country.dart';
 import 'package:acrova/presentation/features/ui/auth/phone_input/phone_input_cubit.dart';
+import 'package:acrova/utils/extensions/localization_extension.dart';
 import 'package:acrova/utils/extensions/theme_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -99,7 +100,7 @@ class _LuxuryPhoneInputState extends State<LuxuryPhoneInput> {
                       fontSize: Resources.fontSizes.$15,
                     ),
                     decoration: InputDecoration(
-                      hintText: '5X XXX XXXX',
+                      hintText: context.localization.phoneInputHint,
                       border: InputBorder.none,
                       enabledBorder: InputBorder.none,
                       focusedBorder: InputBorder.none,
@@ -123,7 +124,7 @@ class _LuxuryPhoneInputState extends State<LuxuryPhoneInput> {
                 state.error!,
                 style: context.textTheme.labelSmall?.copyWith(
                   color: Resources.colors.luxuryError,
-                  letterSpacing: 0,
+                  letterSpacing: Resources.letterSpacing.$0,
                 ),
               ),
             ],

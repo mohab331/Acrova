@@ -1,4 +1,4 @@
-import 'package:acrova/data/data_source/local/constants/secure_constants.dart';
+import 'package:acrova/utils/constants/secure_constants.dart';
 import 'package:acrova/data/data_source/local/local_storage/base_local_storage.dart';
 import 'package:acrova/data/data_source/local/secure_storage/base_secure_storage.dart';
 import 'package:acrova/domain/repository/auth/base_auth_repo.dart';

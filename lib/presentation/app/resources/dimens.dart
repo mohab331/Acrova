@@ -143,11 +143,55 @@ class _VerticalDimens {
 class _IconSizes {
   const _IconSizes();
 
+  double get $8  => 8.sp;
+  double get $10 => 10.sp;
+  double get $12 => 12.sp;
   double get $14 => 14.sp;
   double get $16 => 16.sp;
   double get $18 => 18.sp;
   double get $20 => 20.sp;
   double get $22 => 22.sp;
   double get $24 => 24.sp;
+  double get $26 => 26.sp;
+  double get $28 => 28.sp;
+  double get $32 => 32.sp;
+  double get $36 => 36.sp;
+  double get $40 => 40.sp;
+  double get $48 => 48.sp;
   double get $50 => 50.sp;
+  double get $64 => 64.sp;
+  double get $80 => 80.sp;
+}
+
+/// Square dimension tokens using `.r` (ScreenUtil aspect-ratio-aware scaling).
+/// Use for circular avatars, square icon containers, counter buttons — anywhere
+/// that must remain square across devices.
+class _SquareDimens {
+  const _SquareDimens();
+
+  double get $2  => 2.r;
+  double get $4  => 4.r;
+  double get $6  => 6.r;
+  double get $8  => 8.r;
+  double get $10 => 10.r;
+  double get $12 => 12.r;
+  double get $14 => 14.r;
+  double get $15 => 15.r;
+  double get $16 => 16.r;
+  double get $18 => 18.r;
+  double get $20 => 20.r;
+  double get $22 => 22.r;
+  double get $25 => 25.r;
+  double get $28 => 28.r;
+  double get $30 => 30.r;
+  double get $36 => 36.r;
+  double get $40 => 40.r;
+  double get $42 => 42.r;
+  double get $48 => 48.r;
+  double get $52 => 52.r;
+  double get $56 => 56.r;
+  double get $60 => 60.r;
+  double get $64 => 64.r;
+  double get $80 => 80.r;
+  double get $100 => 100.r;
 }

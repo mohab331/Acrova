@@ -1,7 +1,8 @@
 import 'package:acrova/utils/enums/project_type_enum.dart';
+import 'package:equatable/equatable.dart';
 
 /// All data collected across the 6-step project creation wizard.
-class CreateProjectRequest {
+class CreateProjectRequest extends Equatable {
   const CreateProjectRequest({
     // Step 1
     required this.projectType,
@@ -87,6 +88,14 @@ class CreateProjectRequest {
         'additional_notes':    additionalNotes,
         'media_count':         mediaPaths.length,
       };
+
+  @override
+  List<Object?> get props => [
+        projectType, location, landAreaSqm, landWidthM, landLengthM, floors,
+        bedrooms, bathrooms,
+        hasMajlis, hasMaidRoom, hasDriverRoom, hasBasement, hasPool, hasRooftop,
+        stylePreference, additionalNotes, mediaPaths,
+      ];
 
   CreateProjectRequest copyWith({
     ProjectType? projectType,

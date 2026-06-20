@@ -12,6 +12,7 @@ class _FontSizes {
   double get $16 => 16.sp;
   double get $18 => 18.sp;
   double get $20 => 20.sp;
+  double get $22 => 22.sp;
   double get $24 => 24.sp;
   double get $26 => 26.sp;
   double get $28 => 28.sp;
@@ -21,4 +22,5 @@ class _FontSizes {
   double get $36 => 36.sp;
   double get $40 => 40.sp;
   double get $48 => 48.sp;
+  double get $80 => 80.sp;
 }

@@ -1,4 +1,5 @@
 import 'package:acrova/presentation/app/resources/resources.dart';
+import 'package:acrova/utils/extensions/localization_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -21,19 +22,19 @@ class MessagesPage extends StatelessWidget {
               children: [
                 Icon(
                   Icons.chat_bubble_outline,
-                  size: 64,
+                  size: Resources.iconSizes.$64,
                   color: Resources.colors.luxuryGoldLight,
                 ),
-                const SizedBox(height: 20),
+                SizedBox(height: Resources.verticalDims.$20),
                 Text(
-                  'Messages',
+                  context.localization.messagesTitle,
                   style: Theme.of(context).textTheme.titleLarge?.copyWith(
                         color: Resources.colors.luxuryNavy,
                       ),
                 ),
-                const SizedBox(height: 8),
+                SizedBox(height: Resources.verticalDims.$8),
                 Text(
-                  'Coming soon',
+                  context.localization.messagesComingSoon,
                   style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                         color: Resources.colors.luxuryBodyMuted,
                       ),

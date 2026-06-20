@@ -1,3 +1,1 @@
-class LocalConstants {
-  static const String languageCode = 'language_code';
-}
+export 'package:acrova/utils/constants/local_constants.dart';

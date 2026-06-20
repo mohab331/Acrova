@@ -1,3 +1,4 @@
+import 'package:acrova/core/l10n/app_localizations.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 
@@ -18,8 +19,8 @@ class PhoneInputCubit extends Cubit<PhoneInputState> {
   }
 
   /// Returns `true` if valid — caller navigates; false shows inline error.
-  bool validate() {
-    final error = PhoneValidator.validate(state.phone, state.country);
+  bool validate(AppLocalizations l10n) {
+    final error = PhoneValidator.validate(state.phone, state.country, l10n);
     if (error != null) {
       emit(state.copyWith(error: error));
       return false;

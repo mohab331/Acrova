@@ -83,8 +83,8 @@ class _StepCircle extends StatelessWidget {
     }
 
     return Container(
-      width: 28.r,
-      height: 28.r,
+      width: Resources.squareDims.$28,
+      height: Resources.squareDims.$28,
       decoration: BoxDecoration(
         color: bg,
         shape: BoxShape.circle,
@@ -93,7 +93,7 @@ class _StepCircle extends StatelessWidget {
         child: isCompleted
             ? Icon(
                 Icons.check,
-                size: 14.sp,
+                size: Resources.iconSizes.$14,
                 color: fg,
               )
             : Text(
