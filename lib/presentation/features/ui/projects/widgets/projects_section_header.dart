@@ -3,7 +3,6 @@ import 'package:acrova/presentation/features/common_widgets/chips/app_filter_chi
 import 'package:acrova/utils/extensions/localization_extension.dart';
 import 'package:acrova/utils/extensions/theme_extension.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 enum ProjectFilter { all, active, completed }
 

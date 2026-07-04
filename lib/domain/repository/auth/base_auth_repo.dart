@@ -1,3 +1,5 @@
+import 'package:acrova/data/models/profile/user_profile_model.dart';
+import 'package:acrova/data/models/request/profile/update_profile_request.dart';
 import 'package:acrova/utils/helpers/result.dart';
 
 abstract class BaseAuthRepo {
@@ -16,6 +18,14 @@ abstract class BaseAuthRepo {
     required String nationalId,
     required String language,
   });
+
+  /// Fetch the signed-in user's profile.
+  Future<Result<UserProfileModel>> getUserProfile();
+
+  /// Update editable profile fields; returns the updated profile.
+  Future<Result<UserProfileModel>> updateUserProfile(
+    UpdateProfileRequest request,
+  );
 
   Future<Result<String?>> getRefreshToken();
 

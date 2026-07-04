@@ -1,0 +1,95 @@
+{
+  "colors": {
+    "base": {
+      "white": "#FFFFFF"
+    },
+    "backgrounds": {
+      "luxuryBackground": "#F8F9FA",
+      "luxurySurface": "#FFFFFF",
+      "luxuryInputBg": "#F3F4F5"
+    },
+    "primaryPalette": {
+      "luxuryInk": "#000615",
+      "luxuryNavy": "#0B1F3A",
+      "luxuryGold": "#735B24",
+      "luxuryGoldLight": "#735B24",
+      "luxuryGoldOnDark": "#FFDF9F"
+    },
+    "text": {
+      "luxuryBody": "#44474D",
+      "luxuryBodyMuted": "rgba(68, 71, 77, 0.7)",
+      "luxuryPlaceholder": "#C4C6CE"
+    },
+    "borders": {
+      "luxuryBorder": "#EDEEEF",
+      "luxuryInputBorder": "rgba(196, 198, 206, 0.3)",
+      "luxuryGoldBorder": "rgba(200, 169, 106, 0.2)",
+      "luxuryGoldBottomBorder": "#C8A96A"
+    },
+    "progress": {
+      "luxuryProgressTrack": "#E7E8E9"
+    },
+    "semantic": {
+      "luxuryError": "#C0392B",
+      "luxurySuccess": "#1A7A4A",
+      "luxuryWarning": "#D4850A"
+    }
+  },
+  "typography": {
+    "fontFamilies": {
+      "body": "Manrope",
+      "heading": "NotoSerif",
+      "arabic": "IBMPlexArabic"
+    },
+    "tokens": {
+      "displayLarge": { "size": 57, "weight": 400, "lineHeight": 1.25, "letterSpacing": -1.2 },
+      "displayMedium": { "size": 45, "weight": 400, "lineHeight": 1.25 },
+      "displaySmall": { "size": 36, "weight": 400, "lineHeight": 1.25 },
+      "headlineLarge": { "size": 32, "weight": 400, "lineHeight": 1.25 },
+      "headlineMedium": { "size": 28, "weight": 400, "lineHeight": 1.25 },
+      "headlineSmall": { "size": 24, "weight": 400, "lineHeight": 1.25 },
+      "titleLarge": { "size": 22, "weight": 500, "lineHeight": 1.4, "letterSpacing": -0.5 },
+      "titleMedium": { "size": 16, "weight": 500, "lineHeight": 1.5 },
+      "titleSmall": { "size": 14, "weight": 500, "lineHeight": 1.625 },
+      "bodyLarge": { "size": 16, "weight": 400, "lineHeight": 1.24, "letterSpacing": 0.15 },
+      "bodyMedium": { "size": 14, "weight": 400, "lineHeight": 1.2, "letterSpacing": 0.25 },
+      "bodySmall": { "size": 12, "weight": 400, "lineHeight": 1.16, "letterSpacing": 0.4 },
+      "labelLarge": { "size": 14, "weight": 500, "lineHeight": 1.2, "letterSpacing": 0.1 },
+      "labelMedium": { "size": 12, "weight": 500, "lineHeight": 1.16, "letterSpacing": 0.5 },
+      "labelSmall": { "size": 11, "weight": 500, "lineHeight": 1.16, "letterSpacing": 0.5 },
+      "brandMark": { "size": 20, "weight": 400, "lineHeight": 1.4, "letterSpacing": 6, "casing": "uppercase" },
+      "sectionTitle": { "size": 20, "weight": 700, "lineHeight": 1.4, "letterSpacing": -0.5 },
+      "cardTitle": { "size": 16, "weight": 700, "lineHeight": 1.5 },
+      "buttonPrimary": { "size": 14, "weight": 600, "letterSpacing": 0.8, "casing": "uppercase" },
+      "buttonSecondary": { "size": 16, "weight": 600, "letterSpacing": 0.4 }
+    }
+  },
+  "spacing": {
+    "horizontal": [1, 2, 4, 8, 12, 14, 16, 20, 24, 32, 40],
+    "vertical": [2, 4, 8, 12, 14, 16, 20, 24, 32, 40, 50, 60],
+    "square": [2, 4, 8, 12, 16, 20, 24, 32, 40, 48, 56, 64]
+  },
+  "radius": {
+    "r2": 2,
+    "r4": 4,
+    "r8": 8,
+    "r12": 12,
+    "r16": 16,
+    "r20": 20,
+    "r24": 24,
+    "r32": 32,
+    "circular": 100
+  },
+  "shadows": {
+    "card": { "color": "rgba(0, 0, 0, 0.05)", "blur": 1, "offset": [0, 1] },
+    "cta": { "color": "rgba(0, 6, 21, 0.1)", "blur": 16, "offset": [0, 8] },
+    "hero": { "color": "rgba(0, 0, 0, 0.1)", "blur": 25, "spread": -5, "offset": [0, 20] },
+    "goldButton": { "color": "rgba(200, 169, 106, 0.2)", "blur": 15, "spread": -3, "offset": [0, 10] },
+    "sheet": { "color": "rgba(0, 6, 21, 0.08)", "blur": 30, "offset": [0, -8] }
+  },
+  "borderWidths": {
+    "thin": 1,
+    "medium": 1.5,
+    "thick": 2
+  }
+}

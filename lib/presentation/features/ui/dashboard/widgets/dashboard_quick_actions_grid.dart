@@ -32,7 +32,7 @@ class DashboardQuickActionsGrid extends StatelessWidget {
       DashboardQuickAction(
         icon: Icons.edit_document,
         label: loc.dashboardActionRevision,
-        onTap: () {},
+        onTap: () => context.push(AppRouteEnum.revisionHistoryPage.path),
       ),
     ];
 

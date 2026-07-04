@@ -1,6 +1,5 @@
 import 'package:acrova/presentation/app/resources/resources.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class ProjectImagePlaceholder extends StatelessWidget {
   const ProjectImagePlaceholder({required this.height, super.key});

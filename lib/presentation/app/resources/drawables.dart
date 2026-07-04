@@ -9,5 +9,6 @@ class _AppDrawables {
   final img1 = 'assets/images/img1.png';
   final img2 = 'assets/images/img2.png';
   final background = 'assets/images/Background.png';
+  final location = 'assets/images/location_icon.png';
 
 }

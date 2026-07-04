@@ -40,19 +40,18 @@ class DashboardDesignCard extends StatelessWidget {
                   : hasUrl
                       ? AppCachedNetworkImage(
                           imageUrl: design.imageUrl!,
-                          fit: BoxFit.cover,
                           radius: Resources.radius.$r12,
                         )
                       : DashboardDesignCardPlaceholder(height: height),
             ),
             Positioned.fill(
               child: Container(
-                decoration: BoxDecoration(
+                decoration: const BoxDecoration(
                   gradient: LinearGradient(
                     begin: Alignment.topCenter,
                     end: Alignment.bottomCenter,
                     colors: AppGradients.designCardOverlay,
-                    stops: const [0.4, 1.0],
+                    stops: [0.4, 1.0],
                   ),
                 ),
               ),

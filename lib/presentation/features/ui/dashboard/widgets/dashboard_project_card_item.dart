@@ -5,7 +5,6 @@ import 'package:acrova/presentation/features/common_widgets/chips/app_status_chi
 import 'package:acrova/presentation/features/common_widgets/images/app_cached_network_image.dart';
 import 'package:acrova/utils/extensions/theme_extension.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class DashboardProjectCardItem extends StatelessWidget {
   const DashboardProjectCardItem({required this.project, super.key});

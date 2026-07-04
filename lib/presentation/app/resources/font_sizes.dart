@@ -7,6 +7,7 @@ class _FontSizes {
   double get $10 => 10.sp;
   double get $11 => 11.sp;
   double get $12 => 12.sp;
+  double get $13 => 13.sp;
   double get $14 => 14.sp;
   double get $15 => 15.sp;
   double get $16 => 16.sp;

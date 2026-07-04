@@ -4,7 +4,6 @@ import 'package:acrova/presentation/features/ui/dashboard/widgets/dashboard_hero
 import 'package:acrova/utils/extensions/localization_extension.dart';
 import 'package:acrova/utils/extensions/theme_extension.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 
 class DashboardHeroBanner extends StatelessWidget {

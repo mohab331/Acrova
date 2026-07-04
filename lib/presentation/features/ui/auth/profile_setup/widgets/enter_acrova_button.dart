@@ -1,7 +1,6 @@
 import 'package:acrova/presentation/app/resources/resources.dart';
 import 'package:acrova/utils/extensions/localization_extension.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class EnterAcrovaButton extends StatelessWidget {
   const EnterAcrovaButton({

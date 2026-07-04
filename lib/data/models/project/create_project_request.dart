@@ -12,6 +12,7 @@ class CreateProjectRequest extends Equatable {
     required this.landWidthM,
     required this.landLengthM,
     required this.floors,
+    this.employeeCount = 0, // For commercial
     // Step 3
     required this.bedrooms,
     required this.bathrooms,
@@ -21,8 +22,9 @@ class CreateProjectRequest extends Equatable {
     this.hasBasement     = false,
     this.hasPool         = false,
     this.hasRooftop      = false,
+    this.smartHomeLevel  = 'basic', // basic, intermediate, advanced
     // Step 4
-    required this.stylePreference,
+    required this.architecturalStyle,
     this.additionalNotes = '',
     // Step 5
     this.mediaPaths      = const [],
@@ -31,12 +33,13 @@ class CreateProjectRequest extends Equatable {
   // ── Step 1: Project type ───────────────────────────────────────────────────
   final ProjectType projectType;
 
-  // ── Step 2: Land details ───────────────────────────────────────────────────
+  // ── Step 2: Land details & Scope ───────────────────────────────────────────
   final String location;
   final double landAreaSqm;
   final double landWidthM;
   final double landLengthM;
   final int floors;
+  final int employeeCount;
 
   // ── Step 3: Building requirements ─────────────────────────────────────────
   final int bedrooms;
@@ -47,9 +50,10 @@ class CreateProjectRequest extends Equatable {
   final bool hasBasement;
   final bool hasPool;
   final bool hasRooftop;
+  final String smartHomeLevel;
 
   // ── Step 4: Design preferences ────────────────────────────────────────────
-  final String stylePreference;   // 'modern' | 'classic' | 'contemporary'
+  final String architecturalStyle;   // 'modern' | 'classic' | 'contemporary' | 'minimalist' | 'neo_classical'
   final String additionalNotes;
 
   // ── Step 5: Media uploads ─────────────────────────────────────────────────
@@ -76,6 +80,7 @@ class CreateProjectRequest extends Equatable {
         'land_width_m':        landWidthM,
         'land_length_m':       landLengthM,
         'floors':              floors,
+        'employee_count':      employeeCount,
         'bedrooms':            bedrooms,
         'bathrooms':           bathrooms,
         'has_majlis':          hasMajlis,
@@ -84,17 +89,18 @@ class CreateProjectRequest extends Equatable {
         'has_basement':        hasBasement,
         'has_pool':            hasPool,
         'has_rooftop':         hasRooftop,
-        'style_preference':    stylePreference,
+        'smart_home_level':    smartHomeLevel,
+        'architectural_style': architecturalStyle,
         'additional_notes':    additionalNotes,
         'media_count':         mediaPaths.length,
       };
 
   @override
   List<Object?> get props => [
-        projectType, location, landAreaSqm, landWidthM, landLengthM, floors,
+        projectType, location, landAreaSqm, landWidthM, landLengthM, floors, employeeCount,
         bedrooms, bathrooms,
-        hasMajlis, hasMaidRoom, hasDriverRoom, hasBasement, hasPool, hasRooftop,
-        stylePreference, additionalNotes, mediaPaths,
+        hasMajlis, hasMaidRoom, hasDriverRoom, hasBasement, hasPool, hasRooftop, smartHomeLevel,
+        architecturalStyle, additionalNotes, mediaPaths,
       ];
 
   CreateProjectRequest copyWith({
@@ -104,6 +110,7 @@ class CreateProjectRequest extends Equatable {
     double? landWidthM,
     double? landLengthM,
     int? floors,
+    int? employeeCount,
     int? bedrooms,
     int? bathrooms,
     bool? hasMajlis,
@@ -112,28 +119,31 @@ class CreateProjectRequest extends Equatable {
     bool? hasBasement,
     bool? hasPool,
     bool? hasRooftop,
-    String? stylePreference,
+    String? smartHomeLevel,
+    String? architecturalStyle,
     String? additionalNotes,
     List<String>? mediaPaths,
   }) {
     return CreateProjectRequest(
-      projectType:      projectType      ?? this.projectType,
-      location:         location         ?? this.location,
-      landAreaSqm:      landAreaSqm      ?? this.landAreaSqm,
-      landWidthM:       landWidthM       ?? this.landWidthM,
-      landLengthM:      landLengthM      ?? this.landLengthM,
-      floors:           floors           ?? this.floors,
-      bedrooms:         bedrooms         ?? this.bedrooms,
-      bathrooms:        bathrooms        ?? this.bathrooms,
-      hasMajlis:        hasMajlis        ?? this.hasMajlis,
-      hasMaidRoom:      hasMaidRoom      ?? this.hasMaidRoom,
-      hasDriverRoom:    hasDriverRoom    ?? this.hasDriverRoom,
-      hasBasement:      hasBasement      ?? this.hasBasement,
-      hasPool:          hasPool          ?? this.hasPool,
-      hasRooftop:       hasRooftop       ?? this.hasRooftop,
-      stylePreference:  stylePreference  ?? this.stylePreference,
-      additionalNotes:  additionalNotes  ?? this.additionalNotes,
-      mediaPaths:       mediaPaths       ?? this.mediaPaths,
+      projectType:        projectType        ?? this.projectType,
+      location:           location           ?? this.location,
+      landAreaSqm:        landAreaSqm        ?? this.landAreaSqm,
+      landWidthM:         landWidthM         ?? this.landWidthM,
+      landLengthM:        landLengthM        ?? this.landLengthM,
+      floors:             floors             ?? this.floors,
+      employeeCount:      employeeCount      ?? this.employeeCount,
+      bedrooms:           bedrooms           ?? this.bedrooms,
+      bathrooms:          bathrooms          ?? this.bathrooms,
+      hasMajlis:          hasMajlis          ?? this.hasMajlis,
+      hasMaidRoom:        hasMaidRoom        ?? this.hasMaidRoom,
+      hasDriverRoom:      hasDriverRoom      ?? this.hasDriverRoom,
+      hasBasement:        hasBasement        ?? this.hasBasement,
+      hasPool:            hasPool            ?? this.hasPool,
+      hasRooftop:         hasRooftop         ?? this.hasRooftop,
+      smartHomeLevel:     smartHomeLevel     ?? this.smartHomeLevel,
+      architecturalStyle: architecturalStyle ?? this.architecturalStyle,
+      additionalNotes:    additionalNotes    ?? this.additionalNotes,
+      mediaPaths:         mediaPaths         ?? this.mediaPaths,
     );
   }
 }
@@ -144,8 +154,9 @@ abstract final class DesignStyle {
   static const String classic      = 'classic';
   static const String contemporary = 'contemporary';
   static const String minimalist   = 'minimalist';
+  static const String neoClassical = 'neo_classical';
 
-  static const List<String> all = [modern, classic, contemporary, minimalist];
+  static const List<String> all = [modern, classic, contemporary, minimalist, neoClassical];
 
   static String label(String key) {
     switch (key) {
@@ -153,6 +164,7 @@ abstract final class DesignStyle {
       case classic:      return 'Classic';
       case contemporary: return 'Contemporary';
       case minimalist:   return 'Minimalist';
+      case neoClassical: return 'Neo-Classical';
       default:           return key;
     }
   }

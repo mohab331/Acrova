@@ -48,6 +48,9 @@ class ProjectCreationCubit extends Cubit<ProjectCreationState> {
 
   void updateFloors(int value) =>
       emit(state.copyWith(floors: value.clamp(1, 10)));
+      
+  void updateEmployeeCount(int value) =>
+      emit(state.copyWith(employeeCount: value.clamp(0, 10000)));
 
   // ── Step 3: Building requirements ────────────────────────────────────────
 
@@ -63,10 +66,12 @@ class ProjectCreationCubit extends Cubit<ProjectCreationState> {
   void toggleBasement(bool value) => emit(state.copyWith(hasBasement: value));
   void togglePool(bool value) => emit(state.copyWith(hasPool: value));
   void toggleRooftop(bool value) => emit(state.copyWith(hasRooftop: value));
+  
+  void updateSmartHomeLevel(String level) => emit(state.copyWith(smartHomeLevel: level));
 
   // ── Step 4: Design preferences ────────────────────────────────────────────
 
-  void selectStyle(String style) => emit(state.copyWith(stylePreference: style));
+  void selectStyle(String style) => emit(state.copyWith(architecturalStyle: style));
 
   void updateNotes(String value) => emit(state.copyWith(additionalNotes: value));
 

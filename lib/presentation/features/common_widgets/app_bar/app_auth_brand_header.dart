@@ -3,7 +3,6 @@ import 'package:acrova/presentation/features/common_widgets/app_bar/app_back_but
 import 'package:acrova/utils/constants/app_constants.dart';
 import 'package:acrova/utils/extensions/theme_extension.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class AppAuthBrandHeader extends StatelessWidget
     implements PreferredSizeWidget {
@@ -45,7 +44,7 @@ class AppAuthBrandHeader extends StatelessWidget
         backgroundColor: Colors.transparent,
         surfaceTintColor: Colors.transparent,
         titleTextStyle: context.textTheme.titleMedium?.copyWith(
-          fontSize: fontSize ?? Resources.fontSizes.$24,
+          fontSize: fontSize ?? Resources.fontSizes.$18,
           color: Resources.colors.luxuryInk,
           fontWeight: FontWeight.w700,
         ),

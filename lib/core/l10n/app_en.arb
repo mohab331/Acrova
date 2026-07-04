@@ -35,7 +35,6 @@
   "termsPrefix": "By continuing, you agree to Acrova's\n",
   "termsConnector": " and ",
   "termsSuffix": ".",
-  
   "otpVerificationTitle": "Verification",
   "otpVerificationSubtitle": "Enter the 6-digit OTP code sent to your number",
   "otpVerificationSubtitleWithPhone": "Enter the 6-digit code sent to your number {phoneNumber}.",
@@ -55,7 +54,6 @@
   "otpVerificationResent": "A new code has been sent.",
   "otpVerificationSuccess": "Identity verified.",
   "otpVerificationCodeError": "Invalid code. Please try again.",
-
   "profileSetupTitle": "Complete Your Profile",
   "profileSetupSubtitle": "Help us personalise your experience.",
   "profileSetupNameLabel": "FULL NAME",
@@ -76,7 +74,6 @@
   "profileSetupEnterAcrova": "ENTER ACROVA",
   "profileSetupTermsPrefix": "By continuing you agree to Acrova's ",
   "profileSetupCopyright": "© 2025 Acrova Portfolio. All rights reserved.",
-
   "dashboardNoProjectsTitle": "No projects yet",
   "dashboardNoProjectsSubtitle": "Start your first project to see it here.",
   "projectsPageTitle": "Manage Your Developments",
@@ -163,16 +160,18 @@
   "projectCreationSuccessTitle": "Project Submitted!",
   "projectCreationSuccessSubtitle": "Your project {projectId} has been submitted.\nOur team will review and prepare a pricing proposal shortly.",
   "projectCreationSuccessCta": "View My Projects",
-
   "projectTypeTitle": "What type of project\nare you planning?",
   "projectTypeSubtitle": "Select the category that best describes\nyour construction project.",
-  "projectTypeVillaLabel": "Residential Villa",
-  "projectTypeVillaDesc": "Single-family home,\npalace, or estate villa",
-  "projectTypeCommercialLabel": "Commercial Building",
-  "projectTypeCommercialDesc": "Office, retail, hotel,\nor commercial tower",
-  "projectTypeMixedUseLabel": "Mixed Use",
-  "projectTypeMixedUseDesc": "Residential + commercial\ncombination",
-
+  "projectDetailStatusIdea": "Idea",
+  "projectDetailStatusDesign": "Design",
+  "projectCtaPhaseOne": "Move to Phase I: Interior Design",
+  "landDetailsLabelLength": "Length (m)",
+  "projectTypeVillaLabel": "Villa",
+  "projectTypeVillaDesc": "Luxury standalone villa\nwith private facilities",
+  "projectTypeCommercialLabel": "Commercial",
+  "projectTypeCommercialDesc": "Office, retail, clinic,\nor restaurant",
+  "projectTypeHouseApartmentLabel": "House / Apartment",
+  "projectTypeHouseApartmentDesc": "Standard residential layout\nor apartment space",
   "landDetailsTitle": "Land Details",
   "landDetailsSubtitle": "Tell us about the land where your project will be built.",
   "landDetailsLabelLocation": "Location / Address",
@@ -181,9 +180,10 @@
   "landDetailsHintArea": "e.g. 380",
   "landDetailsLabelWidth": "Width (m)",
   "landDetailsHintWidth": "e.g. 15",
-  "landDetailsLabelLength": "Length (m)",
   "landDetailsHintLength": "e.g. 25",
-  "landDetailsLabelFloors": "NUMBER OF FLOORS",
+  "landDetailsLabelEmployeeCount": "Expected Employee Count",
+  "landDetailsHintEmployeeCount": "e.g. 50",
+  "landDetailsLabelFloors": "Number of Floors",
   "landDetailsFloorSingular": "floor",
   "landDetailsFloorPlural": "floors",
   "landDetailsSbcTitle": "Saudi Building Code Advisory",
@@ -191,7 +191,6 @@
   "landDetailsSbcFloorWarning": "Floor count exceeds SBC maximum of 5 floors.",
   "landDetailsSbcWidthAdvisory": "Land width below advisory threshold of 10 m.",
   "landDetailsSbcFooter": "These are advisory warnings only. Your engineer will confirm compliance.",
-
   "requirementsTitle": "Building Requirements",
   "requirementsSubtitle": "Specify the rooms and spaces\nyour project requires.",
   "requirementsLabelBedrooms": "Bedrooms",
@@ -201,9 +200,12 @@
   "requirementsSpaceMaid": "Maid Room",
   "requirementsSpaceDriver": "Driver Room",
   "requirementsSpaceBasement": "Basement",
-  "requirementsSpacePool": "Swimming Pool",
-  "requirementsSpaceRooftop": "Rooftop",
-
+  "requirementsSpacePool": "Pool",
+  "requirementsSpaceRooftop": "Rooftop Garden",
+  "requirementsLabelSmartHome": "Smart Home Integration",
+  "requirementsSmartHomeBasic": "Basic (Lighting & AC)",
+  "requirementsSmartHomeIntermediate": "Intermediate (Security & Entertainment)",
+  "requirementsSmartHomeAdvanced": "Advanced (Full Automation)",
   "designPreferencesTitle": "Design Preferences",
   "designPreferencesSubtitle": "Choose your architectural style\nand share any special requirements.",
   "designPreferencesLabelStyle": "Architectural Style",
@@ -211,11 +213,10 @@
   "designStyleClassic": "Classic",
   "designStyleContemporary": "Contemporary",
   "designStyleMinimalist": "Minimalist",
+  "designStyleNeoClassical": "Neo-Classical",
   "designPreferencesLabelNotes": "Additional Notes",
-
   "designPreferencesSubtitleNotes": "Any specific requirements, inspiration,\nor constraints for your project.",
   "designPreferencesHintNotes": "e.g. \"I want an open-plan living area with large windows...\"",
-
   "mediaUploadTitle": "Land & Reference Photos",
   "mediaUploadSubtitle": "Upload photos of your land plot and\nany design references you love.",
   "mediaUploadOptional": "This step is optional — you can always add photos later.",
@@ -224,7 +225,6 @@
   "mediaUploadPhotoCountSingular": "photo added",
   "mediaUploadPhotoCountPlural": "photos added",
   "mediaUploadPhotoLabel": "Photo",
-
   "reviewSubmitTitle": "Review & Submit",
   "reviewSubmitSubtitle": "Please review your project details\nbefore submitting.",
   "reviewLabelType": "Type",
@@ -236,6 +236,8 @@
   "reviewLabelBathrooms": "Bathrooms",
   "reviewLabelExtras": "Extras",
   "reviewLabelStyle": "Style",
+  "reviewLabelSmartHome": "Smart Home",
+  "reviewLabelEmployees": "Employees",
   "reviewLabelNotes": "Notes",
   "reviewLabelPhotos": "Photos",
   "reviewPhotosCountSingular": "photo",
@@ -250,6 +252,144 @@
   "stepRequirements": "Requirements",
   "stepDesign": "Design",
   "stepMedia": "Media",
-  "stepReview": "Review"
+  "stepReview": "Review",
+  "editProfileTitle": "Edit Profile",
+  "editProfileSave": "Save",
+  "editProfileBannerError": "Please correct the errors before submitting.",
+  "editProfileChangePhoto": "Change Photo",
+  "editProfileNameLabel": "Full Name",
+  "editProfileMobileLabel": "Mobile Number",
+  "editProfileEmailLabel": "Email Address",
+  "editProfileMobileHint": "+966 5X XXX XXXX",
+  "editProfileNameRequired": "Full name is required.",
+  "editProfileEmailRequired": "Email address is required.",
+  "editProfileEmailInvalid": "Invalid email address.",
+  "editProfileMobileInvalid": "Valid mobile number is required.",
+  "editProfileSubmit": "Update Profile",
+  "editProfileSuccess": "Profile updated successfully.",
+  "profileLoadError": "Could not load your profile.",
+  "profileStatProjects": "Projects",
+  "profileStatCompleted": "Completed",
+  "changePhotoTitle": "Profile Photo",
+  "changePhotoTake": "Take Photo",
+  "changePhotoLibrary": "Choose from Library",
+  "changePhotoRemove": "Remove Photo",
+  "commonCancel": "Cancel",
+  "commonConfirm": "CONFIRM",
+  "changeLanguageTitle": "Select Language",
+  "changeLanguageSuccess": "Language updated successfully",
+  "languageEnglish": "English",
+  "languageArabic": "العربية",
+  "contactUsTitle": "Contact Us",
+  "contactUsInquirySection": "Send an Inquiry",
+  "contactUsEmailLabel": "Email Address",
+  "contactUsMobileLabel": "Mobile Number",
+  "contactUsDetailsLabel": "Issue Details",
+  "contactUsDetailsHint": "Describe your request or issue in detail...",
+  "contactUsSubmit": "Submit Inquiry",
+  "contactUsChannelsSection": "Alternative Channels",
+  "contactUsCallTitle": "Call Support",
+  "contactUsCallNumber": "+966 50 000 0000",
+  "contactUsEmailTitle": "Email Support",
+  "contactUsEmailAddress": "concierge@arcova.com",
+  "contactUsSuccess": "Your inquiry has been submitted. We'll be in touch shortly.",
+  "contactUsDetailsRequired": "Please describe your issue.",
+  "contactUsEmailInvalid": "Invalid email address.",
+  "notificationsTitle": "Notifications",
+  "notificationsMarkRead": "Mark Read",
+  "notificationsEmptyTitle": "No Notifications",
+  "notificationsEmptySubtitle": "You're all caught up.",
+  "notificationsErrorTitle": "Unable to Load Notifications",
+  "notificationsErrorBody": "We encountered a technical issue. Please try again.",
+  "notificationsGroupToday": "Today",
+  "notificationsGroupYesterday": "Yesterday",
+  "notificationsGroupEarlier": "Earlier",
+  "timeJustNow": "now",
+  "timeMinutesShort": "{minutes}m",
+  "timeHoursShort": "{hours}h",
+  "timeDaysShort": "{days}d",
+  "@timeMinutesShort": {
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "@timeHoursShort": {
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      }
+    }
+  },
+  "@timeDaysShort": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "revisionRequestTitle": "Request Revision",
+  "revisionRequestSubtitle": "Detail your adjustments for the architectural team.",
+  "revisionQuotaAvailable": "Available",
+  "revisionQuotaIncluded": "of {total} included revisions for this phase.",
+  "revisionQuotaNoneTitle": "No Free Revisions Left",
+  "revisionQuotaNoneBody": "Additional revisions are available as a paid add-on.",
+  "revisionQuotaPaidLabel": "Paid Revision Cost",
+  "revisionCategoryLabel": "Revision Category",
+  "revisionCategoryLayout": "Layout",
+  "revisionCategoryMaterials": "Materials",
+  "revisionCategoryDimensions": "Dimensions",
+  "revisionCategoryStructural": "Structural",
+  "revisionCategoryExterior": "Exterior",
+  "revisionCategoryInterior": "Interior",
+  "revisionDeliverableLabel": "Reference Deliverable",
+  "revisionDeliverableHint": "Select a deliverable...",
+  "revisionDetailsLabel": "Revision Details",
+  "revisionDetailsHint": "Describe the precise modifications required...",
+  "revisionAttachLabel": "Attach References (Optional)",
+  "revisionAttachUpload": "Tap to upload",
+  "revisionAttachHint": "Annotated images, sketches, or PDFs (max 20MB)",
+  "revisionSubmit": "Submit Request",
+  "revisionSubmitPaid": "Pay & Submit Request",
+  "revisionCategoryRequired": "Please select a category.",
+  "revisionDetailsRequired": "Please describe your revision.",
+  "revisionSubmitSuccess": "Revision request submitted successfully.",
+  "revisionPhotoCount": "{count} attached",
+  "revisionHistoryTitle": "Revision History",
+  "revisionHistoryEmptyTitle": "No Revisions Yet",
+  "revisionHistoryEmptySubtitle": "Your requested revisions will appear here.",
+  "revisionHistoryErrorTitle": "Unable to Load Revisions",
+  "revisionHistoryErrorBody": "We encountered a technical issue. Please try again.",
+  "revisionHistoryNewRequest": "NEW REQUEST",
+  "revisionViewDetail": "View Detail",
+  "revisionDetailTitle": "Revision {id}",
+  "revisionDetailStatusLabel": "Revision Status",
+  "revisionDetailModifications": "Modifications",
+  "revisionDetailEngineerNotes": "Engineer Notes",
+  "revisionDetailErrorBody": "Could not load this revision.",
+  "@revisionQuotaIncluded": {
+    "placeholders": {
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "@revisionPhotoCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@revisionDetailTitle": {
+    "placeholders": {
+      "id": {
+        "type": "String"
+      }
+    }
+  },
+  "revisionDetailComparisons": "Visual Comparisons",
+  "revisionDetailOriginal": "Original Concept",
+  "revisionDetailRevised": "Revised Design"
 }
-

@@ -2,7 +2,6 @@ import 'package:acrova/presentation/app/resources/resources.dart';
 import 'package:acrova/presentation/features/ui/project_creation/steps/widgets/step_counter_button.dart';
 import 'package:acrova/utils/extensions/theme_extension.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class RoomCounter extends StatelessWidget {
   const RoomCounter({

@@ -11,6 +11,8 @@ class SkeletonBox extends StatelessWidget {
     required this.height,
     this.radius,
     this.color,
+    this.borderRadius,
+    this.shape,
     super.key,
   });
 
@@ -18,6 +20,9 @@ class SkeletonBox extends StatelessWidget {
   final double height;
   final double? radius;
   final Color? color;
+  final BorderRadius? borderRadius;
+
+  final BoxShape? shape;
 
   @override
   Widget build(BuildContext context) {
@@ -25,8 +30,12 @@ class SkeletonBox extends StatelessWidget {
       width: width,
       height: height,
       decoration: BoxDecoration(
+        shape: shape ?? BoxShape.rectangle,
         color: color ?? Resources.colors.luxuryProgressTrack,
-        borderRadius: BorderRadius.circular(radius ?? Resources.radius.$r4),
+        borderRadius: shape == BoxShape.circle
+            ? null
+            : borderRadius ??
+                  BorderRadius.circular(radius ?? Resources.radius.$r4),
       ),
     );
   }

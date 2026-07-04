@@ -5,7 +5,6 @@ import 'package:acrova/presentation/features/common_widgets/buttons/app_primary_
 import 'package:acrova/presentation/features/common_widgets/common_screen/common_screen.dart';
 import 'package:acrova/presentation/features/cubit/auth/auth_cubit.dart';
 import 'package:acrova/presentation/features/cubit/auth/auth_state.dart';
-import 'package:acrova/presentation/features/ui/auth/identity_verification/widgets/otp_countdown_timer.dart';
 import 'package:acrova/presentation/features/ui/auth/identity_verification/widgets/otp_digit_field.dart';
 import 'package:acrova/presentation/features/ui/auth/identity_verification/widgets/otp_timer_section.dart';
 import 'package:acrova/utils/extensions/localization_extension.dart';

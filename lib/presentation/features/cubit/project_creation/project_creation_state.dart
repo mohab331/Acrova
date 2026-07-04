@@ -22,6 +22,7 @@ class ProjectCreationState extends Equatable {
     this.landWidthM,
     this.landLengthM,
     this.floors = 1,
+    this.employeeCount = 0,
     // Step 3
     this.bedrooms = 3,
     this.bathrooms = 2,
@@ -31,8 +32,9 @@ class ProjectCreationState extends Equatable {
     this.hasBasement = false,
     this.hasPool = false,
     this.hasRooftop = false,
+    this.smartHomeLevel = 'basic',
     // Step 4
-    this.stylePreference = '',
+    this.architecturalStyle = '',
     this.additionalNotes = '',
     // Step 5
     this.mediaPaths = const [],
@@ -52,6 +54,7 @@ class ProjectCreationState extends Equatable {
   final double? landWidthM;
   final double? landLengthM;
   final int floors;
+  final int employeeCount;
 
   // Step 3
   final int bedrooms;
@@ -62,9 +65,10 @@ class ProjectCreationState extends Equatable {
   final bool hasBasement;
   final bool hasPool;
   final bool hasRooftop;
+  final String smartHomeLevel;
 
   // Step 4
-  final String stylePreference;
+  final String architecturalStyle;
   final String additionalNotes;
 
   // Step 5
@@ -78,19 +82,26 @@ class ProjectCreationState extends Equatable {
 
   bool get step1Valid => selectedType != null;
 
-  bool get step2Valid =>
-      location.trim().isNotEmpty &&
-      landAreaSqm != null &&
-      landAreaSqm! > 0 &&
-      landWidthM != null &&
-      landWidthM! > 0 &&
-      landLengthM != null &&
-      landLengthM! > 0 &&
-      floors >= 1;
+  bool get step2Valid {
+    bool baseValid = location.trim().isNotEmpty &&
+        landAreaSqm != null &&
+        landAreaSqm! > 0 &&
+        floors >= 1;
+        
+    if (selectedType == ProjectType.commercial) {
+      return baseValid && employeeCount > 0;
+    }
+    return baseValid && 
+           landWidthM != null && landWidthM! > 0 &&
+           landLengthM != null && landLengthM! > 0;
+  }
 
-  bool get step3Valid => bedrooms >= 1 && bathrooms >= 1;
+  bool get step3Valid {
+    if (selectedType == ProjectType.commercial) return true; // Less strict for commercial
+    return bedrooms >= 1 && bathrooms >= 1;
+  }
 
-  bool get step4Valid => stylePreference.isNotEmpty;
+  bool get step4Valid => architecturalStyle.isNotEmpty;
 
   // Step 5 (media) is optional — always valid
   bool get step5Valid => true;
@@ -119,23 +130,25 @@ class ProjectCreationState extends Equatable {
 
   /// Build the final request object from accumulated wizard data.
   CreateProjectRequest toRequest() => CreateProjectRequest(
-        projectType:     selectedType!,
-        location:        location.trim(),
-        landAreaSqm:     landAreaSqm!,
-        landWidthM:      landWidthM!,
-        landLengthM:     landLengthM!,
-        floors:          floors,
-        bedrooms:        bedrooms,
-        bathrooms:       bathrooms,
-        hasMajlis:       hasMajlis,
-        hasMaidRoom:     hasMaidRoom,
-        hasDriverRoom:   hasDriverRoom,
-        hasBasement:     hasBasement,
-        hasPool:         hasPool,
-        hasRooftop:      hasRooftop,
-        stylePreference: stylePreference,
-        additionalNotes: additionalNotes,
-        mediaPaths:      mediaPaths,
+        projectType:        selectedType!,
+        location:           location.trim(),
+        landAreaSqm:        landAreaSqm!,
+        landWidthM:         landWidthM ?? 0,
+        landLengthM:        landLengthM ?? 0,
+        floors:             floors,
+        employeeCount:      employeeCount,
+        bedrooms:           bedrooms,
+        bathrooms:          bathrooms,
+        hasMajlis:          hasMajlis,
+        hasMaidRoom:        hasMaidRoom,
+        hasDriverRoom:      hasDriverRoom,
+        hasBasement:        hasBasement,
+        hasPool:            hasPool,
+        hasRooftop:         hasRooftop,
+        smartHomeLevel:     smartHomeLevel,
+        architecturalStyle: architecturalStyle,
+        additionalNotes:    additionalNotes,
+        mediaPaths:         mediaPaths,
       );
 
   ProjectCreationState copyWith({
@@ -149,6 +162,7 @@ class ProjectCreationState extends Equatable {
     double? landWidthM,
     double? landLengthM,
     int? floors,
+    int? employeeCount,
     int? bedrooms,
     int? bathrooms,
     bool? hasMajlis,
@@ -157,40 +171,43 @@ class ProjectCreationState extends Equatable {
     bool? hasBasement,
     bool? hasPool,
     bool? hasRooftop,
-    String? stylePreference,
+    String? smartHomeLevel,
+    String? architecturalStyle,
     String? additionalNotes,
     List<String>? mediaPaths,
   }) =>
       ProjectCreationState(
-        currentStep:     currentStep     ?? this.currentStep,
-        cubitStatus:     cubitStatus     ?? this.cubitStatus,
-        createdProject:  createdProject  ?? this.createdProject,
-        appErrorModel:   appErrorModel   ?? this.appErrorModel,
-        selectedType:    selectedType    ?? this.selectedType,
-        location:        location        ?? this.location,
-        landAreaSqm:     landAreaSqm     ?? this.landAreaSqm,
-        landWidthM:      landWidthM      ?? this.landWidthM,
-        landLengthM:     landLengthM     ?? this.landLengthM,
-        floors:          floors          ?? this.floors,
-        bedrooms:        bedrooms        ?? this.bedrooms,
-        bathrooms:       bathrooms       ?? this.bathrooms,
-        hasMajlis:       hasMajlis       ?? this.hasMajlis,
-        hasMaidRoom:     hasMaidRoom     ?? this.hasMaidRoom,
-        hasDriverRoom:   hasDriverRoom   ?? this.hasDriverRoom,
-        hasBasement:     hasBasement     ?? this.hasBasement,
-        hasPool:         hasPool         ?? this.hasPool,
-        hasRooftop:      hasRooftop      ?? this.hasRooftop,
-        stylePreference: stylePreference ?? this.stylePreference,
-        additionalNotes: additionalNotes ?? this.additionalNotes,
-        mediaPaths:      mediaPaths      ?? this.mediaPaths,
+        currentStep:        currentStep        ?? this.currentStep,
+        cubitStatus:        cubitStatus        ?? this.cubitStatus,
+        createdProject:     createdProject     ?? this.createdProject,
+        appErrorModel:      appErrorModel      ?? this.appErrorModel,
+        selectedType:       selectedType       ?? this.selectedType,
+        location:           location           ?? this.location,
+        landAreaSqm:        landAreaSqm        ?? this.landAreaSqm,
+        landWidthM:         landWidthM         ?? this.landWidthM,
+        landLengthM:        landLengthM        ?? this.landLengthM,
+        floors:             floors             ?? this.floors,
+        employeeCount:      employeeCount      ?? this.employeeCount,
+        bedrooms:           bedrooms           ?? this.bedrooms,
+        bathrooms:          bathrooms          ?? this.bathrooms,
+        hasMajlis:          hasMajlis          ?? this.hasMajlis,
+        hasMaidRoom:        hasMaidRoom        ?? this.hasMaidRoom,
+        hasDriverRoom:      hasDriverRoom      ?? this.hasDriverRoom,
+        hasBasement:        hasBasement        ?? this.hasBasement,
+        hasPool:            hasPool            ?? this.hasPool,
+        hasRooftop:         hasRooftop         ?? this.hasRooftop,
+        smartHomeLevel:     smartHomeLevel     ?? this.smartHomeLevel,
+        architecturalStyle: architecturalStyle ?? this.architecturalStyle,
+        additionalNotes:    additionalNotes    ?? this.additionalNotes,
+        mediaPaths:         mediaPaths         ?? this.mediaPaths,
       );
 
   @override
   List<Object?> get props => [
         currentStep, cubitStatus, createdProject, appErrorModel,
-        selectedType, location, landAreaSqm, landWidthM, landLengthM, floors,
+        selectedType, location, landAreaSqm, landWidthM, landLengthM, floors, employeeCount,
         bedrooms, bathrooms,
-        hasMajlis, hasMaidRoom, hasDriverRoom, hasBasement, hasPool, hasRooftop,
-        stylePreference, additionalNotes, mediaPaths,
+        hasMajlis, hasMaidRoom, hasDriverRoom, hasBasement, hasPool, hasRooftop, smartHomeLevel,
+        architecturalStyle, additionalNotes, mediaPaths,
       ];
 }

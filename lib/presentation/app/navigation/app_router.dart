@@ -1,24 +1,38 @@
 import 'dart:async';
 
 import 'package:acrova/core/di/dependency_injector.dart';
+import 'package:acrova/data/models/profile/user_profile_model.dart';
+import 'package:acrova/data/models/revision/revision_model.dart';
 import 'package:acrova/presentation/features/cubit/auth/auth_cubit.dart';
 import 'package:acrova/presentation/features/cubit/dashboard/dashboard_cubit.dart';
+import 'package:acrova/presentation/features/cubit/profile/profile_cubit.dart';
 import 'package:acrova/presentation/features/cubit/projects/projects_cubit.dart';
 import 'package:acrova/presentation/features/ui/auth/identity_verification/identity_verification_page.dart';
 import 'package:acrova/presentation/features/ui/auth/phone_input/phone_input_page.dart';
 import 'package:acrova/presentation/features/ui/auth/profile_setup/profile_setup_page.dart';
 import 'package:acrova/presentation/features/ui/auth/welcome/welcome_page.dart';
+import 'package:acrova/presentation/features/ui/common/viewers/image_viewer_page.dart';
+import 'package:acrova/presentation/features/ui/common/viewers/pdf_viewer_page.dart';
+import 'package:acrova/presentation/features/ui/contact_us/contact_us_page.dart';
 import 'package:acrova/presentation/features/ui/dashboard/dashboard_page.dart';
+import 'package:acrova/presentation/features/ui/deliverables/deliverables_page.dart';
+import 'package:acrova/presentation/features/ui/interior_design/interior_design_page.dart';
 import 'package:acrova/presentation/features/ui/messages/messages_page.dart';
+import 'package:acrova/presentation/features/ui/notifications/notifications_page.dart';
 import 'package:acrova/presentation/features/ui/portfolio/portfolio_detail_page.dart';
 import 'package:acrova/presentation/features/ui/portfolio/portfolio_item.dart';
 import 'package:acrova/presentation/features/ui/portfolio/portfolio_page.dart';
+import 'package:acrova/presentation/features/ui/profile/edit_profile/edit_profile_page.dart';
 import 'package:acrova/presentation/features/ui/profile/profile_page.dart';
-import 'package:acrova/presentation/features/ui/projects/projects_page.dart';
 import 'package:acrova/presentation/features/ui/project_creation/project_creation_page.dart';
+import 'package:acrova/presentation/features/ui/project_detail/project_detail_page.dart';
+import 'package:acrova/presentation/features/ui/project_detail/walkthrough/walkthrough_screen.dart';
+import 'package:acrova/presentation/features/ui/projects/projects_page.dart';
+import 'package:acrova/presentation/features/ui/revisions/detail/revision_detail_page.dart';
+import 'package:acrova/presentation/features/ui/revisions/history/revision_history_page.dart';
+import 'package:acrova/presentation/features/ui/revisions/request/revision_request_page.dart';
 import 'package:acrova/presentation/features/ui/shell/shell_scaffold.dart';
 import 'package:acrova/presentation/features/ui/splash/splash/splash_page.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -41,7 +55,7 @@ class AppRouter {
   );
 
   static final router = GoRouter(
-    initialLocation: AppRouteEnum.splashPage.path,
+    initialLocation: AppRouteEnum.homePage.path,
     navigatorKey: rootNavigatorKey,
     errorBuilder: (context, state) => const SplashPage(),
     refreshListenable: Listenable.merge([_authRefresh]),
@@ -84,6 +98,29 @@ class AppRouter {
         builder: (_, __) => const ProjectCreationPage(),
       ),
 
+      // ── Interior Design Phase 1 (full-screen, above shell) ────────────────
+      GoRoute(
+        parentNavigatorKey: rootNavigatorKey,
+        path: AppRouteEnum.interiorDesignPhaseOnePage.path,
+        name: AppRouteEnum.interiorDesignPhaseOnePage.name,
+        builder: (_, state) {
+          final id = (state.extra as Map<String,dynamic>?)?['id'] as String?;
+          return InteriorDesignPage(projectId: id ?? '');
+        },
+      ),
+
+      // ── Project Detail (full-screen, above shell) ─────────────────────────
+      GoRoute(
+        parentNavigatorKey: rootNavigatorKey,
+        path: AppRouteEnum.projectDetailPage.path,
+        name: AppRouteEnum.projectDetailPage.name,
+        builder: (_, state) {
+          final id = (state.extra as Map<String,dynamic>?)?['id'] as String?;
+          final title = (state.extra as Map<String,dynamic>?)?['title'] as String?;
+          return ProjectDetailPage(projectId: id ?? '',projectTitle: title,);
+        },
+      ),
+
       // ── Portfolio Detail (full-screen, above shell) ───────────────────────
       GoRoute(
         parentNavigatorKey: rootNavigatorKey,
@@ -92,6 +129,101 @@ class AppRouter {
         builder: (_, state) {
           final item = state.extra as PortfolioItem;
           return PortfolioDetailPage(item: item);
+        },
+      ),
+
+      // ── Edit Profile (full-screen, above shell) ──────────────────────────
+      GoRoute(
+        parentNavigatorKey: rootNavigatorKey,
+        path: AppRouteEnum.editProfilePage.path,
+        name: AppRouteEnum.editProfilePage.name,
+        builder: (_, state) {
+          final profile = state.extra as UserProfileModel;
+          return EditProfilePage(profile: profile);
+        },
+      ),
+
+      // ── Contact Us (full-screen, above shell) ────────────────────────────
+      GoRoute(
+        parentNavigatorKey: rootNavigatorKey,
+        path: AppRouteEnum.contactUsPage.path,
+        name: AppRouteEnum.contactUsPage.name,
+        builder: (context, state) {
+          final extra = state.extra as ContactUsArgs;
+        return ContactUsPage(
+          args: extra,
+        );
+
+        }
+      ),
+
+      // ── Notifications (full-screen, above shell) ─────────────────────────
+      GoRoute(
+        parentNavigatorKey: rootNavigatorKey,
+        path: AppRouteEnum.notificationsPage.path,
+        name: AppRouteEnum.notificationsPage.name,
+        builder: (_, __) => const NotificationsPage(),
+      ),
+
+      // ── Revisions (full-screen, above shell) ─────────────────────────────
+      GoRoute(
+        parentNavigatorKey: rootNavigatorKey,
+        path: AppRouteEnum.revisionHistoryPage.path,
+        name: AppRouteEnum.revisionHistoryPage.name,
+        builder: (_, __) => const RevisionHistoryPage(),
+      ),
+      GoRoute(
+        parentNavigatorKey: rootNavigatorKey,
+        path: AppRouteEnum.revisionRequestPage.path,
+        name: AppRouteEnum.revisionRequestPage.name,
+        builder: (_, __) => const RevisionRequestPage(),
+      ),
+      GoRoute(
+        parentNavigatorKey: rootNavigatorKey,
+        path: AppRouteEnum.revisionDetailPage.path,
+        name: AppRouteEnum.revisionDetailPage.name,
+        builder: (_, state) {
+          final extra = state.extra;
+          if (extra is RevisionModel) {
+            return RevisionDetailPage(revision: extra);
+          }
+          return RevisionDetailPage(revisionId: extra as String?);
+        },
+      ),
+
+      // ── Walkthrough (full-screen, above shell) ─────────────────────────────
+      GoRoute(
+        parentNavigatorKey: rootNavigatorKey,
+        path: AppRouteEnum.walkthroughPage.path,
+        name: AppRouteEnum.walkthroughPage.name,
+        builder: (_, __) => const WalkthroughScreen(),
+      ),
+
+      // ── Deliverables (full-screen, above shell) ─────────────────────────────
+      GoRoute(
+        parentNavigatorKey: rootNavigatorKey,
+        path: AppRouteEnum.deliverablesPage.path,
+        name: AppRouteEnum.deliverablesPage.name,
+        builder: (_, __) => const DeliverablesPage(),
+      ),
+
+      // ── Viewers (full-screen, above shell) ─────────────────────────────
+      GoRoute(
+        parentNavigatorKey: rootNavigatorKey,
+        path: AppRouteEnum.pdfViewerPage.path,
+        name: AppRouteEnum.pdfViewerPage.name,
+        builder: (_, state) {
+          final args = state.extra as PdfViewerArgs;
+          return PdfViewerPage(args: args);
+        },
+      ),
+      GoRoute(
+        parentNavigatorKey: rootNavigatorKey,
+        path: AppRouteEnum.imageViewerPage.path,
+        name: AppRouteEnum.imageViewerPage.name,
+        builder: (_, state) {
+          final args = state.extra as ImageViewerArgs;
+          return ImageViewerPage(args: args);
         },
       ),
 
@@ -105,6 +237,9 @@ class AppRouter {
                 ),
                 BlocProvider.value(
                   value: serviceLocatorInstance<ProjectsCubit>(),
+                ),
+                BlocProvider.value(
+                  value: serviceLocatorInstance<ProfileCubit>(),
                 ),
               ],
               child: ShellScaffold(navigationShell: navigationShell),

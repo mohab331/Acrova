@@ -8,7 +8,6 @@ import 'package:acrova/presentation/features/ui/portfolio/widgets/detail_carouse
 import 'package:acrova/presentation/features/ui/portfolio/widgets/detail_content_panel.dart';
 import 'package:acrova/presentation/features/ui/portfolio/widgets/detail_dot_indicators.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 
 class PortfolioDetailPage extends StatefulWidget {
@@ -39,7 +38,6 @@ class _PortfolioDetailPageState extends State<PortfolioDetailPage> {
       appBar: AppAuthBrandHeader(
         showBack: true,
         label: widget.item.title,
-        fontSize: Resources.fontSizes.$18,
       ),
       child: Stack(
         children: [
@@ -101,7 +99,9 @@ class _PortfolioDetailPageState extends State<PortfolioDetailPage> {
             child: DetailBottomCtas(
               onStartProject: () =>
                   context.push(AppRouteEnum.projectCreationPage.path),
-              onWatchWalkthrough: () {},
+              onWatchWalkthrough: () {
+                context.push(AppRouteEnum.walkthroughPage.path);
+              },
             ),
           ),
         ],

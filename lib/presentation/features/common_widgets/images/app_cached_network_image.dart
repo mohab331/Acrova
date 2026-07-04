@@ -2,7 +2,6 @@ import 'package:acrova/presentation/app/resources/resources.dart';
 import 'package:acrova/presentation/features/common_widgets/feedback/app_skeleton_loader.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 /// Reusable premium network image widget with responsive properties and shimmer placeholders.
 ///

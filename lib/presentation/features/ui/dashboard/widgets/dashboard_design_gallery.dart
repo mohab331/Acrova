@@ -2,7 +2,6 @@ import 'package:acrova/data/models/dashboard/dashboard_data_model.dart';
 import 'package:acrova/presentation/app/resources/resources.dart';
 import 'package:acrova/presentation/features/ui/dashboard/widgets/dashboard_design_card.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class DashboardDesignGallery extends StatelessWidget {
   const DashboardDesignGallery({required this.designs, super.key});

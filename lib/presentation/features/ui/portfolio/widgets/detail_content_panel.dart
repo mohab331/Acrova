@@ -7,7 +7,6 @@ import 'package:acrova/presentation/features/ui/portfolio/widgets/detail_spec_gr
 import 'package:acrova/utils/extensions/localization_extension.dart';
 import 'package:acrova/utils/extensions/theme_extension.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class DetailContentPanel extends StatelessWidget {
   const DetailContentPanel({required this.item, super.key});

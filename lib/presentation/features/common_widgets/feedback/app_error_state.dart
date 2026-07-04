@@ -1,5 +1,7 @@
+import 'package:acrova/core/error/app_error_model.dart';
 import 'package:acrova/presentation/app/resources/resources.dart';
 import 'package:acrova/presentation/features/common_widgets/buttons/app_primary_button.dart';
+import 'package:acrova/utils/extensions/api_error_l10n_x.dart';
 import 'package:acrova/utils/extensions/localization_extension.dart';
 import 'package:flutter/material.dart';
 
@@ -12,7 +14,8 @@ import 'package:flutter/material.dart';
 /// - Retry CTA: [AppPrimaryButton]
 class AppErrorState extends StatelessWidget {
   const AppErrorState({
-    required this.message,
+     this.message,
+    this.errorModel,
     this.title,
     this.retryLabel,
     this.onRetry,
@@ -20,7 +23,8 @@ class AppErrorState extends StatelessWidget {
   });
 
   final String? title;
-  final String message;
+  final String? message;
+  final AppErrorModel? errorModel;
   final String? retryLabel;
   final VoidCallback? onRetry;
 
@@ -47,7 +51,7 @@ class AppErrorState extends StatelessWidget {
           ),
           SizedBox(height: Resources.verticalDims.$8),
           Text(
-            message,
+            message ?? errorModel?.message ?? errorModel?.code.messageOf(context) ?? '',
             textAlign: TextAlign.center,
             style: Theme.of(context).textTheme.bodySmall?.copyWith(
                   color: Resources.colors.luxuryBodyMuted,

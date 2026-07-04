@@ -1,6 +1,5 @@
 import 'package:acrova/presentation/app/resources/resources.dart';
 import 'package:acrova/presentation/features/common_widgets/feedback/app_skeleton_loader.dart';
-import 'package:acrova/presentation/features/common_widgets/feedback/skeleton_box.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 

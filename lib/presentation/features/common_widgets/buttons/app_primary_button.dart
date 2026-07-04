@@ -17,6 +17,7 @@ class AppPrimaryButton extends StatelessWidget {
     this.enabled = true,
     this.width = double.infinity,
     this.child,
+    this.height,
     this.icon,
     super.key,
   });
@@ -28,6 +29,7 @@ class AppPrimaryButton extends StatelessWidget {
   final double width;
   final Widget? icon;
 
+  final double? height;
   final Widget? child;
   @override
   Widget build(BuildContext context) {
@@ -40,7 +42,7 @@ class AppPrimaryButton extends StatelessWidget {
         boxShadow: isActive ? AppShadows.cta : null,
       ),
       child: SizedBox(
-        height: Resources.verticalDims.$55,
+        height:height ?? Resources.verticalDims.$55,
         child: ElevatedButton(
           onPressed: isActive ? onPressed : null,
           style: ElevatedButton.styleFrom(

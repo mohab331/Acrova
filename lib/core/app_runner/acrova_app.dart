@@ -3,7 +3,6 @@ import 'package:acrova/presentation/app/resources/resources.dart';
 import 'package:acrova/presentation/features/cubit/auth/auth_cubit.dart';
 import 'package:acrova/presentation/features/cubit/localization/localization_cubit.dart';
 import 'package:acrova/presentation/features/ui/splash/splash/cubit/splash_cubit.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';

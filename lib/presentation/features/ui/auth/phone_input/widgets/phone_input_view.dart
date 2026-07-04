@@ -1,3 +1,4 @@
+import 'package:acrova/presentation/app/navigation/app_route_enum.dart';
 import 'package:acrova/presentation/app/resources/resources.dart';
 import 'package:acrova/presentation/features/common_widgets/app_bar/app_auth_brand_header.dart';
 import 'package:acrova/presentation/features/common_widgets/common_screen/common_screen.dart';
@@ -7,7 +8,6 @@ import 'package:acrova/presentation/features/ui/auth/phone_input/phone_input_cub
 import 'package:acrova/presentation/features/ui/auth/phone_input/widgets/luxury_phone_input.dart';
 import 'package:acrova/presentation/features/ui/auth/phone_input/widgets/phone_continue_button.dart';
 import 'package:acrova/presentation/features/ui/auth/phone_input/widgets/terms_and_privacy_text.dart';
-import 'package:acrova/presentation/app/navigation/app_route_enum.dart';
 import 'package:acrova/utils/extensions/localization_extension.dart';
 import 'package:acrova/utils/extensions/navigation_extension.dart';
 import 'package:acrova/utils/extensions/theme_extension.dart';

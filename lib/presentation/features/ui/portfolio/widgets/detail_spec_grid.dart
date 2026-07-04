@@ -3,7 +3,6 @@ import 'package:acrova/presentation/features/ui/portfolio/portfolio_item.dart';
 import 'package:acrova/presentation/features/ui/portfolio/widgets/detail_spec_cell.dart';
 import 'package:acrova/utils/extensions/localization_extension.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class DetailSpecGrid extends StatelessWidget {
   const DetailSpecGrid({required this.item, super.key});

@@ -1,7 +1,6 @@
 import 'package:acrova/presentation/app/resources/resources.dart';
 import 'package:acrova/presentation/features/common_widgets/images/app_cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class AvatarWidget extends StatelessWidget {
   const AvatarWidget({
@@ -30,7 +29,6 @@ class AvatarWidget extends StatelessWidget {
           ? ClipOval(
               child: AppCachedNetworkImage(
                 imageUrl: avatarUrl!,
-                fit: BoxFit.cover,
               ),
             )
           : Center(

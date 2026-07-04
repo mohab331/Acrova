@@ -6,7 +6,6 @@ import 'package:acrova/utils/extensions/localization_extension.dart';
 import 'package:acrova/utils/extensions/theme_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class Step5MediaUpload extends StatelessWidget {
   const Step5MediaUpload({super.key});

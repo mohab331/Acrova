@@ -1,239 +1,121 @@
+import 'package:acrova/core/di/dependency_injector.dart';
+import 'package:acrova/data/models/profile/user_profile_model.dart';
+import 'package:acrova/presentation/app/navigation/app_route_enum.dart';
 import 'package:acrova/presentation/app/resources/resources.dart';
 import 'package:acrova/presentation/features/common_widgets/app_bar/app_avatar_header.dart';
-import 'package:acrova/presentation/features/common_widgets/cards/app_card.dart';
 import 'package:acrova/presentation/features/common_widgets/common_screen/common_screen.dart';
-import 'package:acrova/presentation/features/common_widgets/images/app_cached_network_image.dart';
-import 'package:acrova/presentation/features/ui/profile/widgets/profile_menu_item.dart';
-import 'package:acrova/presentation/features/ui/profile/widgets/profile_section.dart';
+import 'package:acrova/presentation/features/common_widgets/feedback/app_error_state.dart';
+import 'package:acrova/presentation/features/cubit/auth/auth_cubit.dart';
+import 'package:acrova/presentation/features/cubit/localization/localization_cubit.dart';
+import 'package:acrova/presentation/features/cubit/profile/profile_cubit.dart';
+import 'package:acrova/presentation/features/cubit/profile/profile_state.dart';
+import 'package:acrova/presentation/features/ui/contact_us/contact_us_page.dart';
+import 'package:acrova/presentation/features/ui/profile/widgets/change_language_sheet.dart';
+import 'package:acrova/presentation/features/ui/profile/widgets/profile_content.dart';
+import 'package:acrova/presentation/features/ui/profile/widgets/profile_skeleton.dart';
+import 'package:acrova/utils/enums/cubit_status.dart';
 import 'package:acrova/utils/extensions/localization_extension.dart';
-import 'package:acrova/utils/extensions/theme_extension.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 
-class ProfilePage extends StatelessWidget {
+class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    final loc = context.localization;
+  State<ProfilePage> createState() => _ProfilePageState();
+}
 
-    return CommonScreen(
-      bottomPadding: 0,
-      child: Column(
-        children: [
-          const AvatarHeader(userName: 'Mohab', notificationCount: 2),
-          Expanded(
-            child: SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  AppCard(
-                    padding: EdgeInsets.all(Resources.horizontalDims.$24),
-                    child: Column(
-                      children: [
-                        Container(
-                          width: Resources.squareDims.$80,
-                          height: Resources.squareDims.$80,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: Resources.colors.luxurySurface,
-                            border: Border.all(
-                              color: Resources.colors.luxuryGoldLight,
-                              width: AppBorderWidths.$2,
-                            ),
-                          ),
-                          child: const Center(
-                            child: AppCachedNetworkImage(
-                              imageUrl:
-                                  'https://png.pngtree.com/png-vector/20231019/ourmid/pngtree-user-profile-avatar-png-image_10211467.png',
-                            ),
-                          ),
+class _ProfilePageState extends State<ProfilePage> {
+  Future<void> _openEdit(UserProfileModel profile) async {
+    final updated = await context.push<UserProfileModel>(
+      AppRouteEnum.editProfilePage.path,
+      extra: profile,
+    );
+    if (updated != null && mounted) {
+      context.read<ProfileCubit>().setProfile(updated);
+    }
+  }
+
+  Future<void> _logout() async {
+    await context.read<AuthCubit>().clearAuthData();
+    if (!mounted) return;
+    context.read<AuthCubit>().resetToInitial();
+    context.go(AppRouteEnum.welcomePage.path);
+  }
+
+  Future<void> _openLanguageSheet() async {
+    final localizationCubit = context.read<LocalizationCubit>();
+    final current = localizationCubit.currentLocale().languageCode;
+    final selected = await ChangeLanguageSheet.show(context, current);
+    if (selected == null || selected == current || !mounted) return;
+    localizationCubit.updateLocale(Locale(selected));
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(context.localization.changeLanguageSuccess),
+        backgroundColor: Resources.colors.luxurySuccess,
+      ),
+    );
+  }
+
+  void _openContact({required String? email, required String? mobileNumber}) =>
+      context.push(
+        AppRouteEnum.contactUsPage.path,
+        extra: ContactUsArgs(email: email, mobileNumber: mobileNumber),
+      );
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocProvider(
+      create: (context) =>
+          serviceLocatorInstance<ProfileCubit>()..fetchProfile(),
+      child: CommonScreen(
+        bottomPadding: 0,
+        child: BlocSelector<ProfileCubit, ProfileCubitState, ProfileCubitState>(
+          selector: (state) => state,
+          builder: (context, state) {
+            return Column(
+              children: [
+                AvatarHeader(
+                  userName: state.profile?.name ?? '',
+                  notificationCount: 2,
+                ),
+                Flexible(
+                  child: Builder(
+                    builder: (context) {
+                      if (state.isLoading ||
+                          state.cubitStatus == CubitStatus.initial) {
+                        return const ProfileSkeleton();
+                      }
+                      if (state.isError) {
+                        return AppErrorState(
+                          message:
+                              state.appErrorModel?.message ??
+                              context.localization.profileLoadError,
+                          onRetry: () =>
+                              context.read<ProfileCubit>().fetchProfile(),
+                        );
+                      }
+                      final profile = state.profile;
+                      if (profile == null) return const SizedBox.shrink();
+
+                      return ProfileContent(
+                        profile: profile,
+                        onEdit: () => _openEdit(profile),
+                        onLogout: _logout,
+                        onLanguageTap: _openLanguageSheet,
+                        onContactTap: () => _openContact(
+                          email: profile.email,
+                          mobileNumber: profile.mobileNumber,
                         ),
-                        SizedBox(height: Resources.verticalDims.$16),
-                        Text(
-                          loc.mockUserName,
-                          style: context.textTheme.labelLarge?.copyWith(
-                            fontSize: Resources.fontSizes.$20,
-                            fontWeight: Resources.fontWeights.bold,
-                            color: Resources.colors.luxuryNavy,
-                          ),
-                        ),
-                        SizedBox(height: Resources.verticalDims.$8),
-                        Text(
-                          loc.mockUserEmail,
-                          style: context.textTheme.bodyMedium?.copyWith(
-                            fontSize: Resources.fontSizes.$14,
-                            color: Resources.colors.luxuryBodyMuted,
-                          ),
-                        ),
-                        SizedBox(height: Resources.verticalDims.$16),
-                        Text(
-                          loc.memberSince,
-                          style: context.textTheme.bodySmall?.copyWith(
-                            fontSize: Resources.fontSizes.$12,
-                            color: Resources.colors.luxuryBody,
-                            letterSpacing: Resources.letterSpacing.$0_4,
-                          ),
-                        ),
-                        SizedBox(height: Resources.verticalDims.$20),
-                        SizedBox(
-                          width: double.infinity,
-                          child: OutlinedButton(
-                            onPressed: () {},
-                            style: OutlinedButton.styleFrom(
-                              foregroundColor: Resources.colors.luxuryNavy,
-                              side: BorderSide(color: Resources.colors.luxuryBorder),
-                              padding: EdgeInsets.symmetric(
-                                vertical: Resources.verticalDims.$12,
-                              ),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(Resources.radius.$r2),
-                              ),
-                            ),
-                            child: Text(
-                              loc.editProfile,
-                              style: TextStyle(
-                                fontSize: Resources.fontSizes.$14,
-                                fontWeight: Resources.fontWeights.semiBold,
-                                letterSpacing: Resources.letterSpacing.$0_4,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
+                      );
+                    },
                   ),
-                  SizedBox(height: Resources.verticalDims.$24),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: AppCard(
-                          padding: EdgeInsets.all(Resources.horizontalDims.$16),
-                          child: Column(
-                            children: [
-                              Text(
-                                '8',
-                                style: TextStyle(
-                                  fontSize: Resources.fontSizes.$26,
-                                  fontWeight: Resources.fontWeights.bold,
-                                  color: Resources.colors.luxuryGoldLight,
-                                ),
-                              ),
-                              SizedBox(height: Resources.verticalDims.$4),
-                              Text(
-                                loc.projects,
-                                style: TextStyle(
-                                  fontSize: Resources.fontSizes.$12,
-                                  color: Resources.colors.luxuryBodyMuted,
-                                  letterSpacing: Resources.letterSpacing.$0_4,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                      SizedBox(width: Resources.horizontalDims.$12),
-                      Expanded(
-                        child: AppCard(
-                          padding: EdgeInsets.all(Resources.horizontalDims.$16),
-                          child: Column(
-                            children: [
-                              Text(
-                                '3',
-                                style: TextStyle(
-                                  fontSize: Resources.fontSizes.$26,
-                                  fontWeight: Resources.fontWeights.bold,
-                                  color: Resources.colors.luxurySuccess,
-                                ),
-                              ),
-                              SizedBox(height: Resources.verticalDims.$4),
-                              Text(
-                                loc.completed,
-                                style: TextStyle(
-                                  fontSize: Resources.fontSizes.$12,
-                                  color: Resources.colors.luxuryBodyMuted,
-                                  letterSpacing: Resources.letterSpacing.$0_4,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: Resources.verticalDims.$24),
-                  ProfileSection(
-                    title: loc.account,
-                    items: [
-                      ProfileMenuItem(icon: Icons.lock_outline, label: loc.changePassword, onTap: () {}),
-                      ProfileMenuItem(icon: Icons.receipt_long_outlined, label: loc.billingHistory, onTap: () {}),
-                    ],
-                  ),
-                  SizedBox(height: Resources.verticalDims.$20),
-                  ProfileSection(
-                    title: loc.preferences,
-                    items: [
-                      ProfileMenuItem(
-                        icon: Icons.language_outlined,
-                        label: loc.language,
-                        trailing: Text(
-                          loc.profileSetupLanguageEn,
-                          style: context.textTheme.bodySmall?.copyWith(
-                            fontSize: Resources.fontSizes.$12,
-                            color: Resources.colors.luxuryBodyMuted,
-                          ),
-                        ),
-                        onTap: () {},
-                      ),
-                      ProfileMenuItem(icon: Icons.notifications_outlined, label: loc.notifications, onTap: () {}),
-                      ProfileMenuItem(icon: Icons.privacy_tip_outlined, label: loc.privacySettings, onTap: () {}),
-                    ],
-                  ),
-                  SizedBox(height: Resources.verticalDims.$20),
-                  ProfileSection(
-                    title: loc.helpAndSupport,
-                    items: [
-                      ProfileMenuItem(icon: Icons.help_outline, label: loc.helpCenter, onTap: () {}),
-                      ProfileMenuItem(icon: Icons.contact_support_outlined, label: loc.contactSupport, onTap: () {}),
-                      ProfileMenuItem(icon: Icons.description_outlined, label: loc.termsAndPrivacy, onTap: () {}),
-                    ],
-                  ),
-                  SizedBox(height: Resources.verticalDims.$24),
-                  SizedBox(
-                    width: double.infinity,
-                    child: OutlinedButton(
-                      onPressed: () {},
-                      style: OutlinedButton.styleFrom(
-                        foregroundColor: Resources.colors.luxuryError,
-                        side: BorderSide(color: Resources.colors.luxuryError),
-                        padding: EdgeInsets.symmetric(vertical: Resources.verticalDims.$14),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(Resources.radius.$r2),
-                        ),
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(Icons.logout_outlined, size: Resources.iconSizes.$16),
-                          SizedBox(width: Resources.horizontalDims.$8),
-                          Text(
-                            loc.logout,
-                            style: TextStyle(
-                              fontSize: Resources.fontSizes.$14,
-                              fontWeight: Resources.fontWeights.semiBold,
-                              letterSpacing: Resources.letterSpacing.$0_4,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  SizedBox(height: Resources.verticalDims.$32),
-                ],
-              ),
-            ),
-          ),
-        ],
+                ),
+              ],
+            );
+          },
+        ),
       ),
     );
   }

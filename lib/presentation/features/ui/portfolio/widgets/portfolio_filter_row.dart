@@ -2,7 +2,6 @@ import 'package:acrova/presentation/app/resources/resources.dart';
 import 'package:acrova/presentation/features/common_widgets/chips/app_filter_chip.dart';
 import 'package:acrova/utils/extensions/localization_extension.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 enum PortfolioFilter { all, exterior, modern, traditional, interior }
 

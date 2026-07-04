@@ -1,7 +1,9 @@
-import 'package:acrova/utils/constants/secure_constants.dart';
 import 'package:acrova/data/data_source/local/local_storage/base_local_storage.dart';
 import 'package:acrova/data/data_source/local/secure_storage/base_secure_storage.dart';
+import 'package:acrova/data/models/profile/user_profile_model.dart';
+import 'package:acrova/data/models/request/profile/update_profile_request.dart';
 import 'package:acrova/domain/repository/auth/base_auth_repo.dart';
+import 'package:acrova/utils/constants/secure_constants.dart';
 import 'package:acrova/utils/helpers/safe_async_call.dart';
 
 import '../../../utils/helpers/result.dart';
@@ -53,6 +55,16 @@ class AuthRepoImpl implements BaseAuthRepo {
             nationalId: nationalId,
             language: language,
           ));
+
+  @override
+  Future<Result<UserProfileModel>> getUserProfile() =>
+      safeAsyncCall(_authDataSource.getUserProfile);
+
+  @override
+  Future<Result<UserProfileModel>> updateUserProfile(
+    UpdateProfileRequest request,
+  ) =>
+      safeAsyncCall(() => _authDataSource.updateUserProfile(request));
 
   @override
   Future<Result<void>> clearUserData() async => safeAsyncCall(() => Future.wait([

@@ -16,22 +16,22 @@ class Step1ProjectType extends StatelessWidget {
     final l10n = context.localization;
     final types = [
       (
-        type: ProjectType.residentialVilla,
+        type: ProjectType.villa,
         icon: Icons.villa_outlined,
         label: l10n.projectTypeVillaLabel,
         description: l10n.projectTypeVillaDesc,
       ),
       (
-        type: ProjectType.commercialBuilding,
+        type: ProjectType.houseApartment,
+        icon: Icons.home_outlined,
+        label: l10n.projectTypeHouseApartmentLabel,
+        description: l10n.projectTypeHouseApartmentDesc,
+      ),
+      (
+        type: ProjectType.commercial,
         icon: Icons.business_outlined,
         label: l10n.projectTypeCommercialLabel,
         description: l10n.projectTypeCommercialDesc,
-      ),
-      (
-        type: ProjectType.mixedUse,
-        icon: Icons.layers_outlined,
-        label: l10n.projectTypeMixedUseLabel,
-        description: l10n.projectTypeMixedUseDesc,
       ),
     ];
 

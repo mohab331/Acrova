@@ -1,39 +1,39 @@
 /// Type of project the customer is commissioning.
 enum ProjectType {
-  residentialVilla,
-  commercialBuilding,
-  mixedUse,
+  villa,
+  houseApartment,
+  commercial,
 }
 
 extension ProjectTypeX on ProjectType {
   String get displayLabel {
     switch (this) {
-      case ProjectType.residentialVilla:   return 'Residential Villa';
-      case ProjectType.commercialBuilding: return 'Commercial Building';
-      case ProjectType.mixedUse:           return 'Mixed Use';
+      case ProjectType.villa:          return 'Villa';
+      case ProjectType.houseApartment: return 'House / Apartment';
+      case ProjectType.commercial:     return 'Commercial';
     }
   }
 
   String get displayLabelAr {
     switch (this) {
-      case ProjectType.residentialVilla:   return 'فيلا سكنية';
-      case ProjectType.commercialBuilding: return 'مبنى تجاري';
-      case ProjectType.mixedUse:           return 'متعدد الاستخدامات';
+      case ProjectType.villa:          return 'فيلا';
+      case ProjectType.houseApartment: return 'منزل / شقة';
+      case ProjectType.commercial:     return 'تجاري';
     }
   }
 
   String get jsonKey {
     switch (this) {
-      case ProjectType.residentialVilla:   return 'residential_villa';
-      case ProjectType.commercialBuilding: return 'commercial_building';
-      case ProjectType.mixedUse:           return 'mixed_use';
+      case ProjectType.villa:          return 'villa';
+      case ProjectType.houseApartment: return 'house_apartment';
+      case ProjectType.commercial:     return 'commercial';
     }
   }
 
   static ProjectType fromJson(String value) {
     return ProjectType.values.firstWhere(
       (e) => e.jsonKey == value,
-      orElse: () => ProjectType.residentialVilla,
+      orElse: () => ProjectType.villa,
     );
   }
 }

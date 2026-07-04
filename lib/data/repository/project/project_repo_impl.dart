@@ -14,11 +14,11 @@ class ProjectRepoImpl implements BaseProjectRepo {
 
   @override
   Future<Result<DashboardDataModel>> getDashboard() =>
-      safeAsyncCall(() => _dataSource.getDashboard());
+      safeAsyncCall(_dataSource.getDashboard);
 
   @override
   Future<Result<List<ProjectModel>>> getProjects() =>
-      safeAsyncCall(() => _dataSource.getProjects());
+      safeAsyncCall(_dataSource.getProjects);
 
   @override
   Future<Result<ProjectModel>> getProject(String id) =>

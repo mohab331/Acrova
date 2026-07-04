@@ -5,12 +5,13 @@ import 'package:flutter/material.dart';
 class DetailMetaDot extends StatelessWidget {
   const DetailMetaDot({required this.text, super.key});
 
-  final String text;
+  final String? text;
 
   @override
   Widget build(BuildContext context) {
+    if(text?.isEmpty ?? true) return const SizedBox.shrink();
     return Text(
-      text,
+      text ?? '',
       style: context.textTheme.labelMedium?.copyWith(
         fontSize: Resources.fontSizes.$11,
         fontWeight: Resources.fontWeights.medium,

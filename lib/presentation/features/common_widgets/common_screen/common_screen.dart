@@ -38,12 +38,14 @@ class CommonScreen extends StatelessWidget {
             FocusManager.instance.primaryFocus?.unfocus();
           },
           child: Padding(
-            padding: padding ?? EdgeInsetsDirectional.only(
-              start: Resources.horizontalDims.$20,
-              end: Resources.horizontalDims.$20,
-              top: Resources.verticalDims.$16,
-              bottom: bottomPadding ?? Resources.verticalDims.$60,
-            ),
+            padding:
+                padding ??
+                EdgeInsetsDirectional.only(
+                  start: Resources.horizontalDims.$20,
+                  end: Resources.horizontalDims.$20,
+                  top: Resources.verticalDims.$16,
+                  bottom: bottomPadding ?? Resources.verticalDims.$32,
+                ),
             child: child,
           ),
         ),

@@ -3,7 +3,6 @@ import 'package:acrova/presentation/features/common_widgets/images/app_cached_ne
 import 'package:acrova/presentation/features/ui/portfolio/portfolio_item.dart';
 import 'package:acrova/utils/extensions/theme_extension.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class PortfolioHeroCard extends StatelessWidget {
   const PortfolioHeroCard({
@@ -28,7 +27,6 @@ class PortfolioHeroCard extends StatelessWidget {
             children: [
               AppCachedNetworkImage(
                 imageUrl: item.imageUrls.first,
-                fit: BoxFit.cover,
                 radius: Resources.radius.$r2,
               ),
               const DecoratedBox(

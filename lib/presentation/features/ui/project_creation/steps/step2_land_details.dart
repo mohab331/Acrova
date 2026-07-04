@@ -4,6 +4,7 @@ import 'package:acrova/presentation/features/cubit/project_creation/project_crea
 import 'package:acrova/presentation/features/ui/project_creation/steps/widgets/floor_counter.dart';
 import 'package:acrova/presentation/features/ui/project_creation/steps/widgets/sbc_warning_card.dart';
 import 'package:acrova/presentation/features/ui/project_creation/steps/widgets/wizard_text_field.dart';
+import 'package:acrova/utils/enums/project_type_enum.dart';
 import 'package:acrova/utils/extensions/localization_extension.dart';
 import 'package:acrova/utils/extensions/theme_extension.dart';
 import 'package:flutter/material.dart';
@@ -22,6 +23,7 @@ class _Step2LandDetailsState extends State<Step2LandDetails> {
   late final TextEditingController _areaCtrl;
   late final TextEditingController _widthCtrl;
   late final TextEditingController _lengthCtrl;
+  late final TextEditingController _employeeCtrl;
 
   @override
   void initState() {
@@ -37,6 +39,9 @@ class _Step2LandDetailsState extends State<Step2LandDetails> {
     _lengthCtrl = TextEditingController(
       text: s.landLengthM != null ? s.landLengthM!.toStringAsFixed(0) : '',
     );
+    _employeeCtrl = TextEditingController(
+      text: s.employeeCount > 0 ? s.employeeCount.toString() : '',
+    );
   }
 
   @override
@@ -45,6 +50,7 @@ class _Step2LandDetailsState extends State<Step2LandDetails> {
     _areaCtrl.dispose();
     _widthCtrl.dispose();
     _lengthCtrl.dispose();
+    _employeeCtrl.dispose();
     super.dispose();
   }
 
@@ -54,6 +60,8 @@ class _Step2LandDetailsState extends State<Step2LandDetails> {
       builder: (context, state) {
         final cubit = context.read<ProjectCreationCubit>();
         final l10n = context.localization;
+
+        final isCommercial = state.selectedType == ProjectType.commercial;
 
         return SingleChildScrollView(
           child: Column(
@@ -91,32 +99,44 @@ class _Step2LandDetailsState extends State<Step2LandDetails> {
                 onChanged: (v) => cubit.updateLandArea(double.tryParse(v)),
               ),
               SizedBox(height: Resources.verticalDims.$20),
-              Row(
-                children: [
-                  Expanded(
-                    child: WizardTextField(
-                      controller: _widthCtrl,
-                      label: l10n.landDetailsLabelWidth,
-                      hint: l10n.landDetailsHintWidth,
-                      keyboardType: const TextInputType.numberWithOptions(decimal: true),
-                      inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'[0-9.]'))],
-                      onChanged: (v) => cubit.updateLandWidth(double.tryParse(v)),
+              if (isCommercial) ...[
+                WizardTextField(
+                  controller: _employeeCtrl,
+                  label: l10n.landDetailsLabelEmployeeCount,
+                  hint: l10n.landDetailsHintEmployeeCount,
+                  keyboardType: TextInputType.number,
+                  inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                  onChanged: (v) => cubit.updateEmployeeCount(int.tryParse(v) ?? 0),
+                ),
+                SizedBox(height: Resources.verticalDims.$20),
+              ] else ...[
+                Row(
+                  children: [
+                    Expanded(
+                      child: WizardTextField(
+                        controller: _widthCtrl,
+                        label: l10n.landDetailsLabelWidth,
+                        hint: l10n.landDetailsHintWidth,
+                        keyboardType: const TextInputType.numberWithOptions(decimal: true),
+                        inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'[0-9.]'))],
+                        onChanged: (v) => cubit.updateLandWidth(double.tryParse(v)),
+                      ),
                     ),
-                  ),
-                  SizedBox(width: Resources.horizontalDims.$12),
-                  Expanded(
-                    child: WizardTextField(
-                      controller: _lengthCtrl,
-                      label: l10n.landDetailsLabelLength,
-                      hint: l10n.landDetailsHintLength,
-                      keyboardType: const TextInputType.numberWithOptions(decimal: true),
-                      inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'[0-9.]'))],
-                      onChanged: (v) => cubit.updateLandLength(double.tryParse(v)),
+                    SizedBox(width: Resources.horizontalDims.$12),
+                    Expanded(
+                      child: WizardTextField(
+                        controller: _lengthCtrl,
+                        label: l10n.landDetailsLabelLength,
+                        hint: l10n.landDetailsHintLength,
+                        keyboardType: const TextInputType.numberWithOptions(decimal: true),
+                        inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'[0-9.]'))],
+                        onChanged: (v) => cubit.updateLandLength(double.tryParse(v)),
+                      ),
                     ),
-                  ),
-                ],
-              ),
-              SizedBox(height: Resources.verticalDims.$20),
+                  ],
+                ),
+                SizedBox(height: Resources.verticalDims.$20),
+              ],
               FloorCounter(
                 floors: state.floors,
                 onDecrement: () => cubit.updateFloors(state.floors - 1),

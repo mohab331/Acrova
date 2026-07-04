@@ -1,14 +1,13 @@
 import 'package:acrova/data/models/project/project_model.dart';
-import 'package:acrova/utils/enums/project_status_enum.dart';
-import 'package:acrova/utils/enums/project_type_enum.dart';
 import 'package:acrova/presentation/app/resources/resources.dart';
 import 'package:acrova/presentation/features/common_widgets/chips/app_status_chip.dart';
 import 'package:acrova/presentation/features/ui/projects/widgets/active_phase_badge.dart';
 import 'package:acrova/presentation/features/ui/projects/widgets/project_image.dart';
+import 'package:acrova/utils/enums/project_status_enum.dart';
+import 'package:acrova/utils/enums/project_type_enum.dart';
 import 'package:acrova/utils/extensions/localization_extension.dart';
 import 'package:acrova/utils/extensions/theme_extension.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class FeaturedProjectCard extends StatelessWidget {
   const FeaturedProjectCard({required this.project, super.key});

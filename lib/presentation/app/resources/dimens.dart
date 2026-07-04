@@ -33,6 +33,7 @@ class _HorizontalDimens {
   double get $28 => 28.w;
   double get $32 => 32.w;
   double get $40 => 40.w;
+  double get $48 => 48.w;
   double get $50 => 50.w;
   double get $56 => 56.w;
   double get $60 => 60.w;
@@ -94,6 +95,7 @@ class _VerticalDimens {
   double get $32 => 32.h;
   double get $39 => 39.h;
   double get $40 => 40.h;
+  double get $48 => 48.h;
   // double get $45 => 45.h;
   double get $50 => 50.h;
   double get $52 => 52.h;

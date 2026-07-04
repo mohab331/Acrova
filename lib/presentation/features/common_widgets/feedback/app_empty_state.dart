@@ -29,40 +29,37 @@ class AppEmptyState extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.symmetric(horizontal: Resources.horizontalDims.$32),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Icon(
-            icon,
-            size: Resources.iconSizes.$64,
-            color: iconColor ?? Resources.colors.luxuryNavy.withValues(alpha: 0.3),
-          ),
-          SizedBox(height: Resources.verticalDims.$24),
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Icon(
+          icon,
+          size: Resources.iconSizes.$64,
+          color: iconColor ?? Resources.colors.luxuryNavy.withValues(alpha: 0.3),
+        ),
+        SizedBox(height: Resources.verticalDims.$24),
+        Text(
+          title,
+          textAlign: TextAlign.center,
+          style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                color: Resources.colors.luxuryNavy,
+              ),
+        ),
+        if (subtitle != null) ...[
+          SizedBox(height: Resources.verticalDims.$8),
           Text(
-            title,
+            subtitle!,
             textAlign: TextAlign.center,
-            style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                  color: Resources.colors.luxuryNavy,
+            style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                  color: Resources.colors.luxuryBodyMuted,
                 ),
           ),
-          if (subtitle != null) ...[
-            SizedBox(height: Resources.verticalDims.$8),
-            Text(
-              subtitle!,
-              textAlign: TextAlign.center,
-              style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                    color: Resources.colors.luxuryBodyMuted,
-                  ),
-            ),
-          ],
-          if (ctaLabel != null && onCtaTap != null) ...[
-            SizedBox(height: Resources.verticalDims.$32),
-            AppPrimaryButton(label: ctaLabel!, onPressed: onCtaTap),
-          ],
         ],
-      ),
+        if (ctaLabel != null && onCtaTap != null) ...[
+          SizedBox(height: Resources.verticalDims.$32),
+          AppPrimaryButton(label: ctaLabel!, onPressed: onCtaTap),
+        ],
+      ],
     );
   }
 }

@@ -20,7 +20,6 @@ class ProjectImage extends StatelessWidget {
         imageUrl: thumbnailUrl!,
         height: height,
         width: double.infinity,
-        fit: BoxFit.cover,
         radius: Resources.radius.$r0,
       );
     }

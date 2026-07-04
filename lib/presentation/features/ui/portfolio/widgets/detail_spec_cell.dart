@@ -1,7 +1,6 @@
 import 'package:acrova/presentation/app/resources/resources.dart';
 import 'package:acrova/utils/extensions/theme_extension.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class DetailSpecCell extends StatelessWidget {
   const DetailSpecCell({

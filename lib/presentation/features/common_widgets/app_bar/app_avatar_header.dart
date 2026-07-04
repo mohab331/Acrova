@@ -4,7 +4,6 @@ import 'package:acrova/presentation/features/common_widgets/app_bar/notification
 import 'package:acrova/utils/extensions/localization_extension.dart';
 import 'package:acrova/utils/extensions/theme_extension.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class AvatarHeader extends StatelessWidget {
   const AvatarHeader({

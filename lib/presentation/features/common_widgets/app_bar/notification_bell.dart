@@ -1,6 +1,7 @@
+import 'package:acrova/presentation/app/navigation/app_route_enum.dart';
 import 'package:acrova/presentation/app/resources/resources.dart';
+import 'package:acrova/utils/extensions/navigation_extension.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class NotificationBell extends StatelessWidget {
   const NotificationBell({required this.count, super.key});
@@ -13,7 +14,7 @@ class NotificationBell extends StatelessWidget {
       clipBehavior: Clip.none,
       children: [
         GestureDetector(
-          onTap: () {},
+          onTap: () => context.push(AppRouteEnum.notificationsPage.name),
           child: Icon(
             Icons.notifications_outlined,
             color: Resources.colors.luxuryInk,

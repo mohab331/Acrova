@@ -42,6 +42,8 @@ class _Step4DesignPreferencesState extends State<Step4DesignPreferences> {
         return l10n.designStyleContemporary;
       case DesignStyle.minimalist:
         return l10n.designStyleMinimalist;
+      case DesignStyle.neoClassical:
+        return l10n.designStyleNeoClassical;
       default:
         return key;
     }
@@ -89,7 +91,7 @@ class _Step4DesignPreferencesState extends State<Step4DesignPreferences> {
                 spacing: Resources.horizontalDims.$10,
                 runSpacing: Resources.verticalDims.$10,
                 children: DesignStyle.all.map((style) {
-                  final isSelected = state.stylePreference == style;
+                  final isSelected = state.architecturalStyle == style;
                   return GestureDetector(
                     onTap: () => cubit.selectStyle(style),
                     child: AnimatedContainer(

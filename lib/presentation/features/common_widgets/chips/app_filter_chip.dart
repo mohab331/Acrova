@@ -1,6 +1,5 @@
 import 'package:acrova/presentation/app/resources/resources.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 /// Reusable filter chip used in Projects and Portfolio screens.
 class FiltersChip extends StatelessWidget {

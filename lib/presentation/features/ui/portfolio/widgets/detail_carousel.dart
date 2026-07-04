@@ -21,7 +21,6 @@ class DetailCarousel extends StatelessWidget {
       itemCount: imageUrls.length,
       itemBuilder: (_, index) => AppCachedNetworkImage(
         imageUrl: imageUrls[index],
-        fit: BoxFit.cover,
         radius: 0,
       ),
     );

@@ -3,7 +3,6 @@ import 'package:acrova/presentation/features/cubit/project_creation/project_crea
 import 'package:acrova/utils/extensions/localization_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class MediaItem extends StatelessWidget {
   const MediaItem({required this.path, required this.index, super.key});

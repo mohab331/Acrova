@@ -1,5 +1,4 @@
 import 'package:acrova/presentation/app/resources/resources.dart';
-import 'package:acrova/presentation/features/common_widgets/feedback/skeleton_box.dart';
 import 'package:flutter/material.dart';
 
 export 'skeleton_box.dart';
@@ -63,8 +62,6 @@ class _AppSkeletonLoaderState extends State<AppSkeletonLoader>
           blendMode: BlendMode.srcATop,
           shaderCallback: (bounds) {
             return LinearGradient(
-              begin: Alignment.centerLeft,
-              end: Alignment.centerRight,
               colors: [
                 Resources.colors.luxuryProgressTrack,
                 Resources.colors.luxuryBackground,

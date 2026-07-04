@@ -18,9 +18,9 @@ class Step6ReviewSubmit extends StatelessWidget {
     if (type == null) return '—';
     final l10n = context.localization;
     return switch (type) {
-      ProjectType.residentialVilla => l10n.projectTypeVillaLabel,
-      ProjectType.commercialBuilding => l10n.projectTypeCommercialLabel,
-      ProjectType.mixedUse => l10n.projectTypeMixedUseLabel,
+      ProjectType.villa => l10n.projectTypeVillaLabel,
+      ProjectType.houseApartment => l10n.projectTypeHouseApartmentLabel,
+      ProjectType.commercial => l10n.projectTypeCommercialLabel,
     };
   }
 
@@ -31,6 +31,17 @@ class Step6ReviewSubmit extends StatelessWidget {
       DesignStyle.classic => l10n.designStyleClassic,
       DesignStyle.contemporary => l10n.designStyleContemporary,
       DesignStyle.minimalist => l10n.designStyleMinimalist,
+      DesignStyle.neoClassical => l10n.designStyleNeoClassical,
+      _ => key,
+    };
+  }
+  
+  String _getSmartHomeLabel(BuildContext context, String key) {
+    final l10n = context.localization;
+    return switch (key) {
+      'basic' => l10n.requirementsSmartHomeBasic,
+      'intermediate' => l10n.requirementsSmartHomeIntermediate,
+      'advanced' => l10n.requirementsSmartHomeAdvanced,
       _ => key,
     };
   }
@@ -53,6 +64,7 @@ class Step6ReviewSubmit extends StatelessWidget {
       builder: (context, state) {
         final l10n = context.localization;
         final isRtl = context.isRtl;
+        final isCommercial = state.selectedType == ProjectType.commercial;
 
         return SingleChildScrollView(
           child: Column(
@@ -89,12 +101,15 @@ class Step6ReviewSubmit extends StatelessWidget {
                         ? '${state.landAreaSqm!.toStringAsFixed(0)} ${isRtl ? 'م²' : 'm²'}'
                         : '—',
                   ),
-                  ReviewRow(
-                    label: l10n.reviewLabelWidthLength,
-                    value: (state.landWidthM != null && state.landLengthM != null)
-                        ? '${state.landWidthM!.toStringAsFixed(0)} ${isRtl ? 'م' : 'm'} × ${state.landLengthM!.toStringAsFixed(0)} ${isRtl ? 'م' : 'm'}'
-                        : '—',
-                  ),
+                  if (isCommercial)
+                    ReviewRow(label: l10n.reviewLabelEmployees, value: '${state.employeeCount}')
+                  else
+                    ReviewRow(
+                      label: l10n.reviewLabelWidthLength,
+                      value: (state.landWidthM != null && state.landLengthM != null)
+                          ? '${state.landWidthM!.toStringAsFixed(0)} ${isRtl ? 'م' : 'm'} × ${state.landLengthM!.toStringAsFixed(0)} ${isRtl ? 'م' : 'm'}'
+                          : '—',
+                    ),
                   ReviewRow(label: l10n.reviewLabelFloors, value: '${state.floors}'),
                 ],
               ),
@@ -103,9 +118,12 @@ class Step6ReviewSubmit extends StatelessWidget {
                 title: l10n.stepRequirements.toUpperCase(),
                 stepIndex: 2,
                 rows: [
-                  ReviewRow(label: l10n.reviewLabelBedrooms, value: '${state.bedrooms}'),
-                  ReviewRow(label: l10n.reviewLabelBathrooms, value: '${state.bathrooms}'),
+                  if (!isCommercial) ...[
+                    ReviewRow(label: l10n.reviewLabelBedrooms, value: '${state.bedrooms}'),
+                    ReviewRow(label: l10n.reviewLabelBathrooms, value: '${state.bathrooms}'),
+                  ],
                   ReviewRow(label: l10n.reviewLabelExtras, value: _buildExtras(context, state)),
+                  ReviewRow(label: l10n.reviewLabelSmartHome, value: _getSmartHomeLabel(context, state.smartHomeLevel)),
                 ],
               ),
               SizedBox(height: Resources.verticalDims.$16),
@@ -115,7 +133,7 @@ class Step6ReviewSubmit extends StatelessWidget {
                 rows: [
                   ReviewRow(
                     label: l10n.reviewLabelStyle,
-                    value: state.stylePreference.isEmpty ? '—' : _getStyleLabel(context, state.stylePreference),
+                    value: state.architecturalStyle.isEmpty ? '—' : _getStyleLabel(context, state.architecturalStyle),
                   ),
                   if (state.additionalNotes.isNotEmpty)
                     ReviewRow(label: l10n.reviewLabelNotes, value: state.additionalNotes),

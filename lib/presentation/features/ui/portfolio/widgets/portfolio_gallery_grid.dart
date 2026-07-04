@@ -2,7 +2,6 @@ import 'package:acrova/presentation/app/resources/resources.dart';
 import 'package:acrova/presentation/features/ui/portfolio/portfolio_item.dart';
 import 'package:acrova/presentation/features/ui/portfolio/widgets/portfolio_grid_card.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class PortfolioGalleryGrid extends StatelessWidget {
   const PortfolioGalleryGrid({
