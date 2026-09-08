@@ -83,6 +83,24 @@ enum AppRouteEnum {
     path: '/deliverables',
   ),
 
+  // ── Billing (full-screen, above shell) ──────────────────────────────────────
+  paymentHistoryPage(
+    name: 'payment_history_page',
+    path: '/payment-history',
+  ),
+  paymentDetailsPage(
+    name: 'payment_details_page',
+    path: '/payment-details',
+  ),
+  makePaymentPage(
+    name: 'make_payment_page',
+    path: '/make-payment',
+  ),
+  paymentSuccessPage(
+    name: 'payment_success_page',
+    path: '/payment-success',
+  ),
+
   // ── Viewers (full-screen, above shell) ──────────────────────────────────────
   pdfViewerPage(
     name: 'pdf_viewer_page',

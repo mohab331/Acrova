@@ -1,0 +1,361 @@
+import 'package:acrova/core/di/dependency_injector.dart';
+import 'package:acrova/data/models/billing/payment_model.dart';
+import 'package:acrova/presentation/app/navigation/app_route_enum.dart';
+import 'package:acrova/presentation/app/resources/resources.dart';
+import 'package:acrova/presentation/features/common_widgets/app_bar/app_auth_brand_header.dart';
+import 'package:acrova/presentation/features/common_widgets/common_screen/common_screen.dart';
+
+import 'package:acrova/presentation/features/cubit/billing/payment_details_cubit.dart';
+import 'package:acrova/presentation/features/cubit/billing/payment_details_state.dart';
+import 'package:acrova/utils/extensions/theme_extension.dart';
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
+import 'package:intl/intl.dart';
+
+class PaymentDetailsView extends StatelessWidget {
+  const PaymentDetailsView({required this.paymentId, super.key});
+
+  final String paymentId;
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocProvider(
+      create: (_) => serviceLocatorInstance<PaymentDetailsCubit>()..fetchPaymentDetails(paymentId),
+      child: const _PaymentDetailsContent(),
+    );
+  }
+}
+
+class _PaymentDetailsContent extends StatelessWidget {
+  const _PaymentDetailsContent();
+
+  @override
+  Widget build(BuildContext context) {
+    return CommonScreen(
+      appBar: AppAuthBrandHeader(label: 'Payment Details',showBack: true,),
+      padding: EdgeInsets.zero,
+      child: BlocBuilder<PaymentDetailsCubit, PaymentDetailsState>(
+        builder: (context, state) {
+          if (state.isLoading) {
+            return const Center(child: CircularProgressIndicator());
+          }
+          if (state.status == PaymentDetailsStatus.failure) {
+            return Center(
+              child: Text(
+                state.error?.message ?? 'Failed to load payment details',
+                style: context.textTheme.bodyMedium?.copyWith(
+                  color: Resources.colors.luxuryError,
+                ),
+              ),
+            );
+          }
+          if (state.payment == null) {
+            return const SizedBox();
+          }
+          return _PaymentDetailsCard(payment: state.payment!);
+        },
+      ),
+    );
+  }
+}
+
+class _PaymentDetailsCard extends StatelessWidget {
+  const _PaymentDetailsCard({required this.payment});
+
+  final PaymentModel payment;
+
+  Color _getStatusColor() {
+    switch (payment.status) {
+      case PaymentStatus.success:
+        return const Color(0xFF2ECC71);
+      case PaymentStatus.rejected:
+        return const Color(0xFFC0392B);
+      case PaymentStatus.pending:
+        return const Color(0xFFF39C12);
+    }
+  }
+
+  IconData _getStatusIcon() {
+    switch (payment.status) {
+      case PaymentStatus.success:
+        return Icons.check_circle;
+      case PaymentStatus.rejected:
+        return Icons.error;
+      case PaymentStatus.pending:
+        return Icons.schedule;
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final statusColor = _getStatusColor();
+    final isSuccess = payment.status == PaymentStatus.success;
+    final isRejected = payment.status == PaymentStatus.rejected;
+    final isPending = payment.status == PaymentStatus.pending;
+    final formattedAmount = NumberFormat('#,##0').format(payment.amount);
+    final formattedDate = DateFormat('dd MMM yyyy').format(payment.date);
+
+    return SingleChildScrollView(
+      padding: EdgeInsets.all(Resources.horizontalDims.$24),
+      child: Container(
+        decoration: BoxDecoration(
+          color: Resources.colors.white,
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(Resources.radius.$r16),
+            topRight: Radius.circular(Resources.radius.$r16),
+            bottomLeft: Radius.circular(Resources.radius.$r8),
+            bottomRight: Radius.circular(Resources.radius.$r8),
+          ),
+          boxShadow: [
+            BoxShadow(
+              color: Resources.colors.luxuryInk.withValues(alpha: 0.08),
+              blurRadius: 24,
+              offset: const Offset(0, 8),
+            ),
+          ],
+        ),
+        clipBehavior: Clip.antiAlias,
+        child: Column(
+          children: [
+            // Status Banner
+            Container(
+              height: 4,
+              width: double.infinity,
+              color: statusColor.withValues(alpha: 0.8),
+            ),
+            Padding(
+              padding: EdgeInsets.all(Resources.horizontalDims.$24),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  // Header
+                  Column(
+                    children: [
+                      Icon(
+                        _getStatusIcon(),
+                        color: statusColor,
+                        size: 48,
+                      ),
+                      SizedBox(height: Resources.verticalDims.$8),
+                      Text(
+                        'Payment ${payment.status.displayName}',
+                        style: context.textTheme.labelMedium?.copyWith(
+                          color: isRejected ? statusColor : Resources.colors.luxuryBody,
+                          letterSpacing: 1.5,
+                          fontWeight: Resources.fontWeights.semiBold,
+                        ),
+                      ),
+                      SizedBox(height: Resources.verticalDims.$8),
+                      Text(
+                        '${payment.currency} $formattedAmount',
+                        style: context.textTheme.headlineMedium?.copyWith(
+                          fontWeight: Resources.fontWeights.semiBold,
+                          color: Resources.colors.luxuryNavy,
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: Resources.verticalDims.$24),
+                  Divider(color: Resources.colors.luxuryBorder.withValues(alpha: 0.5)),
+                  SizedBox(height: Resources.verticalDims.$24),
+                  
+                  // Project Details
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Project',
+                        style: context.textTheme.labelSmall?.copyWith(
+                          color: Resources.colors.luxuryBody,
+                          letterSpacing: 1.5,
+                          fontWeight: Resources.fontWeights.semiBold,
+                        ),
+                      ),
+                      SizedBox(height: Resources.verticalDims.$4),
+                      Text(
+                        payment.projectName,
+                        style: context.textTheme.bodyMedium?.copyWith(
+                          fontWeight: Resources.fontWeights.semiBold,
+                          color: Resources.colors.luxuryNavy,
+                        ),
+                      ),
+                      SizedBox(height: Resources.verticalDims.$4),
+                      Text(
+                        'ID: ${payment.projectId}',
+                        style: context.textTheme.labelMedium?.copyWith(
+                          color: Resources.colors.luxuryBody,
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: Resources.verticalDims.$24),
+                  
+                  // Grid
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            _buildGridItem(context, 'Transaction ID', payment.transactionId),
+                            SizedBox(height: Resources.verticalDims.$16),
+                            _buildGridItem(context, 'Bank', payment.bankName),
+                            if (isSuccess) ...[
+                              SizedBox(height: Resources.verticalDims.$16),
+                              _buildGridItem(context, 'Account Name', payment.accountName),
+                            ],
+                          ],
+                        ),
+                      ),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            _buildGridItem(context, 'Date', formattedDate),
+                            SizedBox(height: Resources.verticalDims.$16),
+                            _buildGridItem(context, 'IBAN', payment.iban),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+
+                  if (isRejected && payment.rejectionReason != null) ...[
+                    SizedBox(height: Resources.verticalDims.$24),
+                    Container(
+                      padding: EdgeInsets.all(Resources.horizontalDims.$16),
+                      decoration: BoxDecoration(
+                        color: const Color(0xFFFDEDEC),
+                        border: Border.all(color: const Color(0xFFC0392B)),
+                        borderRadius: BorderRadius.circular(Resources.radius.$r8),
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Payment Rejected',
+                            style: context.textTheme.titleSmall?.copyWith(
+                              color: const Color(0xFFC0392B),
+                              fontWeight: Resources.fontWeights.semiBold,
+                            ),
+                          ),
+                          SizedBox(height: Resources.verticalDims.$4),
+                          Text(
+                            payment.rejectionReason!,
+                            style: context.textTheme.bodySmall?.copyWith(
+                              color: const Color(0xFFC0392B).withValues(alpha: 0.9),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+
+                  if (payment.receiptUrl != null) ...[
+                    SizedBox(height: Resources.verticalDims.$24),
+                    Container(
+                      padding: EdgeInsets.all(Resources.horizontalDims.$16),
+                      decoration: BoxDecoration(
+                        color: Resources.colors.luxurySurface,
+                        borderRadius: BorderRadius.circular(Resources.radius.$r8),
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Row(
+                            children: [
+                              Icon(Icons.receipt_long, color: Resources.colors.luxuryBody),
+                              SizedBox(width: Resources.horizontalDims.$8),
+                              Text(
+                                'Transfer Receipt',
+                                style: context.textTheme.bodyMedium?.copyWith(
+                                  color: Resources.colors.luxuryNavy,
+                                  fontWeight: Resources.fontWeights.medium,
+                                ),
+                              ),
+                            ],
+                          ),
+                          ClipRRect(
+                            borderRadius: BorderRadius.circular(Resources.radius.$r8),
+                            child: CachedNetworkImage(
+                              imageUrl: payment.receiptUrl!,
+                              width: 80,
+                              height: 80,
+                              fit: BoxFit.cover,
+                              placeholder: (context, url) => Container(
+                                width: 80,
+                                height: 80,
+                                color: Resources.colors.luxuryBorder.withValues(alpha: 0.2),
+                              ),
+                              errorWidget: (context, url, error) => const Icon(Icons.error),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+
+                  if (isSuccess || isPending) ...[
+                    SizedBox(height: Resources.verticalDims.$24),
+                    SizedBox(
+                      width: double.infinity,
+                      height: 48,
+                      child: ElevatedButton.icon(
+                        onPressed: () {
+                          if(isPending){
+                            context.pushNamed(AppRouteEnum.makePaymentPage.name,extra: {'amount':payment.amount?.toStringAsFixed(2)});
+                          }
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Resources.colors.luxuryNavy,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(Resources.radius.$r8),
+                          ),
+                          elevation: 2,
+                        ),
+                        icon: Icon(Icons.download, color: Resources.colors.white, size: 20),
+                        label: Text(
+                          (isPending? 'Pay':'Download PDF').toUpperCase(),
+                          style: context.textTheme.labelLarge?.copyWith(
+                            fontWeight: Resources.fontWeights.medium,
+                            color: Resources.colors.white,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildGridItem(BuildContext context, String label, String value) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          label.toUpperCase(),
+          style: context.textTheme.labelSmall?.copyWith(
+            color: Resources.colors.luxuryGoldLight,
+            letterSpacing: 1.5,
+            fontWeight: Resources.fontWeights.semiBold,
+          ),
+        ),
+        SizedBox(height: Resources.verticalDims.$4),
+        Text(
+          value,
+          style: context.textTheme.bodyMedium?.copyWith(
+            color: Resources.colors.luxuryNavy,
+          ),
+        ),
+      ],
+    );
+  }
+}

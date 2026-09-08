@@ -12,18 +12,6 @@ class SplashPageContent extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           const AppLogo(),
-          SizedBox(height: Resources.verticalDims.$16),
-          Text(
-            'ACROVA',
-            style: TextStyle(
-              fontFamily: Resources.fonts.notoSerif,
-              fontSize: Resources.fontSizes.$20,
-              fontWeight: Resources.fontWeights.regular,
-              letterSpacing: Resources.letterSpacing.$6_0,
-              color: Resources.colors.luxuryNavy,
-              height: 28 / 20,
-            ),
-          ),
         ],
       ),
     );

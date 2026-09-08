@@ -23,13 +23,15 @@ class WalkthroughsSection extends StatelessWidget {
       children: [
         Text(
           'Video Walkthroughs',
-          style: context.textTheme.headlineSmall?.copyWith(
+          style: context.textTheme.labelLarge?.copyWith(
+            fontSize: Resources.fontSizes.$18,
+            fontWeight: Resources.fontWeights.semiBold,
             color: Resources.colors.luxuryNavy,
           ),
         ),
         SizedBox(height: Resources.verticalDims.$20),
         ...walkthroughs.map((walkthrough) => Padding(
-          padding: EdgeInsets.only(bottom: Resources.verticalDims.$16),
+          padding: EdgeInsets.only(bottom: Resources.verticalDims.$8),
           child: Container(
             decoration: BoxDecoration(
               color: Resources.colors.luxurySurface,

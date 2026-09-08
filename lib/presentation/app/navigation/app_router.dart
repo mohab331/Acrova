@@ -33,6 +33,10 @@ import 'package:acrova/presentation/features/ui/revisions/history/revision_histo
 import 'package:acrova/presentation/features/ui/revisions/request/revision_request_page.dart';
 import 'package:acrova/presentation/features/ui/shell/shell_scaffold.dart';
 import 'package:acrova/presentation/features/ui/splash/splash/splash_page.dart';
+import 'package:acrova/presentation/features/ui/billing/payment_history_view.dart';
+import 'package:acrova/presentation/features/ui/billing/payment_details_view.dart';
+import 'package:acrova/presentation/features/ui/billing/make_payment_view.dart';
+import 'package:acrova/presentation/features/ui/billing/payment_success_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -55,7 +59,7 @@ class AppRouter {
   );
 
   static final router = GoRouter(
-    initialLocation: AppRouteEnum.homePage.path,
+    initialLocation: AppRouteEnum.splashPage.path,
     navigatorKey: rootNavigatorKey,
     errorBuilder: (context, state) => const SplashPage(),
     refreshListenable: Listenable.merge([_authRefresh]),
@@ -205,6 +209,39 @@ class AppRouter {
         path: AppRouteEnum.deliverablesPage.path,
         name: AppRouteEnum.deliverablesPage.name,
         builder: (_, __) => const DeliverablesPage(),
+      ),
+
+      // ── Billing (full-screen, above shell) ──────────────────────────────────
+      GoRoute(
+        parentNavigatorKey: rootNavigatorKey,
+        path: AppRouteEnum.paymentHistoryPage.path,
+        name: AppRouteEnum.paymentHistoryPage.name,
+        builder: (_, __) => const PaymentHistoryView(),
+      ),
+      GoRoute(
+        parentNavigatorKey: rootNavigatorKey,
+        path: AppRouteEnum.paymentDetailsPage.path,
+        name: AppRouteEnum.paymentDetailsPage.name,
+        builder: (_, state) {
+          final paymentId = state.extra as String;
+          return PaymentDetailsView(paymentId: paymentId);
+        },
+      ),
+      GoRoute(
+        parentNavigatorKey: rootNavigatorKey,
+        path: AppRouteEnum.makePaymentPage.path,
+        name: AppRouteEnum.makePaymentPage.name,
+        builder: (_, __) => const MakePaymentView(),
+      ),
+      GoRoute(
+        parentNavigatorKey: rootNavigatorKey,
+        path: AppRouteEnum.paymentSuccessPage.path,
+        name: AppRouteEnum.paymentSuccessPage.name,
+        builder: (_, state) {
+          final extra = state.extra as Map<String,dynamic>?;
+          final amount = extra?['amount'];
+          return  PaymentSuccessView(amount: amount,);
+        }
       ),
 
       // ── Viewers (full-screen, above shell) ─────────────────────────────

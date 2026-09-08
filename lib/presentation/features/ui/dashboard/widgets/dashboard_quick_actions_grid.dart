@@ -25,9 +25,9 @@ class DashboardQuickActionsGrid extends StatelessWidget {
         onTap: () => context.go(AppRouteEnum.messagesPage.path),
       ),
       DashboardQuickAction(
-        icon: Icons.receipt_long_outlined,
-        label: loc.dashboardActionUploadReceipt,
-        onTap: () {},
+        icon: Icons.account_balance_outlined,
+        label: 'Payment History',
+        onTap: () => context.push(AppRouteEnum.paymentHistoryPage.path),
       ),
       DashboardQuickAction(
         icon: Icons.edit_document,

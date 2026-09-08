@@ -51,21 +51,20 @@ class ProjectSpecsGrid extends StatelessWidget {
         icon: Icons.calendar_today_outlined,
       ),
     ];
-    return Flexible(
-      child: GridView(
-        shrinkWrap: true,
-        padding: EdgeInsets.zero,
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2,
-          childAspectRatio: 5 / 2,
-          crossAxisSpacing: Resources.horizontalDims.$8,
-          mainAxisSpacing: Resources.verticalDims.$8,
-        ),
-        children: specs
-            .where((e) => e.value.trim().isNotEmpty && e.value != 'null')
-            .map((e) => DetailFeatureChip(spec: e))
-            .toList(),
+    return GridView(
+      shrinkWrap: true,
+      physics: const NeverScrollableScrollPhysics(),
+      padding: EdgeInsets.zero,
+      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 2,
+        childAspectRatio: 5 / 2,
+        crossAxisSpacing: Resources.horizontalDims.$8,
+        mainAxisSpacing: Resources.verticalDims.$8,
       ),
+      children: specs
+          .where((e) => e.value.trim().isNotEmpty && e.value != 'null')
+          .map((e) => DetailFeatureChip(spec: e))
+          .toList(),
     );
   }
 }

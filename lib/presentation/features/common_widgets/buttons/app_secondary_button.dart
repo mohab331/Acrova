@@ -61,7 +61,7 @@ class AppSecondaryButton extends StatelessWidget {
           foregroundColor: _textColor,
           disabledForegroundColor: Resources.colors.luxuryPlaceholder,
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(Resources.radius.$r2),
+            borderRadius: BorderRadius.circular(Resources.radius.$r12),
           ),
           padding: EdgeInsets.symmetric(
             horizontal: Resources.horizontalDims.$24,

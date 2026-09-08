@@ -6,6 +6,7 @@ import 'package:acrova/data/models/project/project_model.dart';
 import 'package:acrova/presentation/app/resources/resources.dart';
 import 'package:acrova/utils/enums/project_status_enum.dart';
 import 'package:acrova/utils/enums/project_type_enum.dart';
+import 'package:collection/collection.dart';
 
 class MockProjectDataSource implements BaseProjectDataSource {
   // Mutable list so createProject can append to it.
@@ -183,7 +184,7 @@ class MockProjectDataSource implements BaseProjectDataSource {
   @override
   Future<ProjectModel> getProject(String id) async {
     await Future.delayed(const Duration(milliseconds: 300));
-    return _projects.firstWhere((p) => p.id == id);
+    return _projects.firstWhereOrNull((p) => p.id == id) ?? _projects.first;
   }
 
   @override

@@ -18,6 +18,9 @@ import 'package:acrova/presentation/features/cubit/projects/projects_cubit.dart'
 import 'package:acrova/presentation/features/ui/notifications/cubit/notifications_cubit.dart';
 import 'package:acrova/presentation/features/ui/revisions/cubit/revisions/revisions_cubit.dart';
 import 'package:acrova/presentation/features/ui/splash/splash/cubit/splash_cubit.dart';
+import 'package:acrova/presentation/features/cubit/billing/payment_history_cubit.dart';
+import 'package:acrova/presentation/features/cubit/billing/payment_details_cubit.dart';
+import 'package:acrova/data/data_source/base/base_billing_data_source.dart';
 
 /// [CubitsInjector] hold all application global singleton cubits dependencies
 ///
@@ -82,6 +85,18 @@ class CubitsInjector implements BaseInjector {
             serviceLocatorInstance<BaseNotificationProviderRepo>(),
         fcmTokenRepo: serviceLocatorInstance<BaseFCMTokenRepo>(),
         localizationRepository: serviceLocatorInstance<BaseLocalizationRepo>(),
+      ),
+    ),
+
+    () => serviceLocatorInstance.registerFactory<PaymentHistoryCubit>(
+      () => PaymentHistoryCubit(
+        billingDataSource: serviceLocatorInstance<BaseBillingDataSource>(),
+      ),
+    ),
+
+    () => serviceLocatorInstance.registerFactory<PaymentDetailsCubit>(
+      () => PaymentDetailsCubit(
+        billingDataSource: serviceLocatorInstance<BaseBillingDataSource>(),
       ),
     ),
   ];

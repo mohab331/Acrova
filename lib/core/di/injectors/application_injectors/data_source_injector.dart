@@ -6,6 +6,7 @@ import 'package:acrova/data/data_source/base/base_dashboard_data_source.dart';
 import 'package:acrova/data/data_source/base/base_notifications_data_source.dart';
 import 'package:acrova/data/data_source/base/base_project_data_source.dart';
 import 'package:acrova/data/data_source/base/base_revisions_data_source.dart';
+import 'package:acrova/data/data_source/base/base_billing_data_source.dart';
 import 'package:acrova/data/data_source/local/local_storage/base_local_storage.dart';
 import 'package:acrova/data/data_source/local/local_storage/local_storag_impl.dart';
 import 'package:acrova/data/data_source/local/secure_storage/base_secure_storage.dart';
@@ -17,6 +18,7 @@ import 'package:acrova/data/data_source/mock/services/dashboard/mock_dashboard_d
 import 'package:acrova/data/data_source/mock/services/notifications/mock_notifications_data_source.dart';
 import 'package:acrova/data/data_source/mock/services/project/mock_project_data_source.dart';
 import 'package:acrova/data/data_source/mock/services/revisions/mock_revisions_data_source.dart';
+import 'package:acrova/data/data_source/mock/services/billing/mock_billing_data_source.dart';
 import 'package:acrova/data/data_source/remote/network/api_client.dart';
 import 'package:acrova/data/data_source/remote/services/auth/remote_auth_data_source.dart';
 import 'package:acrova/data/data_source/remote/services/config/app_config_service.dart';
@@ -102,6 +104,10 @@ class DataSourcesInjector implements BaseInjector {
           apiClient: serviceLocatorInstance<ApiClient>(),
         );
       },
+    ),
+
+    () => serviceLocatorInstance.registerLazySingleton<BaseBillingDataSource>(
+      MockBillingDataSource.new,
     ),
   ];
 

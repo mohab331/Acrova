@@ -23,11 +23,13 @@ class RendersSection extends StatelessWidget {
       children: [
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.end,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Text(
               '3D Renders',
-              style: context.textTheme.headlineSmall?.copyWith(
+              style: context.textTheme.labelLarge?.copyWith(
+                fontSize: Resources.fontSizes.$18,
+                fontWeight: Resources.fontWeights.semiBold,
                 color: Resources.colors.luxuryNavy,
               ),
             ),
@@ -41,7 +43,7 @@ class RendersSection extends StatelessWidget {
             ),
           ],
         ),
-        SizedBox(height: Resources.verticalDims.$20),
+        SizedBox(height: Resources.verticalDims.$16),
         // Custom asymmetrical grid
         Row(
           children: [

@@ -1,6 +1,7 @@
 import 'package:acrova/core/di/dependency_injector.dart';
 import 'package:acrova/presentation/app/navigation/app_route_enum.dart';
 import 'package:acrova/presentation/app/resources/resources.dart';
+import 'package:acrova/presentation/features/common_widgets/app_bar/app_auth_brand_header.dart';
 import 'package:acrova/presentation/features/common_widgets/buttons/app_primary_button.dart';
 import 'package:acrova/presentation/features/common_widgets/common_screen/common_screen.dart';
 import 'package:acrova/presentation/features/common_widgets/feedback/app_error_state.dart';
@@ -43,22 +44,7 @@ class InteriorDesignView extends StatelessWidget {
         },
         builder: (context, state) {
           return CommonScreen(
-            appBar: AppBar(
-              backgroundColor: Resources.colors.luxurySurface,
-              elevation: 0,
-              centerTitle: true,
-              title: Text(
-                'Phase 1: Interior Design',
-                style: context.textTheme.titleMedium?.copyWith(
-                  fontWeight: Resources.fontWeights.semiBold,
-                  color: Resources.colors.luxuryNavy,
-                ),
-              ),
-              leading: IconButton(
-                icon: Icon(Icons.arrow_back, color: Resources.colors.luxuryNavy),
-                onPressed: () => context.pop(),
-              ),
-            ),
+            appBar: AppAuthBrandHeader(label: 'Phase II: Interior Design',showBack: true,),
             padding: EdgeInsets.zero,
             child: BlocBuilder<ProjectDetailCubit, ProjectDetailState>(
               builder: (context, projectState) {
@@ -91,6 +77,7 @@ class InteriorDesignView extends StatelessWidget {
                           InteriorDesignHeader(project: project),
                           SizedBox(height: Resources.verticalDims.$24),
                           const InteriorDesignForm(),
+                          SizedBox(height: Resources.verticalDims.$32,)
                         ],
                       ),
                     ),

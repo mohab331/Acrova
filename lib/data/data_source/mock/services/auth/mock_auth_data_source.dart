@@ -12,8 +12,8 @@ class MockAuthDataSource implements BaseAuthDataSource {
 
   // Mutable in-memory profile so update calls persist within the session.
   UserProfileModel _profile = UserProfileModel(
-    name: 'Ahmed Al-Dosari',
-    email: 'ahmed.dosari@example.com',
+    name: 'Mohab Osama',
+    email: 'mohab.osama@example.com',
     mobileNumber: '+966 50 123 4567',
     nationalId: '1098765432',
     language: 'en',
