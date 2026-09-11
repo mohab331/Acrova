@@ -239,6 +239,14 @@
   "mediaUploadFormatNotice": "JPG, PNG up to 10MB each",
   "mediaUploadPhotoCountSingular": "photo added",
   "mediaUploadPhotoCountPlural": "photos added",
+  "mediaUploadPhotoCount": "{count, plural, =1{1 photo added} other{{count} photos added}}",
+  "@mediaUploadPhotoCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "mediaUploadPhotoLabel": "Photo",
   "reviewSubmitTitle": "Review & Submit",
   "reviewSubmitSubtitle": "Please review your project details\nbefore submitting.",

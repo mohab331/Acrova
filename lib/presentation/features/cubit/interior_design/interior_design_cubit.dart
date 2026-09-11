@@ -1,17 +1,22 @@
 import 'package:acrova/core/error/app_error_model.dart';
+import 'package:acrova/data/data_source/local/services/image_picker/base_image_picker_service.dart';
 import 'package:acrova/domain/repository/project/base_project_repo.dart';
 import 'package:acrova/presentation/features/cubit/interior_design/interior_design_state.dart';
+import 'package:acrova/utils/logging/app_logger.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class InteriorDesignCubit extends Cubit<InteriorDesignState> {
   InteriorDesignCubit({
     required this.projectRepo,
+    required BaseImagePickerService imagePicker,
     required String projectId,
-  }) : super(InteriorDesignState(projectId: projectId)) {
+  })  : _imagePicker = imagePicker,
+        super(InteriorDesignState(projectId: projectId)) {
     loadInitialData();
   }
 
   final BaseProjectRepo projectRepo;
+  final BaseImagePickerService _imagePicker;
 
   Future<void> loadInitialData() async {
     final result = await projectRepo.getMoodboards();
@@ -89,6 +94,28 @@ class InteriorDesignCubit extends Cubit<InteriorDesignState> {
     emit(state.copyWith(
       inspirationMediaPaths: [...state.inspirationMediaPaths, path],
     ));
+  }
+
+  Future<void> addInspirationMediaFromGallery() async {
+    try {
+      final media = await _imagePicker.pickMultipleFromGallery();
+      if (media.isEmpty) return;
+
+      emit(
+        state.copyWith(
+          inspirationMediaPaths: [
+            ...state.inspirationMediaPaths,
+            ...media.map((file) => file.path),
+          ],
+        ),
+      );
+    } catch (error, stackTrace) {
+      AppLogger.instance.logError(
+        error.toString(),
+        error: error,
+        stackTrace: stackTrace,
+      );
+    }
   }
 
   void removeInspirationMedia(int index) {

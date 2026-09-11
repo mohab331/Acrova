@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:acrova/presentation/app/resources/resources.dart';
 import 'package:acrova/presentation/features/cubit/interior_design/interior_design_cubit.dart';
 import 'package:acrova/presentation/features/cubit/interior_design/interior_design_state.dart';
@@ -20,8 +22,6 @@ class InteriorDesignForm extends StatefulWidget {
 class _InteriorDesignFormState extends State<InteriorDesignForm> {
   late final TextEditingController _customScopeCtrl;
   late final TextEditingController _extraNotesCtrl;
-  
-  static int _mockCounter = 0;
 
   @override
   void initState() {
@@ -36,13 +36,6 @@ class _InteriorDesignFormState extends State<InteriorDesignForm> {
     _customScopeCtrl.dispose();
     _extraNotesCtrl.dispose();
     super.dispose();
-  }
-
-  void _mockPickImage(BuildContext context) {
-    _mockCounter++;
-    context.read<InteriorDesignCubit>().addInspirationMedia(
-          'mock://inspiration_photo_$_mockCounter.jpg',
-        );
   }
 
   @override
@@ -195,7 +188,11 @@ class _InteriorDesignFormState extends State<InteriorDesignForm> {
             // MEDIA UPLOAD
             _InteriorDesignSectionTitle(title: loc.interiorDesignInspirationMediaTitle),
             GestureDetector(
-              onTap: () => _mockPickImage(context),
+              onTap: () => unawaited(
+                context
+                    .read<InteriorDesignCubit>()
+                    .addInspirationMediaFromGallery(),
+              ),
               child: Container(
                 width: double.infinity,
                 padding: EdgeInsets.symmetric(vertical: Resources.verticalDims.$22),
