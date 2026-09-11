@@ -22,19 +22,14 @@ class BillingRepoImpl implements BaseBillingRepo {
   Future<Result<void>> submitPayment({
     required String projectId,
     required String receiptPath,
-  }) =>
-      safeAsyncCall(() async {});
+  }) => safeAsyncCall(
+    () => _dataSource.submitPayment(
+      projectId: projectId,
+      receiptPath: receiptPath,
+    ),
+  );
 
   @override
   Future<Result<PaymentQuoteModel>> getPaymentQuote(String projectId) =>
-      safeAsyncCall(() async => const PaymentQuoteModel(
-            amountDue: 14000,
-            baseFee: 10000,
-            vat: 1200,
-            total: 11200,
-            currency: 'SAR',
-            bankName: 'Saudi National Bank',
-            iban: 'SA00 1000 0000 0000 0000 0000',
-            accountName: 'Arcova Real Estate',
-          ));
+      safeAsyncCall(() => _dataSource.getPaymentQuote(projectId));
 }

@@ -6,7 +6,10 @@ import 'package:acrova/data/repository/mock/mock_repositories.dart';
 import 'package:acrova/utils/helpers/result.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-class _FakeBillingDataSource implements BaseBillingDataSource {
+class _StubBillingDataSource implements BaseBillingDataSource {
+  String? submittedProjectId;
+  String? submittedReceiptPath;
+
   @override
   Future<List<PaymentModel>> getPayments() async => [
         PaymentModel(
@@ -43,16 +46,38 @@ class _FakeBillingDataSource implements BaseBillingDataSource {
     }
     throw Exception('Payment not found');
   }
+
+  @override
+  Future<PaymentQuoteModel> getPaymentQuote(String projectId) async =>
+      const PaymentQuoteModel(
+        amountDue: 14000,
+        baseFee: 10000,
+        vat: 1200,
+        total: 11200,
+        currency: 'SAR',
+        bankName: 'Saudi National Bank',
+        iban: 'SA0000000000000000000000',
+        accountName: 'Acrova Ltd',
+      );
+
+  @override
+  Future<void> submitPayment({
+    required String projectId,
+    required String receiptPath,
+  }) async {
+    submittedProjectId = projectId;
+    submittedReceiptPath = receiptPath;
+  }
 }
 
 void main() {
   group('BillingRepoImpl', () {
     late BillingRepoImpl repository;
-    late _FakeBillingDataSource fakeDataSource;
+    late _StubBillingDataSource stubDataSource;
 
     setUp(() {
-      fakeDataSource = _FakeBillingDataSource();
-      repository = BillingRepoImpl(dataSource: fakeDataSource);
+      stubDataSource = _StubBillingDataSource();
+      repository = BillingRepoImpl(dataSource: stubDataSource);
     });
 
     test('getPayments returns Success with list of payments', () async {
@@ -90,6 +115,27 @@ void main() {
       final result = await repository.getPaymentDetails('INVALID-ID');
 
       expect(result, isA<Failure<PaymentModel>>());
+    });
+
+    test('delegates payment quote retrieval to the data source', () async {
+      final result = await repository.getPaymentQuote('PROJ-001');
+
+      expect(result, isA<Success<PaymentQuoteModel>>());
+      result.when(
+        success: (quote) => expect(quote.amountDue, equals(14000)),
+        failure: (error) => fail('Expected success but got failure: ${error.message}'),
+      );
+    });
+
+    test('delegates receipt submission to the data source', () async {
+      final result = await repository.submitPayment(
+        projectId: 'PROJ-001',
+        receiptPath: '/tmp/receipt.jpg',
+      );
+
+      expect(result, isA<Success<void>>());
+      expect(stubDataSource.submittedProjectId, equals('PROJ-001'));
+      expect(stubDataSource.submittedReceiptPath, equals('/tmp/receipt.jpg'));
     });
   });
 

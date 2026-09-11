@@ -7,4 +7,5 @@ abstract class BaseRevisionsDataSource {
   Future<RevisionModel> getRevision(String id);
   Future<RevisionQuotaModel> getQuota();
   Future<RevisionModel> createRevision(CreateRevisionRequest request);
+  Future<List<String>> getDeliverableRefs();
 }

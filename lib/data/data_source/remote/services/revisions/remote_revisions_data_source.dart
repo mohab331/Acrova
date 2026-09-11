@@ -28,4 +28,9 @@ class RemoteRevisionsDataSource implements BaseRevisionsDataSource {
   Future<RevisionModel> createRevision(CreateRevisionRequest request) async {
     throw UnimplementedError('Remote createRevision not implemented yet');
   }
+
+  @override
+  Future<List<String>> getDeliverableRefs() async {
+    throw UnimplementedError('Remote getDeliverableRefs not implemented yet');
+  }
 }
