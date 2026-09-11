@@ -32,10 +32,9 @@ class ProjectRepoImpl implements BaseProjectRepo {
 
   @override
   Future<Result<void>> submitInteriorDesign(InteriorDesignRequest request) =>
-      safeAsyncCall(() async {});
+      safeAsyncCall(() => _dataSource.submitInteriorDesign(request));
 
   @override
-  Future<Result<List<MoodboardModel>>> getMoodboards() async {
-    return const Success([]);
-  }
+  Future<Result<List<MoodboardModel>>> getMoodboards() =>
+      safeAsyncCall(_dataSource.getMoodboards);
 }

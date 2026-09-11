@@ -27,4 +27,19 @@ class RemoteBillingDataSource implements BaseBillingDataSource {
     // return PaymentModel.fromJson(response.data as Map<String, dynamic>);
     throw UnimplementedError('RemoteBillingDataSource.getPaymentDetails not implemented yet.');
   }
+
+  @override
+  Future<void> submitPayment({
+    required String projectId,
+    required String receiptPath,
+  }) async {
+    // TODO: implement the receipt-upload request when the backend contract is available.
+    throw UnimplementedError('RemoteBillingDataSource.submitPayment not implemented yet.');
+  }
+
+  @override
+  Future<PaymentQuoteModel> getPaymentQuote(String projectId) async {
+    // TODO: implement the quote request when the backend contract is available.
+    throw UnimplementedError('RemoteBillingDataSource.getPaymentQuote not implemented yet.');
+  }
 }
