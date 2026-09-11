@@ -1,16 +1,23 @@
+import 'package:acrova/data/data_source/local/services/image_picker/base_image_picker_service.dart';
 import 'package:acrova/domain/repository/project/base_project_repo.dart';
 import 'package:acrova/utils/enums/cubit_status.dart';
 import 'package:acrova/utils/enums/project_type_enum.dart';
+import 'package:acrova/utils/logging/app_logger.dart';
 import 'package:bloc/bloc.dart';
 
 import 'project_creation_state.dart';
 
 class ProjectCreationCubit extends Cubit<ProjectCreationState> {
-  ProjectCreationCubit({required BaseProjectRepo projectRepo})
+  ProjectCreationCubit({
+    required BaseProjectRepo projectRepo,
+    required BaseImagePickerService imagePicker,
+  })
       : _projectRepo = projectRepo,
+        _imagePicker = imagePicker,
         super(const ProjectCreationState());
 
   final BaseProjectRepo _projectRepo;
+  final BaseImagePickerService _imagePicker;
 
   // ── Navigation ───────────────────────────────────────────────────────────
 
@@ -79,6 +86,25 @@ class ProjectCreationCubit extends Cubit<ProjectCreationState> {
 
   void addMedia(String path) =>
       emit(state.copyWith(mediaPaths: [...state.mediaPaths, path]));
+
+  Future<void> addMediaFromGallery() async {
+    try {
+      final media = await _imagePicker.pickMultipleFromGallery();
+      if (media.isEmpty) return;
+
+      emit(
+        state.copyWith(
+          mediaPaths: [...state.mediaPaths, ...media.map((file) => file.path)],
+        ),
+      );
+    } catch (error, stackTrace) {
+      AppLogger.instance.logError(
+        error.toString(),
+        error: error,
+        stackTrace: stackTrace,
+      );
+    }
+  }
 
   void removeMedia(String path) =>
       emit(state.copyWith(

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:acrova/presentation/app/resources/resources.dart';
 import 'package:acrova/presentation/features/cubit/project_creation/project_creation_cubit.dart';
 import 'package:acrova/presentation/features/cubit/project_creation/project_creation_state.dart';
@@ -9,15 +11,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 class Step5MediaUpload extends StatelessWidget {
   const Step5MediaUpload({super.key});
-
-  static int _mockCounter = 0;
-
-  void _mockPickImage(BuildContext context) {
-    _mockCounter++;
-    context.read<ProjectCreationCubit>().addMedia(
-          'mock://land_photo_$_mockCounter.jpg',
-        );
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -46,7 +39,9 @@ class Step5MediaUpload extends StatelessWidget {
               ),
               SizedBox(height: Resources.verticalDims.$32),
               GestureDetector(
-                onTap: () => _mockPickImage(context),
+                onTap: () => unawaited(
+                  context.read<ProjectCreationCubit>().addMediaFromGallery(),
+                ),
                 child: Container(
                   width: double.infinity,
                   padding: EdgeInsets.symmetric(vertical: Resources.verticalDims.$22),
@@ -96,9 +91,7 @@ class Step5MediaUpload extends StatelessWidget {
               if (state.mediaPaths.isNotEmpty) ...[
                 SizedBox(height: Resources.verticalDims.$20),
                 Text(
-                  state.mediaPaths.length == 1
-                      ? '1 ${l10n.mediaUploadPhotoCountSingular}'
-                      : '${state.mediaPaths.length} ${l10n.mediaUploadPhotoCountPlural}',
+                  l10n.mediaUploadPhotoCount(state.mediaPaths.length),
                   style: Theme.of(context).textTheme.bodySmall?.copyWith(
                         fontSize: Resources.fontSizes.$12,
                         fontWeight: Resources.fontWeights.bold,

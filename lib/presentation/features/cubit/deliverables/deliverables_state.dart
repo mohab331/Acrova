@@ -1,9 +1,7 @@
 import 'package:acrova/core/error/app_error_model.dart';
+import 'package:acrova/utils/enums/cubit_status.dart';
 import 'package:equatable/equatable.dart';
 
-import '../../../../utils/enums/cubit_status.dart' show CubitStatus;
-
-// Simple mock models for UI representation
 class BlueprintModel extends Equatable {
   const BlueprintModel({
     required this.title,

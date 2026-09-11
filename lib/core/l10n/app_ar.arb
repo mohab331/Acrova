@@ -239,6 +239,14 @@
   "mediaUploadFormatNotice": "صيغ JPG، PNG حتى ١٠ ميجابايت لكل صورة",
   "mediaUploadPhotoCountSingular": "صورة مضافة",
   "mediaUploadPhotoCountPlural": "صور مضافة",
+  "mediaUploadPhotoCount": "{count, plural, =1{صورة مضافة واحدة} other{{count} صور مضافة}}",
+  "@mediaUploadPhotoCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "mediaUploadPhotoLabel": "صورة",
   "reviewSubmitTitle": "المراجعة والتقديم",
   "reviewSubmitSubtitle": "يرجى مراجعة تفاصيل مشروعك بعناية قبل التقديم.",
