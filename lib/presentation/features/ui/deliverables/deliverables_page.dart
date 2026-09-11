@@ -8,16 +8,14 @@ import 'package:acrova/presentation/features/common_widgets/common_screen/common
 import 'package:acrova/presentation/features/cubit/deliverables/deliverables_cubit.dart';
 import 'package:acrova/presentation/features/cubit/deliverables/deliverables_state.dart';
 import 'package:acrova/presentation/features/ui/deliverables/widgets/blueprints_section.dart';
-import 'package:acrova/presentation/features/ui/deliverables/widgets/deliverables_app_bar.dart';
 import 'package:acrova/presentation/features/ui/deliverables/widgets/deliverables_loading_skeleton.dart';
-import 'package:acrova/presentation/features/ui/deliverables/widgets/deliverables_sticky_actions.dart';
 import 'package:acrova/presentation/features/ui/deliverables/widgets/renders_section.dart';
 import 'package:acrova/presentation/features/ui/deliverables/widgets/walkthroughs_section.dart';
+import 'package:acrova/utils/enums/cubit_status.dart';
+import 'package:acrova/utils/extensions/localization_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-
-import '../../../../utils/enums/cubit_status.dart';
 
 class DeliverablesPage extends StatelessWidget {
   const DeliverablesPage({super.key});
@@ -37,6 +35,8 @@ class _DeliverablesView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final loc = context.localization;
+
     return CommonScreen(
       bottomPadding: 0,
       bottomNavigationBar: Container(
@@ -63,19 +63,19 @@ class _DeliverablesView extends StatelessWidget {
                 // Return to home dashboard
                 context.go(AppRouteEnum.homePage.path);
               },
-              label: 'Approve Deliverables',
+              label: loc.deliverablesApprove,
             ),
-            SizedBox(height: 8,),
+            const SizedBox(height: 8),
             AppSecondaryButton(
               onPressed: () {
                 context.pushNamed(AppRouteEnum.revisionRequestPage.name);
               },
-              label: 'Request revision',
+              label: loc.deliverablesRequestRevision,
             ),
           ],
         ),
       ),
-      appBar: const AppAuthBrandHeader(showBack: true,label: 'Deliverables',),
+      appBar: AppAuthBrandHeader(showBack: true, label: loc.deliverablesTitle),
       child: BlocBuilder<DeliverablesCubit, DeliverablesState>(
         builder: (context, state) {
           if (state.status == CubitStatus.loading ||

@@ -1,6 +1,7 @@
 import 'package:acrova/presentation/app/resources/resources.dart';
 import 'package:acrova/presentation/features/cubit/interior_design/interior_design_cubit.dart';
 import 'package:acrova/presentation/features/cubit/interior_design/interior_design_state.dart';
+import 'package:acrova/utils/extensions/localization_extension.dart';
 import 'package:acrova/utils/extensions/theme_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -22,6 +23,7 @@ class _InspirationLinksSectionState extends State<InspirationLinksSection> {
   }
 
   void _addLink(BuildContext context) {
+    final loc = context.localization;
     final text = _linkCtrl.text.trim();
     if (text.isNotEmpty) {
       // Very basic URL validation
@@ -31,7 +33,7 @@ class _InspirationLinksSectionState extends State<InspirationLinksSection> {
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: const Text('Please enter a valid URL starting with http:// or https://'),
+            content: Text(loc.interiorDesignUrlValidation),
             backgroundColor: Resources.colors.luxuryError,
           ),
         );
@@ -41,6 +43,8 @@ class _InspirationLinksSectionState extends State<InspirationLinksSection> {
 
   @override
   Widget build(BuildContext context) {
+    final loc = context.localization;
+
     return BlocBuilder<InteriorDesignCubit, InteriorDesignState>(
       builder: (context, state) {
         return Column(
@@ -52,7 +56,7 @@ class _InspirationLinksSectionState extends State<InspirationLinksSection> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'INSPIRATION LINKS',
+                    loc.interiorDesignInspirationLinksTitle,
                     style: Theme.of(context).textTheme.titleSmall?.copyWith(
                           fontWeight: Resources.fontWeights.semiBold,
                           color: Resources.colors.luxuryNavy,
@@ -61,7 +65,7 @@ class _InspirationLinksSectionState extends State<InspirationLinksSection> {
                   ),
                   SizedBox(height: Resources.verticalDims.$4),
                   Text(
-                    'Add links to Pinterest boards, Houzz, or other web references.',
+                    loc.interiorDesignInspirationLinksSubtitle,
                     style: Theme.of(context).textTheme.bodySmall?.copyWith(
                           color: Resources.colors.luxuryBody,
                         ),
@@ -81,7 +85,7 @@ class _InspirationLinksSectionState extends State<InspirationLinksSection> {
                     child: TextField(
                       controller: _linkCtrl,
                       decoration: InputDecoration(
-                        hintText: 'https://...',
+                        hintText: loc.interiorDesignInspirationLinksHint,
                         hintStyle: Theme.of(context).textTheme.bodySmall?.copyWith(
                               color: Resources.colors.luxuryPlaceholder,
                             ),
@@ -108,7 +112,7 @@ class _InspirationLinksSectionState extends State<InspirationLinksSection> {
                     ),
                   ),
                   child: Text(
-                    'Add',
+                    loc.interiorDesignAdd,
                     style: TextStyle(
                       color: Resources.colors.white,
                       fontWeight: Resources.fontWeights.semiBold,

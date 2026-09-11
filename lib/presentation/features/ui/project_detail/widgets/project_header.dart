@@ -1,7 +1,6 @@
 import 'package:acrova/data/models/project/project_model.dart';
 import 'package:acrova/presentation/app/resources/resources.dart';
 import 'package:acrova/presentation/features/common_widgets/chips/app_status_chip.dart';
-import 'package:acrova/presentation/features/ui/portfolio/widgets/detail_dot_separator.dart';
 import 'package:acrova/presentation/features/ui/portfolio/widgets/detail_meta_dot.dart';
 import 'package:acrova/utils/extensions/theme_extension.dart';
 import 'package:flutter/material.dart';
@@ -20,7 +19,7 @@ class ProjectHeader extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
-              project.type.name.toUpperCase() ?? '',
+              project.type.name.toUpperCase(),
               style: context.textTheme.labelSmall?.copyWith(
                 fontSize: Resources.fontSizes.$10,
                 fontWeight: Resources.fontWeights.extraBold,

@@ -26,7 +26,7 @@ class DashboardQuickActionsGrid extends StatelessWidget {
       ),
       DashboardQuickAction(
         icon: Icons.account_balance_outlined,
-        label: 'Payment History',
+        label: loc.paymentHistoryTitle,
         onTap: () => context.push(AppRouteEnum.paymentHistoryPage.path),
       ),
       DashboardQuickAction(

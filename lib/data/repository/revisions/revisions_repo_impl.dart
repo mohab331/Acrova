@@ -29,4 +29,12 @@ class RevisionsRepoImpl implements BaseRevisionsRepo {
     CreateRevisionRequest request,
   ) =>
       safeAsyncCall(() => _dataSource.createRevision(request));
+
+  @override
+  Future<Result<List<String>>> getDeliverableRefs() =>
+      safeAsyncCall(() async => const [
+            'Floor Plan v1.1 — Main Residence',
+            'Exterior Renderings v2',
+            'Interior Moodboard v1',
+          ]);
 }

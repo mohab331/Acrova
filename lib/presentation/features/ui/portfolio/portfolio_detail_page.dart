@@ -2,6 +2,7 @@ import 'package:acrova/presentation/app/navigation/app_route_enum.dart';
 import 'package:acrova/presentation/app/resources/resources.dart';
 import 'package:acrova/presentation/features/common_widgets/app_bar/app_auth_brand_header.dart';
 import 'package:acrova/presentation/features/common_widgets/common_screen/common_screen.dart';
+import 'package:acrova/presentation/features/cubit/deliverables/deliverables_state.dart';
 import 'package:acrova/presentation/features/ui/portfolio/portfolio_item.dart';
 import 'package:acrova/presentation/features/ui/portfolio/widgets/detail_bottom_ctas.dart';
 import 'package:acrova/presentation/features/ui/portfolio/widgets/detail_carousel.dart';
@@ -100,7 +101,19 @@ class _PortfolioDetailPageState extends State<PortfolioDetailPage> {
               onStartProject: () =>
                   context.push(AppRouteEnum.projectCreationPage.path),
               onWatchWalkthrough: () {
-                context.push(AppRouteEnum.walkthroughPage.path);
+                final walkthrough = WalkthroughModel(
+                  imageAsset: widget.item.imageUrls.isNotEmpty ? widget.item.imageUrls.first : '',
+                  title: widget.item.title,
+                  duration: '',
+                  size: '',
+                  format: 'MP4',
+                  videoUrl: widget.item.walkthroughVideo ?? '',
+                  description: widget.item.narrative,
+                );
+                context.push(
+                  AppRouteEnum.walkthroughPage.path,
+                  extra: walkthrough,
+                );
               },
             ),
           ),

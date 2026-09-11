@@ -8,7 +8,6 @@ import 'package:acrova/presentation/features/cubit/project_detail/project_detail
 import 'package:acrova/presentation/features/cubit/project_detail/project_detail_state.dart';
 import 'package:acrova/presentation/features/ui/project_detail/widgets/project_bottom_cta.dart';
 import 'package:acrova/presentation/features/ui/project_detail/widgets/project_content_sheet.dart';
-import 'package:acrova/utils/enums/project_status_enum.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

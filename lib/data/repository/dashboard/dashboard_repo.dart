@@ -1,3 +1,8 @@
+// TODO(refactoring): This DashboardRepo / BaseDashboardRepo / BaseDashboardDataSource stack
+// is currently dead code. The active dashboard data path flows through
+// BaseProjectRepo.getDashboard() → MockProjectDataSource.getDashboard(),
+// which returns a typed DashboardDataModel used by DashboardCubit.
+// This repo should either be removed or repurposed once the backend is integrated.
 import 'package:acrova/core/error/app_error_model.dart';
 import 'package:acrova/data/data_source/base/base_dashboard_data_source.dart';
 import 'package:acrova/domain/repository/dashboard/base_dashboard_repo.dart';

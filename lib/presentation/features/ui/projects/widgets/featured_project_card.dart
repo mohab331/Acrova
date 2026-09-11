@@ -88,8 +88,8 @@ class FeaturedProjectCard extends StatelessWidget {
                 ),
                 SizedBox(height: Resources.verticalDims.$6),
                 Text(
-                  _buildDescription(),
-                  style: context.textTheme.bodyMedium?.copyWith(
+                  _buildDescription(context),
+                  style: context.textTheme.bodySmall?.copyWith(
                     fontSize: Resources.fontSizes.$14,
                     color: Resources.colors.luxuryBody,
                   ),
@@ -136,9 +136,9 @@ class FeaturedProjectCard extends StatelessWidget {
     );
   }
 
-  String _buildDescription() {
+  String _buildDescription(BuildContext context) {
     final parts = <String>[];
-    parts.add(project.type.displayLabel);
+    parts.add(project.type.localizedLabel(context));
     if (project.location != null) parts.add(project.location!);
     return parts.join(' · ');
   }

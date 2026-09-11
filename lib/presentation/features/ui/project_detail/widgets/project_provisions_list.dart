@@ -1,26 +1,23 @@
 import 'package:acrova/presentation/app/resources/resources.dart';
+import 'package:acrova/utils/extensions/localization_extension.dart';
 import 'package:acrova/utils/extensions/theme_extension.dart';
 import 'package:flutter/material.dart';
 
 class ProjectProvisionsList extends StatelessWidget {
-  const ProjectProvisionsList({super.key});
+  const ProjectProvisionsList({this.provisions, super.key});
+
+  final List<String>? provisions;
 
   @override
   Widget build(BuildContext context) {
-    final provisions = [
-      'Smart Home Integration',
-      'Infinity Pool',
-      'Solar Panel Ready',
-      'Central AC System',
-      'Underfloor Heating',
-      'Premium Marble Finishes',
-    ];
+    final items = provisions ?? const [];
+    if (items.isEmpty) return const SizedBox.shrink();
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'Core Provisions',
+          context.localization.projectDetailCoreProvisions,
           style: context.textTheme.labelLarge?.copyWith(
             fontSize: Resources.fontSizes.$18,
             fontWeight: Resources.fontWeights.semiBold,
@@ -31,7 +28,7 @@ class ProjectProvisionsList extends StatelessWidget {
         Wrap(
           spacing: Resources.horizontalDims.$8,
           runSpacing: Resources.verticalDims.$8,
-          children: provisions.map((provision) => _ProvisionChip(label: provision)).toList(),
+          children: items.map((provision) => _ProvisionChip(label: provision)).toList(),
         ),
 
       ],

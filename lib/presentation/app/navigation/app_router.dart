@@ -5,6 +5,7 @@ import 'package:acrova/data/models/profile/user_profile_model.dart';
 import 'package:acrova/data/models/revision/revision_model.dart';
 import 'package:acrova/presentation/features/cubit/auth/auth_cubit.dart';
 import 'package:acrova/presentation/features/cubit/dashboard/dashboard_cubit.dart';
+import 'package:acrova/presentation/features/cubit/deliverables/deliverables_state.dart';
 import 'package:acrova/presentation/features/cubit/profile/profile_cubit.dart';
 import 'package:acrova/presentation/features/cubit/projects/projects_cubit.dart';
 import 'package:acrova/presentation/features/ui/auth/identity_verification/identity_verification_page.dart';
@@ -200,7 +201,10 @@ class AppRouter {
         parentNavigatorKey: rootNavigatorKey,
         path: AppRouteEnum.walkthroughPage.path,
         name: AppRouteEnum.walkthroughPage.name,
-        builder: (_, __) => const WalkthroughScreen(),
+        builder: (_, state) {
+          final walkthrough = state.extra as WalkthroughModel?;
+          return WalkthroughScreen(walkthrough: walkthrough);
+        },
       ),
 
       // ── Deliverables (full-screen, above shell) ─────────────────────────────

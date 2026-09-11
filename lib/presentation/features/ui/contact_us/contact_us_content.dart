@@ -67,7 +67,7 @@ class _ContactUsViewState extends State<ContactUsContent> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Get in Touch',
+                      l10n.contactUsGetInTouch,
                       style: context.textTheme.titleMedium?.copyWith(
                         color: Resources.colors.luxuryNavy,
                         fontWeight: Resources.fontWeights.semiBold,
@@ -75,7 +75,7 @@ class _ContactUsViewState extends State<ContactUsContent> {
                     ),
                     SizedBox(height: Resources.verticalDims.$4),
                     Text(
-                      'We\'re here to help. Reach out with any questions, feedback, or support requests and our team will get back to you as soon as possible.',
+                      l10n.contactUsDescription,
                       style: context.textTheme.labelMedium?.copyWith(
                         color: Resources.colors.luxuryBodyMuted,
                       ),

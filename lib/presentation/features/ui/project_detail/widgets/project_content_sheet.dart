@@ -6,7 +6,6 @@ import 'package:acrova/presentation/features/ui/project_detail/widgets/project_h
 import 'package:acrova/presentation/features/ui/project_detail/widgets/project_progress_card.dart';
 import 'package:acrova/presentation/features/ui/project_detail/widgets/project_provisions_list.dart';
 import 'package:acrova/presentation/features/ui/project_detail/widgets/project_specs_grid.dart';
-import 'package:acrova/presentation/features/ui/project_detail/widgets/project_timeline.dart';
 import 'package:acrova/utils/enums/project_status_enum.dart';
 import 'package:acrova/utils/extensions/localization_extension.dart';
 import 'package:acrova/utils/extensions/theme_extension.dart';
@@ -58,7 +57,7 @@ class ProjectContentSheet extends StatelessWidget {
               end: Resources.horizontalDims.$24,
             ),
             child: Text(
-              'Overview',
+              context.localization.projectDetailOverview,
               style: context.textTheme.labelLarge?.copyWith(
                 fontSize: Resources.fontSizes.$18,
                 fontWeight: Resources.fontWeights.semiBold,
@@ -73,7 +72,7 @@ class ProjectContentSheet extends StatelessWidget {
               end: Resources.horizontalDims.$24,
             ),
             child: Text(
-              'An exceptional contemporary residence blending minimalist lines with premium materials. Designed to maximize natural light while maintaining absolute privacy.',
+              project.description ?? context.localization.projectOverviewDefault,
               style: context.textTheme.bodyMedium?.copyWith(
                 fontSize: Resources.fontSizes.$14,
                 color: Resources.colors.luxuryBody,
@@ -128,7 +127,9 @@ class ProjectContentSheet extends StatelessWidget {
                 start: Resources.horizontalDims.$24,
                 end: Resources.horizontalDims.$24,
               ),
-              child: const ProjectEngineerCard(),
+              child: ProjectEngineerCard(
+                engineer: project.engineer,
+              ),
             ),
           ],
           SizedBox(height: Resources.verticalDims.$32),
@@ -138,7 +139,7 @@ class ProjectContentSheet extends StatelessWidget {
               start: Resources.horizontalDims.$24,
               end: Resources.horizontalDims.$24,
             ),
-            child: const ProjectProvisionsList(),
+            child: ProjectProvisionsList(provisions: project.provisions),
           ),
         ],
       ),

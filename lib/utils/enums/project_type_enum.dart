@@ -1,3 +1,6 @@
+import 'package:acrova/utils/extensions/localization_extension.dart';
+import 'package:flutter/material.dart';
+
 /// Type of project the customer is commissioning.
 enum ProjectType {
   villa,
@@ -20,6 +23,10 @@ extension ProjectTypeX on ProjectType {
       case ProjectType.houseApartment: return 'منزل / شقة';
       case ProjectType.commercial:     return 'تجاري';
     }
+  }
+
+  String localizedLabel(BuildContext context) {
+    return context.isRtl ? displayLabelAr : displayLabel;
   }
 
   String get jsonKey {

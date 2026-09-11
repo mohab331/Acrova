@@ -183,6 +183,7 @@ class _SquareDimens {
   double get $18 => 18.r;
   double get $20 => 20.r;
   double get $22 => 22.r;
+  double get $24 => 24.r;
   double get $25 => 25.r;
   double get $28 => 28.r;
   double get $30 => 30.r;

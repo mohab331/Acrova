@@ -1,3 +1,4 @@
+import 'package:acrova/domain/repository/contact_us/base_contact_us_repo.dart';
 import 'package:acrova/utils/enums/cubit_status.dart';
 import 'package:bloc/bloc.dart';
 
@@ -7,8 +8,14 @@ import 'contact_us_state.dart';
 enum ContactUsFieldError { emailInvalid, detailsRequired }
 
 class ContactUsCubit extends Cubit<ContactUsState> {
-  ContactUsCubit({String email = '', String mobileNumber = ''})
-      : super(ContactUsState.initial(email: email, mobileNumber: mobileNumber));
+  ContactUsCubit({
+    required BaseContactUsRepo contactUsRepo,
+    String email = '',
+    String mobileNumber = '',
+  })  : _contactUsRepo = contactUsRepo,
+        super(ContactUsState.initial(email: email, mobileNumber: mobileNumber));
+
+  final BaseContactUsRepo _contactUsRepo;
 
   static final _emailRegex = RegExp(r'^[^@\s]+@[^@\s]+\.[^@\s]+$');
 
@@ -20,7 +27,6 @@ class ContactUsCubit extends Cubit<ContactUsState> {
   void updateDetails(String value) =>
       emit(state.copyWith(details: value, detailsError: () => null));
 
-  /// Validates and submits the inquiry (mock — no support backend yet).
   Future<void> submit({
     required String Function(ContactUsFieldError) resolve,
   }) async {
@@ -41,8 +47,14 @@ class ContactUsCubit extends Cubit<ContactUsState> {
     }
 
     emit(state.copyWith(cubitStatus: CubitStatus.loading));
-    // Mock submission until a support backend exists.
-    await Future<void>.delayed(const Duration(milliseconds: 900));
-    emit(state.copyWith(cubitStatus: CubitStatus.success));
+    final result = await _contactUsRepo.submitInquiry(
+      email: email,
+      mobileNumber: state.mobileNumber.trim(),
+      details: details,
+    );
+    result.when(
+      success: (_) => emit(state.copyWith(cubitStatus: CubitStatus.success)),
+      failure: (_) => emit(state.copyWith(cubitStatus: CubitStatus.error)),
+    );
   }
 }

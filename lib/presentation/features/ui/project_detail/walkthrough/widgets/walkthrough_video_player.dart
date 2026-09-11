@@ -1,4 +1,5 @@
 import 'package:acrova/presentation/app/resources/resources.dart';
+import 'package:acrova/utils/extensions/localization_extension.dart';
 import 'package:acrova/utils/extensions/theme_extension.dart';
 import 'package:chewie/chewie.dart';
 import 'package:flutter/material.dart';
@@ -31,6 +32,9 @@ class _WalkthroughVideoPlayerState extends State<WalkthroughVideoPlayer> {
   String? _error;
   bool _showThumbnail = true;
   Future<void> _initializePlayer() async {
+    if (widget.videoUrl.isEmpty) {
+      return;
+    }
     try {
       setState(() {
         _error = null;
@@ -131,7 +135,7 @@ class _WalkthroughVideoPlayerState extends State<WalkthroughVideoPlayer> {
                       ),
                        SizedBox(height: Resources.verticalDims.$16),
                        Text(
-                        "Unable to load video",
+                        context.localization.walkthroughUnableToLoadVideo,
                         style: context.textTheme.bodyMedium?.copyWith(color: Colors.white),
                       ),
 

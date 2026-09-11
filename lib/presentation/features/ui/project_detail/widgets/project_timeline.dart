@@ -1,7 +1,9 @@
 import 'package:acrova/data/models/project/project_model.dart';
 import 'package:acrova/presentation/app/resources/resources.dart';
+import 'package:acrova/utils/extensions/localization_extension.dart';
 import 'package:acrova/utils/extensions/theme_extension.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class ProjectTimeline extends StatelessWidget {
   const ProjectTimeline({
@@ -13,26 +15,30 @@ class ProjectTimeline extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Mock data based on HTML for now
-    final events = const [
+    final loc = context.localization;
+    final locale = Localizations.localeOf(context).languageCode;
+    final submittedDate = DateFormat.yMMMd(locale).format(project.createdAt);
+    final paymentDate = DateFormat.yMMMd(locale).format(project.createdAt.add(const Duration(days: 3)));
+
+    final events = [
       _TimelineEvent(
-        date: 'Oct 12, 2025',
-        title: 'Project Submitted',
-        description: 'Initial design concepts and site survey documents uploaded.',
+        date: submittedDate,
+        title: loc.projectDetailTimelineProjectSubmitted,
+        description: loc.projectDetailTimelineProjectSubmittedDesc,
         isCompleted: true,
         isCurrent: false,
       ),
       _TimelineEvent(
-        date: 'Oct 15, 2025',
-        title: 'Payment Verified',
-        description: 'Phase 1 architectural retainer successfully processed.',
+        date: paymentDate,
+        title: loc.projectDetailTimelinePaymentVerified,
+        description: loc.projectDetailTimelinePaymentVerifiedDesc,
         isCompleted: true,
         isCurrent: false,
       ),
       _TimelineEvent(
-        date: 'Today',
-        title: 'Engineering Started',
-        description: 'Structural analysis and MEP planning now in progress.',
+        date: loc.projectDetailTimelineToday,
+        title: loc.projectDetailTimelineEngineeringStarted,
+        description: loc.projectDetailTimelineEngineeringStartedDesc,
         isCompleted: false,
         isCurrent: true,
       ),
@@ -42,7 +48,7 @@ class ProjectTimeline extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'Activity Timeline',
+          loc.projectDetailActivityTimeline,
           style: context.textTheme.titleLarge?.copyWith(
             color: Resources.colors.luxuryNavy,
           ),

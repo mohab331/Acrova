@@ -9,6 +9,7 @@ class RevisionRequestState extends Equatable {
   const RevisionRequestState({
     required this.cubitStatus,
     this.quota,
+    this.deliverables = const [],
     this.deliverableRef,
     this.details = '',
     this.attachmentPaths = const [],
@@ -25,6 +26,7 @@ class RevisionRequestState extends Equatable {
   /// Tracks the quota load (loading → skeleton, error → error, success → form).
   final CubitStatus cubitStatus;
   final RevisionQuotaModel? quota;
+  final List<String> deliverables;
 
   final String? deliverableRef;
   final String details;
@@ -44,6 +46,7 @@ class RevisionRequestState extends Equatable {
   RevisionRequestState copyWith({
     CubitStatus? cubitStatus,
     RevisionQuotaModel? quota,
+    List<String>? deliverables,
     RevisionCategory? Function()? selectedCategory,
     String? Function()? deliverableRef,
     String? details,
@@ -57,7 +60,7 @@ class RevisionRequestState extends Equatable {
       RevisionRequestState(
         cubitStatus: cubitStatus ?? this.cubitStatus,
         quota: quota ?? this.quota,
-
+        deliverables: deliverables ?? this.deliverables,
         deliverableRef:
             deliverableRef != null ? deliverableRef() : this.deliverableRef,
         details: details ?? this.details,
@@ -74,6 +77,7 @@ class RevisionRequestState extends Equatable {
   List<Object?> get props => [
         cubitStatus,
         quota,
+        deliverables,
         deliverableRef,
         details,
         attachmentPaths,

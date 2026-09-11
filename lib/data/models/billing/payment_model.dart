@@ -1,4 +1,6 @@
+import 'package:acrova/utils/extensions/localization_extension.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/material.dart';
 
 enum PaymentStatus { success, pending, rejected }
 
@@ -11,6 +13,17 @@ extension PaymentStatusX on PaymentStatus {
         return 'Pending';
       case PaymentStatus.rejected:
         return 'Rejected';
+    }
+  }
+
+  String localizedName(BuildContext context) {
+    switch (this) {
+      case PaymentStatus.success:
+        return context.localization.paymentStatusSuccess;
+      case PaymentStatus.pending:
+        return context.localization.paymentStatusPending;
+      case PaymentStatus.rejected:
+        return context.localization.paymentStatusRejected;
     }
   }
 
@@ -106,5 +119,39 @@ class PaymentModel extends Equatable {
         accountName,
         receiptUrl,
         rejectionReason,
+      ];
+}
+
+class PaymentQuoteModel extends Equatable {
+  const PaymentQuoteModel({
+    required this.amountDue,
+    required this.baseFee,
+    required this.vat,
+    required this.total,
+    required this.bankName,
+    required this.iban,
+    required this.accountName,
+    this.currency = 'SAR',
+  });
+
+  final double amountDue;
+  final double baseFee;
+  final double vat;
+  final double total;
+  final String bankName;
+  final String iban;
+  final String accountName;
+  final String currency;
+
+  @override
+  List<Object?> get props => [
+        amountDue,
+        baseFee,
+        vat,
+        total,
+        bankName,
+        iban,
+        accountName,
+        currency,
       ];
 }

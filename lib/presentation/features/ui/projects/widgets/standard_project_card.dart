@@ -55,7 +55,7 @@ class StandardProjectCard extends StatelessWidget {
                 ),
                 SizedBox(height: Resources.verticalDims.$4),
                 Text(
-                  project.type.displayLabel,
+                  project.type.localizedLabel(context),
                   style: context.textTheme.bodySmall?.copyWith(
                     fontSize: Resources.fontSizes.$12,
                     color: Resources.colors.luxuryBody,

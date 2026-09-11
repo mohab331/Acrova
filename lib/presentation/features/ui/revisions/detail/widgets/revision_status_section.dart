@@ -14,10 +14,8 @@ class RevisionStatusSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = context.localization;
-    final date = DateFormat('MMM dd, yyyy').format(revision.createdAt);
-    final label = context.isRtl
-        ? revision.status.displayLabelAr
-        : revision.status.displayLabel;
+    final date = DateFormat('MMM dd, yyyy', Localizations.localeOf(context).languageCode).format(revision.createdAt);
+    final label = revision.status.localizedLabel(context);
 
     return Container(
       padding: EdgeInsets.all(Resources.horizontalDims.$24),

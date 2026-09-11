@@ -7,9 +7,19 @@ class InteriorDesignCubit extends Cubit<InteriorDesignState> {
   InteriorDesignCubit({
     required this.projectRepo,
     required String projectId,
-  }) : super(InteriorDesignState(projectId: projectId));
+  }) : super(InteriorDesignState(projectId: projectId)) {
+    loadInitialData();
+  }
 
   final BaseProjectRepo projectRepo;
+
+  Future<void> loadInitialData() async {
+    final result = await projectRepo.getMoodboards();
+    result.when(
+      success: (boards) => emit(state.copyWith(availableMoodboards: boards)),
+      failure: (_) {},
+    );
+  }
 
   void updateScope(String scope) {
     emit(state.copyWith(scope: scope));
@@ -103,12 +113,15 @@ class InteriorDesignCubit extends Cubit<InteriorDesignState> {
     if (!state.isValid) return;
     emit(state.copyWith(status: InteriorDesignStatus.loading));
     try {
-      state.toRequest();
-      // final result = await projectRepo.submitInteriorDesign(request);
-      
-      // Mocking submission for now
-      await Future.delayed(const Duration(seconds: 1));
-      emit(state.copyWith(status: InteriorDesignStatus.success));
+      final request = state.toRequest();
+      final result = await projectRepo.submitInteriorDesign(request);
+      result.when(
+        success: (_) => emit(state.copyWith(status: InteriorDesignStatus.success)),
+        failure: (error) => emit(state.copyWith(
+          status: InteriorDesignStatus.failure,
+          error: error,
+        )),
+      );
     } catch (e) {
       emit(state.copyWith(
         status: InteriorDesignStatus.failure,

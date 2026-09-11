@@ -23,10 +23,20 @@ class RevisionRequestCubit extends Cubit<RevisionRequestState> {
 
   Future<void> fetchQuota() async {
     emit(state.copyWith(cubitStatus: CubitStatus.loading));
-    final result = await _revisionsRepo.getQuota();
-    result.when(
-      success: (quota) =>
-          emit(state.copyWith(cubitStatus: CubitStatus.success, quota: quota)),
+    final quotaResult = await _revisionsRepo.getQuota();
+    final deliverablesResult = await _revisionsRepo.getDeliverableRefs();
+
+    final deliverables = deliverablesResult.when(
+      success: (refs) => refs,
+      failure: (_) => const <String>[],
+    );
+
+    quotaResult.when(
+      success: (quota) => emit(state.copyWith(
+        cubitStatus: CubitStatus.success,
+        quota: quota,
+        deliverables: deliverables,
+      )),
       failure: (error) => emit(
         state.copyWith(cubitStatus: CubitStatus.error, appErrorModel: error),
       ),

@@ -1,26 +1,32 @@
 import 'package:acrova/core/di/dependency_injector.dart';
 import 'package:acrova/core/di/injectors/base_injector.dart';
 import 'package:acrova/domain/repository/auth/base_auth_repo.dart';
+import 'package:acrova/domain/repository/billing/base_billing_repo.dart';
 import 'package:acrova/domain/repository/config/base_app_config_repo.dart';
+import 'package:acrova/domain/repository/contact_us/base_contact_us_repo.dart';
+import 'package:acrova/domain/repository/deliverables/base_deliverables_repo.dart';
 import 'package:acrova/domain/repository/localization/base_localization_repo.dart';
 import 'package:acrova/domain/repository/notifications/base_fcm_token_repo.dart';
 import 'package:acrova/domain/repository/notifications/base_notification_provider_repo.dart';
 import 'package:acrova/domain/repository/notifications/base_notifications_repo.dart';
+import 'package:acrova/domain/repository/portfolio/base_portfolio_repo.dart';
 import 'package:acrova/domain/repository/project/base_project_repo.dart';
 import 'package:acrova/domain/repository/revisions/base_revisions_repo.dart';
 import 'package:acrova/presentation/features/cubit/auth/auth_cubit.dart';
+import 'package:acrova/presentation/features/cubit/billing/make_payment_cubit.dart';
+import 'package:acrova/presentation/features/cubit/billing/payment_details_cubit.dart';
+import 'package:acrova/presentation/features/cubit/billing/payment_history_cubit.dart';
 import 'package:acrova/presentation/features/cubit/dashboard/dashboard_cubit.dart';
 import 'package:acrova/presentation/features/cubit/deliverables/deliverables_cubit.dart';
 import 'package:acrova/presentation/features/cubit/localization/localization_cubit.dart';
+import 'package:acrova/presentation/features/cubit/portfolio/portfolio_cubit.dart';
 import 'package:acrova/presentation/features/cubit/profile/profile_cubit.dart';
 import 'package:acrova/presentation/features/cubit/project_detail/project_detail_cubit.dart';
 import 'package:acrova/presentation/features/cubit/projects/projects_cubit.dart';
+import 'package:acrova/presentation/features/ui/contact_us/cubit/contact_us_cubit.dart';
 import 'package:acrova/presentation/features/ui/notifications/cubit/notifications_cubit.dart';
 import 'package:acrova/presentation/features/ui/revisions/cubit/revisions/revisions_cubit.dart';
 import 'package:acrova/presentation/features/ui/splash/splash/cubit/splash_cubit.dart';
-import 'package:acrova/presentation/features/cubit/billing/payment_history_cubit.dart';
-import 'package:acrova/presentation/features/cubit/billing/payment_details_cubit.dart';
-import 'package:acrova/data/data_source/base/base_billing_data_source.dart';
 
 /// [CubitsInjector] hold all application global singleton cubits dependencies
 ///
@@ -56,7 +62,15 @@ class CubitsInjector implements BaseInjector {
     ),
 
     () => serviceLocatorInstance.registerFactory<DeliverablesCubit>(
-      DeliverablesCubit.new,
+      () => DeliverablesCubit(
+        deliverablesRepo: serviceLocatorInstance<BaseDeliverablesRepo>(),
+      ),
+    ),
+
+    () => serviceLocatorInstance.registerFactory<PortfolioCubit>(
+      () => PortfolioCubit(
+        portfolioRepo: serviceLocatorInstance<BasePortfolioRepo>(),
+      ),
     ),
 
     () => serviceLocatorInstance.registerFactory<ProfileCubit>(
@@ -90,13 +104,25 @@ class CubitsInjector implements BaseInjector {
 
     () => serviceLocatorInstance.registerFactory<PaymentHistoryCubit>(
       () => PaymentHistoryCubit(
-        billingDataSource: serviceLocatorInstance<BaseBillingDataSource>(),
+        billingRepo: serviceLocatorInstance<BaseBillingRepo>(),
       ),
     ),
 
     () => serviceLocatorInstance.registerFactory<PaymentDetailsCubit>(
       () => PaymentDetailsCubit(
-        billingDataSource: serviceLocatorInstance<BaseBillingDataSource>(),
+        billingRepo: serviceLocatorInstance<BaseBillingRepo>(),
+      ),
+    ),
+
+    () => serviceLocatorInstance.registerFactory<MakePaymentCubit>(
+      () => MakePaymentCubit(
+        billingRepo: serviceLocatorInstance<BaseBillingRepo>(),
+      ),
+    ),
+
+    () => serviceLocatorInstance.registerFactory<ContactUsCubit>(
+      () => ContactUsCubit(
+        contactUsRepo: serviceLocatorInstance<BaseContactUsRepo>(),
       ),
     ),
   ];

@@ -11,10 +11,19 @@ class RevisionQuotaCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return quota.hasFreeRemaining ? _free(context) : _paid(context);
+    return quota.hasFreeRemaining
+        ? _FreeRevisionCard(quota: quota)
+        : _PaidRevisionCard(quota: quota);
   }
+}
 
-  Widget _free(BuildContext context) {
+class _FreeRevisionCard extends StatelessWidget {
+  const _FreeRevisionCard({required this.quota});
+
+  final RevisionQuotaModel quota;
+
+  @override
+  Widget build(BuildContext context) {
     final l10n = context.localization;
     return Container(
       padding: EdgeInsets.all(Resources.horizontalDims.$20),
@@ -75,8 +84,15 @@ class RevisionQuotaCard extends StatelessWidget {
       ),
     );
   }
+}
 
-  Widget _paid(BuildContext context) {
+class _PaidRevisionCard extends StatelessWidget {
+  const _PaidRevisionCard({required this.quota});
+
+  final RevisionQuotaModel quota;
+
+  @override
+  Widget build(BuildContext context) {
     final l10n = context.localization;
     return Container(
       padding: EdgeInsets.all(Resources.horizontalDims.$20),

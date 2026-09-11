@@ -11,7 +11,7 @@ import 'package:acrova/presentation/features/cubit/project_detail/project_detail
 import 'package:acrova/presentation/features/cubit/project_detail/project_detail_state.dart';
 import 'package:acrova/presentation/features/ui/interior_design/widgets/interior_design_form.dart';
 import 'package:acrova/presentation/features/ui/interior_design/widgets/interior_design_header.dart';
-import 'package:acrova/utils/extensions/theme_extension.dart';
+import 'package:acrova/utils/extensions/localization_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -26,6 +26,8 @@ class InteriorDesignView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final loc = context.localization;
+
     return BlocProvider(
       create: (_) => serviceLocatorInstance<ProjectDetailCubit>()..fetchProject(projectId),
       child: BlocConsumer<InteriorDesignCubit, InteriorDesignState>(
@@ -44,7 +46,10 @@ class InteriorDesignView extends StatelessWidget {
         },
         builder: (context, state) {
           return CommonScreen(
-            appBar: AppAuthBrandHeader(label: 'Phase II: Interior Design',showBack: true,),
+            appBar: AppAuthBrandHeader(
+              label: loc.projectDetailPhaseIIInteriorDesign,
+              showBack: true,
+            ),
             padding: EdgeInsets.zero,
             child: BlocBuilder<ProjectDetailCubit, ProjectDetailState>(
               builder: (context, projectState) {
@@ -55,7 +60,8 @@ class InteriorDesignView extends StatelessWidget {
                   return Center(
                     child: AppErrorState(
                       errorModel: projectState.appErrorModel,
-                      onRetry: () => context.read<ProjectDetailCubit>().fetchProject(projectId),
+                      onRetry: () =>
+                          context.read<ProjectDetailCubit>().fetchProject(projectId),
                     ),
                   );
                 }
@@ -77,7 +83,7 @@ class InteriorDesignView extends StatelessWidget {
                           InteriorDesignHeader(project: project),
                           SizedBox(height: Resources.verticalDims.$24),
                           const InteriorDesignForm(),
-                          SizedBox(height: Resources.verticalDims.$32,)
+                          SizedBox(height: Resources.verticalDims.$32),
                         ],
                       ),
                     ),
@@ -103,7 +109,7 @@ class InteriorDesignView extends StatelessWidget {
                           ],
                         ),
                         child: AppPrimaryButton(
-                          label: 'SUBMIT INTERIOR DESIGN BRIEF',
+                          label: loc.interiorDesignSubmit,
                           isLoading: state.status == InteriorDesignStatus.loading,
                           enabled: state.isValid,
                           onPressed: () {

@@ -1,0 +1,31 @@
+import 'package:acrova/data/data_source/base/base_project_data_source.dart';
+import 'package:acrova/data/data_source/remote/network/api_client.dart';
+import 'package:acrova/data/models/dashboard/dashboard_data_model.dart';
+import 'package:acrova/data/models/project/create_project_request.dart';
+import 'package:acrova/data/models/project/project_model.dart';
+
+class RemoteProjectDataSource implements BaseProjectDataSource {
+  RemoteProjectDataSource({required this.apiClient});
+
+  final ApiClient apiClient;
+
+  @override
+  Future<DashboardDataModel> getDashboard() async {
+    throw UnimplementedError('Remote getDashboard not implemented yet');
+  }
+
+  @override
+  Future<List<ProjectModel>> getProjects() async {
+    throw UnimplementedError('Remote getProjects not implemented yet');
+  }
+
+  @override
+  Future<ProjectModel> getProject(String id) async {
+    throw UnimplementedError('Remote getProject not implemented yet');
+  }
+
+  @override
+  Future<ProjectModel> createProject(CreateProjectRequest request) async {
+    throw UnimplementedError('Remote createProject not implemented yet');
+  }
+}

@@ -4,9 +4,9 @@ import 'package:acrova/presentation/app/navigation/app_route_enum.dart';
 import 'package:acrova/presentation/app/resources/resources.dart';
 import 'package:acrova/presentation/features/common_widgets/app_bar/app_auth_brand_header.dart';
 import 'package:acrova/presentation/features/common_widgets/common_screen/common_screen.dart';
-
 import 'package:acrova/presentation/features/cubit/billing/payment_details_cubit.dart';
 import 'package:acrova/presentation/features/cubit/billing/payment_details_state.dart';
+import 'package:acrova/utils/extensions/localization_extension.dart';
 import 'package:acrova/utils/extensions/theme_extension.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
@@ -33,8 +33,13 @@ class _PaymentDetailsContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final loc = context.localization;
+
     return CommonScreen(
-      appBar: AppAuthBrandHeader(label: 'Payment Details',showBack: true,),
+      appBar: AppAuthBrandHeader(
+        label: loc.paymentDetailsTitle,
+        showBack: true,
+      ),
       padding: EdgeInsets.zero,
       child: BlocBuilder<PaymentDetailsCubit, PaymentDetailsState>(
         builder: (context, state) {
@@ -44,7 +49,7 @@ class _PaymentDetailsContent extends StatelessWidget {
           if (state.status == PaymentDetailsStatus.failure) {
             return Center(
               child: Text(
-                state.error?.message ?? 'Failed to load payment details',
+                state.error?.message ?? loc.paymentDetailsFailedToLoad,
                 style: context.textTheme.bodyMedium?.copyWith(
                   color: Resources.colors.luxuryError,
                 ),
@@ -69,11 +74,11 @@ class _PaymentDetailsCard extends StatelessWidget {
   Color _getStatusColor() {
     switch (payment.status) {
       case PaymentStatus.success:
-        return const Color(0xFF2ECC71);
+        return Resources.colors.luxurySuccess;
       case PaymentStatus.rejected:
-        return const Color(0xFFC0392B);
+        return Resources.colors.luxuryError;
       case PaymentStatus.pending:
-        return const Color(0xFFF39C12);
+        return Resources.colors.luxuryWarning;
     }
   }
 
@@ -90,6 +95,7 @@ class _PaymentDetailsCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final loc = context.localization;
     final statusColor = _getStatusColor();
     final isSuccess = payment.status == PaymentStatus.success;
     final isRejected = payment.status == PaymentStatus.rejected;
@@ -136,11 +142,11 @@ class _PaymentDetailsCard extends StatelessWidget {
                       Icon(
                         _getStatusIcon(),
                         color: statusColor,
-                        size: 48,
+                        size: Resources.iconSizes.$48,
                       ),
                       SizedBox(height: Resources.verticalDims.$8),
                       Text(
-                        'Payment ${payment.status.displayName}',
+                        loc.paymentDetailsPaymentStatus(payment.status.localizedName(context)),
                         style: context.textTheme.labelMedium?.copyWith(
                           color: isRejected ? statusColor : Resources.colors.luxuryBody,
                           letterSpacing: 1.5,
@@ -166,7 +172,7 @@ class _PaymentDetailsCard extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'Project',
+                        loc.paymentDetailsProject,
                         style: context.textTheme.labelSmall?.copyWith(
                           color: Resources.colors.luxuryBody,
                           letterSpacing: 1.5,
@@ -183,7 +189,7 @@ class _PaymentDetailsCard extends StatelessWidget {
                       ),
                       SizedBox(height: Resources.verticalDims.$4),
                       Text(
-                        'ID: ${payment.projectId}',
+                        loc.paymentDetailsId(payment.projectId),
                         style: context.textTheme.labelMedium?.copyWith(
                           color: Resources.colors.luxuryBody,
                         ),
@@ -200,12 +206,21 @@ class _PaymentDetailsCard extends StatelessWidget {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            _buildGridItem(context, 'Transaction ID', payment.transactionId),
+                            _PaymentGridItem(
+                              label: loc.paymentDetailsTransactionId,
+                              value: payment.transactionId,
+                            ),
                             SizedBox(height: Resources.verticalDims.$16),
-                            _buildGridItem(context, 'Bank', payment.bankName),
+                            _PaymentGridItem(
+                              label: loc.paymentDetailsBank,
+                              value: payment.bankName,
+                            ),
                             if (isSuccess) ...[
                               SizedBox(height: Resources.verticalDims.$16),
-                              _buildGridItem(context, 'Account Name', payment.accountName),
+                              _PaymentGridItem(
+                                label: loc.paymentDetailsAccountName,
+                                value: payment.accountName,
+                              ),
                             ],
                           ],
                         ),
@@ -214,9 +229,15 @@ class _PaymentDetailsCard extends StatelessWidget {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            _buildGridItem(context, 'Date', formattedDate),
+                            _PaymentGridItem(
+                              label: loc.paymentDetailsDate,
+                              value: formattedDate,
+                            ),
                             SizedBox(height: Resources.verticalDims.$16),
-                            _buildGridItem(context, 'IBAN', payment.iban),
+                            _PaymentGridItem(
+                              label: loc.paymentDetailsIban,
+                              value: payment.iban,
+                            ),
                           ],
                         ),
                       ),
@@ -236,7 +257,7 @@ class _PaymentDetailsCard extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            'Payment Rejected',
+                            loc.paymentDetailsPaymentRejected,
                             style: context.textTheme.titleSmall?.copyWith(
                               color: const Color(0xFFC0392B),
                               fontWeight: Resources.fontWeights.semiBold,
@@ -270,7 +291,7 @@ class _PaymentDetailsCard extends StatelessWidget {
                               Icon(Icons.receipt_long, color: Resources.colors.luxuryBody),
                               SizedBox(width: Resources.horizontalDims.$8),
                               Text(
-                                'Transfer Receipt',
+                                loc.paymentDetailsTransferReceipt,
                                 style: context.textTheme.bodyMedium?.copyWith(
                                   color: Resources.colors.luxuryNavy,
                                   fontWeight: Resources.fontWeights.medium,
@@ -305,8 +326,11 @@ class _PaymentDetailsCard extends StatelessWidget {
                       height: 48,
                       child: ElevatedButton.icon(
                         onPressed: () {
-                          if(isPending){
-                            context.pushNamed(AppRouteEnum.makePaymentPage.name,extra: {'amount':payment.amount?.toStringAsFixed(2)});
+                          if (isPending) {
+                            context.pushNamed(
+                              AppRouteEnum.makePaymentPage.name,
+                              extra: {'amount': payment.amount.toStringAsFixed(2)},
+                            );
                           }
                         },
                         style: ElevatedButton.styleFrom(
@@ -318,7 +342,7 @@ class _PaymentDetailsCard extends StatelessWidget {
                         ),
                         icon: Icon(Icons.download, color: Resources.colors.white, size: 20),
                         label: Text(
-                          (isPending? 'Pay':'Download PDF').toUpperCase(),
+                          isPending ? loc.paymentDetailsPay : loc.paymentDetailsDownloadPdf,
                           style: context.textTheme.labelLarge?.copyWith(
                             fontWeight: Resources.fontWeights.medium,
                             color: Resources.colors.white,
@@ -335,15 +359,26 @@ class _PaymentDetailsCard extends StatelessWidget {
       ),
     );
   }
+}
 
-  Widget _buildGridItem(BuildContext context, String label, String value) {
+class _PaymentGridItem extends StatelessWidget {
+  const _PaymentGridItem({
+    required this.label,
+    required this.value,
+  });
+
+  final String label;
+  final String value;
+
+  @override
+  Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          label.toUpperCase(),
+          label,
           style: context.textTheme.labelSmall?.copyWith(
-            color: Resources.colors.luxuryGoldLight,
+            color: Resources.colors.luxuryBody,
             letterSpacing: 1.5,
             fontWeight: Resources.fontWeights.semiBold,
           ),
@@ -352,6 +387,7 @@ class _PaymentDetailsCard extends StatelessWidget {
         Text(
           value,
           style: context.textTheme.bodyMedium?.copyWith(
+            fontWeight: Resources.fontWeights.semiBold,
             color: Resources.colors.luxuryNavy,
           ),
         ),

@@ -75,8 +75,7 @@ linter:
     # =========================
     use_key_in_widget_constructors: true
     sized_box_for_whitespace: true
-    avoid_returning_widgets: true
-    avoid_single_child_column: true
+
 
     # =========================
     # 🔐 SAFETY

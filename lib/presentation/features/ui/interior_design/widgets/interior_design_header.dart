@@ -34,7 +34,7 @@ class InteriorDesignHeader extends StatelessWidget {
               Icon(Icons.business_center_outlined, color: Resources.colors.luxuryGoldLight),
               SizedBox(width: Resources.horizontalDims.$8),
               Text(
-                'PROJECT SUMMARY',
+                l10n.interiorDesignProjectSummary,
                 style: Theme.of(context).textTheme.labelSmall?.copyWith(
                       fontWeight: Resources.fontWeights.bold,
                       letterSpacing: 1.2,
@@ -54,10 +54,10 @@ class InteriorDesignHeader extends StatelessWidget {
           SizedBox(height: Resources.verticalDims.$8),
           Row(
             children: [
-              Icon(Icons.location_on_outlined, size: 16, color: Resources.colors.luxuryBody),
+              Icon(Icons.location_on_outlined, size: Resources.iconSizes.$16, color: Resources.colors.luxuryBody),
               SizedBox(width: Resources.horizontalDims.$4),
               Text(
-                project.location?.isNotEmpty == true ? project.location! : 'Location Not Set',
+                project.location?.isNotEmpty == true ? project.location! : l10n.interiorDesignLocationNotSet,
                 style: context.textTheme.bodySmall?.copyWith(
                   color: Resources.colors.luxuryBody,
                 ),
@@ -72,7 +72,7 @@ class InteriorDesignHeader extends StatelessWidget {
           if (project.type == ProjectType.commercial && project.employeeCount != null) ...[
             _SummaryRow(
               icon: Icons.people_outline,
-              label: 'Employee Count',
+              label: l10n.specEmployeeCount,
               value: '${project.employeeCount}',
             ),
             SizedBox(height: Resources.verticalDims.$12),
@@ -80,7 +80,7 @@ class InteriorDesignHeader extends StatelessWidget {
           if (project.bedrooms != null) ...[
             _SummaryRow(
               icon: Icons.bed_outlined,
-              label: 'Bedrooms',
+              label: l10n.specBedrooms,
               value: '${project.bedrooms}',
             ),
             SizedBox(height: Resources.verticalDims.$12),
@@ -88,21 +88,21 @@ class InteriorDesignHeader extends StatelessWidget {
           if (project.bathrooms != null) ...[
             _SummaryRow(
               icon: Icons.bathtub_outlined,
-              label: 'Bathrooms',
+              label: l10n.specBathrooms,
               value: '${project.bathrooms}',
             ),
             SizedBox(height: Resources.verticalDims.$12),
           ],
           _SummaryRow(
             icon: Icons.layers_outlined,
-            label: 'Floors',
+            label: l10n.specFloors,
             value: '${project.floors ?? 1}',
           ),
           SizedBox(height: Resources.verticalDims.$12),
           if (project.landAreaSqm != null) ...[
             _SummaryRow(
               icon: Icons.square_foot_outlined,
-              label: 'Area',
+              label: l10n.specArea,
               value: '${project.landAreaSqm?.toStringAsFixed(0)} m²',
             ),
             SizedBox(height: Resources.verticalDims.$12),
@@ -110,7 +110,7 @@ class InteriorDesignHeader extends StatelessWidget {
           if (project.landWidthM != null && project.landLengthM != null) ...[
             _SummaryRow(
               icon: Icons.straighten_outlined,
-              label: 'Dimensions',
+              label: l10n.specDimensions,
               value: '${project.landWidthM?.toStringAsFixed(1)}m × ${project.landLengthM?.toStringAsFixed(1)}m',
             ),
             SizedBox(height: Resources.verticalDims.$12),
@@ -130,7 +130,7 @@ class InteriorDesignHeader extends StatelessWidget {
           if (project.architecturalStyle != null) ...[
             _SummaryRow(
               icon: Icons.architecture_outlined,
-              label: 'Architectural Style',
+              label: l10n.specArchitecturalStyle,
               value: project.architecturalStyle!,
             ),
             SizedBox(height: Resources.verticalDims.$12),
@@ -139,7 +139,7 @@ class InteriorDesignHeader extends StatelessWidget {
           if (project.smartHomeLevel != null) ...[
             _SummaryRow(
               icon: Icons.smart_toy_outlined,
-              label: 'Smart Home',
+              label: l10n.specSmartHome,
               value: project.smartHomeLevel!,
             ),
             SizedBox(height: Resources.verticalDims.$12),
@@ -156,10 +156,10 @@ class InteriorDesignHeader extends StatelessWidget {
                 collapsedIconColor: Resources.colors.luxuryBody,
                 title: Row(
                   children: [
-                    Icon(Icons.folder_open_outlined, color: Resources.colors.luxuryNavy, size: 20),
+                    Icon(Icons.folder_open_outlined, color: Resources.colors.luxuryNavy, size: Resources.iconSizes.$20),
                     SizedBox(width: Resources.horizontalDims.$8),
                     Text(
-                      'Deliverables',
+                      l10n.deliverablesTitle,
                       style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                         fontWeight: Resources.fontWeights.semiBold,
                         color: Resources.colors.luxuryNavy,
@@ -167,15 +167,15 @@ class InteriorDesignHeader extends StatelessWidget {
                     ),
                     SizedBox(width: Resources.horizontalDims.$8),
                     Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                      padding: EdgeInsets.symmetric(horizontal: Resources.horizontalDims.$6, vertical: Resources.verticalDims.$2),
                       decoration: BoxDecoration(
                         color: Resources.colors.luxuryGoldLight.withValues(alpha: 0.1),
-                        borderRadius: BorderRadius.circular(10),
+                        borderRadius: BorderRadius.circular(Resources.radius.$r10),
                       ),
                       child: Text(
                         '${project.deliverables.length}',
                         style: TextStyle(
-                          fontSize: 10,
+                          fontSize: Resources.fontSizes.$10,
                           fontWeight: Resources.fontWeights.bold,
                           color: Resources.colors.luxuryGoldLight,
                         ),
@@ -198,24 +198,25 @@ class InteriorDesignHeader extends StatelessWidget {
   }
 
   List<Widget> _buildAmenityChips(BuildContext context) {
+    final l10n = context.localization;
     final chips = <Widget>[];
     void addChip(String label, IconData icon) {
       chips.add(Container(
-        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+        padding: EdgeInsets.symmetric(horizontal: Resources.horizontalDims.$8, vertical: Resources.verticalDims.$4),
         decoration: BoxDecoration(
           color: Resources.colors.luxurySurface,
-          borderRadius: BorderRadius.circular(4),
+          borderRadius: BorderRadius.circular(Resources.radius.$r4),
           border: Border.all(color: Resources.colors.luxuryBorder),
         ),
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Icon(icon, size: 12, color: Resources.colors.luxuryBody),
+            Icon(icon, size: Resources.iconSizes.$12, color: Resources.colors.luxuryBody),
             SizedBox(width: Resources.horizontalDims.$4),
             Text(
               label,
               style: context.textTheme.labelSmall?.copyWith(
-                fontSize: 10,
+                fontSize: Resources.fontSizes.$10,
                 color: Resources.colors.luxuryBody,
               ),
             ),
@@ -224,12 +225,12 @@ class InteriorDesignHeader extends StatelessWidget {
       ));
     }
 
-    if (project.hasMajlis == true) addChip('Majlis', Icons.chair_outlined);
-    if (project.hasMaidRoom == true) addChip('Maid Room', Icons.cleaning_services_outlined);
-    if (project.hasDriverRoom == true) addChip('Driver Room', Icons.directions_car_outlined);
-    if (project.hasBasement == true) addChip('Basement', Icons.stairs_outlined);
-    if (project.hasPool == true) addChip('Pool', Icons.pool_outlined);
-    if (project.hasRooftop == true) addChip('Rooftop', Icons.deck_outlined);
+    if (project.hasMajlis == true) addChip(l10n.requirementsSpaceMajlis, Icons.chair_outlined);
+    if (project.hasMaidRoom == true) addChip(l10n.requirementsSpaceMaid, Icons.cleaning_services_outlined);
+    if (project.hasDriverRoom == true) addChip(l10n.requirementsSpaceDriver, Icons.directions_car_outlined);
+    if (project.hasBasement == true) addChip(l10n.requirementsSpaceBasement, Icons.stairs_outlined);
+    if (project.hasPool == true) addChip(l10n.requirementsSpacePool, Icons.pool_outlined);
+    if (project.hasRooftop == true) addChip(l10n.requirementsSpaceRooftop, Icons.deck_outlined);
 
     return chips;
   }
@@ -267,12 +268,12 @@ class _DeliverableItem extends StatelessWidget {
       child: Row(
         children: [
           Container(
-            padding: const EdgeInsets.all(8),
+            padding: EdgeInsets.all(Resources.squareDims.$8),
             decoration: BoxDecoration(
               color: _getColor().withValues(alpha: 0.1),
-              borderRadius: BorderRadius.circular(8),
+              borderRadius: BorderRadius.circular(Resources.radius.$r8),
             ),
-            child: Icon(_getIcon(), size: 20, color: _getColor()),
+            child: Icon(_getIcon(), size: Resources.iconSizes.$20, color: _getColor()),
           ),
           SizedBox(width: Resources.horizontalDims.$12),
           Expanded(
@@ -286,18 +287,18 @@ class _DeliverableItem extends StatelessWidget {
                     color: Resources.colors.luxuryNavy,
                   ),
                 ),
-                const SizedBox(height: 2),
+                SizedBox(height: Resources.verticalDims.$2),
                 Text(
                   '${deliverable.createdAt.day}/${deliverable.createdAt.month}/${deliverable.createdAt.year}',
                   style: context.textTheme.labelSmall?.copyWith(
-                    fontSize: 10,
+                    fontSize: Resources.fontSizes.$10,
                     color: Resources.colors.luxuryBody,
                   ),
                 ),
               ],
             ),
           ),
-          Icon(Icons.download_outlined, size: 20, color: Resources.colors.luxuryGoldLight),
+          Icon(Icons.download_outlined, size: Resources.iconSizes.$20, color: Resources.colors.luxuryGoldLight),
         ],
       ),
     );

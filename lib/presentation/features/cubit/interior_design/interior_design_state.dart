@@ -1,4 +1,5 @@
 import 'package:acrova/core/error/app_error_model.dart';
+import 'package:acrova/data/models/interior_design/moodboard_model.dart';
 import 'package:acrova/data/models/project/interior_design_request.dart';
 import 'package:equatable/equatable.dart';
 
@@ -18,6 +19,7 @@ class InteriorDesignState extends Equatable {
   final String extraNotes;
   final List<String> inspirationMediaPaths;
   final List<String> inspirationLinks;
+  final List<MoodboardModel> availableMoodboards;
   
   final InteriorDesignStatus status;
   final AppErrorModel? error;
@@ -36,6 +38,7 @@ class InteriorDesignState extends Equatable {
     this.extraNotes = '',
     this.inspirationMediaPaths = const [],
     this.inspirationLinks = const [],
+    this.availableMoodboards = const [],
     this.status = InteriorDesignStatus.initial,
     this.error,
   });
@@ -79,6 +82,7 @@ class InteriorDesignState extends Equatable {
     String? extraNotes,
     List<String>? inspirationMediaPaths,
     List<String>? inspirationLinks,
+    List<MoodboardModel>? availableMoodboards,
     InteriorDesignStatus? status,
     AppErrorModel? error,
   }) {
@@ -96,6 +100,7 @@ class InteriorDesignState extends Equatable {
       extraNotes: extraNotes ?? this.extraNotes,
       inspirationMediaPaths: inspirationMediaPaths ?? this.inspirationMediaPaths,
       inspirationLinks: inspirationLinks ?? this.inspirationLinks,
+      availableMoodboards: availableMoodboards ?? this.availableMoodboards,
       status: status ?? this.status,
       error: error ?? this.error,
     );
@@ -116,6 +121,7 @@ class InteriorDesignState extends Equatable {
         extraNotes,
         inspirationMediaPaths,
         inspirationLinks,
+        availableMoodboards,
         status,
         error,
       ];

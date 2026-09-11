@@ -6,6 +6,7 @@ import 'package:acrova/presentation/features/common_widgets/common_screen/common
 import 'package:acrova/presentation/features/cubit/billing/payment_history_cubit.dart';
 import 'package:acrova/presentation/features/cubit/billing/payment_history_state.dart';
 import 'package:acrova/presentation/features/ui/billing/widgets/payment_list_item.dart';
+import 'package:acrova/utils/extensions/localization_extension.dart';
 import 'package:acrova/utils/extensions/theme_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -29,8 +30,13 @@ class _PaymentHistoryContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final loc = context.localization;
+
     return CommonScreen(
-      appBar: AppAuthBrandHeader(label: 'Arcova Billing',showBack: true,),
+      appBar: AppAuthBrandHeader(
+        label: loc.billingTitle,
+        showBack: true,
+      ),
       padding: EdgeInsets.zero,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -43,7 +49,7 @@ class _PaymentHistoryContent extends StatelessWidget {
               Resources.verticalDims.$16,
             ),
             child: Text(
-              'Payment History',
+              loc.paymentHistoryTitle,
               style: context.textTheme.headlineSmall?.copyWith(
                 fontWeight: Resources.fontWeights.semiBold,
                 color: Resources.colors.luxuryNavy,
@@ -54,37 +60,54 @@ class _PaymentHistoryContent extends StatelessWidget {
           SizedBox(
             height: 36,
             child: BlocBuilder<PaymentHistoryCubit, PaymentHistoryState>(
-              buildWhen: (p, c) => p.selectedFilter != c.selectedFilter || p.isLoading != c.isLoading,
+              buildWhen: (p, c) =>
+                  p.selectedFilter != c.selectedFilter || p.isLoading != c.isLoading,
               builder: (context, state) {
                 if (state.isLoading) {
-                  return _buildShimmerFilters();
+                  return const _PaymentHistoryShimmerFilters();
                 }
-                final filters = ['All', 'Success', 'Pending', 'Rejected'];
+                final filterItems = [
+                  (id: 'All', label: loc.filterAll),
+                  (id: 'Success', label: loc.filterSuccess),
+                  (id: 'Pending', label: loc.filterPending),
+                  (id: 'Rejected', label: loc.filterRejected),
+                ];
                 return ListView.separated(
                   padding: EdgeInsets.symmetric(horizontal: Resources.horizontalDims.$24),
                   scrollDirection: Axis.horizontal,
-                  itemCount: filters.length,
+                  itemCount: filterItems.length,
                   separatorBuilder: (_, __) => SizedBox(width: Resources.horizontalDims.$8),
                   itemBuilder: (context, index) {
-                    final filter = filters[index];
-                    final isSelected = filter == state.selectedFilter;
+                    final item = filterItems[index];
+                    final isSelected = item.id == state.selectedFilter;
                     return GestureDetector(
-                      onTap: () => context.read<PaymentHistoryCubit>().updateFilter(filter),
+                      onTap: () =>
+                          context.read<PaymentHistoryCubit>().updateFilter(item.id),
                       child: Container(
-                        padding: EdgeInsets.symmetric(horizontal: Resources.horizontalDims.$16),
+                        padding: EdgeInsets.symmetric(
+                          horizontal: Resources.horizontalDims.$16,
+                        ),
                         decoration: BoxDecoration(
-                          color: isSelected ? Resources.colors.luxuryNavy : Colors.transparent,
+                          color: isSelected
+                              ? Resources.colors.luxuryNavy
+                              : Colors.transparent,
                           borderRadius: BorderRadius.circular(18),
                           border: Border.all(
-                            color: isSelected ? Resources.colors.luxuryNavy : Resources.colors.luxuryBorder,
+                            color: isSelected
+                                ? Resources.colors.luxuryNavy
+                                : Resources.colors.luxuryBorder,
                           ),
                         ),
                         alignment: Alignment.center,
                         child: Text(
-                          filter,
+                          item.label,
                           style: context.textTheme.labelMedium?.copyWith(
-                            color: isSelected ? Resources.colors.white : Resources.colors.luxuryNavy,
-                            fontWeight: isSelected ? Resources.fontWeights.semiBold : Resources.fontWeights.medium,
+                            color: isSelected
+                                ? Resources.colors.white
+                                : Resources.colors.luxuryNavy,
+                            fontWeight: isSelected
+                                ? Resources.fontWeights.semiBold
+                                : Resources.fontWeights.medium,
                           ),
                         ),
                       ),
@@ -100,13 +123,13 @@ class _PaymentHistoryContent extends StatelessWidget {
             child: BlocBuilder<PaymentHistoryCubit, PaymentHistoryState>(
               builder: (context, state) {
                 if (state.isLoading) {
-                  return _buildShimmerList();
+                  return const _PaymentHistoryShimmerList();
                 }
                 if (state.status == PaymentHistoryStatus.failure) {
-                  return _buildErrorState(context, state);
+                  return _PaymentHistoryErrorState(state: state);
                 }
                 if (state.isEmpty) {
-                  return _buildEmptyState(context);
+                  return const _PaymentHistoryEmptyState();
                 }
                 return ListView.separated(
                   padding: EdgeInsets.fromLTRB(
@@ -116,7 +139,8 @@ class _PaymentHistoryContent extends StatelessWidget {
                     Resources.verticalDims.$32,
                   ),
                   itemCount: state.filteredPayments.length,
-                  separatorBuilder: (_, __) => SizedBox(height: Resources.verticalDims.$12),
+                  separatorBuilder: (_, __) =>
+                      SizedBox(height: Resources.verticalDims.$12),
                   itemBuilder: (context, index) {
                     final payment = state.filteredPayments[index];
                     return PaymentListItem(
@@ -137,17 +161,23 @@ class _PaymentHistoryContent extends StatelessWidget {
       ),
     );
   }
+}
 
-  Widget _buildShimmerFilters() {
-    final widths = [80.0, 100.0, 90.0, 110.0];
+class _PaymentHistoryShimmerFilters extends StatelessWidget {
+  const _PaymentHistoryShimmerFilters();
+
+  static const _widths = [80.0, 100.0, 90.0, 110.0];
+
+  @override
+  Widget build(BuildContext context) {
     return ListView.separated(
       padding: EdgeInsets.symmetric(horizontal: Resources.horizontalDims.$24),
       scrollDirection: Axis.horizontal,
-      itemCount: widths.length,
+      itemCount: _widths.length,
       separatorBuilder: (_, __) => SizedBox(width: Resources.horizontalDims.$8),
       itemBuilder: (context, index) {
         return Container(
-          width: widths[index],
+          width: _widths[index],
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(18),
             border: Border.all(color: Resources.colors.luxuryBorder),
@@ -157,7 +187,7 @@ class _PaymentHistoryContent extends StatelessWidget {
             baseColor: Resources.colors.luxuryBorder.withValues(alpha: 0.3),
             highlightColor: Resources.colors.luxuryBorder.withValues(alpha: 0.1),
             child: Container(
-              width: widths[index] * 0.6,
+              width: _widths[index] * 0.6,
               height: 12,
               decoration: BoxDecoration(
                 color: Colors.white,
@@ -169,8 +199,13 @@ class _PaymentHistoryContent extends StatelessWidget {
       },
     );
   }
+}
 
-  Widget _buildShimmerList() {
+class _PaymentHistoryShimmerList extends StatelessWidget {
+  const _PaymentHistoryShimmerList();
+
+  @override
+  Widget build(BuildContext context) {
     return ListView.separated(
       padding: EdgeInsets.symmetric(horizontal: Resources.horizontalDims.$24),
       itemCount: 5,
@@ -250,8 +285,15 @@ class _PaymentHistoryContent extends StatelessWidget {
       },
     );
   }
+}
 
-  Widget _buildEmptyState(BuildContext context) {
+class _PaymentHistoryEmptyState extends StatelessWidget {
+  const _PaymentHistoryEmptyState();
+
+  @override
+  Widget build(BuildContext context) {
+    final loc = context.localization;
+
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: Resources.horizontalDims.$24),
       child: Column(
@@ -273,7 +315,7 @@ class _PaymentHistoryContent extends StatelessWidget {
           ),
           SizedBox(height: Resources.verticalDims.$24),
           Text(
-            'No Payments Found',
+            loc.paymentHistoryEmptyTitle,
             style: context.textTheme.titleMedium?.copyWith(
               fontWeight: Resources.fontWeights.semiBold,
               color: Resources.colors.luxuryNavy,
@@ -282,7 +324,7 @@ class _PaymentHistoryContent extends StatelessWidget {
           ),
           SizedBox(height: Resources.verticalDims.$8),
           Text(
-            'Your financial history will appear here once you initiate your first project investment.',
+            loc.paymentHistoryEmptySubtitle,
             style: context.textTheme.bodyMedium?.copyWith(
               color: Resources.colors.luxuryBody,
             ),
@@ -294,7 +336,6 @@ class _PaymentHistoryContent extends StatelessWidget {
             height: 55,
             child: ElevatedButton(
               onPressed: () {
-                // Navigate to start project or equivalent
                 context.go(AppRouteEnum.projectCreationPage.path);
               },
               style: ElevatedButton.styleFrom(
@@ -306,7 +347,7 @@ class _PaymentHistoryContent extends StatelessWidget {
                 shadowColor: Resources.colors.luxuryNavy.withValues(alpha: 0.3),
               ),
               child: Text(
-                'START NEW PROJECT',
+                loc.paymentHistoryStartNewProject,
                 style: context.textTheme.labelLarge?.copyWith(
                   fontWeight: Resources.fontWeights.bold,
                   color: Resources.colors.white,
@@ -319,8 +360,17 @@ class _PaymentHistoryContent extends StatelessWidget {
       ),
     );
   }
+}
 
-  Widget _buildErrorState(BuildContext context, PaymentHistoryState state) {
+class _PaymentHistoryErrorState extends StatelessWidget {
+  const _PaymentHistoryErrorState({required this.state});
+
+  final PaymentHistoryState state;
+
+  @override
+  Widget build(BuildContext context) {
+    final loc = context.localization;
+
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: Resources.horizontalDims.$40),
       child: Column(
@@ -332,7 +382,9 @@ class _PaymentHistoryContent extends StatelessWidget {
             decoration: BoxDecoration(
               color: Resources.colors.luxuryError.withValues(alpha: 0.1),
               shape: BoxShape.circle,
-              border: Border.all(color: Resources.colors.luxuryError.withValues(alpha: 0.2)),
+              border: Border.all(
+                color: Resources.colors.luxuryError.withValues(alpha: 0.2),
+              ),
             ),
             alignment: Alignment.center,
             child: Container(
@@ -352,7 +404,7 @@ class _PaymentHistoryContent extends StatelessWidget {
           ),
           SizedBox(height: Resources.verticalDims.$24),
           Text(
-            state.error?.title ?? 'Failed to Load',
+            state.error?.title ?? loc.paymentHistoryErrorTitle,
             style: context.textTheme.titleMedium?.copyWith(
               fontWeight: Resources.fontWeights.semiBold,
               color: Resources.colors.luxuryNavy,
@@ -361,7 +413,7 @@ class _PaymentHistoryContent extends StatelessWidget {
           ),
           SizedBox(height: Resources.verticalDims.$8),
           Text(
-            state.error?.message ?? 'A connection issue occurred while fetching your ledger. Please verify your network and retry.',
+            state.error?.message ?? loc.paymentHistoryErrorMessage,
             style: context.textTheme.bodyMedium?.copyWith(
               color: Resources.colors.luxuryBody,
             ),
@@ -385,7 +437,7 @@ class _PaymentHistoryContent extends StatelessWidget {
               ),
               icon: Icon(Icons.refresh, color: Resources.colors.white),
               label: Text(
-                'TRY AGAIN',
+                loc.paymentHistoryTryAgain,
                 style: context.textTheme.labelLarge?.copyWith(
                   fontWeight: Resources.fontWeights.bold,
                   color: Resources.colors.white,

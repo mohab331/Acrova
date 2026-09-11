@@ -1,7 +1,10 @@
+import 'package:acrova/core/di/dependency_injector.dart';
 import 'package:acrova/presentation/app/navigation/app_route_enum.dart';
 import 'package:acrova/presentation/app/resources/resources.dart';
 import 'package:acrova/presentation/features/common_widgets/app_bar/app_avatar_header.dart';
 import 'package:acrova/presentation/features/common_widgets/common_screen/common_screen.dart';
+import 'package:acrova/presentation/features/cubit/portfolio/portfolio_cubit.dart';
+import 'package:acrova/presentation/features/cubit/portfolio/portfolio_state.dart';
 import 'package:acrova/presentation/features/ui/portfolio/portfolio_item.dart';
 import 'package:acrova/presentation/features/ui/portfolio/widgets/portfolio_filter_row.dart';
 import 'package:acrova/presentation/features/ui/portfolio/widgets/portfolio_gallery_grid.dart';
@@ -9,96 +12,109 @@ import 'package:acrova/presentation/features/ui/portfolio/widgets/portfolio_hero
 import 'package:acrova/utils/extensions/localization_extension.dart';
 import 'package:acrova/utils/extensions/theme_extension.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
-class PortfolioPage extends StatefulWidget {
+class PortfolioPage extends StatelessWidget {
   const PortfolioPage({super.key});
 
   @override
-  State<PortfolioPage> createState() => _PortfolioPageState();
+  Widget build(BuildContext context) {
+    return BlocProvider(
+      create: (context) => serviceLocatorInstance<PortfolioCubit>()..fetchPortfolio(),
+      child: const _PortfolioPageView(),
+    );
+  }
 }
 
-class _PortfolioPageState extends State<PortfolioPage> {
-  PortfolioFilter _filter = PortfolioFilter.all;
+class _PortfolioPageView extends StatelessWidget {
+  const _PortfolioPageView();
 
-  List<PortfolioItem> get _filtered {
-    if (_filter == PortfolioFilter.all) return PortfolioItem.mockItems;
-    return PortfolioItem.mockItems
-        .where((i) => i.category == _filter.name)
-        .toList();
-  }
-
-  void _openDetail(PortfolioItem item) {
+  void _openDetail(BuildContext context, PortfolioItem item) {
     context.pushNamed(AppRouteEnum.portfolioDetailPage.name, extra: item);
   }
 
   @override
   Widget build(BuildContext context) {
-    final items = _filtered;
-
     return CommonScreen(
       bottomPadding: 0,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          const AvatarHeader(userName: 'Mohab', notificationCount: 2),
-          Expanded(
-            child: SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  Text(
-                    context.localization.portfolioExploreTitle,
-                    style: context.textTheme.titleMedium?.copyWith(
-                      color: Resources.colors.luxuryNavy,
-                      fontWeight: Resources.fontWeights.semiBold,
-                    ),
-                  ),
-                  SizedBox(height: Resources.verticalDims.$4),
-                  Text(
-                    context.localization.portfolioExploreSubtitle,
-                    style: context.textTheme.labelMedium?.copyWith(
-                      color: Resources.colors.luxuryBodyMuted,
-                    ),
-                  ),
-                  SizedBox(height: Resources.verticalDims.$20),
-                  PortfolioFilterRow(
-                    selected: _filter,
-                    onSelect: (f) => setState(() => _filter = f),
-                  ),
-                  SizedBox(height: Resources.verticalDims.$20),
-                  if (items.isEmpty)
-                    Padding(
-                      padding: EdgeInsets.only(top: Resources.verticalDims.$80),
-                      child: Center(
-                        child: Text(
-                          context.localization.noDesignsCategory,
-                          style: TextStyle(
-                            fontSize: Resources.fontSizes.$14,
-                            color: Resources.colors.luxuryBodyMuted,
-                          ),
+      child: BlocBuilder<PortfolioCubit, PortfolioState>(
+        builder: (context, state) {
+          final items = state.filteredItems;
+
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              AvatarHeader(
+                userName: state.userName,
+                notificationCount: state.notificationCount,
+                avatarUrl: state.avatarUrl,
+              ),
+              Expanded(
+                child: SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      Text(
+                        context.localization.portfolioExploreTitle,
+                        style: context.textTheme.titleMedium?.copyWith(
+                          color: Resources.colors.luxuryNavy,
+                          fontWeight: Resources.fontWeights.semiBold,
                         ),
                       ),
-                    )
-                  else ...[
-                    PortfolioHeroCard(
-                      item: items.first,
-                      onTap: () => _openDetail(items.first),
-                    ),
-                    if (items.length > 1) ...[
-                      SizedBox(height: Resources.verticalDims.$20),
-                      PortfolioGalleryGrid(
-                        items: items.skip(1).toList(),
-                        onTap: _openDetail,
+                      SizedBox(height: Resources.verticalDims.$4),
+                      Text(
+                        context.localization.portfolioExploreSubtitle,
+                        style: context.textTheme.labelMedium?.copyWith(
+                          color: Resources.colors.luxuryBodyMuted,
+                        ),
                       ),
+                      SizedBox(height: Resources.verticalDims.$20),
+                      PortfolioFilterRow(
+                        selected: state.filter,
+                        onSelect: (f) =>
+                            context.read<PortfolioCubit>().setFilter(f),
+                      ),
+                      SizedBox(height: Resources.verticalDims.$20),
+                      if (items.isEmpty)
+                        Padding(
+                          padding:
+                              EdgeInsets.only(top: Resources.verticalDims.$80),
+                          child: Center(
+                            child: Text(
+                              context.localization.noDesignsCategory,
+                              style: TextStyle(
+                                fontSize: Resources.fontSizes.$14,
+                                color: Resources.colors.luxuryBodyMuted,
+                              ),
+                            ),
+                          ),
+                        )
+                      else
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            PortfolioHeroCard(
+                              item: items.first,
+                              onTap: () => _openDetail(context, items.first),
+                            ),
+                            if (items.length > 1) ...[
+                              SizedBox(height: Resources.verticalDims.$20),
+                              PortfolioGalleryGrid(
+                                items: items.skip(1).toList(),
+                                onTap: (item) => _openDetail(context, item),
+                              ),
+                            ],
+                          ],
+                        ),
+                      SizedBox(height: Resources.verticalDims.$32),
                     ],
-                  ],
-                  SizedBox(height: Resources.verticalDims.$32),
-                ],
+                  ),
+                ),
               ),
-            ),
-          ),
-        ],
+            ],
+          );
+        },
       ),
     );
   }

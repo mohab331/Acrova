@@ -1,12 +1,9 @@
 import 'package:acrova/data/models/project/project_model.dart';
-import 'package:acrova/presentation/app/navigation/app_route_enum.dart';
 import 'package:acrova/presentation/app/resources/resources.dart';
-import 'package:acrova/presentation/features/common_widgets/buttons/app_primary_button.dart';
-import 'package:acrova/presentation/features/common_widgets/buttons/app_secondary_button.dart';
 import 'package:acrova/utils/enums/project_status_enum.dart';
+import 'package:acrova/utils/extensions/localization_extension.dart';
 import 'package:acrova/utils/extensions/theme_extension.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 
 class ProjectActionCard extends StatelessWidget {
   const ProjectActionCard({
@@ -18,57 +15,46 @@ class ProjectActionCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Determine action text based on status.
-    // In a real app, this would be computed from the project data or a localized map.
+    final loc = context.localization;
     final String title;
     final String description;
     final IconData icon;
-    Widget? ctaWidget;
 
     switch (project.status) {
       case ProjectStatus.awaitingPricing:
       case ProjectStatus.awaitingEngineeringAssignment:
-        title = 'Application Under Review';
-        description = 'Our administrative team is verifying your site documents and municipal permit application.';
+        title = loc.projectActionReviewTitle;
+        description = loc.projectActionReviewDesc;
         icon = Icons.description_outlined;
         break;
       case ProjectStatus.paymentUnderReview:
-        title = 'Payment Under Review';
-        description = 'Our financial team is verifying your payment documents.';
+        title = loc.projectActionPaymentReviewTitle;
+        description = loc.projectActionPaymentReviewDesc;
         icon = Icons.payments_outlined;
-        ctaWidget = AppPrimaryButton(label: 'VIEW DELIVERABLES',onPressed: () {
-          context.push(AppRouteEnum.deliverablesPage.path);
-        }, );
         break;
       case ProjectStatus.awaitingPayment:
-        title = 'Payment Required';
-        description = 'Please upload your bank transfer receipt to proceed with the next phase.';
+        title = loc.projectActionPaymentRequiredTitle;
+        description = loc.projectActionPaymentRequiredDesc;
         icon = Icons.payments_outlined;
-        ctaWidget = AppPrimaryButton(label: 'UPLOAD RECEIPT', onPressed: () {});
         break;
       case ProjectStatus.deliverablesReady:
-        title = 'Deliverables Ready';
-        description = 'Your project deliverables are ready for review and download.';
+        title = loc.projectActionDeliverablesTitle;
+        description = loc.projectActionDeliverablesDesc;
         icon = Icons.check_circle_outline;
-        ctaWidget = AppPrimaryButton(label: 'VIEW DELIVERABLES', onPressed: () {
-          context.push(AppRouteEnum.deliverablesPage.path);
-        });
         break;
       case ProjectStatus.revisionInProgress:
-        title = 'Revision In Progress';
-        description = 'Our team is actively working on your requested revisions.';
+        title = loc.projectActionRevisionTitle;
+        description = loc.projectActionRevisionDesc;
         icon = Icons.draw_outlined;
-        ctaWidget = AppPrimaryButton(label: 'VIEW REVISION', onPressed: () {});
         break;
       case ProjectStatus.completed:
-        title = 'Project Completed';
-        description = 'This project has been successfully completed and delivered.';
+        title = loc.projectActionCompletedTitle;
+        description = loc.projectActionCompletedDesc;
         icon = Icons.done_all;
-        ctaWidget = AppPrimaryButton(label: 'START NEW PROJECT', onPressed: () {});
         break;
       default:
-        title = 'Engineering Review';
-        description = 'Our lead engineer is currently finalizing your structural schematics. No action is required from you at this moment.';
+        title = loc.projectActionEngineeringTitle;
+        description = loc.projectActionEngineeringDesc;
         icon = Icons.architecture_outlined;
     }
 

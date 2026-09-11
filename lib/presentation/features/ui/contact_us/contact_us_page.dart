@@ -1,3 +1,5 @@
+import 'package:acrova/core/di/dependency_injector.dart';
+import 'package:acrova/domain/repository/contact_us/base_contact_us_repo.dart';
 import 'package:acrova/presentation/features/ui/contact_us/contact_us_content.dart';
 import 'package:acrova/presentation/features/ui/contact_us/cubit/contact_us_cubit.dart';
 import 'package:flutter/material.dart';
@@ -22,6 +24,7 @@ class ContactUsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (_) => ContactUsCubit(
+        contactUsRepo: serviceLocatorInstance<BaseContactUsRepo>(),
         email: args.email ?? '',
         mobileNumber: args.mobileNumber ?? '',
       ),

@@ -15,14 +15,12 @@ import '../../data_source/remote/network/models/network_response.dart';
 class FcmTokenRepoImpl implements BaseFCMTokenRepo {
   FcmTokenRepoImpl({
     required BaseSecureStorage secureStorage,
-    required BaseAuthDataSource authDataSource,
+    BaseAuthDataSource? authDataSource,
   }) : _fm = FirebaseMessaging.instance,
-       _authDataSource = authDataSource,
        _secureStorage = secureStorage;
 
   final FirebaseMessaging _fm;
   final BaseSecureStorage _secureStorage;
-  final BaseAuthDataSource _authDataSource;
   StreamSubscription<String>? _refreshSub;
 
   @override
@@ -67,7 +65,6 @@ class FcmTokenRepoImpl implements BaseFCMTokenRepo {
     );
   }
 
-  @override
   Future<Result<NetworkResponse<void>>> updateToken({
     required FCMRequestModel fcmRequestModel,
   }) async {

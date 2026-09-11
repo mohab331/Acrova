@@ -1,6 +1,7 @@
 import 'package:acrova/presentation/app/navigation/app_route_enum.dart';
 import 'package:acrova/presentation/app/resources/resources.dart';
 import 'package:acrova/presentation/features/cubit/deliverables/deliverables_state.dart';
+import 'package:acrova/utils/extensions/localization_extension.dart';
 import 'package:acrova/utils/extensions/theme_extension.dart';
 import 'package:acrova/utils/helpers/download_helper.dart';
 import 'package:flutter/material.dart';
@@ -22,7 +23,7 @@ class WalkthroughsSection extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'Video Walkthroughs',
+          context.localization.deliverablesVideoWalkthroughs,
           style: context.textTheme.labelLarge?.copyWith(
             fontSize: Resources.fontSizes.$18,
             fontWeight: Resources.fontWeights.semiBold,
@@ -66,7 +67,10 @@ class WalkthroughsSection extends StatelessWidget {
                         child: Center(
                           child: GestureDetector(
                             onTap: () {
-                              context.push(AppRouteEnum.walkthroughPage.path);
+                              context.push(
+                                AppRouteEnum.walkthroughPage.path,
+                                extra: walkthrough,
+                              );
                             },
                             child: Container(
                               width: Resources.squareDims.$64,

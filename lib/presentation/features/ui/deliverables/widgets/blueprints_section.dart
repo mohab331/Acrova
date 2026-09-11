@@ -2,6 +2,7 @@ import 'package:acrova/presentation/app/navigation/app_route_enum.dart';
 import 'package:acrova/presentation/app/resources/resources.dart';
 import 'package:acrova/presentation/features/cubit/deliverables/deliverables_state.dart';
 import 'package:acrova/presentation/features/ui/common/viewers/pdf_viewer_page.dart';
+import 'package:acrova/utils/extensions/localization_extension.dart';
 import 'package:acrova/utils/extensions/theme_extension.dart';
 import 'package:acrova/utils/helpers/download_helper.dart';
 import 'package:flutter/material.dart';
@@ -23,7 +24,7 @@ class BlueprintsSection extends StatelessWidget {
         Row(
           children: [
             Text(
-              'Construction Blueprints',
+              context.localization.deliverablesConstructionBlueprints,
               style: context.textTheme.labelLarge?.copyWith(
                 fontSize: Resources.fontSizes.$18,
                 fontWeight: Resources.fontWeights.semiBold,

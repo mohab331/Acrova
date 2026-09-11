@@ -1,14 +1,24 @@
 import 'dart:ui';
 import 'package:acrova/presentation/app/resources/resources.dart';
+import 'package:acrova/utils/extensions/localization_extension.dart';
 import 'package:acrova/utils/extensions/theme_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 class DeliverablesAppBar extends StatelessWidget {
-  const DeliverablesAppBar({super.key});
+  const DeliverablesAppBar({
+    this.projectName = '',
+    this.thumbnailUrl,
+    super.key,
+  });
+
+  final String projectName;
+  final String? thumbnailUrl;
 
   @override
   Widget build(BuildContext context) {
+    final loc = context.localization;
+
     return Positioned(
       top: 0,
       left: 0,
@@ -39,19 +49,20 @@ class DeliverablesAppBar extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'Deliverables',
+                          loc.deliverablesTitle,
                           style: context.textTheme.titleLarge?.copyWith(
                             color: Resources.colors.luxuryNavy,
                             fontWeight: Resources.fontWeights.bold,
                           ),
                         ),
-                        Text(
-                          'AL-RIYADH ESTATE',
-                          style: context.textTheme.labelMedium?.copyWith(
-                            color: Resources.colors.luxuryBodyMuted,
-                            letterSpacing: 2,
+                        if (projectName.isNotEmpty)
+                          Text(
+                            projectName.toUpperCase(),
+                            style: context.textTheme.labelMedium?.copyWith(
+                              color: Resources.colors.luxuryBodyMuted,
+                              letterSpacing: Resources.letterSpacing.$2,
+                            ),
                           ),
-                        ),
                       ],
                     ),
                   ],
@@ -62,11 +73,20 @@ class DeliverablesAppBar extends StatelessWidget {
                   decoration: BoxDecoration(
                     color: Resources.colors.luxuryInputBg,
                     borderRadius: BorderRadius.circular(Resources.radius.$r4),
-                    image: const DecorationImage(
-                      image: NetworkImage('https://lh3.googleusercontent.com/aida-public/AB6AXuDcGhS7dgMqJyGsUYUAFQExELBOQbqLumY8IdMLgJDLS--7jcOcTmv8ts_0VffCmk1BgD9M9_109gUDRf8Ec0Z4XPMDBS-9fqhJ-yGi9eDT9W-6Ski7NFoQzkk8N3q-wFbxOPRtToq3MUJY9g-ZJigw8vkSyrrYwl3oRpQ7u67Q_6TlfBUiScEDw8yT_SJMTGVTEtIhMm_EYr7Y-FTfpCYJpNVtFFfWgDcABqdFqly6xm1p_w8gB35c'),
-                      fit: BoxFit.cover,
-                    ),
+                    image: thumbnailUrl != null && thumbnailUrl!.isNotEmpty
+                        ? DecorationImage(
+                            image: NetworkImage(thumbnailUrl!),
+                            fit: BoxFit.cover,
+                          )
+                        : null,
                   ),
+                  child: thumbnailUrl == null || thumbnailUrl!.isEmpty
+                      ? Icon(
+                          Icons.apartment,
+                          color: Resources.colors.luxuryGoldLight,
+                          size: Resources.fontSizes.$20,
+                        )
+                      : null,
                 ),
               ],
             ),

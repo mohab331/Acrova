@@ -28,11 +28,11 @@ class PaymentListItem extends StatelessWidget {
   Color _getIconColor() {
     switch (payment.status) {
       case PaymentStatus.success:
-        return const Color(0xFF2ECC71); // Green
+        return Resources.colors.luxurySuccess;
       case PaymentStatus.rejected:
-        return const Color(0xFFC0392B); // Red
+        return Resources.colors.luxuryError;
       case PaymentStatus.pending:
-        return const Color(0xFFF39C12); // Orange/Yellow
+        return Resources.colors.luxuryWarning;
     }
   }
 
@@ -112,7 +112,7 @@ class PaymentListItem extends StatelessWidget {
                 ),
                 SizedBox(height: Resources.verticalDims.$4),
                 Text(
-                  payment.status.displayName,
+                  payment.status.localizedName(context),
                   style: context.textTheme.labelSmall?.copyWith(
                     color: _getIconColor(),
                     fontWeight: Resources.fontWeights.semiBold,

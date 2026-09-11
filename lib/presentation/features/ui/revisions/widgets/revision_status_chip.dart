@@ -1,6 +1,5 @@
 import 'package:acrova/presentation/app/resources/resources.dart';
 import 'package:acrova/utils/enums/revision_status_enum.dart';
-import 'package:acrova/utils/extensions/localization_extension.dart';
 import 'package:flutter/material.dart';
 
 class RevisionStatusChip extends StatelessWidget {
@@ -17,8 +16,7 @@ class RevisionStatusChip extends StatelessWidget {
     final fg = inProgress
         ? Resources.colors.luxuryGold
         : Resources.colors.luxuryInk;
-    final label =
-        context.isRtl ? status.displayLabelAr : status.displayLabel;
+    final label = status.localizedLabel(context);
 
     return Container(
       padding: EdgeInsets.symmetric(

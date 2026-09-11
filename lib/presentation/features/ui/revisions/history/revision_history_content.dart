@@ -67,7 +67,9 @@ class RevisionHistoryContent extends StatelessWidget {
     final created = await context.push<RevisionModel>(
       AppRouteEnum.revisionRequestPage.name,
     );
-    if (created != null) context.read<RevisionsCubit>().fetchRevisions();
+    if (created != null && context.mounted) {
+      await context.read<RevisionsCubit>().fetchRevisions();
+    }
   }
 
   void _openDetail(BuildContext context, {required RevisionModel? revision}) {

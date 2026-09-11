@@ -49,23 +49,29 @@ class _ProjectsPageState extends State<ProjectsPage> {
           serviceLocatorInstance<ProjectsCubit>()..fetchProjects(),
       child: CommonScreen(
         bottomPadding: 0,
-        child: Column(
-          children: [
-            const AvatarHeader(userName: 'Mohab', notificationCount: 2),
-            Expanded(
-              child: BlocBuilder<ProjectsCubit, ProjectsCubitState>(
-                builder: (context, state) {
-                  if (state.isLoading ||
-                      state.cubitStatus == CubitStatus.initial) {
-                    return const ProjectsSkeleton();
-                  }
-                  if (state.isError) {
-                    return AppErrorState(
-                      message: state.appErrorModel?.message ?? '',
-                      onRetry: () =>
-                          context.read<ProjectsCubit>().fetchProjects(),
-                    );
-                  }
+        child: BlocBuilder<ProjectsCubit, ProjectsCubitState>(
+          builder: (context, state) {
+            return Column(
+              children: [
+                AvatarHeader(
+                  userName: state.userName,
+                  notificationCount: state.notificationCount,
+                  avatarUrl: state.avatarUrl,
+                ),
+                Expanded(
+                  child: Builder(
+                    builder: (context) {
+                      if (state.isLoading ||
+                          state.cubitStatus == CubitStatus.initial) {
+                        return const ProjectsSkeleton();
+                      }
+                      if (state.isError) {
+                        return AppErrorState(
+                          message: state.appErrorModel?.message ?? '',
+                          onRetry: () =>
+                              context.read<ProjectsCubit>().fetchProjects(),
+                        );
+                      }
 
                   final filtered = _applyFilter(state.projects ?? []);
 
@@ -154,7 +160,9 @@ class _ProjectsPageState extends State<ProjectsPage> {
                 },
               ),
             ),
-          ],
+            ],
+          );
+        },
         ),
       ),
     );

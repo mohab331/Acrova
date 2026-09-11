@@ -8,4 +8,5 @@ abstract class BaseRevisionsRepo {
   Future<Result<RevisionModel>> getRevision(String id);
   Future<Result<RevisionQuotaModel>> getQuota();
   Future<Result<RevisionModel>> createRevision(CreateRevisionRequest request);
+  Future<Result<List<String>>> getDeliverableRefs();
 }

@@ -1,35 +1,13 @@
 import 'package:acrova/presentation/app/resources/resources.dart';
 import 'package:acrova/presentation/features/cubit/interior_design/interior_design_cubit.dart';
 import 'package:acrova/presentation/features/cubit/interior_design/interior_design_state.dart';
+import 'package:acrova/utils/extensions/localization_extension.dart';
 import 'package:acrova/utils/extensions/theme_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class AestheticProfilingSection extends StatelessWidget {
   const AestheticProfilingSection({super.key});
-
-  static const List<Map<String, String>> _mockMoodboards = [
-    {
-      'id': 'mb_1',
-      'url': 'https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&q=80&w=400',
-      'label': 'Modern Minimalist',
-    },
-    {
-      'id': 'mb_2',
-      'url': 'https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&q=80&w=400',
-      'label': 'Warm Organic',
-    },
-    {
-      'id': 'mb_3',
-      'url': 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&q=80&w=400',
-      'label': 'Dark Luxury',
-    },
-    {
-      'id': 'mb_4',
-      'url': 'https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?auto=format&fit=crop&q=80&w=400',
-      'label': 'Contemporary',
-    },
-  ];
 
   static const List<Map<String, dynamic>> _colorPalettes = [
     {'id': 'Warm Neutrals', 'colors': [0xFFE3D9CC, 0xFFC9B6A1, 0xFF9E8570, 0xFF54433A]},
@@ -52,46 +30,68 @@ class AestheticProfilingSection extends StatelessWidget {
     'Serene',
   ];
 
-  Widget _buildSectionTitle(BuildContext context, String title, String subtitle) {
-    return Padding(
-      padding: EdgeInsets.symmetric(vertical: Resources.verticalDims.$16),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            title,
-            style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                  fontWeight: Resources.fontWeights.semiBold,
-                  color: Resources.colors.luxuryNavy,
-                  letterSpacing: 0.5,
-                ),
-          ),
-          SizedBox(height: Resources.verticalDims.$4),
-          Text(
-            subtitle,
-            style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                  color: Resources.colors.luxuryBody,
-                ),
-          ),
-        ],
-      ),
-    );
+  String _getPaletteLabel(BuildContext context, String id) {
+    final loc = context.localization;
+    switch (id) {
+      case 'Warm Neutrals':
+        return loc.interiorDesignPaletteWarmNeutrals;
+      case 'Cool Elegance':
+        return loc.interiorDesignPaletteCoolElegance;
+      case 'Earthy Tones':
+        return loc.interiorDesignPaletteEarthyTones;
+      case 'Monochrome':
+        return loc.interiorDesignPaletteMonochrome;
+      case 'Desert Sun':
+        return loc.interiorDesignPaletteDesertSun;
+      default:
+        return id;
+    }
+  }
+
+  String _getAtmosphereLabel(BuildContext context, String tag) {
+    final loc = context.localization;
+    switch (tag) {
+      case 'Minimalist':
+        return loc.interiorDesignTagMinimalist;
+      case 'Cozy':
+        return loc.interiorDesignTagCozy;
+      case 'Luxurious':
+        return loc.interiorDesignTagLuxurious;
+      case 'Industrial':
+        return loc.interiorDesignTagIndustrial;
+      case 'Bohemian':
+        return loc.interiorDesignTagBohemian;
+      case 'Contemporary':
+        return loc.interiorDesignTagContemporary;
+      case 'Classic':
+        return loc.interiorDesignTagClassic;
+      case 'Biophilic':
+        return loc.interiorDesignTagBiophilic;
+      case 'Vibrant':
+        return loc.interiorDesignTagVibrant;
+      case 'Serene':
+        return loc.interiorDesignTagSerene;
+      default:
+        return tag;
+    }
   }
 
   @override
   Widget build(BuildContext context) {
+    final loc = context.localization;
+
     return BlocBuilder<InteriorDesignCubit, InteriorDesignState>(
       builder: (context, state) {
         final cubit = context.read<InteriorDesignCubit>();
+        final moodboards = state.availableMoodboards;
 
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // MOODBOARD SELECTOR
-            _buildSectionTitle(
-              context,
-              'AESTHETIC INSPIRATION',
-              'Select up to 2 moodboards that resonate with your vision.',
+            _AestheticSectionTitle(
+              title: loc.interiorDesignAestheticInspirationTitle,
+              subtitle: loc.interiorDesignAestheticInspirationSubtitle,
             ),
             GridView.builder(
               shrinkWrap: true,
@@ -102,22 +102,22 @@ class AestheticProfilingSection extends StatelessWidget {
                 mainAxisSpacing: Resources.verticalDims.$12,
                 childAspectRatio: 0.85,
               ),
-              itemCount: _mockMoodboards.length,
+              itemCount: moodboards.length,
               itemBuilder: (context, index) {
-                final mb = _mockMoodboards[index];
-                final isSelected = state.moodboards.contains(mb['id']);
+                final mb = moodboards[index];
+                final isSelected = state.moodboards.contains(mb.id);
                 return GestureDetector(
-                  onTap: () => cubit.toggleMoodboard(mb['id']!),
+                  onTap: () => cubit.toggleMoodboard(mb.id),
                   child: AnimatedContainer(
                     duration: AppDurations.fast,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(Resources.radius.$r12),
                       border: Border.all(
                         color: isSelected ? Resources.colors.luxuryGoldLight : Colors.transparent,
-                        width: 2,
+                        width: AppBorderWidths.$2,
                       ),
                       image: DecorationImage(
-                        image: NetworkImage(mb['url']!),
+                        image: NetworkImage(mb.url),
                         fit: BoxFit.cover,
                       ),
                     ),
@@ -127,7 +127,7 @@ class AestheticProfilingSection extends StatelessWidget {
                         Positioned(
                           bottom: 0, left: 0, right: 0,
                           child: Container(
-                            height: 60,
+                            height: Resources.verticalDims.$60,
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.vertical(bottom: Radius.circular(Resources.radius.$r12 - 2)),
                               gradient: LinearGradient(
@@ -143,7 +143,7 @@ class AestheticProfilingSection extends StatelessWidget {
                           left: Resources.horizontalDims.$8,
                           right: Resources.horizontalDims.$8,
                           child: Text(
-                            mb['label']!,
+                            mb.localizedLabel(context),
                             style: context.textTheme.labelSmall?.copyWith(
                               color: Resources.colors.white,
                               fontWeight: Resources.fontWeights.semiBold,
@@ -155,12 +155,12 @@ class AestheticProfilingSection extends StatelessWidget {
                             top: Resources.verticalDims.$8,
                             right: Resources.horizontalDims.$8,
                             child: Container(
-                              padding: const EdgeInsets.all(4),
+                              padding: EdgeInsets.all(Resources.squareDims.$4),
                               decoration: BoxDecoration(
                                 color: Resources.colors.luxuryGoldLight,
                                 shape: BoxShape.circle,
                               ),
-                              child: Icon(Icons.check, size: 16, color: Resources.colors.white),
+                              child: Icon(Icons.check, size: Resources.iconSizes.$16, color: Resources.colors.white),
                             ),
                           ),
                       ],
@@ -173,10 +173,9 @@ class AestheticProfilingSection extends StatelessWidget {
             SizedBox(height: Resources.verticalDims.$24),
 
             // COLOR PALETTE
-            _buildSectionTitle(
-              context,
-              'COLOR PALETTE',
-              'Choose color themes for your interior spaces.',
+            _AestheticSectionTitle(
+              title: loc.interiorDesignColorPaletteTitle,
+              subtitle: loc.interiorDesignColorPaletteSubtitle,
             ),
             Wrap(
               spacing: Resources.horizontalDims.$12,
@@ -202,9 +201,9 @@ class AestheticProfilingSection extends StatelessWidget {
                         Row(
                           mainAxisSize: MainAxisSize.min,
                           children: colors.map((c) => Container(
-                            width: 24,
-                            height: 24,
-                            margin: const EdgeInsets.only(right: 4),
+                            width: Resources.squareDims.$24,
+                            height: Resources.squareDims.$24,
+                            margin: EdgeInsets.only(right: Resources.horizontalDims.$4),
                             decoration: BoxDecoration(
                               color: Color(c),
                               shape: BoxShape.circle,
@@ -214,7 +213,7 @@ class AestheticProfilingSection extends StatelessWidget {
                         ),
                         SizedBox(height: Resources.verticalDims.$8),
                         Text(
-                          palette['id'],
+                          _getPaletteLabel(context, palette['id'] as String),
                           style: context.textTheme.labelSmall?.copyWith(
                             color: isSelected ? Resources.colors.luxurySurface : Resources.colors.luxuryBody,
                             fontWeight: isSelected ? Resources.fontWeights.semiBold : Resources.fontWeights.medium,
@@ -230,10 +229,9 @@ class AestheticProfilingSection extends StatelessWidget {
             SizedBox(height: Resources.verticalDims.$24),
 
             // ATMOSPHERE TAGS
-            _buildSectionTitle(
-              context,
-              'ATMOSPHERE & VIBE',
-              'Select all the descriptors that match your style.',
+            _AestheticSectionTitle(
+              title: loc.interiorDesignAtmosphereTitle,
+              subtitle: loc.interiorDesignAtmosphereSubtitle,
             ),
             Wrap(
               spacing: Resources.horizontalDims.$8,
@@ -241,7 +239,7 @@ class AestheticProfilingSection extends StatelessWidget {
               children: _atmosphereTags.map((tag) {
                 final isSelected = state.atmosphereTags.contains(tag);
                 return FilterChip(
-                  label: Text(tag),
+                  label: Text(_getAtmosphereLabel(context, tag)),
                   selected: isSelected,
                   onSelected: (_) => cubit.toggleAtmosphereTag(tag),
                   selectedColor: Resources.colors.luxuryNavy,
@@ -252,7 +250,7 @@ class AestheticProfilingSection extends StatelessWidget {
                     fontWeight: isSelected ? Resources.fontWeights.semiBold : Resources.fontWeights.medium,
                   ),
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(100),
+                    borderRadius: BorderRadius.circular(Resources.radius.$r100),
                     side: BorderSide(
                       color: isSelected ? Resources.colors.luxuryNavy : Resources.colors.luxuryBorder,
                     ),
@@ -263,6 +261,43 @@ class AestheticProfilingSection extends StatelessWidget {
           ],
         );
       },
+    );
+  }
+}
+
+class _AestheticSectionTitle extends StatelessWidget {
+  const _AestheticSectionTitle({
+    required this.title,
+    required this.subtitle,
+  });
+
+  final String title;
+  final String subtitle;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.symmetric(vertical: Resources.verticalDims.$16),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            title,
+            style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                  fontWeight: Resources.fontWeights.semiBold,
+                  color: Resources.colors.luxuryNavy,
+                  letterSpacing: 0.5,
+                ),
+          ),
+          SizedBox(height: Resources.verticalDims.$4),
+          Text(
+            subtitle,
+            style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                  color: Resources.colors.luxuryBody,
+                ),
+          ),
+        ],
+      ),
     );
   }
 }

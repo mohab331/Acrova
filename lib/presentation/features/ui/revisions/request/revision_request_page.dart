@@ -17,12 +17,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 class RevisionRequestPage extends StatelessWidget {
   const RevisionRequestPage({super.key});
 
-  static const _deliverables = [
-    'Floor Plan v1.1 — Main Residence',
-    'Exterior Renderings v2',
-    'Interior Moodboard v1',
-  ];
-
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
@@ -30,15 +24,13 @@ class RevisionRequestPage extends StatelessWidget {
         revisionsRepo: serviceLocatorInstance<BaseRevisionsRepo>(),
         imagePicker: serviceLocatorInstance<BaseImagePickerService>(),
       )..fetchQuota(),
-      child: const _RevisionRequestView(deliverables: _deliverables),
+      child: const _RevisionRequestView(),
     );
   }
 }
 
 class _RevisionRequestView extends StatefulWidget {
-  const _RevisionRequestView({required this.deliverables});
-
-  final List<String> deliverables;
+  const _RevisionRequestView();
 
   @override
   State<_RevisionRequestView> createState() => _RevisionRequestViewState();
@@ -89,7 +81,7 @@ class _RevisionRequestViewState extends State<_RevisionRequestView> {
             return RevisionRequestForm(
               state: state,
               detailsController: _detailsController,
-              deliverables: widget.deliverables,
+              deliverables: state.deliverables,
             );
           },
         ),

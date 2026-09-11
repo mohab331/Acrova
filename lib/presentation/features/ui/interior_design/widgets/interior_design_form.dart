@@ -5,6 +5,7 @@ import 'package:acrova/presentation/features/ui/interior_design/widgets/aestheti
 import 'package:acrova/presentation/features/ui/interior_design/widgets/inspiration_links_section.dart';
 import 'package:acrova/presentation/features/ui/project_creation/steps/widgets/media_item.dart';
 import 'package:acrova/presentation/features/ui/project_creation/steps/widgets/wizard_text_field.dart';
+import 'package:acrova/utils/extensions/localization_extension.dart';
 import 'package:acrova/utils/extensions/theme_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -44,22 +45,10 @@ class _InteriorDesignFormState extends State<InteriorDesignForm> {
         );
   }
 
-  Widget _buildSectionTitle(BuildContext context, String title) {
-    return Padding(
-      padding: EdgeInsets.symmetric(vertical: Resources.verticalDims.$16),
-      child: Text(
-        title,
-        style: Theme.of(context).textTheme.titleSmall?.copyWith(
-              fontWeight: Resources.fontWeights.semiBold,
-              color: Resources.colors.luxuryNavy,
-              letterSpacing: 0.5,
-            ),
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
+    final loc = context.localization;
+
     return BlocBuilder<InteriorDesignCubit, InteriorDesignState>(
       builder: (context, state) {
         final cubit = context.read<InteriorDesignCubit>();
@@ -68,12 +57,12 @@ class _InteriorDesignFormState extends State<InteriorDesignForm> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // SCOPE SELECTION
-            _buildSectionTitle(context, 'DESIGN SCOPE'),
+            _InteriorDesignSectionTitle(title: loc.interiorDesignScopeTitle),
             Row(
               children: [
                 Expanded(
                   child: _SelectionCard(
-                    label: 'Entire Project',
+                    label: loc.interiorDesignScopeEntireProject,
                     isSelected: state.scope == 'all',
                     onTap: () => cubit.updateScope('all'),
                   ),
@@ -81,7 +70,7 @@ class _InteriorDesignFormState extends State<InteriorDesignForm> {
                 SizedBox(width: Resources.horizontalDims.$12),
                 Expanded(
                   child: _SelectionCard(
-                    label: 'Specific Areas',
+                    label: loc.interiorDesignScopeSpecificAreas,
                     isSelected: state.scope == 'specific',
                     onTap: () => cubit.updateScope('specific'),
                   ),
@@ -92,8 +81,8 @@ class _InteriorDesignFormState extends State<InteriorDesignForm> {
               SizedBox(height: Resources.verticalDims.$16),
               WizardTextField(
                 controller: _customScopeCtrl,
-                label: 'Specify Areas',
-                hint: 'e.g. Master bedroom and majlis only...',
+                label: loc.interiorDesignSpecifyAreas,
+                hint: loc.interiorDesignSpecifyAreasHint,
                 onChanged: cubit.updateCustomScopeNotes,
               ),
             ],
@@ -101,22 +90,22 @@ class _InteriorDesignFormState extends State<InteriorDesignForm> {
             SizedBox(height: Resources.verticalDims.$24),
 
             // SPACE PLANNING
-            _buildSectionTitle(context, 'SPACE PLANNING'),
+            _InteriorDesignSectionTitle(title: loc.interiorDesignSpacePlanningTitle),
             Container(
               decoration: BoxDecoration(
                 color: Resources.colors.luxurySurface,
-                borderRadius: BorderRadius.circular(12),
+                borderRadius: BorderRadius.circular(Resources.radius.$r12),
                 border: Border.all(color: Resources.colors.luxuryBorder),
               ),
               child: SwitchListTile(
                 title: Text(
-                  'Include Space Planning',
+                  loc.interiorDesignSpacePlanningSwitch,
                   style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                     fontWeight: Resources.fontWeights.medium,
                   ),
                 ),
                 subtitle: Text(
-                  'We will help optimize the layout of your furniture and spaces.',
+                  loc.interiorDesignSpacePlanningSubtitle,
                   style: Theme.of(context).textTheme.bodySmall?.copyWith(
                     color: Resources.colors.luxuryBody,
                   ),
@@ -130,23 +119,33 @@ class _InteriorDesignFormState extends State<InteriorDesignForm> {
             SizedBox(height: Resources.verticalDims.$24),
 
             // BUDGET & TIMELINE
-            _buildSectionTitle(context, 'BUDGET & TIMELINE'),
+            _InteriorDesignSectionTitle(title: loc.interiorDesignBudgetTimelineTitle),
             Row(
               children: [
                 Expanded(
                   child: _DropdownField(
-                    label: 'Budget Tier',
+                    label: loc.interiorDesignBudgetTier,
                     value: state.budgetTier.isEmpty ? null : state.budgetTier,
-                    items: const ['Standard', 'Premium', 'Ultra Luxury'],
+                    hint: loc.interiorDesignSelectPlaceholder,
+                    options: [
+                      _DropdownOption(value: 'standard', label: loc.interiorDesignBudgetStandard),
+                      _DropdownOption(value: 'premium', label: loc.interiorDesignBudgetPremium),
+                      _DropdownOption(value: 'ultra_luxury', label: loc.interiorDesignBudgetUltraLuxury),
+                    ],
                     onChanged: (v) => cubit.updateBudgetTier(v ?? ''),
                   ),
                 ),
                 SizedBox(width: Resources.horizontalDims.$12),
                 Expanded(
                   child: _DropdownField(
-                    label: 'Timeline',
+                    label: loc.interiorDesignTimeline,
                     value: state.timeline.isEmpty ? null : state.timeline,
-                    items: const ['Flexible', '3-6 Months', 'ASAP'],
+                    hint: loc.interiorDesignSelectPlaceholder,
+                    options: [
+                      _DropdownOption(value: 'flexible', label: loc.interiorDesignTimelineFlexible),
+                      _DropdownOption(value: '3_6_months', label: loc.interiorDesignTimelineThreeToSixMonths),
+                      _DropdownOption(value: 'asap', label: loc.interiorDesignTimelineAsap),
+                    ],
                     onChanged: (v) => cubit.updateTimeline(v ?? ''),
                   ),
                 ),
@@ -156,7 +155,7 @@ class _InteriorDesignFormState extends State<InteriorDesignForm> {
             SizedBox(height: Resources.verticalDims.$24),
 
             // EXTRA NOTES
-            _buildSectionTitle(context, 'ADDITIONAL REQUIREMENTS'),
+            _InteriorDesignSectionTitle(title: loc.interiorDesignAdditionalRequirementsTitle),
             Container(
               decoration: BoxDecoration(
                 color: Resources.colors.luxuryInputBg,
@@ -173,7 +172,7 @@ class _InteriorDesignFormState extends State<InteriorDesignForm> {
                   fontSize: Resources.fontSizes.$15,
                 ),
                 decoration: InputDecoration(
-                  hintText: 'Share your vision, color preferences, moodboards, or any other details...',
+                  hintText: loc.interiorDesignNotesHint,
                   hintStyle: Theme.of(context).textTheme.bodySmall?.copyWith(
                     color: Resources.colors.luxuryPlaceholder,
                   ),
@@ -194,7 +193,7 @@ class _InteriorDesignFormState extends State<InteriorDesignForm> {
             SizedBox(height: Resources.verticalDims.$24),
 
             // MEDIA UPLOAD
-            _buildSectionTitle(context, 'INSPIRATION MEDIA'),
+            _InteriorDesignSectionTitle(title: loc.interiorDesignInspirationMediaTitle),
             GestureDetector(
               onTap: () => _mockPickImage(context),
               child: Container(
@@ -217,7 +216,7 @@ class _InteriorDesignFormState extends State<InteriorDesignForm> {
                     ),
                     SizedBox(height: Resources.verticalDims.$10),
                     Text(
-                      'ADD INSPIRATION PHOTOS',
+                      loc.interiorDesignAddInspirationPhotos,
                       style: Theme.of(context).textTheme.labelLarge?.copyWith(
                             fontSize: Resources.fontSizes.$12,
                             fontWeight: Resources.fontWeights.bold,
@@ -266,20 +265,24 @@ class _SelectionCard extends StatelessWidget {
       onTap: onTap,
       child: AnimatedContainer(
         duration: AppDurations.fast,
-        padding: EdgeInsets.symmetric(vertical: Resources.verticalDims.$16),
+        padding: EdgeInsets.symmetric(
+          horizontal: Resources.horizontalDims.$16,
+          vertical: Resources.verticalDims.$18,
+        ),
         decoration: BoxDecoration(
           color: isSelected ? Resources.colors.luxuryNavy : Resources.colors.luxurySurface,
-          borderRadius: BorderRadius.circular(8),
+          borderRadius: BorderRadius.circular(Resources.radius.$r12),
           border: Border.all(
             color: isSelected ? Resources.colors.luxuryNavy : Resources.colors.luxuryBorder,
           ),
+          boxShadow: AppShadows.card,
         ),
-        alignment: Alignment.center,
         child: Text(
           label,
+          textAlign: TextAlign.center,
           style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                fontWeight: isSelected ? Resources.fontWeights.semiBold : Resources.fontWeights.medium,
                 color: isSelected ? Resources.colors.luxurySurface : Resources.colors.luxuryNavy,
+                fontWeight: isSelected ? Resources.fontWeights.semiBold : Resources.fontWeights.medium,
               ),
         ),
       ),
@@ -287,17 +290,25 @@ class _SelectionCard extends StatelessWidget {
   }
 }
 
+class _DropdownOption {
+  const _DropdownOption({required this.value, required this.label});
+  final String value;
+  final String label;
+}
+
 class _DropdownField extends StatelessWidget {
   const _DropdownField({
     required this.label,
     required this.value,
-    required this.items,
+    required this.options,
+    required this.hint,
     required this.onChanged,
   });
 
   final String label;
   final String? value;
-  final List<String> items;
+  final List<_DropdownOption> options;
+  final String hint;
   final ValueChanged<String?> onChanged;
 
   @override
@@ -308,28 +319,68 @@ class _DropdownField extends StatelessWidget {
         Text(
           label,
           style: Theme.of(context).textTheme.labelSmall?.copyWith(
-            color: Resources.colors.luxuryBody,
-          ),
+                fontWeight: Resources.fontWeights.medium,
+                color: Resources.colors.luxuryBody,
+              ),
         ),
         SizedBox(height: Resources.verticalDims.$8),
         Container(
           padding: EdgeInsets.symmetric(horizontal: Resources.horizontalDims.$12),
           decoration: BoxDecoration(
             color: Resources.colors.luxuryInputBg,
-            borderRadius: BorderRadius.circular(4),
+            borderRadius: BorderRadius.circular(Resources.radius.$r8),
             border: Border.all(color: Resources.colors.luxuryInputBorder),
           ),
           child: DropdownButtonHideUnderline(
             child: DropdownButton<String>(
               value: value,
               isExpanded: true,
-              hint: Text('Select...', style: TextStyle(color: Resources.colors.luxuryPlaceholder, fontSize: 14)),
-              items: items.map((i) => DropdownMenuItem(value: i, child: Text(i, style: const TextStyle(fontSize: 14)))).toList(),
+              hint: Text(
+                hint,
+                style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                      color: Resources.colors.luxuryPlaceholder,
+                    ),
+              ),
+              items: options.map((option) {
+                return DropdownMenuItem(
+                  value: option.value,
+                  child: Text(
+                    option.label,
+                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                          color: Resources.colors.luxuryInk,
+                        ),
+                  ),
+                );
+              }).toList(),
               onChanged: onChanged,
             ),
           ),
         ),
       ],
+    );
+  }
+}
+
+class _InteriorDesignSectionTitle extends StatelessWidget {
+  const _InteriorDesignSectionTitle({required this.title});
+
+  final String title;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.only(
+        top: Resources.verticalDims.$8,
+        bottom: Resources.verticalDims.$12,
+      ),
+      child: Text(
+        title,
+        style: Theme.of(context).textTheme.titleSmall?.copyWith(
+              fontWeight: Resources.fontWeights.semiBold,
+              color: Resources.colors.luxuryNavy,
+              letterSpacing: 0.5,
+            ),
+      ),
     );
   }
 }

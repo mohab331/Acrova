@@ -32,6 +32,18 @@ class RenderModel extends Equatable {
   List<Object?> get props => [resolution, imageAsset];
 }
 
+class WalkthroughVersionModel extends Equatable {
+  const WalkthroughVersionModel({
+    required this.version,
+    required this.dateAndSize,
+  });
+  final String version;
+  final String dateAndSize;
+
+  @override
+  List<Object?> get props => [version, dateAndSize];
+}
+
 class WalkthroughModel extends Equatable {
   const WalkthroughModel({
     required this.title,
@@ -39,15 +51,30 @@ class WalkthroughModel extends Equatable {
     required this.size,
     required this.format,
     required this.imageAsset,
+    this.videoUrl,
+    this.description,
+    this.previousVersions = const [],
   });
   final String title;
   final String duration;
   final String size;
   final String format;
   final String imageAsset;
+  final String? videoUrl;
+  final String? description;
+  final List<WalkthroughVersionModel> previousVersions;
 
   @override
-  List<Object?> get props => [title, duration, size, format, imageAsset];
+  List<Object?> get props => [
+        title,
+        duration,
+        size,
+        format,
+        imageAsset,
+        videoUrl,
+        description,
+        previousVersions,
+      ];
 }
 
 class DeliverablesState extends Equatable {
@@ -57,6 +84,9 @@ class DeliverablesState extends Equatable {
     this.blueprints = const [],
     this.renders = const [],
     this.walkthroughs = const [],
+    this.projectName,
+    this.projectThumbnailUrl,
+    this.allFilesZipUrl,
   });
 
   final CubitStatus status;
@@ -64,6 +94,9 @@ class DeliverablesState extends Equatable {
   final List<BlueprintModel> blueprints;
   final List<RenderModel> renders;
   final List<WalkthroughModel> walkthroughs;
+  final String? projectName;
+  final String? projectThumbnailUrl;
+  final String? allFilesZipUrl;
 
   DeliverablesState copyWith({
     CubitStatus? status,
@@ -71,6 +104,9 @@ class DeliverablesState extends Equatable {
     List<BlueprintModel>? blueprints,
     List<RenderModel>? renders,
     List<WalkthroughModel>? walkthroughs,
+    String? projectName,
+    String? projectThumbnailUrl,
+    String? allFilesZipUrl,
   }) {
     return DeliverablesState(
       status: status ?? this.status,
@@ -78,9 +114,21 @@ class DeliverablesState extends Equatable {
       blueprints: blueprints ?? this.blueprints,
       renders: renders ?? this.renders,
       walkthroughs: walkthroughs ?? this.walkthroughs,
+      projectName: projectName ?? this.projectName,
+      projectThumbnailUrl: projectThumbnailUrl ?? this.projectThumbnailUrl,
+      allFilesZipUrl: allFilesZipUrl ?? this.allFilesZipUrl,
     );
   }
 
   @override
-  List<Object?> get props => [status, error, blueprints, renders, walkthroughs];
+  List<Object?> get props => [
+        status,
+        error,
+        blueprints,
+        renders,
+        walkthroughs,
+        projectName,
+        projectThumbnailUrl,
+        allFilesZipUrl,
+      ];
 }

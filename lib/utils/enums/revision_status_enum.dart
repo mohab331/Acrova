@@ -1,3 +1,6 @@
+import 'package:acrova/utils/extensions/localization_extension.dart';
+import 'package:flutter/widgets.dart';
+
 /// Lifecycle status of a customer revision request.
 enum RevisionStatus {
   inProgress,
@@ -22,6 +25,9 @@ extension RevisionStatusX on RevisionStatus {
         return 'مكتمل';
     }
   }
+
+  String localizedLabel(BuildContext context) =>
+      context.isRtl ? displayLabelAr : displayLabel;
 
   String get jsonKey {
     switch (this) {

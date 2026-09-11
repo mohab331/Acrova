@@ -22,7 +22,7 @@ class PreviousVersionCard extends StatelessWidget {
       child: InkWell(
         onTap: onTap,
         borderRadius: BorderRadius.circular(Resources.radius.$r2),
-        hoverColor: Resources.colors.luxuryNavy.withOpacity(0.05),
+        hoverColor: Resources.colors.luxuryNavy.withValues(alpha: 0.05),
         child: Padding(
           padding: EdgeInsets.all(Resources.horizontalDims.$24),
           child: Row(
@@ -40,7 +40,7 @@ class PreviousVersionCard extends StatelessWidget {
                     alignment: Alignment.center,
                     child: Icon(
                       Icons.history,
-                      color: Resources.colors.luxuryNavy.withOpacity(0.4),
+                      color: Resources.colors.luxuryNavy.withValues(alpha: 0.4),
                     ),
                   ),
                   SizedBox(width: Resources.horizontalDims.$20),

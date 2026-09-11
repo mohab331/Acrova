@@ -2,6 +2,7 @@ import 'package:acrova/presentation/app/navigation/app_route_enum.dart';
 import 'package:acrova/presentation/app/resources/resources.dart';
 import 'package:acrova/presentation/features/cubit/deliverables/deliverables_state.dart';
 import 'package:acrova/presentation/features/ui/common/viewers/image_viewer_page.dart';
+import 'package:acrova/utils/extensions/localization_extension.dart';
 import 'package:acrova/utils/extensions/theme_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -23,10 +24,9 @@ class RendersSection extends StatelessWidget {
       children: [
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Text(
-              '3D Renders',
+              context.localization.deliverables3dRender,
               style: context.textTheme.labelLarge?.copyWith(
                 fontSize: Resources.fontSizes.$18,
                 fontWeight: Resources.fontWeights.semiBold,
@@ -34,7 +34,7 @@ class RendersSection extends StatelessWidget {
               ),
             ),
             Text(
-              '${renders.length} ITEMS',
+              context.localization.deliverablesItemsCount(renders.length),
               style: context.textTheme.labelMedium?.copyWith(
                 color: Resources.colors.luxuryGoldLight,
                 fontWeight: Resources.fontWeights.bold,
@@ -87,7 +87,7 @@ class _RenderCard extends StatelessWidget {
           context.push(
             AppRouteEnum.imageViewerPage.path,
             extra: ImageViewerArgs(
-              title: '3D Render',
+              title: context.localization.deliverables3dRender,
               urlOrAsset: render.imageAsset,
             ),
           );

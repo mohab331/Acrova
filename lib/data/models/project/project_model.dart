@@ -1,4 +1,5 @@
 import 'package:acrova/data/models/project/deliverable_model.dart';
+import 'package:acrova/data/models/project/engineer_model.dart';
 import 'package:acrova/utils/enums/project_status_enum.dart';
 import 'package:acrova/utils/enums/project_type_enum.dart';
 import 'package:equatable/equatable.dart';
@@ -31,6 +32,10 @@ class ProjectModel extends Equatable {
     this.architecturalStyle,
     this.thumbnailUrl,
     this.deliverables = const [],
+    this.description,
+    this.engineer,
+    this.provisions = const [],
+    this.estimatedTimeline,
   });
 
   final String id;            // "ARC-2024-00018"
@@ -56,6 +61,10 @@ class ProjectModel extends Equatable {
   final String? architecturalStyle;
   final String? thumbnailUrl;
   final List<DeliverableModel> deliverables;
+  final String? description;
+  final EngineerModel? engineer;
+  final List<String> provisions;
+  final String? estimatedTimeline;
 
   /// Progress ratio [0.0 – 1.0] derived from current [status].
   double get progressRatio => status.progressRatio;
@@ -123,6 +132,6 @@ class ProjectModel extends Equatable {
         id, name, status, type, createdAt, location, landAreaSqm, landWidthM, landLengthM,
         floors, employeeCount, bedrooms, bathrooms, hasMajlis, hasMaidRoom, hasDriverRoom,
         hasBasement, hasPool, hasRooftop, smartHomeLevel, architecturalStyle,
-        thumbnailUrl, deliverables,
+        thumbnailUrl, deliverables, description, engineer, provisions, estimatedTimeline,
       ];
 }

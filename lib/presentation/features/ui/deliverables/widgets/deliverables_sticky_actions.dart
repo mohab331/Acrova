@@ -2,15 +2,20 @@ import 'package:acrova/presentation/app/navigation/app_route_enum.dart';
 import 'package:acrova/presentation/app/resources/resources.dart';
 import 'package:acrova/presentation/features/common_widgets/buttons/app_primary_button.dart';
 import 'package:acrova/presentation/features/common_widgets/buttons/app_secondary_button.dart';
+import 'package:acrova/utils/extensions/localization_extension.dart';
 import 'package:acrova/utils/helpers/download_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 class DeliverablesStickyActions extends StatelessWidget {
-  const DeliverablesStickyActions({super.key});
+  const DeliverablesStickyActions({this.allFilesZipUrl, super.key});
+
+  final String? allFilesZipUrl;
 
   @override
   Widget build(BuildContext context) {
+    final loc = context.localization;
+
     return Positioned(
       bottom: 0,
       left: 0,
@@ -26,17 +31,17 @@ class DeliverablesStickyActions extends StatelessWidget {
         child: Column(
           children: [
             AppPrimaryButton(
-              label: 'DOWNLOAD ALL FILES',
+              label: loc.deliverablesDownloadAllFiles,
               onPressed: () {
-                DownloadHelper.downloadAndShare(
-                  'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf', 
-                  'All_Project_Files.zip'
-                );
+                final url = allFilesZipUrl;
+                if (url != null && url.isNotEmpty) {
+                  DownloadHelper.downloadAndShare(url, 'All_Project_Files.zip');
+                }
               },
             ),
             SizedBox(height: Resources.verticalDims.$16),
             AppSecondaryButton(
-              label: 'REQUEST REVISION',
+              label: loc.deliverablesRequestRevisionUpper,
               onPressed: () {
                 context.push(AppRouteEnum.revisionRequestPage.path);
               },

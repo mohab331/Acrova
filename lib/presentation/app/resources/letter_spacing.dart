@@ -48,6 +48,10 @@ class _LetterSpacing {
   /// buttonPrimary: 1.4px
   final double $1_4   = 1.4;
 
+  /// uppercase tracking: 2.0px
+  final double $2_0   = 2.0;
+  double get $2 => $2_0;
+
   /// brandMark: 6px
   final double $6_0   = 6.0;
 }

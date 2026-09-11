@@ -63,7 +63,6 @@ class Step6ReviewSubmit extends StatelessWidget {
     return BlocBuilder<ProjectCreationCubit, ProjectCreationState>(
       builder: (context, state) {
         final l10n = context.localization;
-        final isRtl = context.isRtl;
         final isCommercial = state.selectedType == ProjectType.commercial;
 
         return SingleChildScrollView(
@@ -98,7 +97,7 @@ class Step6ReviewSubmit extends StatelessWidget {
                   ReviewRow(
                     label: l10n.reviewLabelArea,
                     value: state.landAreaSqm != null
-                        ? '${state.landAreaSqm!.toStringAsFixed(0)} ${isRtl ? 'م²' : 'm²'}'
+                        ? '${state.landAreaSqm!.toStringAsFixed(0)} ${l10n.unitSqm}'
                         : '—',
                   ),
                   if (isCommercial)
@@ -107,7 +106,7 @@ class Step6ReviewSubmit extends StatelessWidget {
                     ReviewRow(
                       label: l10n.reviewLabelWidthLength,
                       value: (state.landWidthM != null && state.landLengthM != null)
-                          ? '${state.landWidthM!.toStringAsFixed(0)} ${isRtl ? 'م' : 'm'} × ${state.landLengthM!.toStringAsFixed(0)} ${isRtl ? 'م' : 'm'}'
+                          ? '${state.landWidthM!.toStringAsFixed(0)} ${l10n.unitMeter} × ${state.landLengthM!.toStringAsFixed(0)} ${l10n.unitMeter}'
                           : '—',
                     ),
                   ReviewRow(label: l10n.reviewLabelFloors, value: '${state.floors}'),
