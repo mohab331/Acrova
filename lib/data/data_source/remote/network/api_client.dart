@@ -206,7 +206,7 @@ class ApiClient {
       if (responseMap is List) {
         final list = responseMap
             .whereType<Map>()
-            .map((e) => Map<String, dynamic>.from(e))
+            .map(Map<String, dynamic>.from)
             .toList(growable: false);
         return onList?.call(list);
       }

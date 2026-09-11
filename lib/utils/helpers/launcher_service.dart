@@ -14,4 +14,15 @@ class LauncherService {
       await launchUrl(url, mode: LaunchMode.externalApplication);
     }
   }
+
+  Future<void> sendEmail(String emailAddress, {String? subject}) async {
+    final url = Uri(
+      scheme: 'mailto',
+      path: emailAddress,
+      query: subject != null ? 'subject=$subject' : null,
+    );
+    if (await canLaunchUrl(url)) {
+      await launchUrl(url);
+    }
+  }
 }

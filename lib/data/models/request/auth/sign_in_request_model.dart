@@ -1,11 +1,13 @@
+import 'package:equatable/equatable.dart';
+
 import '../base_request_model.dart';
 
-class SignInRequestModel implements BaseRequestModel {
+class SignInRequestModel extends Equatable implements BaseRequestModel {
   final String? phone;
   final String? password;
   final String? firebaseTokenKey;
 
-  SignInRequestModel({this.phone, this.password, this.firebaseTokenKey});
+  const SignInRequestModel({this.phone, this.password, this.firebaseTokenKey});
 
   SignInRequestModel copyWith({
     String? phone,
@@ -27,4 +29,7 @@ class SignInRequestModel implements BaseRequestModel {
       'firebaseTokenKey': firebaseTokenKey,
     };
   }
+
+  @override
+  List<Object?> get props => [phone, password, firebaseTokenKey];
 }

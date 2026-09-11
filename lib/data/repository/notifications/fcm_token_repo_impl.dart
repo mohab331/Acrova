@@ -1,28 +1,26 @@
 import 'dart:async';
 
-import 'package:acrova/data/data_source/local/constants/secure_constants.dart';
 import 'package:acrova/data/models/request/fcm_notification/fcm_notification_request_model.dart';
 import 'package:acrova/domain/repository/notifications/base_fcm_token_repo.dart';
+import 'package:acrova/utils/constants/secure_constants.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 
 import '../../../utils/helpers/result.dart';
 import '../../../utils/helpers/safe_async_call.dart';
 import '../../../utils/logging/app_logger.dart';
+import '../../data_source/base/base_auth_data_source.dart';
 import '../../data_source/local/secure_storage/base_secure_storage.dart';
 import '../../data_source/remote/network/models/network_response.dart';
-import '../../data_source/remote/services/auth/auth_service.dart';
 
 class FcmTokenRepoImpl implements BaseFCMTokenRepo {
   FcmTokenRepoImpl({
     required BaseSecureStorage secureStorage,
-    required AuthService authService,
+    BaseAuthDataSource? authDataSource,
   }) : _fm = FirebaseMessaging.instance,
-       _authService = authService,
        _secureStorage = secureStorage;
 
   final FirebaseMessaging _fm;
   final BaseSecureStorage _secureStorage;
-  final AuthService _authService;
   StreamSubscription<String>? _refreshSub;
 
   @override
@@ -63,14 +61,10 @@ class FcmTokenRepoImpl implements BaseFCMTokenRepo {
   @override
   Future<void> requestPermission() async {
     await FirebaseMessaging.instance.requestPermission(
-      alert: true,
-      badge: true,
-      sound: true,
-      provisional: false,
+      
     );
   }
 
-  @override
   Future<Result<NetworkResponse<void>>> updateToken({
     required FCMRequestModel fcmRequestModel,
   }) async {

@@ -10,7 +10,7 @@ class AppLogo extends StatelessWidget {
       alignment: Alignment.center,
       child: Image.asset(
         Resources.drawables.appLogoPNG,
-        width: Resources.horizontalDims.$100,
+        width: Resources.horizontalDims.$150,
         color: Resources.colors.luxuryNavy,
       ),
     );

@@ -1,5 +1,3 @@
-import '../../../data/data_source/remote/network/models/network_response.dart';
-import '../../../data/models/request/fcm_notification/fcm_notification_request_model.dart';
 import '../../../utils/helpers/result.dart';
 
 /// Base contract for managing FCM token registration/lifecycle.

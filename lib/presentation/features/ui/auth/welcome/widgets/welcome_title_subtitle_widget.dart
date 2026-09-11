@@ -11,16 +11,16 @@ class WelcomeTitleSubtitleWidget extends StatelessWidget {
     final theme = context.textTheme;
     final localization = context.localization;
 
-    final titlePrimary = context.textTheme.displayMedium?.copyWith(
+    final titlePrimary = context.textTheme.headlineLarge?.copyWith(
       color: Resources.colors.luxuryInk,
-      fontWeight: Resources.fontWeights.regular,
-      height: 1.3,
+      fontWeight: Resources.fontWeights.semiBold,
+      height: Resources.lineHeights.$1_3,
     );
 
-    final titleSecondary = context.textTheme.displayMedium?.copyWith(
+    final titleSecondary = context.textTheme.headlineLarge?.copyWith(
       color: Resources.colors.luxuryGold,
-      fontWeight: Resources.fontWeights.regular,
-      height: 1.1,
+      fontWeight: Resources.fontWeights.semiBold,
+      height: Resources.lineHeights.$1_2,
     );
 
     return Column(

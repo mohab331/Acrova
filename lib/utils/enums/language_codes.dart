@@ -1,5 +1,4 @@
 import 'dart:ui';
-import 'package:acrova/core/l10n/app_localizations.dart';
 import 'package:acrova/presentation/features/cubit/localization/localization_cubit.dart';
 
 enum LanguageCodes {
