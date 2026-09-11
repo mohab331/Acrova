@@ -7,10 +7,8 @@ class PhoneInputState extends Equatable {
     this.error,
   });
 
-  factory PhoneInputState.initial() => PhoneInputState(
-        country: kSupportedCountries.first,
-        phone: '',
-      );
+  factory PhoneInputState.initial() =>
+      PhoneInputState(country: kSupportedCountries.first, phone: '');
 
   final Country country;
   final String phone;
@@ -24,8 +22,8 @@ class PhoneInputState extends Equatable {
   }) {
     return PhoneInputState(
       country: country ?? this.country,
-      phone:   phone   ?? this.phone,
-      error:   clearError ? null : (error ?? this.error),
+      phone: phone ?? this.phone,
+      error: clearError ? null : (error ?? this.error),
     );
   }
 

@@ -28,7 +28,9 @@ class NavItem extends StatelessWidget {
         decoration: BoxDecoration(
           border: Border(
             top: BorderSide(
-              color: isActive ? Resources.colors.luxuryGold : Colors.transparent,
+              color: isActive
+                  ? Resources.colors.luxuryGold
+                  : Colors.transparent,
               width: AppBorderWidths.$2,
             ),
           ),

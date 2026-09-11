@@ -25,11 +25,20 @@ class RevisionDetailSkeleton extends StatelessWidget {
               height: Resources.verticalDims.$14,
             ),
             SizedBox(height: Resources.verticalDims.$16),
-            SkeletonBox(width: double.infinity, height: Resources.verticalDims.$14),
+            SkeletonBox(
+              width: double.infinity,
+              height: Resources.verticalDims.$14,
+            ),
             SizedBox(height: Resources.verticalDims.$8),
-            SkeletonBox(width: double.infinity, height: Resources.verticalDims.$14),
+            SkeletonBox(
+              width: double.infinity,
+              height: Resources.verticalDims.$14,
+            ),
             SizedBox(height: Resources.verticalDims.$8),
-            SkeletonBox(width: Resources.horizontalDims.$150, height: Resources.verticalDims.$14),
+            SkeletonBox(
+              width: Resources.horizontalDims.$150,
+              height: Resources.verticalDims.$14,
+            ),
             SizedBox(height: Resources.verticalDims.$32),
             SkeletonBox(
               width: double.infinity,

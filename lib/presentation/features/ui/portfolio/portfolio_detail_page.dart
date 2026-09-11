@@ -36,10 +36,7 @@ class _PortfolioDetailPageState extends State<PortfolioDetailPage> {
 
     return CommonScreen(
       padding: EdgeInsets.zero,
-      appBar: AppAuthBrandHeader(
-        showBack: true,
-        label: widget.item.title,
-      ),
+      appBar: AppAuthBrandHeader(showBack: true, label: widget.item.title),
       child: Stack(
         children: [
           SingleChildScrollView(
@@ -53,8 +50,7 @@ class _PortfolioDetailPageState extends State<PortfolioDetailPage> {
                       DetailCarousel(
                         imageUrls: widget.item.imageUrls,
                         controller: _pageController,
-                        onPageChanged: (i) =>
-                            setState(() => _currentPage = i),
+                        onPageChanged: (i) => setState(() => _currentPage = i),
                       ),
                       const Positioned(
                         top: 0,
@@ -102,7 +98,9 @@ class _PortfolioDetailPageState extends State<PortfolioDetailPage> {
                   context.push(AppRouteEnum.projectCreationPage.path),
               onWatchWalkthrough: () {
                 final walkthrough = WalkthroughModel(
-                  imageAsset: widget.item.imageUrls.isNotEmpty ? widget.item.imageUrls.first : '',
+                  imageAsset: widget.item.imageUrls.isNotEmpty
+                      ? widget.item.imageUrls.first
+                      : '',
                   title: widget.item.title,
                   duration: '',
                   size: '',

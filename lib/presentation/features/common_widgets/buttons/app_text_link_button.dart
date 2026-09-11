@@ -48,7 +48,9 @@ class AppTextLinkButton extends StatelessWidget {
           fontWeight: Resources.fontWeights.semiBold,
           color: effectiveColor,
           letterSpacing: letterSpacing ?? Resources.letterSpacing.$0,
-          decoration: underline ? TextDecoration.underline : TextDecoration.none,
+          decoration: underline
+              ? TextDecoration.underline
+              : TextDecoration.none,
           decorationColor: effectiveColor,
         ),
       ),

@@ -13,30 +13,29 @@ class EditProfileSubmitButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-        padding: EdgeInsets.symmetric(
-          horizontal: Resources.horizontalDims.$16,
-          vertical: Resources.verticalDims.$24,
-        ),
-        decoration: BoxDecoration(
-          color: Resources.colors.luxurySurface,
-          border: Border(
-            top: BorderSide(color: Resources.colors.luxuryBorder),
-          ),
-        ),
-        child: SafeArea(
-      top: false,
-      child: BlocBuilder<EditProfileCubit, EditProfileState>(
-        buildWhen: (p, c) => p.isSubmitting != c.isSubmitting,
-        builder: (context, state) {
-          return AppPrimaryButton(
-            label: context.localization.editProfileSubmit,
-            isLoading: state.isSubmitting,
-            onPressed: () => context.read<EditProfileCubit>().submit(
-                  resolve: (code) => resolveEditProfileError(context, code),
-                ),
-          );
-        },
+      padding: EdgeInsets.symmetric(
+        horizontal: Resources.horizontalDims.$16,
+        vertical: Resources.verticalDims.$24,
       ),
-    ));
+      decoration: BoxDecoration(
+        color: Resources.colors.luxurySurface,
+        border: Border(top: BorderSide(color: Resources.colors.luxuryBorder)),
+      ),
+      child: SafeArea(
+        top: false,
+        child: BlocBuilder<EditProfileCubit, EditProfileState>(
+          buildWhen: (p, c) => p.isSubmitting != c.isSubmitting,
+          builder: (context, state) {
+            return AppPrimaryButton(
+              label: context.localization.editProfileSubmit,
+              isLoading: state.isSubmitting,
+              onPressed: () => context.read<EditProfileCubit>().submit(
+                resolve: (code) => resolveEditProfileError(context, code),
+              ),
+            );
+          },
+        ),
+      ),
+    );
   }
 }

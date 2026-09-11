@@ -27,7 +27,18 @@ enum ProjectStatus {
   revisionInProgress,
 
   /// Project fully completed
-  completed,
+  completed;
+
+  static ProjectStatus? fromValue(String? value) {
+    if (value == null) return null;
+    if (ProjectStatusX._jsonMap.containsKey(value)) {
+      return ProjectStatusX._jsonMap[value];
+    }
+    for (final item in ProjectStatus.values) {
+      if (item.name == value) return item;
+    }
+    return null;
+  }
 }
 
 extension ProjectStatusX on ProjectStatus {
@@ -141,20 +152,19 @@ extension ProjectStatusX on ProjectStatus {
   // ── Serialisation ──────────────────────────────────────────────────────────
 
   static const _jsonMap = {
-    'awaiting_pricing':                ProjectStatus.awaitingPricing,
-    'awaiting_payment':                ProjectStatus.awaitingPayment,
-    'payment_under_review':            ProjectStatus.paymentUnderReview,
-    'awaiting_engineering_assignment': ProjectStatus.awaitingEngineeringAssignment,
-    'awaiting_engineering':            ProjectStatus.awaitingEngineering,
-    'deliverables_ready':              ProjectStatus.deliverablesReady,
-    'revision_in_progress':            ProjectStatus.revisionInProgress,
-    'completed':                       ProjectStatus.completed,
+    'awaiting_pricing': ProjectStatus.awaitingPricing,
+    'awaiting_payment': ProjectStatus.awaitingPayment,
+    'payment_under_review': ProjectStatus.paymentUnderReview,
+    'awaiting_engineering_assignment':
+        ProjectStatus.awaitingEngineeringAssignment,
+    'awaiting_engineering': ProjectStatus.awaitingEngineering,
+    'deliverables_ready': ProjectStatus.deliverablesReady,
+    'revision_in_progress': ProjectStatus.revisionInProgress,
+    'completed': ProjectStatus.completed,
   };
 
-  String get jsonKey => _jsonMap.entries
-      .firstWhere((e) => e.value == this)
-      .key;
+  String get jsonKey => _jsonMap.entries.firstWhere((e) => e.value == this).key;
 
   static ProjectStatus fromJson(String value) =>
-      _jsonMap[value] ?? ProjectStatus.awaitingPricing;
+      ProjectStatus.fromValue(value) ?? ProjectStatus.awaitingPricing;
 }

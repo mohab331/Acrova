@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 
-class MinAppVersionResponseModel extends Equatable{
+class MinAppVersionResponseModel extends Equatable {
   const MinAppVersionResponseModel({required this.minAppVersion});
 
   final int? minAppVersion;

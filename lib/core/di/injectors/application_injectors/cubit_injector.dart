@@ -50,9 +50,8 @@ class CubitsInjector implements BaseInjector {
     ),
 
     () => serviceLocatorInstance.registerFactory<ProjectsCubit>(
-      () => ProjectsCubit(
-        projectRepo: serviceLocatorInstance<BaseProjectRepo>(),
-      ),
+      () =>
+          ProjectsCubit(projectRepo: serviceLocatorInstance<BaseProjectRepo>()),
     ),
 
     () => serviceLocatorInstance.registerFactory<ProjectDetailCubit>(
@@ -74,9 +73,7 @@ class CubitsInjector implements BaseInjector {
     ),
 
     () => serviceLocatorInstance.registerFactory<ProfileCubit>(
-      () => ProfileCubit(
-        authRepo: serviceLocatorInstance<BaseAuthRepo>(),
-      ),
+      () => ProfileCubit(authRepo: serviceLocatorInstance<BaseAuthRepo>()),
     ),
 
     () => serviceLocatorInstance.registerFactory<NotificationsCubit>(

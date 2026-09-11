@@ -128,17 +128,18 @@ class _WalkthroughVideoPlayerState extends State<WalkthroughVideoPlayer> {
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                       Icon(
+                      Icon(
                         Icons.error_outline,
                         color: Colors.white,
                         size: Resources.iconSizes.$32,
                       ),
-                       SizedBox(height: Resources.verticalDims.$16),
-                       Text(
+                      SizedBox(height: Resources.verticalDims.$16),
+                      Text(
                         context.localization.walkthroughUnableToLoadVideo,
-                        style: context.textTheme.bodyMedium?.copyWith(color: Colors.white),
+                        style: context.textTheme.bodyMedium?.copyWith(
+                          color: Colors.white,
+                        ),
                       ),
-
                     ],
                   ),
                 ),

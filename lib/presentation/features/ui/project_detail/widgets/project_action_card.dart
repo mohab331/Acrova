@@ -6,10 +6,7 @@ import 'package:acrova/utils/extensions/theme_extension.dart';
 import 'package:flutter/material.dart';
 
 class ProjectActionCard extends StatelessWidget {
-  const ProjectActionCard({
-    required this.project,
-    super.key,
-  });
+  const ProjectActionCard({required this.project, super.key});
 
   final ProjectModel project;
 
@@ -62,9 +59,7 @@ class ProjectActionCard extends StatelessWidget {
       padding: EdgeInsets.all(Resources.squareDims.$25),
       decoration: BoxDecoration(
         color: Resources.colors.luxuryGoldLight.withValues(alpha: 0.05),
-        border: Border.all(
-          color: Resources.colors.luxuryGoldBorder,
-        ),
+        border: Border.all(color: Resources.colors.luxuryGoldBorder),
         borderRadius: BorderRadius.circular(Resources.radius.$r12),
       ),
       child: Row(
@@ -78,7 +73,9 @@ class ProjectActionCard extends StatelessWidget {
               borderRadius: BorderRadius.circular(Resources.radius.$r8),
               boxShadow: [
                 BoxShadow(
-                  color: Resources.colors.luxuryGoldLight.withValues(alpha: 0.3),
+                  color: Resources.colors.luxuryGoldLight.withValues(
+                    alpha: 0.3,
+                  ),
                   blurRadius: 10,
                   offset: const Offset(0, 4),
                 ),

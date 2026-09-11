@@ -28,7 +28,9 @@ class WalkthroughScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final loc = context.localization;
-    final title = walkthrough?.title ?? (projectName.isNotEmpty ? projectName : loc.walkthroughTitle);
+    final title =
+        walkthrough?.title ??
+        (projectName.isNotEmpty ? projectName : loc.walkthroughTitle);
     final duration = walkthrough?.duration ?? '';
     final size = walkthrough?.size ?? '';
     final activeVideoUrl = walkthrough?.videoUrl ?? videoUrl;
@@ -37,10 +39,7 @@ class WalkthroughScreen extends StatelessWidget {
 
     return CommonScreen(
       bottomPadding: 0,
-      appBar: AppAuthBrandHeader(
-        label: loc.walkthroughTitle,
-        showBack: true,
-      ),
+      appBar: AppAuthBrandHeader(label: loc.walkthroughTitle, showBack: true),
       bottomNavigationBar: SafeArea(
         child: Container(
           padding: EdgeInsets.symmetric(
@@ -64,10 +63,7 @@ class WalkthroughScreen extends StatelessWidget {
             ),
             onPressed: () {
               if (activeVideoUrl.isNotEmpty) {
-                DownloadHelper.downloadAndShare(
-                  activeVideoUrl,
-                  '$title.mp4',
-                );
+                DownloadHelper.downloadAndShare(activeVideoUrl, '$title.mp4');
               }
             },
           ),
@@ -120,10 +116,14 @@ class WalkthroughScreen extends StatelessWidget {
                   decoration: BoxDecoration(
                     border: Border.symmetric(
                       horizontal: BorderSide(
-                        color: Resources.colors.luxuryBorder.withValues(alpha: 0.5),
+                        color: Resources.colors.luxuryBorder.withValues(
+                          alpha: 0.5,
+                        ),
                       ),
                       vertical: BorderSide(
-                        color: Resources.colors.luxuryBorder.withValues(alpha: 0.5),
+                        color: Resources.colors.luxuryBorder.withValues(
+                          alpha: 0.5,
+                        ),
                       ),
                     ),
                     color: Colors.white,
@@ -207,7 +207,9 @@ class WalkthroughScreen extends StatelessWidget {
                     ),
                     ...previousVersions.map(
                       (v) => Padding(
-                        padding: EdgeInsets.only(top: Resources.verticalDims.$16),
+                        padding: EdgeInsets.only(
+                          top: Resources.verticalDims.$16,
+                        ),
                         child: PreviousVersionCard(
                           version: v.version,
                           dateAndSize: v.dateAndSize,
@@ -228,10 +230,7 @@ class WalkthroughScreen extends StatelessWidget {
 }
 
 class _WalkthroughSpecColumn extends StatelessWidget {
-  const _WalkthroughSpecColumn({
-    required this.title,
-    required this.value,
-  });
+  const _WalkthroughSpecColumn({required this.title, required this.value});
 
   final String title;
   final String value;

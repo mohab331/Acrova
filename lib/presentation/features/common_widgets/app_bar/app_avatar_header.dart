@@ -7,19 +7,20 @@ import 'package:flutter/material.dart';
 
 class AvatarHeader extends StatelessWidget {
   const AvatarHeader({
-    required this.userName,
+    this.userName,
     required this.notificationCount,
     this.avatarUrl,
     super.key,
   });
 
-  final String userName;
+  final String? userName;
   final int notificationCount;
   final String? avatarUrl;
 
   @override
   Widget build(BuildContext context) {
     final loc = context.localization;
+    final displayName = userName?.trim() ?? '';
 
     return Padding(
       padding: EdgeInsets.symmetric(vertical: Resources.verticalDims.$20),
@@ -28,7 +29,7 @@ class AvatarHeader extends StatelessWidget {
         children: [
           Row(
             children: [
-              AvatarWidget(avatarUrl: avatarUrl, userName: userName),
+              AvatarWidget(avatarUrl: avatarUrl, userName: displayName),
               SizedBox(width: Resources.horizontalDims.$12),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -41,14 +42,15 @@ class AvatarHeader extends StatelessWidget {
                     ),
                   ),
                   SizedBox(height: Resources.verticalDims.$2),
-                  Text(
-                    userName,
-                    style: context.textTheme.labelLarge?.copyWith(
-                      color: Resources.colors.luxuryInk,
-                      fontWeight: Resources.fontWeights.semiBold,
-                      letterSpacing: Resources.letterSpacing.$0_14,
+                  if (displayName.isNotEmpty)
+                    Text(
+                      displayName,
+                      style: context.textTheme.labelLarge?.copyWith(
+                        color: Resources.colors.luxuryInk,
+                        fontWeight: Resources.fontWeights.semiBold,
+                        letterSpacing: Resources.letterSpacing.$0_14,
+                      ),
                     ),
-                  ),
                 ],
               ),
             ],

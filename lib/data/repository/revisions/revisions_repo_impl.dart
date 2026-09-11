@@ -8,7 +8,7 @@ import 'package:acrova/utils/helpers/safe_async_call.dart';
 
 class RevisionsRepoImpl implements BaseRevisionsRepo {
   const RevisionsRepoImpl({required BaseRevisionsDataSource dataSource})
-      : _dataSource = dataSource;
+    : _dataSource = dataSource;
 
   final BaseRevisionsDataSource _dataSource;
 
@@ -25,9 +25,7 @@ class RevisionsRepoImpl implements BaseRevisionsRepo {
       safeAsyncCall(_dataSource.getQuota);
 
   @override
-  Future<Result<RevisionModel>> createRevision(
-    CreateRevisionRequest request,
-  ) =>
+  Future<Result<RevisionModel>> createRevision(CreateRevisionRequest request) =>
       safeAsyncCall(() => _dataSource.createRevision(request));
 
   @override

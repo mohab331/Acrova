@@ -38,7 +38,7 @@ class RevisionHistoryContent extends StatelessWidget {
         title: l10n.revisionHistoryEmptyTitle,
         subtitle: l10n.revisionHistoryEmptySubtitle,
         ctaLabel: l10n.revisionHistoryNewRequest,
-        onCtaTap:()=> _openRequest(context),
+        onCtaTap: () => _openRequest(context),
       );
     }
 
@@ -54,7 +54,10 @@ class RevisionHistoryContent extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              RevisionCard(revision: entry, onTap: () => _openDetail(context, revision: entry)),
+              RevisionCard(
+                revision: entry,
+                onTap: () => _openDetail(context, revision: entry),
+              ),
               SizedBox(height: Resources.verticalDims.$16),
             ],
           );
@@ -76,4 +79,3 @@ class RevisionHistoryContent extends StatelessWidget {
     context.push(AppRouteEnum.revisionDetailPage.name, extra: revision);
   }
 }
-

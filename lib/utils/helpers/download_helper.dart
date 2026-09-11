@@ -8,10 +8,13 @@ class DownloadHelper {
   DownloadHelper._();
 
   /// Downloads a file from a URL (or loads an asset) and presents the native share sheet.
-  /// 
+  ///
   /// The [urlOrAsset] can be a network URL or a local asset path (e.g. 'assets/images/img1.jpg').
   /// The [fileName] is the suggested name of the file when saving.
-  static Future<void> downloadAndShare(String urlOrAsset, String fileName) async {
+  static Future<void> downloadAndShare(
+    String urlOrAsset,
+    String fileName,
+  ) async {
     try {
       final Directory tempDir = await getTemporaryDirectory();
       final File tempFile = File('${tempDir.path}/$fileName');
@@ -28,10 +31,7 @@ class DownloadHelper {
 
       // Present the share sheet
       await SharePlus.instance.share(
-        ShareParams(
-          files: [XFile(tempFile.path)],
-          text: 'Sharing $fileName',
-        ),
+        ShareParams(files: [XFile(tempFile.path)], text: 'Sharing $fileName'),
       );
     } catch (e) {
       // In a production app, we would log this to Crashlytics and show a Toastification error.

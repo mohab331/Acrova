@@ -1,4 +1,3 @@
-import 'package:acrova/data/models/project/create_project_request.dart';
 import 'package:acrova/presentation/app/resources/resources.dart';
 import 'package:acrova/presentation/features/cubit/project_creation/project_creation_cubit.dart';
 import 'package:acrova/presentation/features/cubit/project_creation/project_creation_state.dart';
@@ -13,38 +12,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 class Step6ReviewSubmit extends StatelessWidget {
   const Step6ReviewSubmit({super.key});
-
-  String _getProjectTypeName(BuildContext context, ProjectType? type) {
-    if (type == null) return '—';
-    final l10n = context.localization;
-    return switch (type) {
-      ProjectType.villa => l10n.projectTypeVillaLabel,
-      ProjectType.houseApartment => l10n.projectTypeHouseApartmentLabel,
-      ProjectType.commercial => l10n.projectTypeCommercialLabel,
-    };
-  }
-
-  String _getStyleLabel(BuildContext context, String key) {
-    final l10n = context.localization;
-    return switch (key) {
-      DesignStyle.modern => l10n.designStyleModern,
-      DesignStyle.classic => l10n.designStyleClassic,
-      DesignStyle.contemporary => l10n.designStyleContemporary,
-      DesignStyle.minimalist => l10n.designStyleMinimalist,
-      DesignStyle.neoClassical => l10n.designStyleNeoClassical,
-      _ => key,
-    };
-  }
-  
-  String _getSmartHomeLabel(BuildContext context, String key) {
-    final l10n = context.localization;
-    return switch (key) {
-      'basic' => l10n.requirementsSmartHomeBasic,
-      'intermediate' => l10n.requirementsSmartHomeIntermediate,
-      'advanced' => l10n.requirementsSmartHomeAdvanced,
-      _ => key,
-    };
-  }
 
   String _buildExtras(BuildContext context, ProjectCreationState state) {
     final l10n = context.localization;
@@ -80,20 +47,30 @@ class Step6ReviewSubmit extends StatelessWidget {
               SizedBox(height: Resources.verticalDims.$8),
               Text(
                 l10n.reviewSubmitSubtitle,
-                style: context.textTheme.bodyMedium?.copyWith(color: Resources.colors.luxuryBody),
+                style: context.textTheme.bodyMedium?.copyWith(
+                  color: Resources.colors.luxuryBody,
+                ),
               ),
               SizedBox(height: Resources.verticalDims.$32),
               ReviewSection(
                 title: l10n.stepProjectType.toUpperCase(),
                 stepIndex: 0,
-                rows: [ReviewRow(label: l10n.reviewLabelType, value: _getProjectTypeName(context, state.selectedType))],
+                rows: [
+                  ReviewRow(
+                    label: l10n.reviewLabelType,
+                    value: state.selectedType?.localizedLabel(context) ?? '—',
+                  ),
+                ],
               ),
               SizedBox(height: Resources.verticalDims.$16),
               ReviewSection(
                 title: l10n.stepLandDetails.toUpperCase(),
                 stepIndex: 1,
                 rows: [
-                  ReviewRow(label: l10n.reviewLabelLocation, value: state.location.isEmpty ? '—' : state.location),
+                  ReviewRow(
+                    label: l10n.reviewLabelLocation,
+                    value: state.location.isEmpty ? '—' : state.location,
+                  ),
                   ReviewRow(
                     label: l10n.reviewLabelArea,
                     value: state.landAreaSqm != null
@@ -101,15 +78,23 @@ class Step6ReviewSubmit extends StatelessWidget {
                         : '—',
                   ),
                   if (isCommercial)
-                    ReviewRow(label: l10n.reviewLabelEmployees, value: '${state.employeeCount}')
+                    ReviewRow(
+                      label: l10n.reviewLabelEmployees,
+                      value: '${state.employeeCount}',
+                    )
                   else
                     ReviewRow(
                       label: l10n.reviewLabelWidthLength,
-                      value: (state.landWidthM != null && state.landLengthM != null)
+                      value:
+                          (state.landWidthM != null &&
+                              state.landLengthM != null)
                           ? '${state.landWidthM!.toStringAsFixed(0)} ${l10n.unitMeter} × ${state.landLengthM!.toStringAsFixed(0)} ${l10n.unitMeter}'
                           : '—',
                     ),
-                  ReviewRow(label: l10n.reviewLabelFloors, value: '${state.floors}'),
+                  ReviewRow(
+                    label: l10n.reviewLabelFloors,
+                    value: '${state.floors}',
+                  ),
                 ],
               ),
               SizedBox(height: Resources.verticalDims.$16),
@@ -118,11 +103,25 @@ class Step6ReviewSubmit extends StatelessWidget {
                 stepIndex: 2,
                 rows: [
                   if (!isCommercial) ...[
-                    ReviewRow(label: l10n.reviewLabelBedrooms, value: '${state.bedrooms}'),
-                    ReviewRow(label: l10n.reviewLabelBathrooms, value: '${state.bathrooms}'),
+                    ReviewRow(
+                      label: l10n.reviewLabelBedrooms,
+                      value: '${state.bedrooms}',
+                    ),
+                    ReviewRow(
+                      label: l10n.reviewLabelBathrooms,
+                      value: '${state.bathrooms}',
+                    ),
                   ],
-                  ReviewRow(label: l10n.reviewLabelExtras, value: _buildExtras(context, state)),
-                  ReviewRow(label: l10n.reviewLabelSmartHome, value: _getSmartHomeLabel(context, state.smartHomeLevel)),
+                  ReviewRow(
+                    label: l10n.reviewLabelExtras,
+                    value: _buildExtras(context, state),
+                  ),
+                  ReviewRow(
+                    label: l10n.reviewLabelSmartHome,
+                    value:
+                        state.smartHomeLevelEnum?.localizedLabel(context) ??
+                        state.smartHomeLevel,
+                  ),
                 ],
               ),
               SizedBox(height: Resources.verticalDims.$16),
@@ -132,10 +131,17 @@ class Step6ReviewSubmit extends StatelessWidget {
                 rows: [
                   ReviewRow(
                     label: l10n.reviewLabelStyle,
-                    value: state.architecturalStyle.isEmpty ? '—' : _getStyleLabel(context, state.architecturalStyle),
+                    value:
+                        state.architecturalStyleEnum?.localizedLabel(context) ??
+                        (state.architecturalStyle.isEmpty
+                            ? '—'
+                            : state.architecturalStyle),
                   ),
                   if (state.additionalNotes.isNotEmpty)
-                    ReviewRow(label: l10n.reviewLabelNotes, value: state.additionalNotes),
+                    ReviewRow(
+                      label: l10n.reviewLabelNotes,
+                      value: state.additionalNotes,
+                    ),
                 ],
               ),
               SizedBox(height: Resources.verticalDims.$16),
@@ -148,8 +154,8 @@ class Step6ReviewSubmit extends StatelessWidget {
                     value: state.mediaPaths.isEmpty
                         ? l10n.reviewLabelNoneAdded
                         : state.mediaPaths.length == 1
-                            ? '1 ${l10n.reviewPhotosCountSingular}'
-                            : '${state.mediaPaths.length} ${l10n.reviewPhotosCountPlural}',
+                        ? '1 ${l10n.reviewPhotosCountSingular}'
+                        : '${state.mediaPaths.length} ${l10n.reviewPhotosCountPlural}',
                   ),
                 ],
               ),
@@ -168,8 +174,8 @@ class Step6ReviewSubmit extends StatelessWidget {
                 child: Text(
                   l10n.reviewSubmitAgreement,
                   style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                        color: Resources.colors.luxuryBodyMuted,
-                      ),
+                    color: Resources.colors.luxuryBodyMuted,
+                  ),
                   textAlign: TextAlign.center,
                 ),
               ),

@@ -1,7 +1,11 @@
 import 'package:acrova/data/data_source/local/services/image_picker/base_image_picker_service.dart';
+import 'package:acrova/data/models/project/project_model.dart';
 import 'package:acrova/domain/repository/project/base_project_repo.dart';
 import 'package:acrova/utils/enums/cubit_status.dart';
+import 'package:acrova/utils/enums/design_style_enum.dart';
 import 'package:acrova/utils/enums/project_type_enum.dart';
+import 'package:acrova/utils/enums/smart_home_level_enum.dart';
+import 'package:acrova/utils/helpers/safe_async_call.dart';
 import 'package:acrova/utils/logging/app_logger.dart';
 import 'package:bloc/bloc.dart';
 
@@ -11,10 +15,9 @@ class ProjectCreationCubit extends Cubit<ProjectCreationState> {
   ProjectCreationCubit({
     required BaseProjectRepo projectRepo,
     required BaseImagePickerService imagePicker,
-  })
-      : _projectRepo = projectRepo,
-        _imagePicker = imagePicker,
-        super(const ProjectCreationState());
+  }) : _projectRepo = projectRepo,
+       _imagePicker = imagePicker,
+       super(const ProjectCreationState());
 
   final BaseProjectRepo _projectRepo;
   final BaseImagePickerService _imagePicker;
@@ -47,15 +50,18 @@ class ProjectCreationCubit extends Cubit<ProjectCreationState> {
 
   void updateLocation(String value) => emit(state.copyWith(location: value));
 
-  void updateLandArea(double? value) => emit(state.copyWith(landAreaSqm: value));
+  void updateLandArea(double? value) =>
+      emit(state.copyWith(landAreaSqm: value));
 
-  void updateLandWidth(double? value) => emit(state.copyWith(landWidthM: value));
+  void updateLandWidth(double? value) =>
+      emit(state.copyWith(landWidthM: value));
 
-  void updateLandLength(double? value) => emit(state.copyWith(landLengthM: value));
+  void updateLandLength(double? value) =>
+      emit(state.copyWith(landLengthM: value));
 
   void updateFloors(int value) =>
       emit(state.copyWith(floors: value.clamp(1, 10)));
-      
+
   void updateEmployeeCount(int value) =>
       emit(state.copyWith(employeeCount: value.clamp(0, 10000)));
 
@@ -69,18 +75,28 @@ class ProjectCreationCubit extends Cubit<ProjectCreationState> {
 
   void toggleMajlis(bool value) => emit(state.copyWith(hasMajlis: value));
   void toggleMaidRoom(bool value) => emit(state.copyWith(hasMaidRoom: value));
-  void toggleDriverRoom(bool value) => emit(state.copyWith(hasDriverRoom: value));
+  void toggleDriverRoom(bool value) =>
+      emit(state.copyWith(hasDriverRoom: value));
   void toggleBasement(bool value) => emit(state.copyWith(hasBasement: value));
   void togglePool(bool value) => emit(state.copyWith(hasPool: value));
   void toggleRooftop(bool value) => emit(state.copyWith(hasRooftop: value));
-  
-  void updateSmartHomeLevel(String level) => emit(state.copyWith(smartHomeLevel: level));
+
+  void updateSmartHomeLevel(String level) =>
+      emit(state.copyWith(smartHomeLevel: level));
+
+  void setSmartHomeLevel(SmartHomeLevel level) =>
+      emit(state.copyWith(smartHomeLevel: level.value));
 
   // ── Step 4: Design preferences ────────────────────────────────────────────
 
-  void selectStyle(String style) => emit(state.copyWith(architecturalStyle: style));
+  void selectStyle(String style) =>
+      emit(state.copyWith(architecturalStyle: style));
 
-  void updateNotes(String value) => emit(state.copyWith(additionalNotes: value));
+  void setDesignStyle(DesignStyle style) =>
+      emit(state.copyWith(architecturalStyle: style.value));
+
+  void updateNotes(String value) =>
+      emit(state.copyWith(additionalNotes: value));
 
   // ── Step 5: Media ─────────────────────────────────────────────────────────
 
@@ -106,10 +122,11 @@ class ProjectCreationCubit extends Cubit<ProjectCreationState> {
     }
   }
 
-  void removeMedia(String path) =>
-      emit(state.copyWith(
-        mediaPaths: state.mediaPaths.where((p) => p != path).toList(),
-      ));
+  void removeMedia(String path) => emit(
+    state.copyWith(
+      mediaPaths: state.mediaPaths.where((p) => p != path).toList(),
+    ),
+  );
 
   // ── Step 6: Submit ────────────────────────────────────────────────────────
 
@@ -118,19 +135,20 @@ class ProjectCreationCubit extends Cubit<ProjectCreationState> {
 
     emit(state.copyWith(cubitStatus: CubitStatus.loading));
 
-    final result = await _projectRepo.createProject(state.toRequest());
-    result.when(
-      success: (project) {
-        emit(state.copyWith(
-          cubitStatus: CubitStatus.success,
-          createdProject: project,
-        ));
+    await safeCubitCall<ProjectModel>(
+      call: () => _projectRepo.createProject(state.toRequest()),
+      onSuccess: (project) {
+        emit(
+          state.copyWith(
+            cubitStatus: CubitStatus.success,
+            createdProject: project,
+          ),
+        );
       },
-      failure: (error) {
-        emit(state.copyWith(
-          cubitStatus: CubitStatus.error,
-          appErrorModel: error,
-        ));
+      onError: (error) {
+        emit(
+          state.copyWith(cubitStatus: CubitStatus.error, appErrorModel: error),
+        );
       },
     );
   }

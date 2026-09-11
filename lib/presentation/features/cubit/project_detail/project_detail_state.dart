@@ -6,11 +6,13 @@ import 'package:equatable/equatable.dart';
 class ProjectDetailState extends Equatable {
   const ProjectDetailState({
     this.cubitStatus = CubitStatus.initial,
+    this.projectId,
     this.appErrorModel,
     this.project,
   });
 
   final CubitStatus cubitStatus;
+  final String? projectId;
   final AppErrorModel? appErrorModel;
   final ProjectModel? project;
 
@@ -20,16 +22,18 @@ class ProjectDetailState extends Equatable {
 
   ProjectDetailState copyWith({
     CubitStatus? cubitStatus,
+    String? projectId,
     AppErrorModel? appErrorModel,
     ProjectModel? project,
   }) {
     return ProjectDetailState(
       cubitStatus: cubitStatus ?? this.cubitStatus,
+      projectId: projectId ?? this.projectId,
       appErrorModel: appErrorModel ?? this.appErrorModel,
       project: project ?? this.project,
     );
   }
 
   @override
-  List<Object?> get props => [cubitStatus, appErrorModel, project];
+  List<Object?> get props => [cubitStatus, projectId, appErrorModel, project];
 }

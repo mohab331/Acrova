@@ -6,10 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class ProjectTimeline extends StatelessWidget {
-  const ProjectTimeline({
-    required this.project,
-    super.key,
-  });
+  const ProjectTimeline({required this.project, super.key});
 
   final ProjectModel project;
 
@@ -18,7 +15,9 @@ class ProjectTimeline extends StatelessWidget {
     final loc = context.localization;
     final locale = Localizations.localeOf(context).languageCode;
     final submittedDate = DateFormat.yMMMd(locale).format(project.createdAt);
-    final paymentDate = DateFormat.yMMMd(locale).format(project.createdAt.add(const Duration(days: 3)));
+    final paymentDate = DateFormat.yMMMd(
+      locale,
+    ).format(project.createdAt.add(const Duration(days: 3)));
 
     final events = [
       _TimelineEvent(
@@ -83,10 +82,7 @@ class _TimelineEvent {
 }
 
 class _TimelineItem extends StatelessWidget {
-  const _TimelineItem({
-    required this.event,
-    required this.isLast,
-  });
+  const _TimelineItem({required this.event, required this.isLast});
 
   final _TimelineEvent event;
   final bool isLast;
@@ -121,12 +117,14 @@ class _TimelineItem extends StatelessWidget {
                     color: event.isCurrent
                         ? Resources.colors.luxuryGoldLight
                         : (event.isCompleted
-                            ? Resources.colors.luxuryNavy
-                            : Resources.colors.luxuryProgressTrack),
+                              ? Resources.colors.luxuryNavy
+                              : Resources.colors.luxuryProgressTrack),
                     shape: BoxShape.circle,
                     border: event.isCurrent
                         ? Border.all(
-                            color: Resources.colors.luxuryGoldLight.withValues(alpha: 0.3),
+                            color: Resources.colors.luxuryGoldLight.withValues(
+                              alpha: 0.3,
+                            ),
                             width: 4,
                           )
                         : null,

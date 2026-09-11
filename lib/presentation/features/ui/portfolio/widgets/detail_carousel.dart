@@ -19,10 +19,8 @@ class DetailCarousel extends StatelessWidget {
       controller: controller,
       onPageChanged: onPageChanged,
       itemCount: imageUrls.length,
-      itemBuilder: (_, index) => AppCachedNetworkImage(
-        imageUrl: imageUrls[index],
-        radius: 0,
-      ),
+      itemBuilder: (_, index) =>
+          AppCachedNetworkImage(imageUrl: imageUrls[index], radius: 0),
     );
   }
 }

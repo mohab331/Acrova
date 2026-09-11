@@ -18,8 +18,12 @@ class DashboardDataModel extends Equatable {
   final String? avatarUrl;
 
   @override
-  List<Object?> get props =>
-      [userName, recentProjects, exploreDesigns, notificationCount];
+  List<Object?> get props => [
+    userName,
+    recentProjects,
+    exploreDesigns,
+    notificationCount,
+  ];
 }
 
 /// Gallery/explore design tile.
@@ -34,9 +38,9 @@ class DesignModel extends Equatable {
 
   final String id;
   final String title;
-  final String styleTag;    // e.g. "MODERNISM"
+  final String styleTag; // e.g. "MODERNISM"
   final String? imageAsset; // local asset path
-  final String? imageUrl;   // remote URL (future)
+  final String? imageUrl; // remote URL (future)
 
   @override
   List<Object?> get props => [id, title, styleTag];

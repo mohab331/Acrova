@@ -119,7 +119,8 @@ class MockAuthRepo extends _MockBase implements BaseAuthRepo {
         memberSince: DateTime(2023, 1, 1),
         projectsCount: 3,
         completedCount: 1,
-        avatarUrl: request.avatarPath ??
+        avatarUrl:
+            request.avatarPath ??
             'https://png.pngtree.com/png-vector/20231019/ourmid/pngtree-user-profile-avatar-png-image_10211467.png',
       ),
     );
@@ -273,7 +274,9 @@ class MockProjectRepo extends _MockBase implements BaseProjectRepo {
   }
 
   @override
-  Future<Result<ProjectModel>> createProject(CreateProjectRequest request) async {
+  Future<Result<ProjectModel>> createProject(
+    CreateProjectRequest request,
+  ) async {
     if (shouldThrow(MockRepositoryKey.project)) return mockError();
     final newProject = ProjectModel(
       id: 'ARC-2024-${DateTime.now().millisecondsSinceEpoch % 100000}',
@@ -303,7 +306,9 @@ class MockProjectRepo extends _MockBase implements BaseProjectRepo {
   }
 
   @override
-  Future<Result<void>> submitInteriorDesign(InteriorDesignRequest request) async {
+  Future<Result<void>> submitInteriorDesign(
+    InteriorDesignRequest request,
+  ) async {
     if (shouldThrow(MockRepositoryKey.project)) return mockError();
     return const Success(null);
   }
@@ -389,7 +394,8 @@ class MockBillingRepo extends _MockBase implements BaseBillingRepo {
       bankName: 'Al Rajhi Bank',
       iban: 'SA0380000000608010167519',
       accountName: 'Arcova Architecture & Design',
-      rejectionReason: 'Receipt image unreadable. Please re-upload a clear copy.',
+      rejectionReason:
+          'Receipt image unreadable. Please re-upload a clear copy.',
     ),
   ];
 
@@ -423,8 +429,9 @@ class MockBillingRepo extends _MockBase implements BaseBillingRepo {
   Future<Result<PaymentQuoteModel>> getPaymentQuote(String projectId) async {
     if (shouldThrow(MockRepositoryKey.billing)) return mockError();
     if (isEmpty(MockRepositoryKey.billing)) {
-      return const Success(
+      return Success(
         PaymentQuoteModel(
+          projectId: projectId,
           amountDue: 0,
           baseFee: 0,
           vat: 0,
@@ -436,8 +443,9 @@ class MockBillingRepo extends _MockBase implements BaseBillingRepo {
         ),
       );
     }
-    return const Success(
+    return Success(
       PaymentQuoteModel(
+        projectId: projectId,
         amountDue: 14000,
         baseFee: 10000,
         vat: 1200,
@@ -451,8 +459,7 @@ class MockBillingRepo extends _MockBase implements BaseBillingRepo {
   }
 }
 
-class MockNotificationsRepo extends _MockBase
-    implements BaseNotificationsRepo {
+class MockNotificationsRepo extends _MockBase implements BaseNotificationsRepo {
   static final List<AppNotificationModel> _mockNotifications = [
     AppNotificationModel(
       id: 'notif_001',
@@ -500,17 +507,20 @@ class MockRevisionsRepo extends _MockBase implements BaseRevisionsRepo {
       id: 'rev_001',
       status: RevisionStatus.completed,
       createdAt: DateTime(2024, 2, 10),
-      description: 'Living Room Wall Repositioning: Shift dining-living partition 1.2m west to enlarge seating area.',
+      description:
+          'Living Room Wall Repositioning: Shift dining-living partition 1.2m west to enlarge seating area.',
       collaborators: const ['FA', 'MK'],
       engineerName: 'Eng. Fahad Al-Otaibi',
       engineerRole: 'Lead Architect',
-      engineerNote: 'Structural check cleared. Beam adjustments noted in sheet S-04.',
+      engineerNote:
+          'Structural check cleared. Beam adjustments noted in sheet S-04.',
     ),
     RevisionModel(
       id: 'rev_002',
       status: RevisionStatus.inProgress,
       createdAt: DateTime(2024, 2, 16),
-      description: 'Exterior Cladding Material Change: Swap limestone finish for dark travertine on upper facade.',
+      description:
+          'Exterior Cladding Material Change: Swap limestone finish for dark travertine on upper facade.',
       collaborators: const ['FA'],
       engineerName: 'Eng. Fahad Al-Otaibi',
       engineerRole: 'Lead Architect',
@@ -540,21 +550,11 @@ class MockRevisionsRepo extends _MockBase implements BaseRevisionsRepo {
     if (shouldThrow(MockRepositoryKey.revisions)) return mockError();
     if (isEmpty(MockRepositoryKey.revisions)) {
       return const Success(
-        RevisionQuotaModel(
-          used: 3,
-          total: 3,
-          currency: 'SAR',
-          paidCost: 500,
-        ),
+        RevisionQuotaModel(used: 3, total: 3, currency: 'SAR', paidCost: 500),
       );
     }
     return const Success(
-      RevisionQuotaModel(
-        used: 1,
-        total: 3,
-        currency: 'SAR',
-        paidCost: 500,
-      ),
+      RevisionQuotaModel(used: 1, total: 3, currency: 'SAR', paidCost: 500),
     );
   }
 
@@ -590,10 +590,7 @@ class MockDashboardRepo extends _MockBase implements BaseDashboardRepo {
   Future<Result<Map<String, dynamic>>> getDashboardData() async {
     if (shouldThrow(MockRepositoryKey.dashboard)) return mockError();
     if (isEmpty(MockRepositoryKey.dashboard)) return const Success({});
-    return const Success({
-      'userName': 'Mohab',
-      'notificationCount': 2,
-    });
+    return const Success({'userName': 'Mohab', 'notificationCount': 2});
   }
 }
 
@@ -612,7 +609,12 @@ class MockPortfolioRepo extends _MockBase implements BasePortfolioRepo {
       imageUrls: [
         'https://lh3.googleusercontent.com/aida-public/AB6AXuAGNrH52huyQGEWIQKQDVt92V2iuZo5qfnXAZK9FoC3dzU0Y9NILlAN4FFLdIMcVnyP-G_iZ3RN3xrBhEJdOtMWcWap7toLFJHebSsfzYogzatTwl9D8swWRLXNDOzxKSLX3LjCSFvZX2VEU9uIRFBCfgKVBMCJlQQ6syNRJFiVOXkAlRuCZY7suJqiJ63eQ4m3ucqA8bkltfduLosOXBLwvUOXEfRK0pzy_vAluc6ZWsx_yjGvny4xtx2kQaHb3f-6dMOiNmzTapY',
       ],
-      features: ['Grand Foyer', 'Colonnade Facade', 'Formal Gardens', 'Smart Lighting'],
+      features: [
+        'Grand Foyer',
+        'Colonnade Facade',
+        'Formal Gardens',
+        'Smart Lighting',
+      ],
       walkthroughVideo: 'https://samplelib.com/mp4/sample-5s.mp4',
     ),
     PortfolioItem(
@@ -652,7 +654,12 @@ class MockPortfolioRepo extends _MockBase implements BasePortfolioRepo {
       imageUrls: [
         'https://lh3.googleusercontent.com/aida-public/AB6AXuDs86ukcNSgT6YjaCHXIqqQKwqshqFQ0Kg6eJwcJ6X_j5dU84cc_NNlj4phD3fHKqSyctyQK5Q5tjaHC7gBr6p6l7EOjLSTBRFLAvLcWX6IJ_MBMLfrG8-iMCxukKPuRBZNHggSTkltCUdPCePjWp5HMv6nhG_RP6Pp14Lb_2gZl13WuMybXohXVUEsvgkwuQdTVw4t4efI-86hK9iQ2cqf7yUoxucei_mjGtTCObKZFja88hIsmriE_Gbm7aOVk28FBftwnNXruaE',
       ],
-      features: ['Floor-to-Ceiling Glazing', 'Infinity Pool', 'Open Plan Living', 'Solar Canopy'],
+      features: [
+        'Floor-to-Ceiling Glazing',
+        'Infinity Pool',
+        'Open Plan Living',
+        'Solar Canopy',
+      ],
     ),
     PortfolioItem(
       id: 'al_omran',
@@ -687,7 +694,12 @@ class MockPortfolioRepo extends _MockBase implements BasePortfolioRepo {
       imageUrls: [
         'https://lh3.googleusercontent.com/aida-public/AB6AXuCL3hMUFQKigsK2NjEQmac2mm2U1b28oQFOpdaYAWTN97bZrdQNBVPjzLhajNtLQav7gTgq4g6jj5uGBFLoBRwGkS5Ou-imElEjncF5ajr23dHQfaCj4R13eg2gefMm1-nhlQd7y2A1SLkkj9WeYhkBxm71-zkS2I2Ho6ESgnBG26e9-03QhJtaALvra1ribj4b95DHelKa36Y5ukLgc8iUuJDpDLESB39W9bTlcmj1gL2ZTDx5ma0T47uelGynbHiGjptRFKqJDz0',
       ],
-      features: ['Arched Niches', 'Hand-Painted Ceilings', 'Custom Textiles', 'Ambient Lighting'],
+      features: [
+        'Arched Niches',
+        'Hand-Painted Ceilings',
+        'Custom Textiles',
+        'Ambient Lighting',
+      ],
     ),
     PortfolioItem(
       id: 'desert_pavilion',
@@ -702,7 +714,12 @@ class MockPortfolioRepo extends _MockBase implements BasePortfolioRepo {
       imageUrls: [
         'https://lh3.googleusercontent.com/aida-public/AB6AXuAD_YC3-NAPtdaYzhVv8kQZVATUQE1Zy-FIvyG3ErZoYsCLOCparvVZou_hv56ikseYcpHBOC1Ajry47VDgh7Kh7qSjGG5vsQXI0Vddb8k3Ujllkc7BZBqkv80M-9Y9iL5ezJOd1MBdOG6SbSKrD6snlb-_oxhcnIhY4sEjb6kfyU12JCvHzMKTQUxroumDOa7C8UzmGuYk2Hxr3CDJatGibZpJWJPLJ7KS8UBFRWa_nHHWYo2VEd3_i78Y70mQ0q-8jNVDmtHAOsg',
       ],
-      features: ['Deep Overhangs', 'Sandstone Palette', 'Open Terrace', 'Passive Cooling'],
+      features: [
+        'Deep Overhangs',
+        'Sandstone Palette',
+        'Open Terrace',
+        'Passive Cooling',
+      ],
     ),
   ];
 
@@ -816,14 +833,12 @@ class MockContactUsRepo extends _MockBase implements BaseContactUsRepo {
 class MockAppConfigRepo extends _MockBase implements BaseAppConfigRepo {
   @override
   Future<Result<NetworkResponse<MinAppVersionResponseModel>>>
-      getMinAppVersion() async {
+  getMinAppVersion() async {
     if (shouldThrow(MockRepositoryKey.appConfig)) return mockError();
     return Success(
       NetworkResponse(
         isSuccess: true,
-        data: const MinAppVersionResponseModel(
-          minAppVersion: 1,
-        ),
+        data: const MinAppVersionResponseModel(minAppVersion: 1),
       ),
     );
   }

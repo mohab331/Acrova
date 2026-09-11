@@ -24,4 +24,3 @@ class MoodboardModel extends Equatable {
   @override
   List<Object?> get props => [id, url, label, labelAr];
 }
-

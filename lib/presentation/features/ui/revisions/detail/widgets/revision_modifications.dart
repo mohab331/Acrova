@@ -29,7 +29,8 @@ class RevisionModifications extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  context.localization.revisionDetailModifications.toUpperCase(),
+                  context.localization.revisionDetailModifications
+                      .toUpperCase(),
                   style: TextStyle(
                     fontFamily: Resources.fonts.manrope,
                     fontSize: Resources.fontSizes.$10,
@@ -51,7 +52,9 @@ class RevisionModifications extends StatelessWidget {
                 Container(
                   width: Resources.horizontalDims.$50,
                   height: 1,
-                  color: Resources.colors.luxuryGoldLight.withValues(alpha: 0.3),
+                  color: Resources.colors.luxuryGoldLight.withValues(
+                    alpha: 0.3,
+                  ),
                 ),
               ],
             ),

@@ -35,15 +35,16 @@ class AppEmptyState extends StatelessWidget {
         Icon(
           icon,
           size: Resources.iconSizes.$64,
-          color: iconColor ?? Resources.colors.luxuryNavy.withValues(alpha: 0.3),
+          color:
+              iconColor ?? Resources.colors.luxuryNavy.withValues(alpha: 0.3),
         ),
         SizedBox(height: Resources.verticalDims.$24),
         Text(
           title,
           textAlign: TextAlign.center,
-          style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                color: Resources.colors.luxuryNavy,
-              ),
+          style: Theme.of(
+            context,
+          ).textTheme.titleLarge?.copyWith(color: Resources.colors.luxuryNavy),
         ),
         if (subtitle != null) ...[
           SizedBox(height: Resources.verticalDims.$8),
@@ -51,8 +52,8 @@ class AppEmptyState extends StatelessWidget {
             subtitle!,
             textAlign: TextAlign.center,
             style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                  color: Resources.colors.luxuryBodyMuted,
-                ),
+              color: Resources.colors.luxuryBodyMuted,
+            ),
           ),
         ],
         if (ctaLabel != null && onCtaTap != null) ...[

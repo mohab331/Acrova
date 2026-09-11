@@ -63,7 +63,10 @@ class EditProfileForm extends StatelessWidget {
 }
 
 /// Maps a validation error code to its localized message.
-String resolveEditProfileError(BuildContext context, EditProfileFieldError code) {
+String resolveEditProfileError(
+  BuildContext context,
+  EditProfileFieldError code,
+) {
   final l10n = context.localization;
   return switch (code) {
     EditProfileFieldError.nameRequired => l10n.editProfileNameRequired,

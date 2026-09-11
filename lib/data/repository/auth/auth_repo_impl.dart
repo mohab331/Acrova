@@ -9,8 +9,6 @@ import 'package:acrova/utils/helpers/safe_async_call.dart';
 import '../../../utils/helpers/result.dart';
 import '../../data_source/base/base_auth_data_source.dart';
 
-
-
 class AuthRepoImpl implements BaseAuthRepo {
   final BaseAuthDataSource _authDataSource;
   final BaseSecureStorage _secureStorage;
@@ -39,8 +37,7 @@ class AuthRepoImpl implements BaseAuthRepo {
   }
 
   @override
-  Future<Result<bool>> isNewUser() =>
-      safeAsyncCall(_authDataSource.isNewUser);
+  Future<Result<bool>> isNewUser() => safeAsyncCall(_authDataSource.isNewUser);
 
   @override
   Future<Result<void>> saveProfile({
@@ -48,13 +45,14 @@ class AuthRepoImpl implements BaseAuthRepo {
     required String email,
     required String nationalId,
     required String language,
-  }) =>
-      safeAsyncCall(() => _authDataSource.saveUserProfile(
-            name: name,
-            email: email,
-            nationalId: nationalId,
-            language: language,
-          ));
+  }) => safeAsyncCall(
+    () => _authDataSource.saveUserProfile(
+      name: name,
+      email: email,
+      nationalId: nationalId,
+      language: language,
+    ),
+  );
 
   @override
   Future<Result<UserProfileModel>> getUserProfile() =>
@@ -63,13 +61,12 @@ class AuthRepoImpl implements BaseAuthRepo {
   @override
   Future<Result<UserProfileModel>> updateUserProfile(
     UpdateProfileRequest request,
-  ) =>
-      safeAsyncCall(() => _authDataSource.updateUserProfile(request));
+  ) => safeAsyncCall(() => _authDataSource.updateUserProfile(request));
 
   @override
-  Future<Result<void>> clearUserData() async => safeAsyncCall(() => Future.wait([
-        _secureStorage.clear(),
-      ]));
+  Future<Result<void>> clearUserData() async => safeAsyncCall(
+    () => Future.wait([_secureStorage.clear(), _localStorage.clear()]),
+  );
 
   @override
   Future<Result<String?>> getAccessToken() =>

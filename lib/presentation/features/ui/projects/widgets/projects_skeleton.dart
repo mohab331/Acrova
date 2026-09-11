@@ -15,17 +15,35 @@ class ProjectsSkeleton extends StatelessWidget {
         physics: const NeverScrollableScrollPhysics(),
         children: [
           SizedBox(height: Resources.verticalDims.$20),
-          SkeletonBox(width: Resources.horizontalDims.$140, height: Resources.verticalDims.$28),
+          SkeletonBox(
+            width: Resources.horizontalDims.$140,
+            height: Resources.verticalDims.$28,
+          ),
           SizedBox(height: Resources.verticalDims.$8),
-          SkeletonBox(width: Resources.horizontalDims.$206, height: Resources.verticalDims.$16),
+          SkeletonBox(
+            width: Resources.horizontalDims.$206,
+            height: Resources.verticalDims.$16,
+          ),
           SizedBox(height: Resources.verticalDims.$16),
           Row(
             children: [
-              SkeletonBox(width: 56.w, height: 34.h, radius: Resources.radius.$r100),
+              SkeletonBox(
+                width: 56.w,
+                height: 34.h,
+                radius: Resources.radius.$r100,
+              ),
               SizedBox(width: Resources.horizontalDims.$8),
-              SkeletonBox(width: 68.w, height: 34.h, radius: Resources.radius.$r100),
+              SkeletonBox(
+                width: 68.w,
+                height: 34.h,
+                radius: Resources.radius.$r100,
+              ),
               SizedBox(width: Resources.horizontalDims.$8),
-              SkeletonBox(width: 92.w, height: 34.h, radius: Resources.radius.$r100),
+              SkeletonBox(
+                width: 92.w,
+                height: 34.h,
+                radius: Resources.radius.$r100,
+              ),
             ],
           ),
           SizedBox(height: Resources.verticalDims.$20),

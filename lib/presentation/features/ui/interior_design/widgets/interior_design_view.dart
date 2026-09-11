@@ -4,7 +4,8 @@ import 'package:acrova/presentation/app/resources/resources.dart';
 import 'package:acrova/presentation/features/common_widgets/app_bar/app_auth_brand_header.dart';
 import 'package:acrova/presentation/features/common_widgets/buttons/app_primary_button.dart';
 import 'package:acrova/presentation/features/common_widgets/common_screen/common_screen.dart';
-import 'package:acrova/presentation/features/common_widgets/feedback/app_error_state.dart';
+import 'package:acrova/presentation/features/common_widgets/feedback/common_error_widget.dart';
+import 'package:acrova/presentation/features/common_widgets/feedback/common_shimmer_loading.dart';
 import 'package:acrova/presentation/features/cubit/interior_design/interior_design_cubit.dart';
 import 'package:acrova/presentation/features/cubit/interior_design/interior_design_state.dart';
 import 'package:acrova/presentation/features/cubit/project_detail/project_detail_cubit.dart';
@@ -17,10 +18,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
 class InteriorDesignView extends StatelessWidget {
-  const InteriorDesignView({
-    required this.projectId,
-    super.key,
-  });
+  const InteriorDesignView({required this.projectId, super.key});
 
   final String projectId;
 
@@ -29,13 +27,14 @@ class InteriorDesignView extends StatelessWidget {
     final loc = context.localization;
 
     return BlocProvider(
-      create: (_) => serviceLocatorInstance<ProjectDetailCubit>()..fetchProject(projectId),
+      create: (_) =>
+          serviceLocatorInstance<ProjectDetailCubit>()..fetchProject(projectId),
       child: BlocConsumer<InteriorDesignCubit, InteriorDesignState>(
         listenWhen: (prev, curr) => prev.status != curr.status,
         listener: (context, state) {
-          if (state.status == InteriorDesignStatus.success) {
+          if (state.isSuccess) {
             context.go(AppRouteEnum.projectsPage.path);
-          } else if (state.status == InteriorDesignStatus.failure) {
+          } else if (state.isError) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 content: Text(state.error?.message ?? 'An error occurred'),
@@ -54,15 +53,14 @@ class InteriorDesignView extends StatelessWidget {
             child: BlocBuilder<ProjectDetailCubit, ProjectDetailState>(
               builder: (context, projectState) {
                 if (projectState.isLoading || projectState.project == null) {
-                  return const Center(child: CircularProgressIndicator());
+                  return const CommonShimmerLoading(isDetail: true);
                 }
                 if (projectState.isError) {
-                  return Center(
-                    child: AppErrorState(
-                      errorModel: projectState.appErrorModel,
-                      onRetry: () =>
-                          context.read<ProjectDetailCubit>().fetchProject(projectId),
-                    ),
+                  return CommonErrorWidget(
+                    error: projectState.appErrorModel,
+                    onRetry: () => context
+                        .read<ProjectDetailCubit>()
+                        .fetchProject(projectId),
                   );
                 }
 
@@ -75,7 +73,7 @@ class InteriorDesignView extends StatelessWidget {
                         left: Resources.horizontalDims.$20,
                         right: Resources.horizontalDims.$20,
                         top: Resources.verticalDims.$16,
-                        bottom: Resources.verticalDims.$100, // For CTA
+                        bottom: Resources.verticalDims.$100,
                       ),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -96,13 +94,15 @@ class InteriorDesignView extends StatelessWidget {
                           top: Resources.verticalDims.$16,
                           left: Resources.horizontalDims.$24,
                           right: Resources.horizontalDims.$24,
-                          bottom: Resources.verticalDims.$32, // Safe area
+                          bottom: Resources.verticalDims.$32,
                         ),
                         decoration: BoxDecoration(
                           color: Resources.colors.luxurySurface,
                           boxShadow: [
                             BoxShadow(
-                              color: Resources.colors.luxuryInk.withValues(alpha: 0.05),
+                              color: Resources.colors.luxuryInk.withValues(
+                                alpha: 0.05,
+                              ),
                               blurRadius: 20,
                               offset: const Offset(0, -5),
                             ),
@@ -110,7 +110,7 @@ class InteriorDesignView extends StatelessWidget {
                         ),
                         child: AppPrimaryButton(
                           label: loc.interiorDesignSubmit,
-                          isLoading: state.status == InteriorDesignStatus.loading,
+                          isLoading: state.isLoading,
                           enabled: state.isValid,
                           onPressed: () {
                             context.read<InteriorDesignCubit>().submit();

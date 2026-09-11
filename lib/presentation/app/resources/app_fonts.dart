@@ -132,7 +132,7 @@ class _AppFonts {
         size: AppTextTokens.bodyL,
         weight: FontWeight.w400,
         height: 1.24,
-        letterSpacing: 0.15
+        letterSpacing: 0.15,
       ),
 
       bodyMedium: _ts(
@@ -148,7 +148,7 @@ class _AppFonts {
         size: AppTextTokens.bodyS,
         weight: FontWeight.w400,
         height: 1.16,
-        letterSpacing: 0.4
+        letterSpacing: 0.4,
       ),
 
       labelLarge: _ts(

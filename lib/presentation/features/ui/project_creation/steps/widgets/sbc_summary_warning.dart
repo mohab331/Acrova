@@ -28,8 +28,8 @@ class SbcSummaryWarning extends StatelessWidget {
             child: Text(
               context.localization.reviewSbcWarning,
               style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                    color: Resources.colors.luxuryWarning,
-                  ),
+                color: Resources.colors.luxuryWarning,
+              ),
             ),
           ),
         ],

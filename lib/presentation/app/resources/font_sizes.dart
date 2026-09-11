@@ -3,7 +3,7 @@ part of 'resources.dart';
 class _FontSizes {
   const _FontSizes();
 
-  double get $8  => 8.sp;
+  double get $8 => 8.sp;
   double get $10 => 10.sp;
   double get $11 => 11.sp;
   double get $12 => 12.sp;

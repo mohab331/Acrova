@@ -106,7 +106,8 @@ class ProjectProgressCard extends StatelessWidget {
             icons: icons,
           ),
 
-          if (project.estimatedTimeline != null && project.estimatedTimeline!.isNotEmpty) ...[
+          if (project.estimatedTimeline != null &&
+              project.estimatedTimeline!.isNotEmpty) ...[
             SizedBox(height: Resources.verticalDims.$16),
             Container(
               padding: EdgeInsets.symmetric(
@@ -114,7 +115,9 @@ class ProjectProgressCard extends StatelessWidget {
                 vertical: Resources.verticalDims.$8,
               ),
               decoration: BoxDecoration(
-                color: Resources.colors.luxuryProgressTrack.withValues(alpha: 0.3),
+                color: Resources.colors.luxuryProgressTrack.withValues(
+                  alpha: 0.3,
+                ),
                 borderRadius: BorderRadius.circular(Resources.radius.$r8),
               ),
               child: Row(
@@ -132,14 +135,22 @@ class ProjectProgressCard extends StatelessWidget {
                           color: Resources.colors.luxuryNavy,
                         ),
                         children: [
-                          TextSpan(text: context.localization.projectProgressEstimatedPrefix),
+                          TextSpan(
+                            text: context
+                                .localization
+                                .projectProgressEstimatedPrefix,
+                          ),
                           TextSpan(
                             text: project.estimatedTimeline ?? '',
                             style: TextStyle(
                               fontWeight: Resources.fontWeights.bold,
                             ),
                           ),
-                          TextSpan(text: context.localization.projectProgressEstimatedSuffix),
+                          TextSpan(
+                            text: context
+                                .localization
+                                .projectProgressEstimatedSuffix,
+                          ),
                         ],
                       ),
                     ),

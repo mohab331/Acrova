@@ -19,10 +19,7 @@ class BlueprintModel extends Equatable {
 }
 
 class RenderModel extends Equatable {
-  const RenderModel({
-    required this.resolution,
-    required this.imageAsset,
-  });
+  const RenderModel({required this.resolution, required this.imageAsset});
   final String resolution;
   final String imageAsset;
 
@@ -64,15 +61,15 @@ class WalkthroughModel extends Equatable {
 
   @override
   List<Object?> get props => [
-        title,
-        duration,
-        size,
-        format,
-        imageAsset,
-        videoUrl,
-        description,
-        previousVersions,
-      ];
+    title,
+    duration,
+    size,
+    format,
+    imageAsset,
+    videoUrl,
+    description,
+    previousVersions,
+  ];
 }
 
 class DeliverablesState extends Equatable {
@@ -95,6 +92,11 @@ class DeliverablesState extends Equatable {
   final String? projectName;
   final String? projectThumbnailUrl;
   final String? allFilesZipUrl;
+
+  bool get isLoading =>
+      status == CubitStatus.loading || status == CubitStatus.initial;
+  bool get isSuccess => status == CubitStatus.success;
+  bool get isError => status == CubitStatus.error;
 
   DeliverablesState copyWith({
     CubitStatus? status,
@@ -120,13 +122,13 @@ class DeliverablesState extends Equatable {
 
   @override
   List<Object?> get props => [
-        status,
-        error,
-        blueprints,
-        renders,
-        walkthroughs,
-        projectName,
-        projectThumbnailUrl,
-        allFilesZipUrl,
-      ];
+    status,
+    error,
+    blueprints,
+    renders,
+    walkthroughs,
+    projectName,
+    projectThumbnailUrl,
+    allFilesZipUrl,
+  ];
 }

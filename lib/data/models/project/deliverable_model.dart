@@ -51,7 +51,8 @@ class DeliverableModel extends Equatable {
   final String? thumbnailUrl;
   final DateTime createdAt;
 
-  factory DeliverableModel.fromJson(Map<String, dynamic> json) => DeliverableModel(
+  factory DeliverableModel.fromJson(Map<String, dynamic> json) =>
+      DeliverableModel(
         id: json['id'] as String,
         title: json['title'] as String,
         type: DeliverableTypeX.fromJson(json['type'] as String),
@@ -61,13 +62,13 @@ class DeliverableModel extends Equatable {
       );
 
   Map<String, dynamic> toJson() => {
-        'id': id,
-        'title': title,
-        'type': type.jsonKey,
-        'url': url,
-        'thumbnail_url': thumbnailUrl,
-        'created_at': createdAt.toIso8601String(),
-      };
+    'id': id,
+    'title': title,
+    'type': type.jsonKey,
+    'url': url,
+    'thumbnail_url': thumbnailUrl,
+    'created_at': createdAt.toIso8601String(),
+  };
 
   @override
   List<Object?> get props => [id, title, type, url, thumbnailUrl, createdAt];

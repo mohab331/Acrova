@@ -39,10 +39,10 @@ class AppSectionHeader extends StatelessWidget {
             Text(
               title,
               style: context.textTheme.titleLarge?.copyWith(
-                    color: Resources.colors.luxuryNavy,
+                color: Resources.colors.luxuryNavy,
                 fontSize: AppTextTokens.sectionTitle,
-                fontWeight: Resources.fontWeights.semiBold
-                  ),
+                fontWeight: Resources.fontWeights.semiBold,
+              ),
             ),
             if (showAction)
               AppTextLinkButton(

@@ -7,10 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class InteriorDesignPage extends StatelessWidget {
-  const InteriorDesignPage({
-    required this.projectId,
-    super.key,
-  });
+  const InteriorDesignPage({required this.projectId, super.key});
 
   final String projectId;
 

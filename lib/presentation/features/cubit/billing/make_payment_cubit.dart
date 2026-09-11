@@ -1,27 +1,26 @@
+import 'package:acrova/data/models/billing/payment_model.dart';
 import 'package:acrova/domain/repository/billing/base_billing_repo.dart';
+import 'package:acrova/presentation/features/cubit/billing/make_payment_state.dart';
+import 'package:acrova/utils/enums/cubit_status.dart';
+import 'package:acrova/utils/helpers/safe_async_call.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
-import 'make_payment_state.dart';
 
 class MakePaymentCubit extends Cubit<MakePaymentState> {
   MakePaymentCubit({required BaseBillingRepo billingRepo})
-      : _billingRepo = billingRepo,
-        super(const MakePaymentState());
+    : _billingRepo = billingRepo,
+      super(const MakePaymentState());
 
   final BaseBillingRepo _billingRepo;
 
   Future<void> fetchQuote({String? projectId}) async {
-    emit(state.copyWith(status: MakePaymentStatus.loading));
-    final result = await _billingRepo.getPaymentQuote(projectId ?? '');
-    result.when(
-      success: (quote) => emit(state.copyWith(
-        status: MakePaymentStatus.initial,
-        quote: quote,
-      )),
-      failure: (error) => emit(state.copyWith(
-        status: MakePaymentStatus.failure,
-        error: error,
-      )),
+    emit(state.copyWith(status: CubitStatus.loading));
+    await safeCubitCall<PaymentQuoteModel>(
+      call: () => _billingRepo.getPaymentQuote(projectId ?? ''),
+      onSuccess: (quote) =>
+          emit(state.copyWith(status: CubitStatus.success, quote: quote)),
+      onError: (error) =>
+          emit(state.copyWith(status: CubitStatus.error, error: error)),
     );
   }
 
@@ -35,20 +34,23 @@ class MakePaymentCubit extends Cubit<MakePaymentState> {
 
   Future<void> submitPayment({String? projectId, String? notes}) async {
     if (state.receiptImage == null) return;
-    
-    emit(state.copyWith(status: MakePaymentStatus.uploading));
-    
-    final result = await _billingRepo.submitPayment(
-      projectId: projectId ?? '',
-      receiptPath: state.receiptImage!.path,
-    );
 
-    result.when(
-      success: (_) => emit(state.copyWith(status: MakePaymentStatus.success)),
-      failure: (error) => emit(state.copyWith(
-        status: MakePaymentStatus.failure,
-        error: error,
-      )),
+    emit(state.copyWith(isSubmitting: true));
+    await safeCubitCall<void>(
+      call: () => _billingRepo.submitPayment(
+        projectId: projectId ?? '',
+        receiptPath: state.receiptImage!.path,
+      ),
+      onSuccess: (_) => emit(
+        state.copyWith(isSubmitting: false, status: CubitStatus.success),
+      ),
+      onError: (error) => emit(
+        state.copyWith(
+          isSubmitting: false,
+          status: CubitStatus.error,
+          error: error,
+        ),
+      ),
     );
   }
 }

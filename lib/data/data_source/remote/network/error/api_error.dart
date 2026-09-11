@@ -39,9 +39,14 @@ class ApiError implements Exception {
     }
   }
 
-  factory ApiError.fromJson(Map<String,dynamic>? errorJson) {
-    if((errorJson?.isEmpty ?? true) || !(errorJson?.containsKey('value') ?? false)) return ApiError(code: ErrorCodesEnum.unknown);
-    return ApiError(code: ErrorCodesEnum.fromCode(errorJson?['value']['code']),message: errorJson?['value']['message'],);
+  factory ApiError.fromJson(Map<String, dynamic>? errorJson) {
+    if ((errorJson?.isEmpty ?? true) ||
+        !(errorJson?.containsKey('value') ?? false))
+      return ApiError(code: ErrorCodesEnum.unknown);
+    return ApiError(
+      code: ErrorCodesEnum.fromCode(errorJson?['value']['code']),
+      message: errorJson?['value']['message'],
+    );
   }
 
   /// Creates an [ApiError] directly.

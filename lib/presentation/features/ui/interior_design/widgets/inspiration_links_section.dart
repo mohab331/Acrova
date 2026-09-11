@@ -10,7 +10,8 @@ class InspirationLinksSection extends StatefulWidget {
   const InspirationLinksSection({super.key});
 
   @override
-  State<InspirationLinksSection> createState() => _InspirationLinksSectionState();
+  State<InspirationLinksSection> createState() =>
+      _InspirationLinksSectionState();
 }
 
 class _InspirationLinksSectionState extends State<InspirationLinksSection> {
@@ -26,9 +27,10 @@ class _InspirationLinksSectionState extends State<InspirationLinksSection> {
     final loc = context.localization;
     final text = _linkCtrl.text.trim();
     if (text.isNotEmpty) {
-      // Very basic URL validation
-      if (text.startsWith('http://') || text.startsWith('https://')) {
-        context.read<InteriorDesignCubit>().addInspirationLink(text);
+      final added = context.read<InteriorDesignCubit>().addInspirationLink(
+        text,
+      );
+      if (added) {
         _linkCtrl.clear();
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -51,24 +53,26 @@ class _InspirationLinksSectionState extends State<InspirationLinksSection> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Padding(
-              padding: EdgeInsets.symmetric(vertical: Resources.verticalDims.$16),
+              padding: EdgeInsets.symmetric(
+                vertical: Resources.verticalDims.$16,
+              ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
                     loc.interiorDesignInspirationLinksTitle,
                     style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                          fontWeight: Resources.fontWeights.semiBold,
-                          color: Resources.colors.luxuryNavy,
-                          letterSpacing: 0.5,
-                        ),
+                      fontWeight: Resources.fontWeights.semiBold,
+                      color: Resources.colors.luxuryNavy,
+                      letterSpacing: 0.5,
+                    ),
                   ),
                   SizedBox(height: Resources.verticalDims.$4),
                   Text(
                     loc.interiorDesignInspirationLinksSubtitle,
                     style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                          color: Resources.colors.luxuryBody,
-                        ),
+                      color: Resources.colors.luxuryBody,
+                    ),
                   ),
                 ],
               ),
@@ -80,13 +84,19 @@ class _InspirationLinksSectionState extends State<InspirationLinksSection> {
                     decoration: BoxDecoration(
                       color: Resources.colors.luxuryInputBg,
                       borderRadius: BorderRadius.circular(Resources.radius.$r8),
-                      border: Border.all(color: Resources.colors.luxuryInputBorder),
+                      border: Border.all(
+                        color: Resources.colors.luxuryInputBorder,
+                      ),
                     ),
                     child: TextField(
                       controller: _linkCtrl,
+                      keyboardType: TextInputType.url,
+                      textInputAction: TextInputAction.done,
+                      onSubmitted: (_) => _addLink(context),
                       decoration: InputDecoration(
                         hintText: loc.interiorDesignInspirationLinksHint,
-                        hintStyle: Theme.of(context).textTheme.bodySmall?.copyWith(
+                        hintStyle: Theme.of(context).textTheme.bodySmall
+                            ?.copyWith(
                               color: Resources.colors.luxuryPlaceholder,
                             ),
                         contentPadding: EdgeInsets.symmetric(
@@ -127,7 +137,8 @@ class _InspirationLinksSectionState extends State<InspirationLinksSection> {
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
                 itemCount: state.inspirationLinks.length,
-                separatorBuilder: (_, __) => SizedBox(height: Resources.verticalDims.$8),
+                separatorBuilder: (_, __) =>
+                    SizedBox(height: Resources.verticalDims.$8),
                 itemBuilder: (context, index) {
                   final link = state.inspirationLinks[index];
                   return Container(
@@ -145,7 +156,7 @@ class _InspirationLinksSectionState extends State<InspirationLinksSection> {
                         Icon(
                           Icons.link,
                           color: Resources.colors.luxuryGoldLight,
-                          size: 20,
+                          size: Resources.iconSizes.$20,
                         ),
                         SizedBox(width: Resources.horizontalDims.$12),
                         Expanded(
@@ -160,11 +171,13 @@ class _InspirationLinksSectionState extends State<InspirationLinksSection> {
                           ),
                         ),
                         GestureDetector(
-                          onTap: () => context.read<InteriorDesignCubit>().removeInspirationLink(index),
+                          onTap: () => context
+                              .read<InteriorDesignCubit>()
+                              .removeInspirationLink(index),
                           child: Icon(
                             Icons.close,
                             color: Resources.colors.luxuryError,
-                            size: 20,
+                            size: Resources.iconSizes.$20,
                           ),
                         ),
                       ],

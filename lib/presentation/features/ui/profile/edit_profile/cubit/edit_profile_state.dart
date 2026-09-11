@@ -56,8 +56,8 @@ class EditProfileState extends Equatable {
   final AppErrorModel? appErrorModel;
 
   bool get isSubmitting => cubitStatus == CubitStatus.loading;
-  bool get isSuccess    => cubitStatus == CubitStatus.success;
-  bool get isError      => cubitStatus == CubitStatus.error;
+  bool get isSuccess => cubitStatus == CubitStatus.success;
+  bool get isError => cubitStatus == CubitStatus.error;
 
   EditProfileState copyWith({
     CubitStatus? cubitStatus,
@@ -73,37 +73,36 @@ class EditProfileState extends Equatable {
     bool? showErrorBanner,
     UserProfileModel? updatedProfile,
     AppErrorModel? appErrorModel,
-  }) =>
-      EditProfileState(
-        cubitStatus: cubitStatus ?? this.cubitStatus,
-        name: name ?? this.name,
-        email: email ?? this.email,
-        mobileNumber: mobileNumber ?? this.mobileNumber,
-        avatarPath: avatarPath ?? this.avatarPath,
-        avatarUrl: avatarUrl ?? this.avatarUrl,
-        avatarRemoved: avatarRemoved ?? this.avatarRemoved,
-        nameError: nameError != null ? nameError() : this.nameError,
-        emailError: emailError != null ? emailError() : this.emailError,
-        mobileError: mobileError != null ? mobileError() : this.mobileError,
-        showErrorBanner: showErrorBanner ?? this.showErrorBanner,
-        updatedProfile: updatedProfile ?? this.updatedProfile,
-        appErrorModel: appErrorModel,
-      );
+  }) => EditProfileState(
+    cubitStatus: cubitStatus ?? this.cubitStatus,
+    name: name ?? this.name,
+    email: email ?? this.email,
+    mobileNumber: mobileNumber ?? this.mobileNumber,
+    avatarPath: avatarPath ?? this.avatarPath,
+    avatarUrl: avatarUrl ?? this.avatarUrl,
+    avatarRemoved: avatarRemoved ?? this.avatarRemoved,
+    nameError: nameError != null ? nameError() : this.nameError,
+    emailError: emailError != null ? emailError() : this.emailError,
+    mobileError: mobileError != null ? mobileError() : this.mobileError,
+    showErrorBanner: showErrorBanner ?? this.showErrorBanner,
+    updatedProfile: updatedProfile ?? this.updatedProfile,
+    appErrorModel: appErrorModel,
+  );
 
   @override
   List<Object?> get props => [
-        cubitStatus,
-        name,
-        email,
-        mobileNumber,
-        avatarPath,
-        avatarUrl,
-        avatarRemoved,
-        nameError,
-        emailError,
-        mobileError,
-        showErrorBanner,
-        updatedProfile,
-        appErrorModel,
-      ];
+    cubitStatus,
+    name,
+    email,
+    mobileNumber,
+    avatarPath,
+    avatarUrl,
+    avatarRemoved,
+    nameError,
+    emailError,
+    mobileError,
+    showErrorBanner,
+    updatedProfile,
+    appErrorModel,
+  ];
 }

@@ -7,6 +7,7 @@ import 'package:acrova/presentation/features/ui/interior_design/widgets/aestheti
 import 'package:acrova/presentation/features/ui/interior_design/widgets/inspiration_links_section.dart';
 import 'package:acrova/presentation/features/ui/project_creation/steps/widgets/media_item.dart';
 import 'package:acrova/presentation/features/ui/project_creation/steps/widgets/wizard_text_field.dart';
+import 'package:acrova/utils/enums/interior_design_enums.dart';
 import 'package:acrova/utils/extensions/localization_extension.dart';
 import 'package:acrova/utils/extensions/theme_extension.dart';
 import 'package:flutter/material.dart';
@@ -56,21 +57,21 @@ class _InteriorDesignFormState extends State<InteriorDesignForm> {
                 Expanded(
                   child: _SelectionCard(
                     label: loc.interiorDesignScopeEntireProject,
-                    isSelected: state.scope == 'all',
-                    onTap: () => cubit.updateScope('all'),
+                    isSelected: state.scope == InteriorDesignScope.all,
+                    onTap: () => cubit.setScope(InteriorDesignScope.all),
                   ),
                 ),
                 SizedBox(width: Resources.horizontalDims.$12),
                 Expanded(
                   child: _SelectionCard(
                     label: loc.interiorDesignScopeSpecificAreas,
-                    isSelected: state.scope == 'specific',
-                    onTap: () => cubit.updateScope('specific'),
+                    isSelected: state.scope == InteriorDesignScope.specific,
+                    onTap: () => cubit.setScope(InteriorDesignScope.specific),
                   ),
                 ),
               ],
             ),
-            if (state.scope == 'specific') ...[
+            if (state.scope == InteriorDesignScope.specific) ...[
               SizedBox(height: Resources.verticalDims.$16),
               WizardTextField(
                 controller: _customScopeCtrl,
@@ -83,7 +84,9 @@ class _InteriorDesignFormState extends State<InteriorDesignForm> {
             SizedBox(height: Resources.verticalDims.$24),
 
             // SPACE PLANNING
-            _InteriorDesignSectionTitle(title: loc.interiorDesignSpacePlanningTitle),
+            _InteriorDesignSectionTitle(
+              title: loc.interiorDesignSpacePlanningTitle,
+            ),
             Container(
               decoration: BoxDecoration(
                 color: Resources.colors.luxurySurface,
@@ -112,34 +115,46 @@ class _InteriorDesignFormState extends State<InteriorDesignForm> {
             SizedBox(height: Resources.verticalDims.$24),
 
             // BUDGET & TIMELINE
-            _InteriorDesignSectionTitle(title: loc.interiorDesignBudgetTimelineTitle),
+            _InteriorDesignSectionTitle(
+              title: loc.interiorDesignBudgetTimelineTitle,
+            ),
             Row(
               children: [
                 Expanded(
-                  child: _DropdownField(
+                  child: _DropdownField<BudgetTier>(
                     label: loc.interiorDesignBudgetTier,
-                    value: state.budgetTier.isEmpty ? null : state.budgetTier,
+                    value: state.budgetTier,
                     hint: loc.interiorDesignSelectPlaceholder,
-                    options: [
-                      _DropdownOption(value: 'standard', label: loc.interiorDesignBudgetStandard),
-                      _DropdownOption(value: 'premium', label: loc.interiorDesignBudgetPremium),
-                      _DropdownOption(value: 'ultra_luxury', label: loc.interiorDesignBudgetUltraLuxury),
-                    ],
-                    onChanged: (v) => cubit.updateBudgetTier(v ?? ''),
+                    options: BudgetTier.values
+                        .map(
+                          (tier) => _DropdownOption<BudgetTier>(
+                            value: tier,
+                            label: tier.localizedLabel(context),
+                          ),
+                        )
+                        .toList(),
+                    onChanged: (v) {
+                      if (v != null) cubit.setBudgetTier(v);
+                    },
                   ),
                 ),
                 SizedBox(width: Resources.horizontalDims.$12),
                 Expanded(
-                  child: _DropdownField(
+                  child: _DropdownField<ProjectTimeline>(
                     label: loc.interiorDesignTimeline,
-                    value: state.timeline.isEmpty ? null : state.timeline,
+                    value: state.timeline,
                     hint: loc.interiorDesignSelectPlaceholder,
-                    options: [
-                      _DropdownOption(value: 'flexible', label: loc.interiorDesignTimelineFlexible),
-                      _DropdownOption(value: '3_6_months', label: loc.interiorDesignTimelineThreeToSixMonths),
-                      _DropdownOption(value: 'asap', label: loc.interiorDesignTimelineAsap),
-                    ],
-                    onChanged: (v) => cubit.updateTimeline(v ?? ''),
+                    options: ProjectTimeline.values
+                        .map(
+                          (timeline) => _DropdownOption<ProjectTimeline>(
+                            value: timeline,
+                            label: timeline.localizedLabel(context),
+                          ),
+                        )
+                        .toList(),
+                    onChanged: (v) {
+                      if (v != null) cubit.setTimeline(v);
+                    },
                   ),
                 ),
               ],
@@ -148,7 +163,9 @@ class _InteriorDesignFormState extends State<InteriorDesignForm> {
             SizedBox(height: Resources.verticalDims.$24),
 
             // EXTRA NOTES
-            _InteriorDesignSectionTitle(title: loc.interiorDesignAdditionalRequirementsTitle),
+            _InteriorDesignSectionTitle(
+              title: loc.interiorDesignAdditionalRequirementsTitle,
+            ),
             Container(
               decoration: BoxDecoration(
                 color: Resources.colors.luxuryInputBg,
@@ -186,7 +203,9 @@ class _InteriorDesignFormState extends State<InteriorDesignForm> {
             SizedBox(height: Resources.verticalDims.$24),
 
             // MEDIA UPLOAD
-            _InteriorDesignSectionTitle(title: loc.interiorDesignInspirationMediaTitle),
+            _InteriorDesignSectionTitle(
+              title: loc.interiorDesignInspirationMediaTitle,
+            ),
             GestureDetector(
               onTap: () => unawaited(
                 context
@@ -195,7 +214,9 @@ class _InteriorDesignFormState extends State<InteriorDesignForm> {
               ),
               child: Container(
                 width: double.infinity,
-                padding: EdgeInsets.symmetric(vertical: Resources.verticalDims.$22),
+                padding: EdgeInsets.symmetric(
+                  vertical: Resources.verticalDims.$22,
+                ),
                 decoration: BoxDecoration(
                   color: Resources.colors.luxuryInputBg,
                   borderRadius: BorderRadius.circular(Resources.radius.$r8),
@@ -215,10 +236,10 @@ class _InteriorDesignFormState extends State<InteriorDesignForm> {
                     Text(
                       loc.interiorDesignAddInspirationPhotos,
                       style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                            fontSize: Resources.fontSizes.$12,
-                            fontWeight: Resources.fontWeights.bold,
-                            color: Resources.colors.luxuryGoldLight,
-                          ),
+                        fontSize: Resources.fontSizes.$12,
+                        fontWeight: Resources.fontWeights.bold,
+                        color: Resources.colors.luxuryGoldLight,
+                      ),
                     ),
                   ],
                 ),
@@ -230,12 +251,10 @@ class _InteriorDesignFormState extends State<InteriorDesignForm> {
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
                 itemCount: state.inspirationMediaPaths.length,
-                separatorBuilder: (_, __) => SizedBox(height: Resources.verticalDims.$8),
-                itemBuilder: (_, i) => MediaItem(
-                  path: state.inspirationMediaPaths[i],
-                  index: i,
-                  // In a real app we'd add an onRemove callback
-                ),
+                separatorBuilder: (_, __) =>
+                    SizedBox(height: Resources.verticalDims.$8),
+                itemBuilder: (_, i) =>
+                    MediaItem(path: state.inspirationMediaPaths[i], index: i),
               ),
             ],
           ],
@@ -267,10 +286,14 @@ class _SelectionCard extends StatelessWidget {
           vertical: Resources.verticalDims.$18,
         ),
         decoration: BoxDecoration(
-          color: isSelected ? Resources.colors.luxuryNavy : Resources.colors.luxurySurface,
+          color: isSelected
+              ? Resources.colors.luxuryNavy
+              : Resources.colors.luxurySurface,
           borderRadius: BorderRadius.circular(Resources.radius.$r12),
           border: Border.all(
-            color: isSelected ? Resources.colors.luxuryNavy : Resources.colors.luxuryBorder,
+            color: isSelected
+                ? Resources.colors.luxuryNavy
+                : Resources.colors.luxuryBorder,
           ),
           boxShadow: AppShadows.card,
         ),
@@ -278,22 +301,26 @@ class _SelectionCard extends StatelessWidget {
           label,
           textAlign: TextAlign.center,
           style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                color: isSelected ? Resources.colors.luxurySurface : Resources.colors.luxuryNavy,
-                fontWeight: isSelected ? Resources.fontWeights.semiBold : Resources.fontWeights.medium,
-              ),
+            color: isSelected
+                ? Resources.colors.luxurySurface
+                : Resources.colors.luxuryNavy,
+            fontWeight: isSelected
+                ? Resources.fontWeights.semiBold
+                : Resources.fontWeights.medium,
+          ),
         ),
       ),
     );
   }
 }
 
-class _DropdownOption {
+class _DropdownOption<T> {
   const _DropdownOption({required this.value, required this.label});
-  final String value;
+  final T value;
   final String label;
 }
 
-class _DropdownField extends StatelessWidget {
+class _DropdownField<T> extends StatelessWidget {
   const _DropdownField({
     required this.label,
     required this.value,
@@ -303,10 +330,10 @@ class _DropdownField extends StatelessWidget {
   });
 
   final String label;
-  final String? value;
-  final List<_DropdownOption> options;
+  final T? value;
+  final List<_DropdownOption<T>> options;
   final String hint;
-  final ValueChanged<String?> onChanged;
+  final ValueChanged<T?> onChanged;
 
   @override
   Widget build(BuildContext context) {
@@ -316,36 +343,38 @@ class _DropdownField extends StatelessWidget {
         Text(
           label,
           style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                fontWeight: Resources.fontWeights.medium,
-                color: Resources.colors.luxuryBody,
-              ),
+            fontWeight: Resources.fontWeights.medium,
+            color: Resources.colors.luxuryBody,
+          ),
         ),
         SizedBox(height: Resources.verticalDims.$8),
         Container(
-          padding: EdgeInsets.symmetric(horizontal: Resources.horizontalDims.$12),
+          padding: EdgeInsets.symmetric(
+            horizontal: Resources.horizontalDims.$12,
+          ),
           decoration: BoxDecoration(
             color: Resources.colors.luxuryInputBg,
             borderRadius: BorderRadius.circular(Resources.radius.$r8),
             border: Border.all(color: Resources.colors.luxuryInputBorder),
           ),
           child: DropdownButtonHideUnderline(
-            child: DropdownButton<String>(
+            child: DropdownButton<T>(
               value: value,
               isExpanded: true,
               hint: Text(
                 hint,
                 style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                      color: Resources.colors.luxuryPlaceholder,
-                    ),
+                  color: Resources.colors.luxuryPlaceholder,
+                ),
               ),
               items: options.map((option) {
-                return DropdownMenuItem(
+                return DropdownMenuItem<T>(
                   value: option.value,
                   child: Text(
                     option.label,
                     style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                          color: Resources.colors.luxuryInk,
-                        ),
+                      color: Resources.colors.luxuryInk,
+                    ),
                   ),
                 );
               }).toList(),
@@ -373,10 +402,10 @@ class _InteriorDesignSectionTitle extends StatelessWidget {
       child: Text(
         title,
         style: Theme.of(context).textTheme.titleSmall?.copyWith(
-              fontWeight: Resources.fontWeights.semiBold,
-              color: Resources.colors.luxuryNavy,
-              letterSpacing: 0.5,
-            ),
+          fontWeight: Resources.fontWeights.semiBold,
+          color: Resources.colors.luxuryNavy,
+          letterSpacing: 0.5,
+        ),
       ),
     );
   }

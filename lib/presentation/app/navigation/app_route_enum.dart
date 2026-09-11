@@ -17,99 +17,51 @@ enum AppRouteEnum {
   profilePage(name: 'profile_page', path: '/profile'),
 
   // ── Project creation wizard (full-screen, no shell) ──────────────────────────
-  projectCreationPage(
-    name: 'project_creation_page',
-    path: '/project-creation',
-  ),
-  
+  projectCreationPage(name: 'project_creation_page', path: '/project-creation'),
+
   interiorDesignPhaseOnePage(
     name: 'interior_design_phase_one_page',
     path: '/interior-design-phase-one',
   ),
-  
+
   // ── Project detail (full-screen, above shell) ─────────────────────────────────
-  projectDetailPage(
-    name: 'project_detail_page',
-    path: '/project_detail',
-  ),
+  projectDetailPage(name: 'project_detail_page', path: '/project_detail'),
 
   // ── Portfolio detail (full-screen, above shell) ───────────────────────────────
-  portfolioDetailPage(
-    name: 'portfolio_detail_page',
-    path: '/portfolio-detail',
-  ),
+  portfolioDetailPage(name: 'portfolio_detail_page', path: '/portfolio-detail'),
 
   // ── Edit profile (full-screen, above shell) ──────────────────────────────────
-  editProfilePage(
-    name: 'edit_profile_page',
-    path: '/edit-profile',
-  ),
+  editProfilePage(name: 'edit_profile_page', path: '/edit-profile'),
 
   // ── Contact us (full-screen, above shell) ────────────────────────────────────
-  contactUsPage(
-    name: 'contact_us_page',
-    path: '/contact-us',
-  ),
+  contactUsPage(name: 'contact_us_page', path: '/contact-us'),
 
   // ── Notifications (full-screen, above shell) ─────────────────────────────────
-  notificationsPage(
-    name: 'notifications_page',
-    path: '/notifications',
-  ),
+  notificationsPage(name: 'notifications_page', path: '/notifications'),
 
   // ── Revisions (full-screen, above shell) ─────────────────────────────────────
-  revisionHistoryPage(
-    name: 'revision_history_page',
-    path: '/revisions',
-  ),
+  revisionHistoryPage(name: 'revision_history_page', path: '/revisions'),
   revisionRequestPage(
     name: 'revision_request_page',
     path: '/revisions/request',
   ),
-  revisionDetailPage(
-    name: 'revision_detail_page',
-    path: '/revisions/detail',
-  ),
-  
+  revisionDetailPage(name: 'revision_detail_page', path: '/revisions/detail'),
+
   // ── Walkthrough (full-screen, above shell) ──────────────────────────────────
-  walkthroughPage(
-    name: 'walkthrough_page',
-    path: '/walkthrough',
-  ),
+  walkthroughPage(name: 'walkthrough_page', path: '/walkthrough'),
 
   // ── Deliverables (full-screen, above shell) ─────────────────────────────────
-  deliverablesPage(
-    name: 'deliverables_page',
-    path: '/deliverables',
-  ),
+  deliverablesPage(name: 'deliverables_page', path: '/deliverables'),
 
   // ── Billing (full-screen, above shell) ──────────────────────────────────────
-  paymentHistoryPage(
-    name: 'payment_history_page',
-    path: '/payment-history',
-  ),
-  paymentDetailsPage(
-    name: 'payment_details_page',
-    path: '/payment-details',
-  ),
-  makePaymentPage(
-    name: 'make_payment_page',
-    path: '/make-payment',
-  ),
-  paymentSuccessPage(
-    name: 'payment_success_page',
-    path: '/payment-success',
-  ),
+  paymentHistoryPage(name: 'payment_history_page', path: '/payment-history'),
+  paymentDetailsPage(name: 'payment_details_page', path: '/payment-details'),
+  makePaymentPage(name: 'make_payment_page', path: '/make-payment'),
+  paymentSuccessPage(name: 'payment_success_page', path: '/payment-success'),
 
   // ── Viewers (full-screen, above shell) ──────────────────────────────────────
-  pdfViewerPage(
-    name: 'pdf_viewer_page',
-    path: '/pdfViewer',
-  ),
-  imageViewerPage(
-    name: 'image_viewer_page',
-    path: '/imageViewer',
-  );
+  pdfViewerPage(name: 'pdf_viewer_page', path: '/pdfViewer'),
+  imageViewerPage(name: 'image_viewer_page', path: '/imageViewer');
 
   const AppRouteEnum({required this.path, required this.name});
 

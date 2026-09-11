@@ -7,11 +7,7 @@ class DeliverablesRepoImpl implements BaseDeliverablesRepo {
   @override
   Future<Result<DeliverablesData>> getDeliverables() async {
     return const Success(
-      DeliverablesData(
-        blueprints: [],
-        renders: [],
-        walkthroughs: [],
-      ),
+      DeliverablesData(blueprints: [], renders: [], walkthroughs: []),
     );
   }
 }

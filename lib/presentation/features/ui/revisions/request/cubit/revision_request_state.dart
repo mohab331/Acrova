@@ -20,8 +20,7 @@ class RevisionRequestState extends Equatable {
     this.appErrorModel,
   });
 
-  const RevisionRequestState.initial()
-      : this(cubitStatus: CubitStatus.initial);
+  const RevisionRequestState.initial() : this(cubitStatus: CubitStatus.initial);
 
   /// Tracks the quota load (loading → skeleton, error → error, success → form).
   final CubitStatus cubitStatus;
@@ -41,7 +40,7 @@ class RevisionRequestState extends Equatable {
 
   bool get isLoading => cubitStatus == CubitStatus.loading;
   bool get isSuccess => cubitStatus == CubitStatus.success;
-  bool get isError   => cubitStatus == CubitStatus.error;
+  bool get isError => cubitStatus == CubitStatus.error;
 
   RevisionRequestState copyWith({
     CubitStatus? cubitStatus,
@@ -56,35 +55,34 @@ class RevisionRequestState extends Equatable {
     bool? isSubmitting,
     RevisionModel? createdRevision,
     AppErrorModel? appErrorModel,
-  }) =>
-      RevisionRequestState(
-        cubitStatus: cubitStatus ?? this.cubitStatus,
-        quota: quota ?? this.quota,
-        deliverables: deliverables ?? this.deliverables,
-        deliverableRef:
-            deliverableRef != null ? deliverableRef() : this.deliverableRef,
-        details: details ?? this.details,
-        attachmentPaths: attachmentPaths ?? this.attachmentPaths,
-        categoryError:
-            categoryError != null ? categoryError() : this.categoryError,
-        detailsError: detailsError != null ? detailsError() : this.detailsError,
-        isSubmitting: isSubmitting ?? this.isSubmitting,
-        createdRevision: createdRevision ?? this.createdRevision,
-        appErrorModel: appErrorModel,
-      );
+  }) => RevisionRequestState(
+    cubitStatus: cubitStatus ?? this.cubitStatus,
+    quota: quota ?? this.quota,
+    deliverables: deliverables ?? this.deliverables,
+    deliverableRef: deliverableRef != null
+        ? deliverableRef()
+        : this.deliverableRef,
+    details: details ?? this.details,
+    attachmentPaths: attachmentPaths ?? this.attachmentPaths,
+    categoryError: categoryError != null ? categoryError() : this.categoryError,
+    detailsError: detailsError != null ? detailsError() : this.detailsError,
+    isSubmitting: isSubmitting ?? this.isSubmitting,
+    createdRevision: createdRevision ?? this.createdRevision,
+    appErrorModel: appErrorModel,
+  );
 
   @override
   List<Object?> get props => [
-        cubitStatus,
-        quota,
-        deliverables,
-        deliverableRef,
-        details,
-        attachmentPaths,
-        categoryError,
-        detailsError,
-        isSubmitting,
-        createdRevision,
-        appErrorModel,
-      ];
+    cubitStatus,
+    quota,
+    deliverables,
+    deliverableRef,
+    details,
+    attachmentPaths,
+    categoryError,
+    detailsError,
+    isSubmitting,
+    createdRevision,
+    appErrorModel,
+  ];
 }

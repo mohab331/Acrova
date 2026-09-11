@@ -49,19 +49,19 @@ class MediaItem extends StatelessWidget {
                 Text(
                   filename,
                   style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                        fontSize: Resources.fontSizes.$12,
-                        fontWeight: Resources.fontWeights.semiBold,
-                        color: Resources.colors.luxuryInk,
-                      ),
+                    fontSize: Resources.fontSizes.$12,
+                    fontWeight: Resources.fontWeights.semiBold,
+                    color: Resources.colors.luxuryInk,
+                  ),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                 ),
                 Text(
                   '${l10n.mediaUploadPhotoLabel} ${index + 1}',
                   style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                        fontSize: Resources.fontSizes.$10,
-                        color: Resources.colors.luxuryBodyMuted,
-                      ),
+                    fontSize: Resources.fontSizes.$10,
+                    color: Resources.colors.luxuryBodyMuted,
+                  ),
                 ),
               ],
             ),

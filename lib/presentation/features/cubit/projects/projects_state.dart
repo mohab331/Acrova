@@ -8,18 +8,17 @@ class ProjectsCubitState extends Equatable {
     required this.cubitStatus,
     this.projects,
     this.appErrorModel,
-    this.userName = 'Client',
+    this.userName,
     this.notificationCount = 0,
     this.avatarUrl,
   });
 
-  const ProjectsCubitState.initial()
-      : this(cubitStatus: CubitStatus.initial);
+  const ProjectsCubitState.initial() : this(cubitStatus: CubitStatus.initial);
 
   final CubitStatus cubitStatus;
   final List<ProjectModel>? projects;
   final AppErrorModel? appErrorModel;
-  final String userName;
+  final String? userName;
   final int notificationCount;
   final String? avatarUrl;
 
@@ -34,23 +33,22 @@ class ProjectsCubitState extends Equatable {
     String? userName,
     int? notificationCount,
     String? avatarUrl,
-  }) =>
-      ProjectsCubitState(
-        cubitStatus: cubitStatus ?? this.cubitStatus,
-        projects: projects ?? this.projects,
-        appErrorModel: appErrorModel ?? this.appErrorModel,
-        userName: userName ?? this.userName,
-        notificationCount: notificationCount ?? this.notificationCount,
-        avatarUrl: avatarUrl ?? this.avatarUrl,
-      );
+  }) => ProjectsCubitState(
+    cubitStatus: cubitStatus ?? this.cubitStatus,
+    projects: projects ?? this.projects,
+    appErrorModel: appErrorModel ?? this.appErrorModel,
+    userName: userName ?? this.userName,
+    notificationCount: notificationCount ?? this.notificationCount,
+    avatarUrl: avatarUrl ?? this.avatarUrl,
+  );
 
   @override
   List<Object?> get props => [
-        cubitStatus,
-        projects,
-        appErrorModel,
-        userName,
-        notificationCount,
-        avatarUrl,
-      ];
+    cubitStatus,
+    projects,
+    appErrorModel,
+    userName,
+    notificationCount,
+    avatarUrl,
+  ];
 }

@@ -36,11 +36,13 @@ class RevisionCategoryChips extends StatelessWidget {
           spacing: Resources.horizontalDims.$8,
           runSpacing: Resources.verticalDims.$8,
           children: RevisionCategory.values
-              .map((c) => _Chip(
-                    label: _label(context, c),
-                    selected: selected == c,
-                    onTap: () => onSelect(c),
-                  ))
+              .map(
+                (c) => _Chip(
+                  label: _label(context, c),
+                  selected: selected == c,
+                  onTap: () => onSelect(c),
+                ),
+              )
               .toList(),
         ),
         if (error != null) ...[

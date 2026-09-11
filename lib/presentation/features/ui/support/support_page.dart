@@ -29,15 +29,15 @@ class SupportPage extends StatelessWidget {
                 Text(
                   context.localization.supportAndRevisionsTitle,
                   style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                        color: Resources.colors.luxuryNavy,
-                      ),
+                    color: Resources.colors.luxuryNavy,
+                  ),
                 ),
                 SizedBox(height: Resources.verticalDims.$8),
                 Text(
                   context.localization.supportComingSoonPhase7,
                   style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        color: Resources.colors.luxuryBodyMuted,
-                      ),
+                    color: Resources.colors.luxuryBodyMuted,
+                  ),
                 ),
               ],
             ),

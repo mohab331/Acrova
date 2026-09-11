@@ -19,8 +19,8 @@ class EditProfileAppBar extends StatelessWidget implements PreferredSizeWidget {
       actions: [
         TextButton(
           onPressed: () => context.read<EditProfileCubit>().submit(
-                resolve: (code) => resolveEditProfileError(context, code),
-              ),
+            resolve: (code) => resolveEditProfileError(context, code),
+          ),
           child: Text(
             context.localization.editProfileSave.toUpperCase(),
             style: TextStyle(

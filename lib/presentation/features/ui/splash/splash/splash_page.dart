@@ -63,8 +63,6 @@ class SplashPage extends StatelessWidget {
     );
   }
 
-
-
   void _settingAppLanguage(SplashState state, BuildContext context) {
     if (state.language?.isNotEmpty ?? false) {
       context.read<LocalizationCubit>().updateLocale(Locale(state.language!));

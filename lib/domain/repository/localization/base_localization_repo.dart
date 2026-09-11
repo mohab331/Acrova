@@ -8,5 +8,4 @@ abstract class BaseLocalizationRepo {
   Result<Locale?> getSavedLocale();
 
   Future<Result<void>> clearLocale();
-
 }

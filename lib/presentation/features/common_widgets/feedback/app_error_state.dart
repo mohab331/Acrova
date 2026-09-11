@@ -14,7 +14,7 @@ import 'package:flutter/material.dart';
 /// - Retry CTA: [AppPrimaryButton]
 class AppErrorState extends StatelessWidget {
   const AppErrorState({
-     this.message,
+    this.message,
     this.errorModel,
     this.title,
     this.retryLabel,
@@ -46,16 +46,19 @@ class AppErrorState extends StatelessWidget {
             title ?? l10n.errorGenericTitle,
             textAlign: TextAlign.center,
             style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                  color: Resources.colors.luxuryNavy,
-                ),
+              color: Resources.colors.luxuryNavy,
+            ),
           ),
           SizedBox(height: Resources.verticalDims.$8),
           Text(
-            message ?? errorModel?.message ?? errorModel?.code.messageOf(context) ?? '',
+            message ??
+                errorModel?.message ??
+                errorModel?.code.messageOf(context) ??
+                '',
             textAlign: TextAlign.center,
             style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                  color: Resources.colors.luxuryBodyMuted,
-                ),
+              color: Resources.colors.luxuryBodyMuted,
+            ),
           ),
           if (onRetry != null) ...[
             SizedBox(height: Resources.verticalDims.$32),

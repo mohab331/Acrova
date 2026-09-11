@@ -52,7 +52,9 @@ class _IdentityVerificationPageState extends State<IdentityVerificationPage> {
           context.pushReplacement(AppRouteEnum.homePage.name);
         } else if (state.isError) {
           final fallback = context.localization.otpVerificationCodeError;
-          setState(() => _localError = state.appErrorModel?.message ?? fallback);
+          setState(
+            () => _localError = state.appErrorModel?.message ?? fallback,
+          );
         }
       },
       child: CommonScreen(

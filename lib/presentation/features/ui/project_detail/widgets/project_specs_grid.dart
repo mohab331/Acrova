@@ -43,12 +43,16 @@ class ProjectSpecsGrid extends StatelessWidget {
       ),
       ProjectSpec(
         label: loc.specLand,
-        value: '${project.landWidthM} × ${project.landLengthM} ${loc.unitMeter}',
+        value:
+            '${project.landWidthM} × ${project.landLengthM} ${loc.unitMeter}',
         icon: Icons.straighten,
       ),
       ProjectSpec(
         label: loc.specCreated,
-        value: DateFormat('dd MMM yyyy', Localizations.localeOf(context).languageCode).format(project.createdAt),
+        value: DateFormat(
+          'dd MMM yyyy',
+          Localizations.localeOf(context).languageCode,
+        ).format(project.createdAt),
         icon: Icons.calendar_today_outlined,
       ),
     ];

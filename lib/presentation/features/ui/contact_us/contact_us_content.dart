@@ -62,7 +62,9 @@ class _ContactUsViewState extends State<ContactUsContent> {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               Padding(
-                padding: EdgeInsets.symmetric(horizontal: Resources.horizontalDims.$8),
+                padding: EdgeInsets.symmetric(
+                  horizontal: Resources.horizontalDims.$8,
+                ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -115,6 +117,7 @@ class _ContactUsViewState extends State<ContactUsContent> {
     );
   }
 }
+
 class _SectionLabel extends StatelessWidget {
   const _SectionLabel({required this.text});
 

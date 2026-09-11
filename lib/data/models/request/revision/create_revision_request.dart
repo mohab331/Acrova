@@ -17,13 +17,12 @@ class CreateRevisionRequest extends Equatable {
   final bool isPaid;
 
   Map<String, dynamic> toJson() => {
-        'details': details,
-        if (deliverableRef != null) 'deliverable_ref': deliverableRef,
-        'attachment_paths': attachmentPaths,
-        'is_paid': isPaid,
-      };
+    'details': details,
+    if (deliverableRef != null) 'deliverable_ref': deliverableRef,
+    'attachment_paths': attachmentPaths,
+    'is_paid': isPaid,
+  };
 
   @override
-  List<Object?> get props =>
-      [ details, deliverableRef, attachmentPaths, isPaid];
+  List<Object?> get props => [details, deliverableRef, attachmentPaths, isPaid];
 }

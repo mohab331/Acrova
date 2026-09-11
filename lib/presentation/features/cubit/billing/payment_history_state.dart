@@ -1,32 +1,35 @@
 import 'package:acrova/core/error/app_error_model.dart';
 import 'package:acrova/data/models/billing/payment_model.dart';
+import 'package:acrova/utils/enums/cubit_status.dart';
+import 'package:acrova/utils/enums/payment_filter_enum.dart';
 import 'package:equatable/equatable.dart';
-
-enum PaymentHistoryStatus { initial, loading, success, failure }
 
 class PaymentHistoryState extends Equatable {
   const PaymentHistoryState({
-    this.status = PaymentHistoryStatus.initial,
+    this.status = CubitStatus.initial,
     this.payments = const [],
     this.filteredPayments = const [],
-    this.selectedFilter = 'All',
+    this.selectedFilter = PaymentFilter.all,
     this.error,
   });
 
-  final PaymentHistoryStatus status;
+  final CubitStatus status;
   final List<PaymentModel> payments;
   final List<PaymentModel> filteredPayments;
-  final String selectedFilter;
+  final PaymentFilter selectedFilter;
   final AppErrorModel? error;
 
-  bool get isLoading => status == PaymentHistoryStatus.loading || status == PaymentHistoryStatus.initial;
-  bool get isEmpty => status == PaymentHistoryStatus.success && filteredPayments.isEmpty;
+  bool get isLoading =>
+      status == CubitStatus.loading || status == CubitStatus.initial;
+  bool get isSuccess => status == CubitStatus.success;
+  bool get isError => status == CubitStatus.error;
+  bool get isEmpty => status == CubitStatus.success && filteredPayments.isEmpty;
 
   PaymentHistoryState copyWith({
-    PaymentHistoryStatus? status,
+    CubitStatus? status,
     List<PaymentModel>? payments,
     List<PaymentModel>? filteredPayments,
-    String? selectedFilter,
+    PaymentFilter? selectedFilter,
     AppErrorModel? error,
   }) {
     return PaymentHistoryState(
@@ -39,5 +42,11 @@ class PaymentHistoryState extends Equatable {
   }
 
   @override
-  List<Object?> get props => [status, payments, filteredPayments, selectedFilter, error];
+  List<Object?> get props => [
+    status,
+    payments,
+    filteredPayments,
+    selectedFilter,
+    error,
+  ];
 }

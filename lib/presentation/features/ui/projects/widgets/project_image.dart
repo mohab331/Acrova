@@ -4,11 +4,7 @@ import 'package:acrova/presentation/features/ui/projects/widgets/project_image_p
 import 'package:flutter/material.dart';
 
 class ProjectImage extends StatelessWidget {
-  const ProjectImage({
-    this.thumbnailUrl,
-    required this.height,
-    super.key,
-  });
+  const ProjectImage({this.thumbnailUrl, required this.height, super.key});
 
   final String? thumbnailUrl;
   final double height;

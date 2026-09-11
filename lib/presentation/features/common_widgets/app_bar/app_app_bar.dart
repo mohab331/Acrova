@@ -16,9 +16,9 @@ class AppAppBar extends StatelessWidget implements PreferredSizeWidget {
     this.brightness = Brightness.light,
     super.key,
   }) : assert(
-          title != null || titleWidget != null || !showBack,
-          'Provide title or titleWidget when showBack is true',
-        );
+         title != null || titleWidget != null || !showBack,
+         'Provide title or titleWidget when showBack is true',
+       );
 
   final String? title;
   final Widget? titleWidget;
@@ -49,20 +49,21 @@ class AppAppBar extends StatelessWidget implements PreferredSizeWidget {
       automaticallyImplyLeading: false,
       leading: showBack
           ? (leading ??
-              AppAppBarBackButton(
-                color: iconColor,
-                onPressed: onBackPressed ??
-                    () => Navigator.of(context).maybePop(),
-              ))
+                AppAppBarBackButton(
+                  color: iconColor,
+                  onPressed:
+                      onBackPressed ?? () => Navigator.of(context).maybePop(),
+                ))
           : leading,
       centerTitle: true,
-      title: titleWidget ??
+      title:
+          titleWidget ??
           (title != null
               ? Text(
                   title!,
                   style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                        color: Resources.colors.luxuryNavy,
-                      ),
+                    color: Resources.colors.luxuryNavy,
+                  ),
                 )
               : null),
       actions: actions,

@@ -69,9 +69,8 @@ class ContactUsForm extends StatelessWidget {
               AppPrimaryButton(
                 label: l10n.contactUsSubmit,
                 isLoading: state.isSubmitting,
-                onPressed: () => cubit.submit(
-                  resolve: (code) => _resolve(context, code),
-                ),
+                onPressed: () =>
+                    cubit.submit(resolve: (code) => _resolve(context, code)),
               ),
             ],
           );

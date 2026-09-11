@@ -4,7 +4,6 @@ import 'package:acrova/presentation/features/common_widgets/chips/app_status_chi
 import 'package:acrova/presentation/features/ui/projects/widgets/active_phase_badge.dart';
 import 'package:acrova/presentation/features/ui/projects/widgets/project_image.dart';
 import 'package:acrova/utils/enums/project_status_enum.dart';
-import 'package:acrova/utils/enums/project_type_enum.dart';
 import 'package:acrova/utils/extensions/localization_extension.dart';
 import 'package:acrova/utils/extensions/theme_extension.dart';
 import 'package:flutter/material.dart';
@@ -31,7 +30,10 @@ class FeaturedProjectCard extends StatelessWidget {
         children: [
           Stack(
             children: [
-              ProjectImage(thumbnailUrl: project.thumbnailUrl, height: Resources.verticalDims.$192),
+              ProjectImage(
+                thumbnailUrl: project.thumbnailUrl,
+                height: Resources.verticalDims.$192,
+              ),
               Positioned(
                 left: 0,
                 right: 0,

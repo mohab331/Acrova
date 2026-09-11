@@ -8,9 +8,14 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 class PaymentSuccessView extends StatelessWidget {
-  const PaymentSuccessView({required this.amount, super.key});
+  const PaymentSuccessView({
+    required this.amount,
+    this.referenceNumber,
+    super.key,
+  });
 
   final String amount;
+  final String? referenceNumber;
 
   @override
   Widget build(BuildContext context) {
@@ -45,7 +50,9 @@ class PaymentSuccessView extends StatelessWidget {
       ),
       child: Center(
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: Resources.horizontalDims.$32),
+          padding: EdgeInsets.symmetric(
+            horizontal: Resources.horizontalDims.$32,
+          ),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -82,15 +89,17 @@ class PaymentSuccessView extends StatelessWidget {
                 ),
                 textAlign: TextAlign.center,
               ),
-              SizedBox(height: Resources.verticalDims.$16),
-              Text(
-                loc.paymentSuccessReference('92819182'),
-                style: context.textTheme.bodyLarge?.copyWith(
-                  color: Resources.colors.luxuryBody,
-                  height: 1.5,
+              if (referenceNumber != null && referenceNumber!.isNotEmpty) ...[
+                SizedBox(height: Resources.verticalDims.$16),
+                Text(
+                  loc.paymentSuccessReference(referenceNumber!),
+                  style: context.textTheme.bodyLarge?.copyWith(
+                    color: Resources.colors.luxuryBody,
+                    height: 1.5,
+                  ),
+                  textAlign: TextAlign.center,
                 ),
-                textAlign: TextAlign.center,
-              ),
+              ],
             ],
           ),
         ),

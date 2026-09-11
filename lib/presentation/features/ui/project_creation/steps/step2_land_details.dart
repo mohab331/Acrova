@@ -94,8 +94,12 @@ class _Step2LandDetailsState extends State<Step2LandDetails> {
                 controller: _areaCtrl,
                 label: l10n.landDetailsLabelArea,
                 hint: l10n.landDetailsHintArea,
-                keyboardType: const TextInputType.numberWithOptions(decimal: true),
-                inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'[0-9.]'))],
+                keyboardType: const TextInputType.numberWithOptions(
+                  decimal: true,
+                ),
+                inputFormatters: [
+                  FilteringTextInputFormatter.allow(RegExp(r'[0-9.]')),
+                ],
                 onChanged: (v) => cubit.updateLandArea(double.tryParse(v)),
               ),
               SizedBox(height: Resources.verticalDims.$20),
@@ -106,7 +110,8 @@ class _Step2LandDetailsState extends State<Step2LandDetails> {
                   hint: l10n.landDetailsHintEmployeeCount,
                   keyboardType: TextInputType.number,
                   inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                  onChanged: (v) => cubit.updateEmployeeCount(int.tryParse(v) ?? 0),
+                  onChanged: (v) =>
+                      cubit.updateEmployeeCount(int.tryParse(v) ?? 0),
                 ),
                 SizedBox(height: Resources.verticalDims.$20),
               ] else ...[
@@ -117,9 +122,14 @@ class _Step2LandDetailsState extends State<Step2LandDetails> {
                         controller: _widthCtrl,
                         label: l10n.landDetailsLabelWidth,
                         hint: l10n.landDetailsHintWidth,
-                        keyboardType: const TextInputType.numberWithOptions(decimal: true),
-                        inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'[0-9.]'))],
-                        onChanged: (v) => cubit.updateLandWidth(double.tryParse(v)),
+                        keyboardType: const TextInputType.numberWithOptions(
+                          decimal: true,
+                        ),
+                        inputFormatters: [
+                          FilteringTextInputFormatter.allow(RegExp(r'[0-9.]')),
+                        ],
+                        onChanged: (v) =>
+                            cubit.updateLandWidth(double.tryParse(v)),
                       ),
                     ),
                     SizedBox(width: Resources.horizontalDims.$12),
@@ -128,9 +138,14 @@ class _Step2LandDetailsState extends State<Step2LandDetails> {
                         controller: _lengthCtrl,
                         label: l10n.landDetailsLabelLength,
                         hint: l10n.landDetailsHintLength,
-                        keyboardType: const TextInputType.numberWithOptions(decimal: true),
-                        inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'[0-9.]'))],
-                        onChanged: (v) => cubit.updateLandLength(double.tryParse(v)),
+                        keyboardType: const TextInputType.numberWithOptions(
+                          decimal: true,
+                        ),
+                        inputFormatters: [
+                          FilteringTextInputFormatter.allow(RegExp(r'[0-9.]')),
+                        ],
+                        onChanged: (v) =>
+                            cubit.updateLandLength(double.tryParse(v)),
                       ),
                     ),
                   ],

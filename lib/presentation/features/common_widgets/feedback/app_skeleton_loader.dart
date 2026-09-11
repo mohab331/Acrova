@@ -42,9 +42,10 @@ class _AppSkeletonLoaderState extends State<AppSkeletonLoader>
       duration: AppDurations.shimmer,
     )..repeat();
 
-    _shimmer = Tween<double>(begin: -1.5, end: 1.5).animate(
-      CurvedAnimation(parent: _controller, curve: Curves.easeInOut),
-    );
+    _shimmer = Tween<double>(
+      begin: -1.5,
+      end: 1.5,
+    ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeInOut));
   }
 
   @override
@@ -81,4 +82,3 @@ class _AppSkeletonLoaderState extends State<AppSkeletonLoader>
     );
   }
 }
-

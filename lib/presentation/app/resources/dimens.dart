@@ -93,6 +93,7 @@ class _VerticalDimens {
   double get $29_6 => 29.6.h;
   double get $30 => 30.h;
   double get $32 => 32.h;
+  double get $36 => 36.h;
   double get $39 => 39.h;
   double get $40 => 40.h;
   double get $48 => 48.h;
@@ -145,7 +146,7 @@ class _VerticalDimens {
 class _IconSizes {
   const _IconSizes();
 
-  double get $8  => 8.sp;
+  double get $8 => 8.sp;
   double get $10 => 10.sp;
   double get $12 => 12.sp;
   double get $14 => 14.sp;
@@ -171,10 +172,10 @@ class _IconSizes {
 class _SquareDimens {
   const _SquareDimens();
 
-  double get $2  => 2.r;
-  double get $4  => 4.r;
-  double get $6  => 6.r;
-  double get $8  => 8.r;
+  double get $2 => 2.r;
+  double get $4 => 4.r;
+  double get $6 => 6.r;
+  double get $8 => 8.r;
   double get $10 => 10.r;
   double get $12 => 12.r;
   double get $14 => 14.r;
@@ -196,5 +197,6 @@ class _SquareDimens {
   double get $60 => 60.r;
   double get $64 => 64.r;
   double get $80 => 80.r;
+  double get $96 => 96.r;
   double get $100 => 100.r;
 }

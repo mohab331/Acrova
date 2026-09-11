@@ -40,12 +40,12 @@ class ToggleCard extends StatelessWidget {
               child: Text(
                 item.label,
                 style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                      fontSize: Resources.fontSizes.$12,
-                      fontWeight: Resources.fontWeights.semiBold,
-                      color: item.value
-                          ? Resources.colors.luxurySurface
-                          : Resources.colors.luxuryInk,
-                    ),
+                  fontSize: Resources.fontSizes.$12,
+                  fontWeight: Resources.fontWeights.semiBold,
+                  color: item.value
+                      ? Resources.colors.luxurySurface
+                      : Resources.colors.luxuryInk,
+                ),
               ),
             ),
           ],

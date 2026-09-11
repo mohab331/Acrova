@@ -37,7 +37,7 @@ class _AppColors {
   final Color luxuryBody = const Color(0xFF44474D);
 
   /// Secondary / muted body text
-  final Color luxuryBodyMuted = const Color(0x70444D4D);  // rgba(68,71,77,0.7)
+  final Color luxuryBodyMuted = const Color(0x70444D4D); // rgba(68,71,77,0.7)
 
   /// Input placeholder text
   final Color luxuryPlaceholder = const Color(0xFFC4C6CE);
@@ -47,10 +47,14 @@ class _AppColors {
   final Color luxuryBorder = const Color(0xFFEDEEEF);
 
   /// OTP box borders
-  final Color luxuryInputBorder = const Color(0x4DC4C6CE);  // rgba(196,198,206,0.3)
+  final Color luxuryInputBorder = const Color(
+    0x4DC4C6CE,
+  ); // rgba(196,198,206,0.3)
 
   /// Profile badge border (gold @ 20%)
-  final Color luxuryGoldBorder = const Color(0x33C8A96A);  // rgba(200,169,106,0.2)
+  final Color luxuryGoldBorder = const Color(
+    0x33C8A96A,
+  ); // rgba(200,169,106,0.2)
 
   /// Phone input bottom-only border
   final Color luxuryGoldBottomBorder = const Color(0xFFC8A96A);
@@ -60,7 +64,18 @@ class _AppColors {
   final Color luxuryProgressTrack = const Color(0xFFE7E8E9);
 
   // ── Semantic ────────────────────────────────────────────────────────────────
-  final Color luxuryError   = const Color(0xFFC0392B);
+  final Color luxuryError = const Color(0xFFC0392B);
+  final Color luxuryErrorLight = const Color(0xFFFDEDEC);
   final Color luxurySuccess = const Color(0xFF1A7A4A);
   final Color luxuryWarning = const Color(0xFFD4850A);
+
+  // ── File types ─────────────────────────────────────────────────────────────
+  final Color filePdf = const Color(0xFFE74C3C);
+  final Color fileImage = const Color(0xFF3498DB);
+  final Color fileVideo = const Color(0xFF9B59B6);
+  final Color fileDocument = const Color(0xFFE67E22);
+
+  // ── Primitives ─────────────────────────────────────────────────────────────
+  final Color transparent = const Color(0x00000000);
+  final Color black = const Color(0xFF000000);
 }

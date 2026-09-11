@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:acrova/core/di/dependency_injector.dart';
 import 'package:acrova/data/models/profile/user_profile_model.dart';
 import 'package:acrova/data/models/revision/revision_model.dart';
+import 'package:acrova/presentation/app/navigation/args/navigation_args.dart';
 import 'package:acrova/presentation/features/cubit/auth/auth_cubit.dart';
 import 'package:acrova/presentation/features/cubit/dashboard/dashboard_cubit.dart';
 import 'package:acrova/presentation/features/cubit/deliverables/deliverables_state.dart';
@@ -12,6 +13,10 @@ import 'package:acrova/presentation/features/ui/auth/identity_verification/ident
 import 'package:acrova/presentation/features/ui/auth/phone_input/phone_input_page.dart';
 import 'package:acrova/presentation/features/ui/auth/profile_setup/profile_setup_page.dart';
 import 'package:acrova/presentation/features/ui/auth/welcome/welcome_page.dart';
+import 'package:acrova/presentation/features/ui/billing/make_payment_view.dart';
+import 'package:acrova/presentation/features/ui/billing/payment_details_view.dart';
+import 'package:acrova/presentation/features/ui/billing/payment_history_view.dart';
+import 'package:acrova/presentation/features/ui/billing/payment_success_view.dart';
 import 'package:acrova/presentation/features/ui/common/viewers/image_viewer_page.dart';
 import 'package:acrova/presentation/features/ui/common/viewers/pdf_viewer_page.dart';
 import 'package:acrova/presentation/features/ui/contact_us/contact_us_page.dart';
@@ -34,10 +39,6 @@ import 'package:acrova/presentation/features/ui/revisions/history/revision_histo
 import 'package:acrova/presentation/features/ui/revisions/request/revision_request_page.dart';
 import 'package:acrova/presentation/features/ui/shell/shell_scaffold.dart';
 import 'package:acrova/presentation/features/ui/splash/splash/splash_page.dart';
-import 'package:acrova/presentation/features/ui/billing/payment_history_view.dart';
-import 'package:acrova/presentation/features/ui/billing/payment_details_view.dart';
-import 'package:acrova/presentation/features/ui/billing/make_payment_view.dart';
-import 'package:acrova/presentation/features/ui/billing/payment_success_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -46,11 +47,17 @@ import 'app_route_enum.dart';
 import 'nav_keys.dart';
 
 // Shell branch navigator keys
-final _shellHomeKey      = GlobalKey<NavigatorState>(debugLabel: 'shell-home');
-final _shellProjectsKey  = GlobalKey<NavigatorState>(debugLabel: 'shell-projects');
-final _shellPortfolioKey = GlobalKey<NavigatorState>(debugLabel: 'shell-portfolio');
-final _shellMessagesKey  = GlobalKey<NavigatorState>(debugLabel: 'shell-messages');
-final _shellProfileKey   = GlobalKey<NavigatorState>(debugLabel: 'shell-profile');
+final _shellHomeKey = GlobalKey<NavigatorState>(debugLabel: 'shell-home');
+final _shellProjectsKey = GlobalKey<NavigatorState>(
+  debugLabel: 'shell-projects',
+);
+final _shellPortfolioKey = GlobalKey<NavigatorState>(
+  debugLabel: 'shell-portfolio',
+);
+final _shellMessagesKey = GlobalKey<NavigatorState>(
+  debugLabel: 'shell-messages',
+);
+final _shellProfileKey = GlobalKey<NavigatorState>(debugLabel: 'shell-profile');
 
 class AppRouter {
   AppRouter._();
@@ -85,8 +92,9 @@ class AppRouter {
         path: AppRouteEnum.identityVerificationPage.path,
         name: AppRouteEnum.identityVerificationPage.name,
         builder: (_, state) {
-          final phoneNumber =
-              state.extra is String ? state.extra as String : null;
+          final phoneNumber = state.extra is String
+              ? state.extra as String
+              : null;
           return IdentityVerificationPage(phoneNumber: phoneNumber);
         },
       ),
@@ -109,8 +117,14 @@ class AppRouter {
         path: AppRouteEnum.interiorDesignPhaseOnePage.path,
         name: AppRouteEnum.interiorDesignPhaseOnePage.name,
         builder: (_, state) {
-          final id = (state.extra as Map<String,dynamic>?)?['id'] as String?;
-          return InteriorDesignPage(projectId: id ?? '');
+          final extra = state.extra;
+          final String projectId = switch (extra) {
+            InteriorDesignArgs args => args.projectId,
+            Map<String, dynamic> map => map['id'] as String? ?? '',
+            String str => str,
+            _ => '',
+          };
+          return InteriorDesignPage(projectId: projectId);
         },
       ),
 
@@ -120,9 +134,17 @@ class AppRouter {
         path: AppRouteEnum.projectDetailPage.path,
         name: AppRouteEnum.projectDetailPage.name,
         builder: (_, state) {
-          final id = (state.extra as Map<String,dynamic>?)?['id'] as String?;
-          final title = (state.extra as Map<String,dynamic>?)?['title'] as String?;
-          return ProjectDetailPage(projectId: id ?? '',projectTitle: title,);
+          final extra = state.extra;
+          final (id, title) = switch (extra) {
+            ProjectDetailArgs args => (args.id, args.title),
+            Map<String, dynamic> map => (
+              map['id'] as String? ?? '',
+              map['title'] as String?,
+            ),
+            String strId => (strId, null),
+            _ => ('', null),
+          };
+          return ProjectDetailPage(projectId: id, projectTitle: title);
         },
       ),
 
@@ -155,11 +177,8 @@ class AppRouter {
         name: AppRouteEnum.contactUsPage.name,
         builder: (context, state) {
           final extra = state.extra as ContactUsArgs;
-        return ContactUsPage(
-          args: extra,
-        );
-
-        }
+          return ContactUsPage(args: extra);
+        },
       ),
 
       // ── Notifications (full-screen, above shell) ─────────────────────────
@@ -189,6 +208,12 @@ class AppRouter {
         name: AppRouteEnum.revisionDetailPage.name,
         builder: (_, state) {
           final extra = state.extra;
+          if (extra is RevisionDetailArgs) {
+            return RevisionDetailPage(
+              revision: extra.revision,
+              revisionId: extra.revisionId,
+            );
+          }
           if (extra is RevisionModel) {
             return RevisionDetailPage(revision: extra);
           }
@@ -227,7 +252,10 @@ class AppRouter {
         path: AppRouteEnum.paymentDetailsPage.path,
         name: AppRouteEnum.paymentDetailsPage.name,
         builder: (_, state) {
-          final paymentId = state.extra as String;
+          final extra = state.extra;
+          final paymentId = extra is PaymentDetailsArgs
+              ? extra.paymentId
+              : (extra as String? ?? '');
           return PaymentDetailsView(paymentId: paymentId);
         },
       ),
@@ -242,10 +270,20 @@ class AppRouter {
         path: AppRouteEnum.paymentSuccessPage.path,
         name: AppRouteEnum.paymentSuccessPage.name,
         builder: (_, state) {
-          final extra = state.extra as Map<String,dynamic>?;
-          final amount = extra?['amount'];
-          return  PaymentSuccessView(amount: amount,);
-        }
+          final extra = state.extra;
+          final (amount, referenceNumber) = switch (extra) {
+            PaymentSuccessArgs args => (args.amount, args.referenceNumber),
+            Map<String, dynamic> map => (
+              map['amount'] as String? ?? '',
+              map['referenceNumber'] as String?,
+            ),
+            _ => ('', null),
+          };
+          return PaymentSuccessView(
+            amount: amount,
+            referenceNumber: referenceNumber,
+          );
+        },
       ),
 
       // ── Viewers (full-screen, above shell) ─────────────────────────────
@@ -270,21 +308,14 @@ class AppRouter {
 
       // ── Main Shell (bottom nav) ──────────────────────────────────────────
       StatefulShellRoute.indexedStack(
-        builder: (_, __, navigationShell) =>
-            MultiBlocProvider(
-              providers: [
-                BlocProvider.value(
-                  value: serviceLocatorInstance<DashboardCubit>(),
-                ),
-                BlocProvider.value(
-                  value: serviceLocatorInstance<ProjectsCubit>(),
-                ),
-                BlocProvider.value(
-                  value: serviceLocatorInstance<ProfileCubit>(),
-                ),
-              ],
-              child: ShellScaffold(navigationShell: navigationShell),
-            ),
+        builder: (_, __, navigationShell) => MultiBlocProvider(
+          providers: [
+            BlocProvider.value(value: serviceLocatorInstance<DashboardCubit>()),
+            BlocProvider.value(value: serviceLocatorInstance<ProjectsCubit>()),
+            BlocProvider.value(value: serviceLocatorInstance<ProfileCubit>()),
+          ],
+          child: ShellScaffold(navigationShell: navigationShell),
+        ),
         branches: [
           // HOME tab
           StatefulShellBranch(

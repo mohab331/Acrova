@@ -20,9 +20,7 @@ class BottomNav extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         color: Resources.colors.luxurySurface,
-        border: Border(
-          top: BorderSide(color: Resources.colors.luxuryBorder),
-        ),
+        border: Border(top: BorderSide(color: Resources.colors.luxuryBorder)),
         boxShadow: AppShadows.float,
       ),
       child: SafeArea(

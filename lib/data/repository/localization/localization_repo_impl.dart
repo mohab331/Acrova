@@ -6,11 +6,9 @@ import 'package:acrova/utils/constants/local_constants.dart';
 import 'package:acrova/utils/helpers/result.dart';
 import 'package:acrova/utils/helpers/safe_async_call.dart';
 
-
 class LocalizationRepoImpl implements BaseLocalizationRepo {
-  LocalizationRepoImpl({
-    required BaseLocalStorage localStorage,
-  }) : _localStorage = localStorage;
+  LocalizationRepoImpl({required BaseLocalStorage localStorage})
+    : _localStorage = localStorage;
   final BaseLocalStorage _localStorage;
 
   @override
@@ -30,5 +28,4 @@ class LocalizationRepoImpl implements BaseLocalizationRepo {
   @override
   Future<Result<void>> clearLocale() =>
       safeAsyncCall(() => _localStorage.delete(LocalConstants.languageCode));
-
 }

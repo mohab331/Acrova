@@ -3,5 +3,6 @@ import 'package:acrova/data/models/response/config/min_app_version_response_mode
 import 'package:acrova/utils/helpers/result.dart';
 
 abstract class BaseAppConfigRepo {
-  Future<Result<NetworkResponse<MinAppVersionResponseModel>>> getMinAppVersion();
+  Future<Result<NetworkResponse<MinAppVersionResponseModel>>>
+  getMinAppVersion();
 }

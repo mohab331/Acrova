@@ -38,15 +38,19 @@ class RoomCounter extends StatelessWidget {
       ),
       child: Row(
         children: [
-          Icon(icon, size: Resources.iconSizes.$20, color: Resources.colors.luxuryNavy),
+          Icon(
+            icon,
+            size: Resources.iconSizes.$20,
+            color: Resources.colors.luxuryNavy,
+          ),
           SizedBox(width: Resources.horizontalDims.$12),
           Expanded(
             child: Text(
               label,
               style: context.textTheme.labelLarge?.copyWith(
-                    color: Resources.colors.luxuryInk,
-                    fontWeight: Resources.fontWeights.medium,
-                  ),
+                color: Resources.colors.luxuryInk,
+                fontWeight: Resources.fontWeights.medium,
+              ),
             ),
           ),
           StepCounterButton(
@@ -62,10 +66,10 @@ class RoomCounter extends StatelessWidget {
               child: Text(
                 '$count',
                 style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                      fontSize: Resources.fontSizes.$16,
-                      fontWeight: Resources.fontWeights.semiBold,
-                      color: Resources.colors.luxuryNavy,
-                    ),
+                  fontSize: Resources.fontSizes.$16,
+                  fontWeight: Resources.fontWeights.semiBold,
+                  color: Resources.colors.luxuryNavy,
+                ),
               ),
             ),
           ),

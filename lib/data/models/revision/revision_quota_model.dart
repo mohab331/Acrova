@@ -28,11 +28,11 @@ class RevisionQuotaModel extends Equatable {
       );
 
   Map<String, dynamic> toJson() => {
-        'used': used,
-        'total': total,
-        'paid_cost': paidCost,
-        'currency': currency,
-      };
+    'used': used,
+    'total': total,
+    'paid_cost': paidCost,
+    'currency': currency,
+  };
 
   @override
   List<Object?> get props => [used, total, paidCost, currency];

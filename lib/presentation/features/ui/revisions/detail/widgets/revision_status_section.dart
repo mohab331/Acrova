@@ -1,10 +1,9 @@
 import 'package:acrova/data/models/revision/revision_model.dart';
 import 'package:acrova/presentation/app/resources/resources.dart';
-import 'package:acrova/utils/enums/revision_status_enum.dart';
 import 'package:acrova/utils/extensions/localization_extension.dart';
 import 'package:acrova/utils/extensions/theme_extension.dart';
+import 'package:acrova/utils/formatters/app_formatter.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 
 class RevisionStatusSection extends StatelessWidget {
   const RevisionStatusSection({required this.revision, super.key});
@@ -14,7 +13,13 @@ class RevisionStatusSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = context.localization;
-    final date = DateFormat('MMM dd, yyyy', Localizations.localeOf(context).languageCode).format(revision.createdAt);
+    final date =
+        AppFormatter.formatDate(
+          revision.createdAt,
+          format: 'MMM dd, yyyy',
+          locale: Localizations.localeOf(context).languageCode,
+        ) ??
+        '';
     final label = revision.status.localizedLabel(context);
 
     return Container(
@@ -50,7 +55,7 @@ class RevisionStatusSection extends StatelessWidget {
                       label.toUpperCase(),
                       style: context.textTheme.titleLarge?.copyWith(
                         color: Resources.colors.luxuryNavy,
-                        fontWeight: Resources.fontWeights.semiBold
+                        fontWeight: Resources.fontWeights.semiBold,
                       ),
                     ),
                   ],
@@ -59,7 +64,7 @@ class RevisionStatusSection extends StatelessWidget {
               Container(
                 padding: EdgeInsets.all(Resources.horizontalDims.$12),
                 decoration: BoxDecoration(
-                  color:  Resources.colors.luxuryBackground,
+                  color: Resources.colors.luxuryBackground,
                   shape: BoxShape.circle,
                   boxShadow: AppShadows.card,
                 ),

@@ -70,11 +70,7 @@ class PaymentListItem extends StatelessWidget {
                 color: _getIconBgColor(),
                 shape: BoxShape.circle,
               ),
-              child: Icon(
-                _getIcon(),
-                color: _getIconColor(),
-                size: 20,
-              ),
+              child: Icon(_getIcon(), color: _getIconColor(), size: 20),
             ),
             SizedBox(width: Resources.horizontalDims.$16),
             Expanded(

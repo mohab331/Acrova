@@ -4,20 +4,12 @@ part of 'resources.dart';
 abstract final class AppShadows {
   /// Subtle card lift (1px blur, 1px y-offset)
   static const List<BoxShadow> card = [
-    BoxShadow(
-      color: Color(0x0D000000),
-      blurRadius: 1,
-      offset: Offset(0, 1),
-    ),
+    BoxShadow(color: Color(0x0D000000), blurRadius: 1, offset: Offset(0, 1)),
   ];
 
   /// Primary CTA button shadow (navy @ 10%)
   static const List<BoxShadow> cta = [
-    BoxShadow(
-      color: Color(0x1A000615),
-      blurRadius: 16,
-      offset: Offset(0, 8),
-    ),
+    BoxShadow(color: Color(0x1A000615), blurRadius: 16, offset: Offset(0, 8)),
   ];
 
   /// Hero dark card shadow (black @ 10%)
@@ -62,19 +54,11 @@ abstract final class AppShadows {
 
   /// Featured project card elevated shadow
   static const List<BoxShadow> featuredCard = [
-    BoxShadow(
-      color: Color(0x0A191C1D),
-      blurRadius: 32,
-      offset: Offset(0, 4),
-    ),
+    BoxShadow(color: Color(0x0A191C1D), blurRadius: 32, offset: Offset(0, 4)),
   ];
 
   /// Content panel / bottom sheet lift shadow (luxuryInk @ 8%)
   static const List<BoxShadow> sheet = [
-    BoxShadow(
-      color: Color(0x14000615),
-      blurRadius: 30,
-      offset: Offset(0, -8),
-    ),
+    BoxShadow(color: Color(0x14000615), blurRadius: 30, offset: Offset(0, -8)),
   ];
 }

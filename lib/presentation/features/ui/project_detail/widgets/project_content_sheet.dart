@@ -72,7 +72,8 @@ class ProjectContentSheet extends StatelessWidget {
               end: Resources.horizontalDims.$24,
             ),
             child: Text(
-              project.description ?? context.localization.projectOverviewDefault,
+              project.description ??
+                  context.localization.projectOverviewDefault,
               style: context.textTheme.bodyMedium?.copyWith(
                 fontSize: Resources.fontSizes.$14,
                 color: Resources.colors.luxuryBody,
@@ -127,9 +128,7 @@ class ProjectContentSheet extends StatelessWidget {
                 start: Resources.horizontalDims.$24,
                 end: Resources.horizontalDims.$24,
               ),
-              child: ProjectEngineerCard(
-                engineer: project.engineer,
-              ),
+              child: ProjectEngineerCard(engineer: project.engineer),
             ),
           ],
           SizedBox(height: Resources.verticalDims.$32),

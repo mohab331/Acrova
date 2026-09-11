@@ -8,10 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 class ProjectBottomCta extends StatelessWidget {
-  const ProjectBottomCta({
-    required this.project,
-    super.key,
-  });
+  const ProjectBottomCta({required this.project, super.key});
 
   final ProjectModel project;
 

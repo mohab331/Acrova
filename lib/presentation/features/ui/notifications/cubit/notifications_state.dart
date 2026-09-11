@@ -11,7 +11,7 @@ class NotificationsCubitState extends Equatable {
   });
 
   const NotificationsCubitState.initial()
-      : this(cubitStatus: CubitStatus.initial);
+    : this(cubitStatus: CubitStatus.initial);
 
   final CubitStatus cubitStatus;
   final List<AppNotificationModel>? notifications;
@@ -19,7 +19,7 @@ class NotificationsCubitState extends Equatable {
 
   bool get isLoading => cubitStatus == CubitStatus.loading;
   bool get isSuccess => cubitStatus == CubitStatus.success;
-  bool get isError   => cubitStatus == CubitStatus.error;
+  bool get isError => cubitStatus == CubitStatus.error;
 
   bool get isEmpty => (notifications ?? const []).isEmpty;
 
@@ -30,12 +30,11 @@ class NotificationsCubitState extends Equatable {
     CubitStatus? cubitStatus,
     List<AppNotificationModel>? notifications,
     AppErrorModel? appErrorModel,
-  }) =>
-      NotificationsCubitState(
-        cubitStatus: cubitStatus ?? this.cubitStatus,
-        notifications: notifications ?? this.notifications,
-        appErrorModel: appErrorModel,
-      );
+  }) => NotificationsCubitState(
+    cubitStatus: cubitStatus ?? this.cubitStatus,
+    notifications: notifications ?? this.notifications,
+    appErrorModel: appErrorModel,
+  );
 
   @override
   List<Object?> get props => [cubitStatus, notifications, appErrorModel];

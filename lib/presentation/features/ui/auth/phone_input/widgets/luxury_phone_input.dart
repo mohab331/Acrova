@@ -41,8 +41,7 @@ class _LuxuryPhoneInputState extends State<LuxuryPhoneInput> {
         if (_controller.text != state.phone) {
           _controller.value = TextEditingValue(
             text: state.phone,
-            selection:
-                TextSelection.collapsed(offset: state.phone.length),
+            selection: TextSelection.collapsed(offset: state.phone.length),
           );
         }
 
@@ -90,8 +89,7 @@ class _LuxuryPhoneInputState extends State<LuxuryPhoneInput> {
                     keyboardType: TextInputType.phone,
                     textInputAction: TextInputAction.done,
                     inputFormatters: [
-                      FilteringTextInputFormatter.allow(
-                          RegExp(r'[\d\s]')),
+                      FilteringTextInputFormatter.allow(RegExp(r'[\d\s]')),
                     ],
                     onChanged: cubit.onPhoneChanged,
                     style: context.textTheme.bodyMedium?.copyWith(

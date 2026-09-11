@@ -34,18 +34,17 @@ class UserProfileModel extends Equatable {
     int? projectsCount,
     int? completedCount,
     String? avatarUrl,
-  }) =>
-      UserProfileModel(
-        name: name ?? this.name,
-        email: email ?? this.email,
-        mobileNumber: mobileNumber ?? this.mobileNumber,
-        nationalId: nationalId ?? this.nationalId,
-        language: language ?? this.language,
-        memberSince: memberSince ?? this.memberSince,
-        projectsCount: projectsCount ?? this.projectsCount,
-        completedCount: completedCount ?? this.completedCount,
-        avatarUrl: avatarUrl ?? this.avatarUrl,
-      );
+  }) => UserProfileModel(
+    name: name ?? this.name,
+    email: email ?? this.email,
+    mobileNumber: mobileNumber ?? this.mobileNumber,
+    nationalId: nationalId ?? this.nationalId,
+    language: language ?? this.language,
+    memberSince: memberSince ?? this.memberSince,
+    projectsCount: projectsCount ?? this.projectsCount,
+    completedCount: completedCount ?? this.completedCount,
+    avatarUrl: avatarUrl ?? this.avatarUrl,
+  );
 
   factory UserProfileModel.fromJson(Map<String, dynamic> json) =>
       UserProfileModel(
@@ -54,7 +53,8 @@ class UserProfileModel extends Equatable {
         mobileNumber: json['mobile_number'] as String? ?? '',
         nationalId: json['national_id'] as String? ?? '',
         language: json['language'] as String? ?? 'en',
-        memberSince: DateTime.tryParse(json['member_since'] as String? ?? '') ??
+        memberSince:
+            DateTime.tryParse(json['member_since'] as String? ?? '') ??
             DateTime.now(),
         projectsCount: json['projects_count'] as int? ?? 0,
         completedCount: json['completed_count'] as int? ?? 0,
@@ -62,27 +62,27 @@ class UserProfileModel extends Equatable {
       );
 
   Map<String, dynamic> toJson() => {
-        'name': name,
-        'email': email,
-        'mobile_number': mobileNumber,
-        'national_id': nationalId,
-        'language': language,
-        'member_since': memberSince.toIso8601String(),
-        'projects_count': projectsCount,
-        'completed_count': completedCount,
-        'avatar_url': avatarUrl,
-      };
+    'name': name,
+    'email': email,
+    'mobile_number': mobileNumber,
+    'national_id': nationalId,
+    'language': language,
+    'member_since': memberSince.toIso8601String(),
+    'projects_count': projectsCount,
+    'completed_count': completedCount,
+    'avatar_url': avatarUrl,
+  };
 
   @override
   List<Object?> get props => [
-        name,
-        email,
-        mobileNumber,
-        nationalId,
-        language,
-        memberSince,
-        projectsCount,
-        completedCount,
-        avatarUrl,
-      ];
+    name,
+    email,
+    mobileNumber,
+    nationalId,
+    language,
+    memberSince,
+    projectsCount,
+    completedCount,
+    avatarUrl,
+  ];
 }

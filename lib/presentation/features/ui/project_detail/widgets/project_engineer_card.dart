@@ -5,10 +5,7 @@ import 'package:acrova/utils/extensions/theme_extension.dart';
 import 'package:flutter/material.dart';
 
 class ProjectEngineerCard extends StatelessWidget {
-  const ProjectEngineerCard({
-    this.engineer,
-    super.key,
-  });
+  const ProjectEngineerCard({this.engineer, super.key});
 
   final EngineerModel? engineer;
 

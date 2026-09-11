@@ -24,9 +24,9 @@ class FloorCounter extends StatelessWidget {
       children: [
         Text(
           l10n.landDetailsLabelFloors.toUpperCase(),
-          style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                color: Resources.colors.luxuryBody,
-              ),
+          style: Theme.of(
+            context,
+          ).textTheme.labelLarge?.copyWith(color: Resources.colors.luxuryBody),
         ),
         SizedBox(height: Resources.verticalDims.$8),
         Container(
@@ -50,9 +50,9 @@ class FloorCounter extends StatelessWidget {
                   child: Text(
                     '$floors ${floors == 1 ? l10n.landDetailsFloorSingular : l10n.landDetailsFloorPlural}',
                     style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                          color: Resources.colors.luxuryInk,
-                          fontWeight: Resources.fontWeights.semiBold,
-                        ),
+                      color: Resources.colors.luxuryInk,
+                      fontWeight: Resources.fontWeights.semiBold,
+                    ),
                   ),
                 ),
               ),

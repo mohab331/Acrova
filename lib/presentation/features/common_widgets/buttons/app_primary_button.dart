@@ -42,7 +42,7 @@ class AppPrimaryButton extends StatelessWidget {
         boxShadow: isActive ? AppShadows.cta : null,
       ),
       child: SizedBox(
-        height:height ?? Resources.verticalDims.$55,
+        height: height ?? Resources.verticalDims.$55,
         child: ElevatedButton(
           onPressed: isActive ? onPressed : null,
           style: ElevatedButton.styleFrom(

@@ -9,17 +9,11 @@ class PdfViewerArgs {
   final String title;
   final String urlOrAsset;
 
-  const PdfViewerArgs({
-    required this.title,
-    required this.urlOrAsset,
-  });
+  const PdfViewerArgs({required this.title, required this.urlOrAsset});
 }
 
 class PdfViewerPage extends StatelessWidget {
-  const PdfViewerPage({
-    required this.args,
-    super.key,
-  });
+  const PdfViewerPage({required this.args, super.key});
 
   final PdfViewerArgs args;
 
@@ -43,9 +37,15 @@ class PdfViewerPage extends StatelessWidget {
         ),
         actions: [
           IconButton(
-            icon: Icon(Icons.download_rounded, color: Resources.colors.luxuryGoldLight),
+            icon: Icon(
+              Icons.download_rounded,
+              color: Resources.colors.luxuryGoldLight,
+            ),
             onPressed: () {
-              DownloadHelper.downloadAndShare(args.urlOrAsset, '${args.title}.pdf');
+              DownloadHelper.downloadAndShare(
+                args.urlOrAsset,
+                '${args.title}.pdf',
+              );
             },
           ),
         ],

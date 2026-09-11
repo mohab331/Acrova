@@ -15,8 +15,11 @@ class AppLogger {
 
   void logWarning(final String message) => _logger.w(message);
 
-  void logError(final String message, {final Object? error, final StackTrace? stackTrace}) =>
-      _logger.e(message, error: error, stackTrace: stackTrace);
+  void logError(
+    final String message, {
+    final Object? error,
+    final StackTrace? stackTrace,
+  }) => _logger.e(message, error: error, stackTrace: stackTrace);
 
   void logTrace(final String message) => _logger.t(message);
 }

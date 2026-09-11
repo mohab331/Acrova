@@ -1,8 +1,12 @@
-import 'package:acrova/core/error/app_error_model.dart';
 import 'package:acrova/data/data_source/local/services/image_picker/base_image_picker_service.dart';
+import 'package:acrova/data/models/interior_design/moodboard_model.dart';
 import 'package:acrova/domain/repository/project/base_project_repo.dart';
 import 'package:acrova/presentation/features/cubit/interior_design/interior_design_state.dart';
+import 'package:acrova/utils/enums/cubit_status.dart';
+import 'package:acrova/utils/enums/interior_design_enums.dart';
+import 'package:acrova/utils/helpers/safe_async_call.dart';
 import 'package:acrova/utils/logging/app_logger.dart';
+import 'package:acrova/utils/validation/app_validators.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class InteriorDesignCubit extends Cubit<InteriorDesignState> {
@@ -10,8 +14,8 @@ class InteriorDesignCubit extends Cubit<InteriorDesignState> {
     required this.projectRepo,
     required BaseImagePickerService imagePicker,
     required String projectId,
-  })  : _imagePicker = imagePicker,
-        super(InteriorDesignState(projectId: projectId)) {
+  }) : _imagePicker = imagePicker,
+       super(InteriorDesignState(projectId: projectId)) {
     loadInitialData();
   }
 
@@ -19,14 +23,27 @@ class InteriorDesignCubit extends Cubit<InteriorDesignState> {
   final BaseImagePickerService _imagePicker;
 
   Future<void> loadInitialData() async {
-    final result = await projectRepo.getMoodboards();
-    result.when(
-      success: (boards) => emit(state.copyWith(availableMoodboards: boards)),
-      failure: (_) {},
+    emit(state.copyWith(status: CubitStatus.loading));
+    await safeCubitCall<List<MoodboardModel>>(
+      call: projectRepo.getMoodboards,
+      onSuccess: (boards) => emit(
+        state.copyWith(
+          status: CubitStatus.initial,
+          availableMoodboards: boards,
+        ),
+      ),
+      onError: (error) =>
+          emit(state.copyWith(status: CubitStatus.error, error: error)),
     );
   }
 
-  void updateScope(String scope) {
+  void updateScope(String scopeStr) {
+    final scope =
+        InteriorDesignScope.fromValue(scopeStr) ?? InteriorDesignScope.all;
+    emit(state.copyWith(scope: scope));
+  }
+
+  void setScope(InteriorDesignScope scope) {
     emit(state.copyWith(scope: scope));
   }
 
@@ -78,11 +95,21 @@ class InteriorDesignCubit extends Cubit<InteriorDesignState> {
     emit(state.copyWith(atmosphereTags: list));
   }
 
-  void updateBudgetTier(String tier) {
+  void updateBudgetTier(String tierStr) {
+    final tier = BudgetTier.fromValue(tierStr);
     emit(state.copyWith(budgetTier: tier));
   }
 
-  void updateTimeline(String timeline) {
+  void setBudgetTier(BudgetTier tier) {
+    emit(state.copyWith(budgetTier: tier));
+  }
+
+  void updateTimeline(String timelineStr) {
+    final timeline = ProjectTimeline.fromValue(timelineStr);
+    emit(state.copyWith(timeline: timeline));
+  }
+
+  void setTimeline(ProjectTimeline timeline) {
     emit(state.copyWith(timeline: timeline));
   }
 
@@ -91,9 +118,11 @@ class InteriorDesignCubit extends Cubit<InteriorDesignState> {
   }
 
   void addInspirationMedia(String path) {
-    emit(state.copyWith(
-      inspirationMediaPaths: [...state.inspirationMediaPaths, path],
-    ));
+    emit(
+      state.copyWith(
+        inspirationMediaPaths: [...state.inspirationMediaPaths, path],
+      ),
+    );
   }
 
   Future<void> addInspirationMediaFromGallery() async {
@@ -124,10 +153,17 @@ class InteriorDesignCubit extends Cubit<InteriorDesignState> {
     emit(state.copyWith(inspirationMediaPaths: list));
   }
 
-  void addInspirationLink(String link) {
-    emit(state.copyWith(
-      inspirationLinks: [...state.inspirationLinks, link],
-    ));
+  bool addInspirationLink(String link) {
+    final trimmed = link.trim();
+    if (!AppValidators.isValidUrl(trimmed)) {
+      return false;
+    }
+    if (!state.inspirationLinks.contains(trimmed)) {
+      emit(
+        state.copyWith(inspirationLinks: [...state.inspirationLinks, trimmed]),
+      );
+    }
+    return true;
   }
 
   void removeInspirationLink(int index) {
@@ -138,22 +174,13 @@ class InteriorDesignCubit extends Cubit<InteriorDesignState> {
 
   Future<void> submit() async {
     if (!state.isValid) return;
-    emit(state.copyWith(status: InteriorDesignStatus.loading));
-    try {
-      final request = state.toRequest();
-      final result = await projectRepo.submitInteriorDesign(request);
-      result.when(
-        success: (_) => emit(state.copyWith(status: InteriorDesignStatus.success)),
-        failure: (error) => emit(state.copyWith(
-          status: InteriorDesignStatus.failure,
-          error: error,
-        )),
-      );
-    } catch (e) {
-      emit(state.copyWith(
-        status: InteriorDesignStatus.failure,
-        error: AppErrorModel.fromException(e),
-      ));
-    }
+    emit(state.copyWith(status: CubitStatus.loading));
+
+    await safeCubitCall<void>(
+      call: () => projectRepo.submitInteriorDesign(state.toRequest()),
+      onSuccess: (_) => emit(state.copyWith(status: CubitStatus.success)),
+      onError: (error) =>
+          emit(state.copyWith(status: CubitStatus.error, error: error)),
+    );
   }
 }

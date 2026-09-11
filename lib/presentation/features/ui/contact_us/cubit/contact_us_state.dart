@@ -16,13 +16,12 @@ class ContactUsState extends Equatable {
   factory ContactUsState.initial({
     String email = '',
     String mobileNumber = '',
-  }) =>
-      ContactUsState(
-        cubitStatus: CubitStatus.initial,
-        email: email,
-        mobileNumber: mobileNumber,
-        details: '',
-      );
+  }) => ContactUsState(
+    cubitStatus: CubitStatus.initial,
+    email: email,
+    mobileNumber: mobileNumber,
+    details: '',
+  );
 
   final CubitStatus cubitStatus;
   final String email;
@@ -33,8 +32,8 @@ class ContactUsState extends Equatable {
   final AppErrorModel? appErrorModel;
 
   bool get isSubmitting => cubitStatus == CubitStatus.loading;
-  bool get isSuccess    => cubitStatus == CubitStatus.success;
-  bool get isError      => cubitStatus == CubitStatus.error;
+  bool get isSuccess => cubitStatus == CubitStatus.success;
+  bool get isError => cubitStatus == CubitStatus.error;
 
   ContactUsState copyWith({
     CubitStatus? cubitStatus,
@@ -44,25 +43,24 @@ class ContactUsState extends Equatable {
     String? Function()? emailError,
     String? Function()? detailsError,
     AppErrorModel? appErrorModel,
-  }) =>
-      ContactUsState(
-        cubitStatus: cubitStatus ?? this.cubitStatus,
-        email: email ?? this.email,
-        mobileNumber: mobileNumber ?? this.mobileNumber,
-        details: details ?? this.details,
-        emailError: emailError != null ? emailError() : this.emailError,
-        detailsError: detailsError != null ? detailsError() : this.detailsError,
-        appErrorModel: appErrorModel,
-      );
+  }) => ContactUsState(
+    cubitStatus: cubitStatus ?? this.cubitStatus,
+    email: email ?? this.email,
+    mobileNumber: mobileNumber ?? this.mobileNumber,
+    details: details ?? this.details,
+    emailError: emailError != null ? emailError() : this.emailError,
+    detailsError: detailsError != null ? detailsError() : this.detailsError,
+    appErrorModel: appErrorModel,
+  );
 
   @override
   List<Object?> get props => [
-        cubitStatus,
-        email,
-        mobileNumber,
-        details,
-        emailError,
-        detailsError,
-        appErrorModel,
-      ];
+    cubitStatus,
+    email,
+    mobileNumber,
+    details,
+    emailError,
+    detailsError,
+    appErrorModel,
+  ];
 }

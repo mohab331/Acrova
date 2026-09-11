@@ -50,10 +50,7 @@ class AppCachedNetworkImage extends StatelessWidget {
             gradient: LinearGradient(
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
-              colors: [
-                Resources.colors.luxuryNavy,
-                Resources.colors.luxuryInk,
-              ],
+              colors: [Resources.colors.luxuryNavy, Resources.colors.luxuryInk],
             ),
           ),
           child: Center(

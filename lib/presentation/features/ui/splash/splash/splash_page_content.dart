@@ -7,12 +7,7 @@ class SplashPageContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const Center(
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          AppLogo(),
-        ],
-      ),
+      child: Column(mainAxisSize: MainAxisSize.min, children: [AppLogo()]),
     );
   }
 }

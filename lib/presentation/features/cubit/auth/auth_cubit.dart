@@ -9,9 +9,9 @@ class AuthCubit extends Cubit<AuthCubitState> {
   AuthCubit({
     required BaseAuthRepo baseAuthRepo,
     required BaseFCMTokenRepo baseFCMTokenRepo,
-  })  : _baseAuthRepo = baseAuthRepo,
-        _fcmTokenRepo = baseFCMTokenRepo,
-        super(const AuthCubitState.initial());
+  }) : _baseAuthRepo = baseAuthRepo,
+       _fcmTokenRepo = baseFCMTokenRepo,
+       super(const AuthCubitState.initial());
 
   final BaseAuthRepo _baseAuthRepo;
   // ignore: unused_field
@@ -25,10 +25,9 @@ class AuthCubit extends Cubit<AuthCubitState> {
     final result = await _baseAuthRepo.login(phoneNumber);
     result.when(
       success: (_) => emit(state.copyWith(cubitStatus: CubitStatus.success)),
-      failure: (error) => emit(state.copyWith(
-        cubitStatus: CubitStatus.error,
-        appErrorModel: error,
-      )),
+      failure: (error) => emit(
+        state.copyWith(cubitStatus: CubitStatus.error, appErrorModel: error),
+      ),
     );
   }
 
@@ -41,24 +40,24 @@ class AuthCubit extends Cubit<AuthCubitState> {
     emit(state.copyWith(cubitStatus: CubitStatus.loading));
 
     final otpResult = await _baseAuthRepo.verifyOtp(otp);
-     otpResult.when(
+    otpResult.when(
       success: (_) async {
         final newUserResult = await _baseAuthRepo.isNewUser();
         newUserResult.when(
-          success: (isNew) => emit(state.copyWith(
-            cubitStatus: CubitStatus.success,
-            isNewUser: isNew,
-          )),
-          failure: (_) => emit(state.copyWith(
-            cubitStatus: CubitStatus.success,
-            isNewUser: false, // default to home on check failure
-          )),
+          success: (isNew) => emit(
+            state.copyWith(cubitStatus: CubitStatus.success, isNewUser: isNew),
+          ),
+          failure: (_) => emit(
+            state.copyWith(
+              cubitStatus: CubitStatus.success,
+              isNewUser: false, // default to home on check failure
+            ),
+          ),
         );
       },
-      failure: (error) => emit(state.copyWith(
-        cubitStatus: CubitStatus.error,
-        appErrorModel: error,
-      )),
+      failure: (error) => emit(
+        state.copyWith(cubitStatus: CubitStatus.error, appErrorModel: error),
+      ),
     );
   }
 
@@ -78,14 +77,12 @@ class AuthCubit extends Cubit<AuthCubitState> {
       language: language,
     );
     result.when(
-      success: (_) => emit(state.copyWith(
-        cubitStatus: CubitStatus.success,
-        isNewUser: false,
-      )),
-      failure: (error) => emit(state.copyWith(
-        cubitStatus: CubitStatus.error,
-        appErrorModel: error,
-      )),
+      success: (_) => emit(
+        state.copyWith(cubitStatus: CubitStatus.success, isNewUser: false),
+      ),
+      failure: (error) => emit(
+        state.copyWith(cubitStatus: CubitStatus.error, appErrorModel: error),
+      ),
     );
   }
 

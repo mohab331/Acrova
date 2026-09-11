@@ -6,7 +6,7 @@ import 'package:acrova/utils/helpers/safe_async_call.dart';
 
 class BillingRepoImpl implements BaseBillingRepo {
   const BillingRepoImpl({required BaseBillingDataSource dataSource})
-      : _dataSource = dataSource;
+    : _dataSource = dataSource;
 
   final BaseBillingDataSource _dataSource;
 

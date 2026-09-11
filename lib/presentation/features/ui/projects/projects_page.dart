@@ -1,11 +1,12 @@
 import 'package:acrova/core/di/dependency_injector.dart';
 import 'package:acrova/data/models/project/project_model.dart';
 import 'package:acrova/presentation/app/navigation/app_route_enum.dart';
+import 'package:acrova/presentation/app/navigation/args/navigation_args.dart';
 import 'package:acrova/presentation/app/resources/resources.dart';
 import 'package:acrova/presentation/features/common_widgets/app_bar/app_avatar_header.dart';
 import 'package:acrova/presentation/features/common_widgets/common_screen/common_screen.dart';
 import 'package:acrova/presentation/features/common_widgets/feedback/app_empty_state.dart';
-import 'package:acrova/presentation/features/common_widgets/feedback/app_error_state.dart';
+import 'package:acrova/presentation/features/common_widgets/feedback/common_error_widget.dart';
 import 'package:acrova/presentation/features/cubit/projects/projects_cubit.dart';
 import 'package:acrova/presentation/features/cubit/projects/projects_state.dart';
 import 'package:acrova/presentation/features/ui/projects/widgets/featured_project_card.dart';
@@ -28,11 +29,6 @@ class ProjectsPage extends StatefulWidget {
 
 class _ProjectsPageState extends State<ProjectsPage> {
   ProjectFilter _filter = ProjectFilter.all;
-
-  @override
-  void initState() {
-    super.initState();
-  }
 
   List<ProjectModel> _applyFilter(List<ProjectModel> all) {
     return switch (_filter) {
@@ -66,103 +62,113 @@ class _ProjectsPageState extends State<ProjectsPage> {
                         return const ProjectsSkeleton();
                       }
                       if (state.isError) {
-                        return AppErrorState(
-                          message: state.appErrorModel?.message ?? '',
+                        return CommonErrorWidget(
+                          error: state.appErrorModel,
                           onRetry: () =>
                               context.read<ProjectsCubit>().fetchProjects(),
                         );
                       }
 
-                  final filtered = _applyFilter(state.projects ?? []);
+                      final filtered = _applyFilter(state.projects ?? []);
 
-                  return RefreshIndicator(
-                    color: Resources.colors.luxuryGoldLight,
-                    onRefresh: () =>
-                        context.read<ProjectsCubit>().fetchProjects(),
-                    child: CustomScrollView(
-                      physics: const AlwaysScrollableScrollPhysics(),
-                      slivers: [
-                        SliverToBoxAdapter(
-                          child: ProjectsSectionHeader(
-                            filter: _filter,
-                            onFilterChanged: (f) => setState(() => _filter = f),
-                          ),
-                        ),
-                        SliverToBoxAdapter(
-                          child: SizedBox(height: Resources.verticalDims.$20),
-                        ),
-                        if (filtered.isEmpty)
-                          SliverFillRemaining(
-                            child: AppEmptyState(
-                              icon: Icons.folder_open_outlined,
-                              title: context.localization.projectsEmptyTitle,
-                              subtitle:
-                                  context.localization.projectsEmptySubtitle,
-                              ctaLabel: context
-                                  .localization
-                                  .dashboardActionNewProject,
-                              onCtaTap: () => context.push(
-                                AppRouteEnum.projectCreationPage.path,
-                              ),
-                            ),
-                          )
-                        else ...[
-                          if (filtered.isNotEmpty) ...[
+                      return RefreshIndicator(
+                        color: Resources.colors.luxuryGoldLight,
+                        onRefresh: () =>
+                            context.read<ProjectsCubit>().fetchProjects(),
+                        child: CustomScrollView(
+                          physics: const AlwaysScrollableScrollPhysics(),
+                          slivers: [
                             SliverToBoxAdapter(
-                              child: GestureDetector(
-                                onTap: () {
-                                  context.pushNamed(
-                                    AppRouteEnum.projectDetailPage.name,
-                                    extra: {
-                                      'id': filtered.firstOrNull?.id,
-                                      'title': filtered.firstOrNull?.name,
-                                    },
-                                  );
-                                },
-                                child: FeaturedProjectCard(
-                                  project: filtered.first,
-                                ),
+                              child: ProjectsSectionHeader(
+                                filter: _filter,
+                                onFilterChanged: (f) =>
+                                    setState(() => _filter = f),
                               ),
                             ),
                             SliverToBoxAdapter(
                               child: SizedBox(
-                                height: Resources.verticalDims.$16,
+                                height: Resources.verticalDims.$20,
                               ),
                             ),
-                          ],
-                          if (filtered.length > 1)
-                            SliverList.separated(
-                              itemCount: filtered.length - 1,
-                              separatorBuilder: (_, __) =>
-                                  SizedBox(height: Resources.verticalDims.$16),
-                              itemBuilder: (_, i) => GestureDetector(
-                                onTap: () {
-                                  context.pushNamed(
-                                    AppRouteEnum.projectDetailPage.name,
-                                    extra: {
-                                      'id': filtered[i + 1].id,
-                                      'title': filtered[i + 1].name,
+                            if (filtered.isEmpty)
+                              SliverFillRemaining(
+                                child: AppEmptyState(
+                                  icon: Icons.folder_open_outlined,
+                                  title:
+                                      context.localization.projectsEmptyTitle,
+                                  subtitle: context
+                                      .localization
+                                      .projectsEmptySubtitle,
+                                  ctaLabel: context
+                                      .localization
+                                      .dashboardActionNewProject,
+                                  onCtaTap: () => context.push(
+                                    AppRouteEnum.projectCreationPage.path,
+                                  ),
+                                ),
+                              )
+                            else ...[
+                              if (filtered.isNotEmpty) ...[
+                                SliverToBoxAdapter(
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      final p = filtered.first;
+                                      context.pushNamed(
+                                        AppRouteEnum.projectDetailPage.name,
+                                        extra: ProjectDetailArgs(
+                                          id: p.id,
+                                          title: p.name,
+                                        ),
+                                      );
                                     },
-                                  );
-                                },
-                                child: StandardProjectCard(
-                                  project: filtered[i + 1],
+                                    child: FeaturedProjectCard(
+                                      project: filtered.first,
+                                    ),
+                                  ),
+                                ),
+                                SliverToBoxAdapter(
+                                  child: SizedBox(
+                                    height: Resources.verticalDims.$16,
+                                  ),
+                                ),
+                              ],
+                              if (filtered.length > 1)
+                                SliverList.separated(
+                                  itemCount: filtered.length - 1,
+                                  separatorBuilder: (_, __) => SizedBox(
+                                    height: Resources.verticalDims.$16,
+                                  ),
+                                  itemBuilder: (_, i) => GestureDetector(
+                                    onTap: () {
+                                      final p = filtered[i + 1];
+                                      context.pushNamed(
+                                        AppRouteEnum.projectDetailPage.name,
+                                        extra: ProjectDetailArgs(
+                                          id: p.id,
+                                          title: p.name,
+                                        ),
+                                      );
+                                    },
+                                    child: StandardProjectCard(
+                                      project: filtered[i + 1],
+                                    ),
+                                  ),
+                                ),
+                              SliverToBoxAdapter(
+                                child: SizedBox(
+                                  height: Resources.verticalDims.$32,
                                 ),
                               ),
-                            ),
-                          SliverToBoxAdapter(
-                            child: SizedBox(height: Resources.verticalDims.$32),
-                          ),
-                        ],
-                      ],
-                    ),
-                  );
-                },
-              ),
-            ),
-            ],
-          );
-        },
+                            ],
+                          ],
+                        ),
+                      );
+                    },
+                  ),
+                ),
+              ],
+            );
+          },
         ),
       ),
     );

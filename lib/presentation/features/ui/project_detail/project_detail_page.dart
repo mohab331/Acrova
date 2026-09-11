@@ -2,7 +2,8 @@ import 'package:acrova/core/di/dependency_injector.dart';
 import 'package:acrova/presentation/app/resources/resources.dart';
 import 'package:acrova/presentation/features/common_widgets/app_bar/app_auth_brand_header.dart';
 import 'package:acrova/presentation/features/common_widgets/common_screen/common_screen.dart';
-import 'package:acrova/presentation/features/common_widgets/feedback/app_error_state.dart';
+import 'package:acrova/presentation/features/common_widgets/feedback/common_error_widget.dart';
+import 'package:acrova/presentation/features/common_widgets/feedback/common_shimmer_loading.dart';
 import 'package:acrova/presentation/features/common_widgets/images/app_cached_network_image.dart';
 import 'package:acrova/presentation/features/cubit/project_detail/project_detail_cubit.dart';
 import 'package:acrova/presentation/features/cubit/project_detail/project_detail_state.dart';
@@ -29,7 +30,7 @@ class ProjectDetailPage extends StatelessWidget {
       child: CommonScreen(
         padding: EdgeInsets.zero,
         appBar: AppAuthBrandHeader(label: projectTitle ?? '', showBack: true),
-        backGroundColor: Colors.white,
+        backGroundColor: Resources.colors.white,
         child: const _ProjectDetailView(),
       ),
     );
@@ -45,22 +46,14 @@ class _ProjectDetailView extends StatelessWidget {
 
     return BlocBuilder<ProjectDetailCubit, ProjectDetailState>(
       builder: (context, state) {
-        if (state.isLoading || state.project == null && !state.isError) {
-          return const Center(child: CircularProgressIndicator());
+        if (state.isLoading || (state.project == null && !state.isError)) {
+          return const CommonShimmerLoading(isDetail: true);
         }
 
         if (state.isError) {
-          return Center(
-            child: AppErrorState(
-              errorModel: state.appErrorModel,
-              onRetry: () {
-                final projectId =
-                    context.read<ProjectDetailCubit>().state.project?.id ?? '';
-                if (projectId.isNotEmpty) {
-                  context.read<ProjectDetailCubit>().fetchProject(projectId);
-                }
-              },
-            ),
+          return CommonErrorWidget(
+            error: state.appErrorModel,
+            onRetry: () => context.read<ProjectDetailCubit>().fetchProject(),
           );
         }
 
@@ -80,7 +73,6 @@ class _ProjectDetailView extends StatelessWidget {
                         radius: 0,
                       ),
                     ),
-
                     Transform.translate(
                       offset: Offset(0, -Resources.verticalDims.$24),
                       child: ProjectContentSheet(project: project),

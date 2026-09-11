@@ -55,16 +55,16 @@ class WizardAppBar extends StatelessWidget {
                         kWizardStepCount.toString(),
                       ),
                       style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                            color: Resources.colors.luxuryGoldLight,
-                          ),
+                        color: Resources.colors.luxuryGoldLight,
+                      ),
                     ),
                     SizedBox(height: Resources.verticalDims.$2),
                     Text(
                       stepTitles(context)[state.currentStep],
                       style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                            color: Resources.colors.luxuryNavy,
-                            fontWeight: Resources.fontWeights.semiBold,
-                          ),
+                        color: Resources.colors.luxuryNavy,
+                        fontWeight: Resources.fontWeights.semiBold,
+                      ),
                     ),
                   ],
                 ),

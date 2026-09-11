@@ -7,23 +7,6 @@ import 'package:acrova/utils/logging/app_logger.dart';
 /// - On success → returns `Success<T>(value)`.
 /// - On error   → returns `Failure<T>(AppErrorModel<T>)`, optionally carrying
 ///   [defaultDataOnError] so callers still get fallback data with the error.
-///
-/// Useful to centralize try/catch and exception→error-model mapping.
-///
-/// Type params:
-/// - `T`: the value type produced by [function].
-///
-/// Params:
-/// - [function]: zero-arg async operation to execute.
-/// - [defaultDataOnError]: optional fallback data attached to the failure.
-///
-/// Example:
-/// ```dart
-/// Future<Result<User>> fetchMe() => safeAsyncCall<User>(() async {
-///   final res = await dio.get('/me');
-///   return User.fromJson(res.data);
-/// }, defaultDataOnError: User.empty());
-/// ```
 Future<Result<T>> safeAsyncCall<T>(
   final Future<T> Function() function, {
   final T? defaultDataOnError,
@@ -45,7 +28,7 @@ Future<Result<T>> safeAsyncCall<T>(
   }
 }
 
-/// For non async
+/// For non-async operations returning a `Result<T>`.
 Result<T> safeCall<T>(
   final T Function() function, {
   final T? defaultDataOnError,
@@ -64,5 +47,45 @@ Result<T> safeCall<T>(
               data: defaultDataOnError,
             ),
     );
+  }
+}
+
+/// Standard async wrapper for Cubits to execute async business operations safely.
+///
+/// Automatically handles try/catch and guarantees [onError] is called with an [AppErrorModel]
+/// if an uncaught exception is thrown.
+Future<void> safeAsync({
+  required Future<void> Function() operation,
+  required void Function(AppErrorModel error) onError,
+}) async {
+  try {
+    await operation();
+  } catch (e, s) {
+    AppLogger.instance.logError(e.toString(), error: e, stackTrace: s);
+    final error = e is AppErrorModel
+        ? e
+        : AppErrorModel.fromException(e, stackTrace: s);
+    onError(error);
+  }
+}
+
+/// Helper for Cubits calling repository methods that return `Result<T>`.
+///
+/// Catches unexpected exceptions, unwraps the `Result`, and safely dispatches to
+/// [onSuccess] or [onError].
+Future<void> safeCubitCall<T>({
+  required Future<Result<T>> Function() call,
+  required void Function(T data) onSuccess,
+  required void Function(AppErrorModel error) onError,
+}) async {
+  try {
+    final result = await call();
+    result.when(success: onSuccess, failure: onError);
+  } catch (e, s) {
+    AppLogger.instance.logError(e.toString(), error: e, stackTrace: s);
+    final error = e is AppErrorModel
+        ? e
+        : AppErrorModel.fromException(e, stackTrace: s);
+    onError(error);
   }
 }

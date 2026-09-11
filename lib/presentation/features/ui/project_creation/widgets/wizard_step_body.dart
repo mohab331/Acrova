@@ -22,9 +22,6 @@ class WizardStepBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return KeyedSubtree(
-      key: ValueKey(currentStep),
-      child: _steps[currentStep],
-    );
+    return KeyedSubtree(key: ValueKey(currentStep), child: _steps[currentStep]);
   }
 }

@@ -37,8 +37,11 @@ class AppCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final effectiveRadius = radius ?? Resources.radius.$r8;
     final effectiveShadows = shadows ?? AppShadows.card;
-    final effectivePadding = padding ??
-        EdgeInsets.all(Resources.horizontalDims.$16 + Resources.horizontalDims.$1);
+    final effectivePadding =
+        padding ??
+        EdgeInsets.all(
+          Resources.horizontalDims.$16 + Resources.horizontalDims.$1,
+        );
 
     Widget content = Container(
       margin: margin,
@@ -51,10 +54,7 @@ class AppCard extends StatelessWidget {
         ),
         boxShadow: effectiveShadows,
       ),
-      child: Padding(
-        padding: effectivePadding,
-        child: child,
-      ),
+      child: Padding(padding: effectivePadding, child: child),
     );
 
     if (onTap != null) {

@@ -19,11 +19,14 @@ class PortfolioGalleryGrid extends StatelessWidget {
     for (int i = 0; i < items.length; i += 2) {
       final left = items[i];
       final right = i + 1 < items.length ? items[i + 1] : null;
-      if (rows.isNotEmpty) rows.add(SizedBox(height: Resources.verticalDims.$12));
+      if (rows.isNotEmpty)
+        rows.add(SizedBox(height: Resources.verticalDims.$12));
       rows.add(
         Row(
           children: [
-            Expanded(child: PortfolioGridCard(item: left, onTap: () => onTap(left))),
+            Expanded(
+              child: PortfolioGridCard(item: left, onTap: () => onTap(left)),
+            ),
             SizedBox(width: Resources.horizontalDims.$12),
             Expanded(
               child: right != null

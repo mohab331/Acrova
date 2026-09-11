@@ -9,7 +9,7 @@ class DetailMetaDot extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if(text?.isEmpty ?? true) return const SizedBox.shrink();
+    if (text?.isEmpty ?? true) return const SizedBox.shrink();
     return Text(
       text ?? '',
       style: context.textTheme.labelMedium?.copyWith(

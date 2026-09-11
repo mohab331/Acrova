@@ -2,11 +2,7 @@ import 'package:acrova/presentation/app/resources/resources.dart';
 import 'package:flutter/material.dart';
 
 class AppAppBarBackButton extends StatelessWidget {
-  const AppAppBarBackButton({
-    required this.color,
-    this.onPressed,
-    super.key,
-  });
+  const AppAppBarBackButton({required this.color, this.onPressed, super.key});
 
   final Color color;
   final VoidCallback? onPressed;

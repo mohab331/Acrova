@@ -4,15 +4,17 @@ import 'package:acrova/presentation/app/navigation/app_route_enum.dart';
 import 'package:acrova/presentation/app/resources/resources.dart';
 import 'package:acrova/presentation/features/common_widgets/app_bar/app_auth_brand_header.dart';
 import 'package:acrova/presentation/features/common_widgets/common_screen/common_screen.dart';
+import 'package:acrova/presentation/features/common_widgets/feedback/common_error_widget.dart';
+import 'package:acrova/presentation/features/common_widgets/feedback/common_shimmer_loading.dart';
 import 'package:acrova/presentation/features/cubit/billing/payment_details_cubit.dart';
 import 'package:acrova/presentation/features/cubit/billing/payment_details_state.dart';
 import 'package:acrova/utils/extensions/localization_extension.dart';
 import 'package:acrova/utils/extensions/theme_extension.dart';
+import 'package:acrova/utils/formatters/app_formatter.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:intl/intl.dart';
 
 class PaymentDetailsView extends StatelessWidget {
   const PaymentDetailsView({required this.paymentId, super.key});
@@ -22,14 +24,18 @@ class PaymentDetailsView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => serviceLocatorInstance<PaymentDetailsCubit>()..fetchPaymentDetails(paymentId),
-      child: const _PaymentDetailsContent(),
+      create: (_) =>
+          serviceLocatorInstance<PaymentDetailsCubit>()
+            ..fetchPaymentDetails(paymentId),
+      child: _PaymentDetailsContent(paymentId: paymentId),
     );
   }
 }
 
 class _PaymentDetailsContent extends StatelessWidget {
-  const _PaymentDetailsContent();
+  const _PaymentDetailsContent({required this.paymentId});
+
+  final String paymentId;
 
   @override
   Widget build(BuildContext context) {
@@ -44,16 +50,14 @@ class _PaymentDetailsContent extends StatelessWidget {
       child: BlocBuilder<PaymentDetailsCubit, PaymentDetailsState>(
         builder: (context, state) {
           if (state.isLoading) {
-            return const Center(child: CircularProgressIndicator());
+            return const CommonShimmerLoading(isDetail: true);
           }
-          if (state.status == PaymentDetailsStatus.failure) {
-            return Center(
-              child: Text(
-                state.error?.message ?? loc.paymentDetailsFailedToLoad,
-                style: context.textTheme.bodyMedium?.copyWith(
-                  color: Resources.colors.luxuryError,
-                ),
-              ),
+          if (state.isError) {
+            return CommonErrorWidget(
+              error: state.error,
+              onRetry: () => context
+                  .read<PaymentDetailsCubit>()
+                  .fetchPaymentDetails(paymentId),
             );
           }
           if (state.payment == null) {
@@ -71,37 +75,18 @@ class _PaymentDetailsCard extends StatelessWidget {
 
   final PaymentModel payment;
 
-  Color _getStatusColor() {
-    switch (payment.status) {
-      case PaymentStatus.success:
-        return Resources.colors.luxurySuccess;
-      case PaymentStatus.rejected:
-        return Resources.colors.luxuryError;
-      case PaymentStatus.pending:
-        return Resources.colors.luxuryWarning;
-    }
-  }
-
-  IconData _getStatusIcon() {
-    switch (payment.status) {
-      case PaymentStatus.success:
-        return Icons.check_circle;
-      case PaymentStatus.rejected:
-        return Icons.error;
-      case PaymentStatus.pending:
-        return Icons.schedule;
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     final loc = context.localization;
-    final statusColor = _getStatusColor();
+    final statusColor = payment.status.color;
     final isSuccess = payment.status == PaymentStatus.success;
     final isRejected = payment.status == PaymentStatus.rejected;
     final isPending = payment.status == PaymentStatus.pending;
-    final formattedAmount = NumberFormat('#,##0').format(payment.amount);
-    final formattedDate = DateFormat('dd MMM yyyy').format(payment.date);
+    final formattedAmount = AppFormatter.formatAmount(payment.amount);
+    final formattedDate = AppFormatter.formatDate(
+      payment.date,
+      locale: Localizations.localeOf(context).languageCode,
+    );
 
     return SingleChildScrollView(
       padding: EdgeInsets.all(Resources.horizontalDims.$24),
@@ -127,7 +112,7 @@ class _PaymentDetailsCard extends StatelessWidget {
           children: [
             // Status Banner
             Container(
-              height: 4,
+              height: Resources.verticalDims.$4,
               width: double.infinity,
               color: statusColor.withValues(alpha: 0.8),
             ),
@@ -140,15 +125,19 @@ class _PaymentDetailsCard extends StatelessWidget {
                   Column(
                     children: [
                       Icon(
-                        _getStatusIcon(),
+                        payment.status.icon,
                         color: statusColor,
                         size: Resources.iconSizes.$48,
                       ),
                       SizedBox(height: Resources.verticalDims.$8),
                       Text(
-                        loc.paymentDetailsPaymentStatus(payment.status.localizedName(context)),
+                        loc.paymentDetailsPaymentStatus(
+                          payment.status.localizedName(context),
+                        ),
                         style: context.textTheme.labelMedium?.copyWith(
-                          color: isRejected ? statusColor : Resources.colors.luxuryBody,
+                          color: isRejected
+                              ? statusColor
+                              : Resources.colors.luxuryBody,
                           letterSpacing: 1.5,
                           fontWeight: Resources.fontWeights.semiBold,
                         ),
@@ -164,9 +153,11 @@ class _PaymentDetailsCard extends StatelessWidget {
                     ],
                   ),
                   SizedBox(height: Resources.verticalDims.$24),
-                  Divider(color: Resources.colors.luxuryBorder.withValues(alpha: 0.5)),
+                  Divider(
+                    color: Resources.colors.luxuryBorder.withValues(alpha: 0.5),
+                  ),
                   SizedBox(height: Resources.verticalDims.$24),
-                  
+
                   // Project Details
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -197,7 +188,7 @@ class _PaymentDetailsCard extends StatelessWidget {
                     ],
                   ),
                   SizedBox(height: Resources.verticalDims.$24),
-                  
+
                   // Grid
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -231,7 +222,7 @@ class _PaymentDetailsCard extends StatelessWidget {
                           children: [
                             _PaymentGridItem(
                               label: loc.paymentDetailsDate,
-                              value: formattedDate,
+                              value: formattedDate ?? '',
                             ),
                             SizedBox(height: Resources.verticalDims.$16),
                             _PaymentGridItem(
@@ -249,9 +240,11 @@ class _PaymentDetailsCard extends StatelessWidget {
                     Container(
                       padding: EdgeInsets.all(Resources.horizontalDims.$16),
                       decoration: BoxDecoration(
-                        color: const Color(0xFFFDEDEC),
-                        border: Border.all(color: const Color(0xFFC0392B)),
-                        borderRadius: BorderRadius.circular(Resources.radius.$r8),
+                        color: Resources.colors.luxuryErrorLight,
+                        border: Border.all(color: Resources.colors.luxuryError),
+                        borderRadius: BorderRadius.circular(
+                          Resources.radius.$r8,
+                        ),
                       ),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -259,7 +252,7 @@ class _PaymentDetailsCard extends StatelessWidget {
                           Text(
                             loc.paymentDetailsPaymentRejected,
                             style: context.textTheme.titleSmall?.copyWith(
-                              color: const Color(0xFFC0392B),
+                              color: Resources.colors.luxuryError,
                               fontWeight: Resources.fontWeights.semiBold,
                             ),
                           ),
@@ -267,7 +260,9 @@ class _PaymentDetailsCard extends StatelessWidget {
                           Text(
                             payment.rejectionReason!,
                             style: context.textTheme.bodySmall?.copyWith(
-                              color: const Color(0xFFC0392B).withValues(alpha: 0.9),
+                              color: Resources.colors.luxuryError.withValues(
+                                alpha: 0.9,
+                              ),
                             ),
                           ),
                         ],
@@ -281,14 +276,19 @@ class _PaymentDetailsCard extends StatelessWidget {
                       padding: EdgeInsets.all(Resources.horizontalDims.$16),
                       decoration: BoxDecoration(
                         color: Resources.colors.luxurySurface,
-                        borderRadius: BorderRadius.circular(Resources.radius.$r8),
+                        borderRadius: BorderRadius.circular(
+                          Resources.radius.$r8,
+                        ),
                       ),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Row(
                             children: [
-                              Icon(Icons.receipt_long, color: Resources.colors.luxuryBody),
+                              Icon(
+                                Icons.receipt_long,
+                                color: Resources.colors.luxuryBody,
+                              ),
                               SizedBox(width: Resources.horizontalDims.$8),
                               Text(
                                 loc.paymentDetailsTransferReceipt,
@@ -300,18 +300,23 @@ class _PaymentDetailsCard extends StatelessWidget {
                             ],
                           ),
                           ClipRRect(
-                            borderRadius: BorderRadius.circular(Resources.radius.$r8),
+                            borderRadius: BorderRadius.circular(
+                              Resources.radius.$r8,
+                            ),
                             child: CachedNetworkImage(
                               imageUrl: payment.receiptUrl!,
-                              width: 80,
-                              height: 80,
+                              width: Resources.squareDims.$80,
+                              height: Resources.squareDims.$80,
                               fit: BoxFit.cover,
                               placeholder: (context, url) => Container(
-                                width: 80,
-                                height: 80,
-                                color: Resources.colors.luxuryBorder.withValues(alpha: 0.2),
+                                width: Resources.squareDims.$80,
+                                height: Resources.squareDims.$80,
+                                color: Resources.colors.luxuryBorder.withValues(
+                                  alpha: 0.2,
+                                ),
                               ),
-                              errorWidget: (context, url, error) => const Icon(Icons.error),
+                              errorWidget: (context, url, error) =>
+                                  const Icon(Icons.error),
                             ),
                           ),
                         ],
@@ -323,26 +328,33 @@ class _PaymentDetailsCard extends StatelessWidget {
                     SizedBox(height: Resources.verticalDims.$24),
                     SizedBox(
                       width: double.infinity,
-                      height: 48,
+                      height: Resources.verticalDims.$48,
                       child: ElevatedButton.icon(
                         onPressed: () {
                           if (isPending) {
                             context.pushNamed(
                               AppRouteEnum.makePaymentPage.name,
-                              extra: {'amount': payment.amount.toStringAsFixed(2)},
                             );
                           }
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Resources.colors.luxuryNavy,
                           shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(Resources.radius.$r8),
+                            borderRadius: BorderRadius.circular(
+                              Resources.radius.$r8,
+                            ),
                           ),
                           elevation: 2,
                         ),
-                        icon: Icon(Icons.download, color: Resources.colors.white, size: 20),
+                        icon: Icon(
+                          Icons.download,
+                          color: Resources.colors.white,
+                          size: Resources.iconSizes.$20,
+                        ),
                         label: Text(
-                          isPending ? loc.paymentDetailsPay : loc.paymentDetailsDownloadPdf,
+                          isPending
+                              ? loc.paymentDetailsPay
+                              : loc.paymentDetailsDownloadPdf,
                           style: context.textTheme.labelLarge?.copyWith(
                             fontWeight: Resources.fontWeights.medium,
                             color: Resources.colors.white,
@@ -362,10 +374,7 @@ class _PaymentDetailsCard extends StatelessWidget {
 }
 
 class _PaymentGridItem extends StatelessWidget {
-  const _PaymentGridItem({
-    required this.label,
-    required this.value,
-  });
+  const _PaymentGridItem({required this.label, required this.value});
 
   final String label;
   final String value;

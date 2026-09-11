@@ -51,17 +51,41 @@ class InteriorDesignRequest {
     return InteriorDesignRequest(
       projectId: json['projectId'] as String? ?? '',
       scope: json['scope'] as String? ?? 'all',
-      specificRooms: (json['specificRooms'] as List<dynamic>?)?.map((e) => e.toString()).toList() ?? const [],
+      specificRooms:
+          (json['specificRooms'] as List<dynamic>?)
+              ?.map((e) => e.toString())
+              .toList() ??
+          const [],
       customScopeNotes: json['customScopeNotes'] as String? ?? '',
       spacePlanningRequired: json['spacePlanningRequired'] as bool? ?? false,
-      moodboards: (json['moodboards'] as List<dynamic>?)?.map((e) => e.toString()).toList() ?? const [],
-      colorPalette: (json['colorPalette'] as List<dynamic>?)?.map((e) => e.toString()).toList() ?? const [],
-      atmosphereTags: (json['atmosphereTags'] as List<dynamic>?)?.map((e) => e.toString()).toList() ?? const [],
+      moodboards:
+          (json['moodboards'] as List<dynamic>?)
+              ?.map((e) => e.toString())
+              .toList() ??
+          const [],
+      colorPalette:
+          (json['colorPalette'] as List<dynamic>?)
+              ?.map((e) => e.toString())
+              .toList() ??
+          const [],
+      atmosphereTags:
+          (json['atmosphereTags'] as List<dynamic>?)
+              ?.map((e) => e.toString())
+              .toList() ??
+          const [],
       budgetTier: json['budgetTier'] as String? ?? '',
       timeline: json['timeline'] as String? ?? '',
       extraNotes: json['extraNotes'] as String? ?? '',
-      inspirationMediaPaths: (json['inspirationMediaPaths'] as List<dynamic>?)?.map((e) => e.toString()).toList() ?? const [],
-      inspirationLinks: (json['inspirationLinks'] as List<dynamic>?)?.map((e) => e.toString()).toList() ?? const [],
+      inspirationMediaPaths:
+          (json['inspirationMediaPaths'] as List<dynamic>?)
+              ?.map((e) => e.toString())
+              .toList() ??
+          const [],
+      inspirationLinks:
+          (json['inspirationLinks'] as List<dynamic>?)
+              ?.map((e) => e.toString())
+              .toList() ??
+          const [],
     );
   }
 
@@ -85,14 +109,16 @@ class InteriorDesignRequest {
       scope: scope ?? this.scope,
       specificRooms: specificRooms ?? this.specificRooms,
       customScopeNotes: customScopeNotes ?? this.customScopeNotes,
-      spacePlanningRequired: spacePlanningRequired ?? this.spacePlanningRequired,
+      spacePlanningRequired:
+          spacePlanningRequired ?? this.spacePlanningRequired,
       moodboards: moodboards ?? this.moodboards,
       colorPalette: colorPalette ?? this.colorPalette,
       atmosphereTags: atmosphereTags ?? this.atmosphereTags,
       budgetTier: budgetTier ?? this.budgetTier,
       timeline: timeline ?? this.timeline,
       extraNotes: extraNotes ?? this.extraNotes,
-      inspirationMediaPaths: inspirationMediaPaths ?? this.inspirationMediaPaths,
+      inspirationMediaPaths:
+          inspirationMediaPaths ?? this.inspirationMediaPaths,
       inspirationLinks: inspirationLinks ?? this.inspirationLinks,
     );
   }

@@ -33,13 +33,17 @@ class DeliverablesLoadingSkeleton extends StatelessWidget {
                             SkeletonBox(
                               width: Resources.horizontalDims.$100,
                               height: Resources.verticalDims.$24,
-                              borderRadius: BorderRadius.circular(Resources.radius.$r4),
+                              borderRadius: BorderRadius.circular(
+                                Resources.radius.$r4,
+                              ),
                             ),
                             SizedBox(height: Resources.verticalDims.$4),
                             SkeletonBox(
                               width: Resources.horizontalDims.$150,
                               height: Resources.verticalDims.$12,
-                              borderRadius: BorderRadius.circular(Resources.radius.$r4),
+                              borderRadius: BorderRadius.circular(
+                                Resources.radius.$r4,
+                              ),
                             ),
                           ],
                         ),
@@ -79,12 +83,16 @@ class DeliverablesLoadingSkeleton extends StatelessWidget {
                         SkeletonBox(
                           width: Resources.horizontalDims.$130,
                           height: Resources.verticalDims.$16,
-                          borderRadius: BorderRadius.circular(Resources.radius.$r4),
+                          borderRadius: BorderRadius.circular(
+                            Resources.radius.$r4,
+                          ),
                         ),
                         SkeletonBox(
                           width: Resources.horizontalDims.$60,
                           height: Resources.verticalDims.$12,
-                          borderRadius: BorderRadius.circular(Resources.radius.$r4),
+                          borderRadius: BorderRadius.circular(
+                            Resources.radius.$r4,
+                          ),
                         ),
                       ],
                     ),
@@ -97,59 +105,76 @@ class DeliverablesLoadingSkeleton extends StatelessWidget {
                         SkeletonBox(
                           width: Resources.horizontalDims.$130,
                           height: Resources.verticalDims.$20,
-                          borderRadius: BorderRadius.circular(Resources.radius.$r4),
+                          borderRadius: BorderRadius.circular(
+                            Resources.radius.$r4,
+                          ),
                         ),
                         SkeletonBox(
                           width: Resources.horizontalDims.$50,
                           height: Resources.verticalDims.$12,
-                          borderRadius: BorderRadius.circular(Resources.radius.$r4),
+                          borderRadius: BorderRadius.circular(
+                            Resources.radius.$r4,
+                          ),
                         ),
                       ],
                     ),
                     SizedBox(height: Resources.verticalDims.$16),
-                    ...List.generate(3, (index) => Padding(
-                      padding: EdgeInsets.only(bottom: Resources.verticalDims.$16),
-                      child: Container(
-                        padding: EdgeInsets.all(Resources.squareDims.$16),
-                        decoration: BoxDecoration(
-                          color: Resources.colors.luxuryInputBg,
-                          borderRadius: BorderRadius.circular(Resources.radius.$r4),
+                    ...List.generate(
+                      3,
+                      (index) => Padding(
+                        padding: EdgeInsets.only(
+                          bottom: Resources.verticalDims.$16,
                         ),
-                        child: Row(
-                          children: [
-                            SkeletonBox(
-                              width: Resources.squareDims.$40,
-                              height: Resources.squareDims.$40,
-                              borderRadius: BorderRadius.circular(Resources.radius.$r4),
+                        child: Container(
+                          padding: EdgeInsets.all(Resources.squareDims.$16),
+                          decoration: BoxDecoration(
+                            color: Resources.colors.luxuryInputBg,
+                            borderRadius: BorderRadius.circular(
+                              Resources.radius.$r4,
                             ),
-                            SizedBox(width: Resources.horizontalDims.$16),
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  SkeletonBox(
-                                    width: Resources.horizontalDims.$150,
-                                    height: Resources.verticalDims.$16,
-                                    borderRadius: BorderRadius.circular(Resources.radius.$r4),
-                                  ),
-                                  SizedBox(height: Resources.verticalDims.$8),
-                                  SkeletonBox(
-                                    width: Resources.horizontalDims.$60,
-                                    height: Resources.verticalDims.$12,
-                                    borderRadius: BorderRadius.circular(Resources.radius.$r4),
-                                  ),
-                                ],
+                          ),
+                          child: Row(
+                            children: [
+                              SkeletonBox(
+                                width: Resources.squareDims.$40,
+                                height: Resources.squareDims.$40,
+                                borderRadius: BorderRadius.circular(
+                                  Resources.radius.$r4,
+                                ),
                               ),
-                            ),
-                            SkeletonBox(
-                              width: Resources.squareDims.$25,
-                              height: Resources.squareDims.$25,
-                              shape: BoxShape.circle,
-                            ),
-                          ],
+                              SizedBox(width: Resources.horizontalDims.$16),
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    SkeletonBox(
+                                      width: Resources.horizontalDims.$150,
+                                      height: Resources.verticalDims.$16,
+                                      borderRadius: BorderRadius.circular(
+                                        Resources.radius.$r4,
+                                      ),
+                                    ),
+                                    SizedBox(height: Resources.verticalDims.$8),
+                                    SkeletonBox(
+                                      width: Resources.horizontalDims.$60,
+                                      height: Resources.verticalDims.$12,
+                                      borderRadius: BorderRadius.circular(
+                                        Resources.radius.$r4,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              SkeletonBox(
+                                width: Resources.squareDims.$25,
+                                height: Resources.squareDims.$25,
+                                shape: BoxShape.circle,
+                              ),
+                            ],
+                          ),
                         ),
                       ),
-                    )),
+                    ),
                     SizedBox(height: Resources.verticalDims.$40),
 
                     // Renders Grid Placeholder
@@ -171,7 +196,9 @@ class DeliverablesLoadingSkeleton extends StatelessWidget {
                           child: SkeletonBox(
                             width: double.infinity,
                             height: Resources.verticalDims.$150,
-                            borderRadius: BorderRadius.circular(Resources.radius.$r4),
+                            borderRadius: BorderRadius.circular(
+                              Resources.radius.$r4,
+                            ),
                           ),
                         ),
                         SizedBox(width: Resources.horizontalDims.$16),
@@ -179,7 +206,9 @@ class DeliverablesLoadingSkeleton extends StatelessWidget {
                           child: SkeletonBox(
                             width: double.infinity,
                             height: Resources.verticalDims.$150,
-                            borderRadius: BorderRadius.circular(Resources.radius.$r4),
+                            borderRadius: BorderRadius.circular(
+                              Resources.radius.$r4,
+                            ),
                           ),
                         ),
                       ],
@@ -193,7 +222,9 @@ class DeliverablesLoadingSkeleton extends StatelessWidget {
                           child: SkeletonBox(
                             width: double.infinity,
                             height: Resources.verticalDims.$48,
-                            borderRadius: BorderRadius.circular(Resources.radius.$r4),
+                            borderRadius: BorderRadius.circular(
+                              Resources.radius.$r4,
+                            ),
                           ),
                         ),
                         SizedBox(width: Resources.horizontalDims.$16),
@@ -201,12 +232,14 @@ class DeliverablesLoadingSkeleton extends StatelessWidget {
                           child: SkeletonBox(
                             width: double.infinity,
                             height: Resources.verticalDims.$48,
-                            borderRadius: BorderRadius.circular(Resources.radius.$r4),
+                            borderRadius: BorderRadius.circular(
+                              Resources.radius.$r4,
+                            ),
                           ),
                         ),
                       ],
                     ),
-                    
+
                     // Extra padding at the bottom for safety
                     SizedBox(height: Resources.verticalDims.$100),
                   ],

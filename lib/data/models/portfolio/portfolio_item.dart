@@ -29,16 +29,16 @@ class PortfolioItem extends Equatable {
 
   @override
   List<Object?> get props => [
-        id,
-        style,
-        category,
-        title,
-        location,
-        area,
-        floors,
-        narrative,
-        imageUrls,
-        features,
-        walkthroughVideo,
-      ];
+    id,
+    style,
+    category,
+    title,
+    location,
+    area,
+    floors,
+    narrative,
+    imageUrls,
+    features,
+    walkthroughVideo,
+  ];
 }

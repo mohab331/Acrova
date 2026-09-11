@@ -3,6 +3,8 @@ import 'package:acrova/presentation/app/navigation/app_route_enum.dart';
 import 'package:acrova/presentation/app/resources/resources.dart';
 import 'package:acrova/presentation/features/common_widgets/app_bar/app_avatar_header.dart';
 import 'package:acrova/presentation/features/common_widgets/common_screen/common_screen.dart';
+import 'package:acrova/presentation/features/common_widgets/feedback/common_error_widget.dart';
+import 'package:acrova/presentation/features/common_widgets/feedback/common_shimmer_loading.dart';
 import 'package:acrova/presentation/features/cubit/portfolio/portfolio_cubit.dart';
 import 'package:acrova/presentation/features/cubit/portfolio/portfolio_state.dart';
 import 'package:acrova/presentation/features/ui/portfolio/portfolio_item.dart';
@@ -21,7 +23,8 @@ class PortfolioPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => serviceLocatorInstance<PortfolioCubit>()..fetchPortfolio(),
+      create: (context) =>
+          serviceLocatorInstance<PortfolioCubit>()..fetchPortfolio(),
       child: const _PortfolioPageView(),
     );
   }
@@ -40,6 +43,16 @@ class _PortfolioPageView extends StatelessWidget {
       bottomPadding: 0,
       child: BlocBuilder<PortfolioCubit, PortfolioState>(
         builder: (context, state) {
+          if (state.isLoading && state.items.isEmpty) {
+            return const CommonShimmerLoading();
+          }
+          if (state.isError && state.items.isEmpty) {
+            return CommonErrorWidget(
+              error: state.error,
+              onRetry: () => context.read<PortfolioCubit>().fetchPortfolio(),
+            );
+          }
+
           final items = state.filteredItems;
 
           return Column(
@@ -78,8 +91,9 @@ class _PortfolioPageView extends StatelessWidget {
                       SizedBox(height: Resources.verticalDims.$20),
                       if (items.isEmpty)
                         Padding(
-                          padding:
-                              EdgeInsets.only(top: Resources.verticalDims.$80),
+                          padding: EdgeInsets.only(
+                            top: Resources.verticalDims.$80,
+                          ),
                           child: Center(
                             child: Text(
                               context.localization.noDesignsCategory,

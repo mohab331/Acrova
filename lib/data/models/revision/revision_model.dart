@@ -29,41 +29,41 @@ class RevisionModel extends Equatable {
   final String? engineerAvatarUrl;
 
   factory RevisionModel.fromJson(Map<String, dynamic> json) => RevisionModel(
-        id: json['id'] as String,
-        status: RevisionStatusX.fromJson(json['status'] as String? ?? ''),
-        createdAt: DateTime.tryParse(json['created_at'] as String? ?? '') ??
-            DateTime.now(),
-        description: json['description'] as String? ?? '',
-        collaborators:
-            (json['collaborators'] as List?)?.cast<String>() ?? const [],
-        engineerName: json['engineer_name'] as String?,
-        engineerRole: json['engineer_role'] as String?,
-        engineerNote: json['engineer_note'] as String?,
-        engineerAvatarUrl: json['engineer_avatar_url'] as String?,
-      );
+    id: json['id'] as String,
+    status: RevisionStatus.fromJson(json['status'] as String? ?? ''),
+    createdAt:
+        DateTime.tryParse(json['created_at'] as String? ?? '') ??
+        DateTime.now(),
+    description: json['description'] as String? ?? '',
+    collaborators: (json['collaborators'] as List?)?.cast<String>() ?? const [],
+    engineerName: json['engineer_name'] as String?,
+    engineerRole: json['engineer_role'] as String?,
+    engineerNote: json['engineer_note'] as String?,
+    engineerAvatarUrl: json['engineer_avatar_url'] as String?,
+  );
 
   Map<String, dynamic> toJson() => {
-        'id': id,
-        'status': status.jsonKey,
-        'created_at': createdAt.toIso8601String(),
-        'description': description,
-        'collaborators': collaborators,
-        'engineer_name': engineerName,
-        'engineer_role': engineerRole,
-        'engineer_note': engineerNote,
-        'engineer_avatar_url': engineerAvatarUrl,
-      };
+    'id': id,
+    'status': status.jsonKey,
+    'created_at': createdAt.toIso8601String(),
+    'description': description,
+    'collaborators': collaborators,
+    'engineer_name': engineerName,
+    'engineer_role': engineerRole,
+    'engineer_note': engineerNote,
+    'engineer_avatar_url': engineerAvatarUrl,
+  };
 
   @override
   List<Object?> get props => [
-        id,
-        status,
-        createdAt,
-        description,
-        collaborators,
-        engineerName,
-        engineerRole,
-        engineerNote,
-        engineerAvatarUrl,
-      ];
+    id,
+    status,
+    createdAt,
+    description,
+    collaborators,
+    engineerName,
+    engineerRole,
+    engineerNote,
+    engineerAvatarUrl,
+  ];
 }

@@ -1,7 +1,7 @@
-import 'package:acrova/data/models/project/create_project_request.dart';
 import 'package:acrova/presentation/app/resources/resources.dart';
 import 'package:acrova/presentation/features/cubit/project_creation/project_creation_cubit.dart';
 import 'package:acrova/presentation/features/cubit/project_creation/project_creation_state.dart';
+import 'package:acrova/utils/enums/design_style_enum.dart';
 import 'package:acrova/utils/extensions/localization_extension.dart';
 import 'package:acrova/utils/extensions/theme_extension.dart';
 import 'package:flutter/material.dart';
@@ -31,24 +31,6 @@ class _Step4DesignPreferencesState extends State<Step4DesignPreferences> {
     super.dispose();
   }
 
-  String _getStyleLabel(BuildContext context, String key) {
-    final l10n = context.localization;
-    switch (key) {
-      case DesignStyle.modern:
-        return l10n.designStyleModern;
-      case DesignStyle.classic:
-        return l10n.designStyleClassic;
-      case DesignStyle.contemporary:
-        return l10n.designStyleContemporary;
-      case DesignStyle.minimalist:
-        return l10n.designStyleMinimalist;
-      case DesignStyle.neoClassical:
-        return l10n.designStyleNeoClassical;
-      default:
-        return key;
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<ProjectCreationCubit, ProjectCreationState>(
@@ -57,7 +39,6 @@ class _Step4DesignPreferencesState extends State<Step4DesignPreferences> {
         final l10n = context.localization;
 
         return SingleChildScrollView(
-
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -90,10 +71,10 @@ class _Step4DesignPreferencesState extends State<Step4DesignPreferences> {
               Wrap(
                 spacing: Resources.horizontalDims.$10,
                 runSpacing: Resources.verticalDims.$10,
-                children: DesignStyle.all.map((style) {
-                  final isSelected = state.architecturalStyle == style;
+                children: DesignStyle.values.map((style) {
+                  final isSelected = state.architecturalStyleEnum == style;
                   return GestureDetector(
-                    onTap: () => cubit.selectStyle(style),
+                    onTap: () => cubit.setDesignStyle(style),
                     child: AnimatedContainer(
                       duration: AppDurations.fast,
                       padding: EdgeInsets.symmetric(
@@ -104,7 +85,9 @@ class _Step4DesignPreferencesState extends State<Step4DesignPreferences> {
                         color: isSelected
                             ? Resources.colors.luxuryNavy
                             : Resources.colors.luxurySurface,
-                        borderRadius: BorderRadius.circular(Resources.radius.$r8),
+                        borderRadius: BorderRadius.circular(
+                          Resources.radius.$r8,
+                        ),
                         border: Border.all(
                           color: isSelected
                               ? Resources.colors.luxuryNavy
@@ -124,8 +107,9 @@ class _Step4DesignPreferencesState extends State<Step4DesignPreferences> {
                             SizedBox(width: Resources.horizontalDims.$6),
                           ],
                           Text(
-                            _getStyleLabel(context, style),
-                            style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                            style.localizedLabel(context),
+                            style: Theme.of(context).textTheme.bodySmall
+                                ?.copyWith(
                                   fontSize: Resources.fontSizes.$14,
                                   fontWeight: isSelected
                                       ? Resources.fontWeights.semiBold
@@ -146,15 +130,15 @@ class _Step4DesignPreferencesState extends State<Step4DesignPreferences> {
               Text(
                 l10n.designPreferencesLabelNotes,
                 style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                      color: Resources.colors.luxuryBody,
-                    ),
+                  color: Resources.colors.luxuryBody,
+                ),
               ),
               SizedBox(height: Resources.verticalDims.$8),
               Text(
                 l10n.designPreferencesSubtitleNotes,
                 style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                      color: Resources.colors.luxuryBodyMuted,
-                    ),
+                  color: Resources.colors.luxuryBodyMuted,
+                ),
               ),
               SizedBox(height: Resources.verticalDims.$12),
 
@@ -179,7 +163,9 @@ class _Step4DesignPreferencesState extends State<Step4DesignPreferences> {
                     hintStyle: Theme.of(context).textTheme.bodySmall?.copyWith(
                       color: Resources.colors.luxuryPlaceholder,
                     ),
-                    contentPadding: EdgeInsets.all(Resources.horizontalDims.$16),
+                    contentPadding: EdgeInsets.all(
+                      Resources.horizontalDims.$16,
+                    ),
                     border: InputBorder.none,
                     focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(Resources.radius.$r2),

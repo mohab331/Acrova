@@ -10,8 +10,7 @@ class RevisionsCubitState extends Equatable {
     this.appErrorModel,
   });
 
-  const RevisionsCubitState.initial()
-      : this(cubitStatus: CubitStatus.initial);
+  const RevisionsCubitState.initial() : this(cubitStatus: CubitStatus.initial);
 
   final CubitStatus cubitStatus;
   final List<RevisionModel>? revisions;
@@ -19,19 +18,18 @@ class RevisionsCubitState extends Equatable {
 
   bool get isLoading => cubitStatus == CubitStatus.loading;
   bool get isSuccess => cubitStatus == CubitStatus.success;
-  bool get isError   => cubitStatus == CubitStatus.error;
+  bool get isError => cubitStatus == CubitStatus.error;
   bool get isEmpty => (revisions ?? const []).isEmpty;
 
   RevisionsCubitState copyWith({
     CubitStatus? cubitStatus,
     List<RevisionModel>? revisions,
     AppErrorModel? appErrorModel,
-  }) =>
-      RevisionsCubitState(
-        cubitStatus: cubitStatus ?? this.cubitStatus,
-        revisions: revisions ?? this.revisions,
-        appErrorModel: appErrorModel,
-      );
+  }) => RevisionsCubitState(
+    cubitStatus: cubitStatus ?? this.cubitStatus,
+    revisions: revisions ?? this.revisions,
+    appErrorModel: appErrorModel,
+  );
 
   @override
   List<Object?> get props => [cubitStatus, revisions, appErrorModel];

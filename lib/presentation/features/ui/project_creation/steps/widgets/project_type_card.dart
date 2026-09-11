@@ -64,29 +64,28 @@ class ProjectTypeCard extends StatelessWidget {
                   Text(
                     label,
                     style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                          color: isSelected
-                              ? Resources.colors.luxurySurface
-                              : Resources.colors.luxuryNavy,
-                          fontWeight: Resources.fontWeights.semiBold,
-                        ),
+                      color: isSelected
+                          ? Resources.colors.luxurySurface
+                          : Resources.colors.luxuryNavy,
+                      fontWeight: Resources.fontWeights.semiBold,
+                    ),
                   ),
                   SizedBox(height: Resources.verticalDims.$4),
                   Text(
                     description,
                     style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                          color: isSelected
-                              ? Resources.colors.luxurySurface
-                                  .withValues(alpha: 0.65)
-                              : Resources.colors.luxuryBodyMuted,
-                        ),
+                      color: isSelected
+                          ? Resources.colors.luxurySurface.withValues(
+                              alpha: 0.65,
+                            )
+                          : Resources.colors.luxuryBodyMuted,
+                    ),
                   ),
                 ],
               ),
             ),
             Icon(
-              isSelected
-                  ? Icons.check_circle
-                  : Icons.radio_button_unchecked,
+              isSelected ? Icons.check_circle : Icons.radio_button_unchecked,
               color: isSelected
                   ? Resources.colors.white
                   : Resources.colors.luxuryProgressTrack,

@@ -28,10 +28,15 @@ class DeliverablesAppBar extends StatelessWidget {
           filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
           child: Container(
             color: Resources.colors.luxurySurface.withValues(alpha: 0.8),
-            padding: EdgeInsets.symmetric(
-              horizontal: Resources.horizontalDims.$24,
-              vertical: Resources.verticalDims.$16,
-            ).copyWith(top: MediaQuery.paddingOf(context).top + Resources.verticalDims.$16),
+            padding:
+                EdgeInsets.symmetric(
+                  horizontal: Resources.horizontalDims.$24,
+                  vertical: Resources.verticalDims.$16,
+                ).copyWith(
+                  top:
+                      MediaQuery.paddingOf(context).top +
+                      Resources.verticalDims.$16,
+                ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [

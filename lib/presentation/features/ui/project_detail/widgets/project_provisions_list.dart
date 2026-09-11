@@ -28,9 +28,10 @@ class ProjectProvisionsList extends StatelessWidget {
         Wrap(
           spacing: Resources.horizontalDims.$8,
           runSpacing: Resources.verticalDims.$8,
-          children: items.map((provision) => _ProvisionChip(label: provision)).toList(),
+          children: items
+              .map((provision) => _ProvisionChip(label: provision))
+              .toList(),
         ),
-
       ],
     );
   }
@@ -50,10 +51,10 @@ class _ProvisionChip extends StatelessWidget {
       ),
       decoration: BoxDecoration(
         color: Resources.colors.luxurySurface, // bg-surface
-        border: Border.all(
-          color: Resources.colors.luxuryGoldBorder,
-        ),
-        borderRadius: BorderRadius.circular(Resources.radius.$r20), // rounded-full
+        border: Border.all(color: Resources.colors.luxuryGoldBorder),
+        borderRadius: BorderRadius.circular(
+          Resources.radius.$r20,
+        ), // rounded-full
       ),
       child: Text(
         label,

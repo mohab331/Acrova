@@ -22,7 +22,12 @@ class DetailBottomCtas extends StatelessWidget {
       child: SafeArea(
         top: false,
         child: Padding(
-          padding: EdgeInsets.fromLTRB(Resources.horizontalDims.$24, Resources.verticalDims.$20, Resources.horizontalDims.$24, Resources.verticalDims.$20),
+          padding: EdgeInsets.fromLTRB(
+            Resources.horizontalDims.$24,
+            Resources.verticalDims.$20,
+            Resources.horizontalDims.$24,
+            Resources.verticalDims.$20,
+          ),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
@@ -30,7 +35,9 @@ class DetailBottomCtas extends StatelessWidget {
                 onTap: onStartProject,
                 child: Container(
                   width: double.infinity,
-                  padding: EdgeInsets.symmetric(vertical: Resources.verticalDims.$16),
+                  padding: EdgeInsets.symmetric(
+                    vertical: Resources.verticalDims.$16,
+                  ),
                   decoration: BoxDecoration(
                     color: Resources.colors.luxuryNavy,
                     borderRadius: BorderRadius.circular(Resources.radius.$r12),
@@ -61,7 +68,9 @@ class DetailBottomCtas extends StatelessWidget {
               GestureDetector(
                 onTap: onWatchWalkthrough,
                 child: Padding(
-                  padding: EdgeInsets.symmetric(vertical: Resources.verticalDims.$4),
+                  padding: EdgeInsets.symmetric(
+                    vertical: Resources.verticalDims.$4,
+                  ),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [

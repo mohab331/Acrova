@@ -25,7 +25,8 @@ class MockConfig {
   MockConfig._();
 
   static final Map<MockRepositoryKey, bool> _repoToggles = {
-    for (final key in MockRepositoryKey.values) key: EnvironmentConfig.enableMock,
+    for (final key in MockRepositoryKey.values)
+      key: EnvironmentConfig.enableMock,
   };
 
   static final Map<MockRepositoryKey, MockScenario> _repoScenarios = {

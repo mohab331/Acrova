@@ -18,7 +18,11 @@ class SkeletonCardLarge extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          SkeletonBox(width: double.infinity, height: Resources.verticalDims.$192, radius: 0),
+          SkeletonBox(
+            width: double.infinity,
+            height: Resources.verticalDims.$192,
+            radius: 0,
+          ),
           Padding(
             padding: EdgeInsets.all(Resources.horizontalDims.$20),
             child: Column(
@@ -27,26 +31,48 @@ class SkeletonCardLarge extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    SkeletonBox(width: Resources.horizontalDims.$104, height: Resources.verticalDims.$14),
-                    SkeletonBox(width: Resources.horizontalDims.$80, height: Resources.verticalDims.$22),
+                    SkeletonBox(
+                      width: Resources.horizontalDims.$104,
+                      height: Resources.verticalDims.$14,
+                    ),
+                    SkeletonBox(
+                      width: Resources.horizontalDims.$80,
+                      height: Resources.verticalDims.$22,
+                    ),
                   ],
                 ),
                 SizedBox(height: Resources.verticalDims.$8),
-                SkeletonBox(width: Resources.horizontalDims.$206, height: Resources.verticalDims.$24),
+                SkeletonBox(
+                  width: Resources.horizontalDims.$206,
+                  height: Resources.verticalDims.$24,
+                ),
                 SizedBox(height: Resources.verticalDims.$8),
-                SkeletonBox(width: double.infinity, height: Resources.verticalDims.$14),
+                SkeletonBox(
+                  width: double.infinity,
+                  height: Resources.verticalDims.$14,
+                ),
                 SizedBox(height: Resources.verticalDims.$4),
                 SkeletonBox(width: 0.75.sw, height: Resources.verticalDims.$14),
                 SizedBox(height: Resources.verticalDims.$20),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    SkeletonBox(width: Resources.horizontalDims.$80, height: Resources.verticalDims.$14),
-                    SkeletonBox(width: Resources.horizontalDims.$40, height: Resources.verticalDims.$14),
+                    SkeletonBox(
+                      width: Resources.horizontalDims.$80,
+                      height: Resources.verticalDims.$14,
+                    ),
+                    SkeletonBox(
+                      width: Resources.horizontalDims.$40,
+                      height: Resources.verticalDims.$14,
+                    ),
                   ],
                 ),
                 SizedBox(height: Resources.verticalDims.$8),
-                SkeletonBox(width: double.infinity, height: Resources.verticalDims.$6, radius: Resources.radius.$r100),
+                SkeletonBox(
+                  width: double.infinity,
+                  height: Resources.verticalDims.$6,
+                  radius: Resources.radius.$r100,
+                ),
               ],
             ),
           ),

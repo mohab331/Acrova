@@ -42,7 +42,9 @@ class SplashState extends Equatable {
   }
 
   bool get hasError => (splashStatus == CubitStatus.error && error != null);
-  bool get isLoading => (splashStatus == CubitStatus.loading || splashStatus == CubitStatus.initial);
+  bool get isLoading =>
+      (splashStatus == CubitStatus.loading ||
+      splashStatus == CubitStatus.initial);
   @override
   List<Object?> get props => [
     splashStatus,

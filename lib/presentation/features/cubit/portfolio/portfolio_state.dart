@@ -1,7 +1,7 @@
 import 'package:acrova/core/error/app_error_model.dart';
 import 'package:acrova/data/models/portfolio/portfolio_item.dart';
-import 'package:acrova/presentation/features/ui/portfolio/widgets/portfolio_filter_row.dart';
 import 'package:acrova/utils/enums/cubit_status.dart';
+import 'package:acrova/utils/enums/portfolio_filter_enum.dart';
 import 'package:equatable/equatable.dart';
 
 class PortfolioState extends Equatable {
@@ -10,7 +10,7 @@ class PortfolioState extends Equatable {
     this.items = const [],
     this.filter = PortfolioFilter.all,
     this.error,
-    this.userName = 'Client',
+    this.userName,
     this.notificationCount = 0,
     this.avatarUrl,
   });
@@ -19,13 +19,24 @@ class PortfolioState extends Equatable {
   final List<PortfolioItem> items;
   final PortfolioFilter filter;
   final AppErrorModel? error;
-  final String userName;
+  final String? userName;
   final int notificationCount;
   final String? avatarUrl;
 
+  bool get isLoading =>
+      status == CubitStatus.loading || status == CubitStatus.initial;
+  bool get isSuccess => status == CubitStatus.success;
+  bool get isError => status == CubitStatus.error;
+
   List<PortfolioItem> get filteredItems {
     if (filter == PortfolioFilter.all) return items;
-    return items.where((i) => i.category == filter.name).toList();
+    return items
+        .where(
+          (i) =>
+              i.category.toLowerCase() == filter.value.toLowerCase() ||
+              i.category.toLowerCase() == filter.name.toLowerCase(),
+        )
+        .toList();
   }
 
   PortfolioState copyWith({
@@ -50,12 +61,12 @@ class PortfolioState extends Equatable {
 
   @override
   List<Object?> get props => [
-        status,
-        items,
-        filter,
-        error,
-        userName,
-        notificationCount,
-        avatarUrl,
-      ];
+    status,
+    items,
+    filter,
+    error,
+    userName,
+    notificationCount,
+    avatarUrl,
+  ];
 }

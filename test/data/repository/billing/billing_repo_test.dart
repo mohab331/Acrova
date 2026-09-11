@@ -12,20 +12,20 @@ class _StubBillingDataSource implements BaseBillingDataSource {
 
   @override
   Future<List<PaymentModel>> getPayments() async => [
-        PaymentModel(
-          id: 'PAY-001',
-          projectId: 'PROJ-001',
-          projectName: 'Al-Yasmeen Estate',
-          amount: 140000.0,
-          currency: 'SAR',
-          date: DateTime(2024, 1, 1),
-          status: PaymentStatus.success,
-          transactionId: 'TXN-001',
-          bankName: 'Al Rajhi Bank',
-          iban: 'SA0000000000000000000000',
-          accountName: 'Acrova Ltd',
-        ),
-      ];
+    PaymentModel(
+      id: 'PAY-001',
+      projectId: 'PROJ-001',
+      projectName: 'Al-Yasmeen Estate',
+      amount: 140000.0,
+      currency: 'SAR',
+      date: DateTime(2024),
+      status: PaymentStatus.success,
+      transactionId: 'TXN-001',
+      bankName: 'Al Rajhi Bank',
+      iban: 'SA0000000000000000000000',
+      accountName: 'Acrova Ltd',
+    ),
+  ];
 
   @override
   Future<PaymentModel> getPaymentDetails(String paymentId) async {
@@ -36,7 +36,7 @@ class _StubBillingDataSource implements BaseBillingDataSource {
         projectName: 'Al-Yasmeen Estate',
         amount: 140000.0,
         currency: 'SAR',
-        date: DateTime(2024, 1, 1),
+        date: DateTime(2024),
         status: PaymentStatus.success,
         transactionId: 'TXN-001',
         bankName: 'Al Rajhi Bank',
@@ -49,7 +49,8 @@ class _StubBillingDataSource implements BaseBillingDataSource {
 
   @override
   Future<PaymentQuoteModel> getPaymentQuote(String projectId) async =>
-      const PaymentQuoteModel(
+      PaymentQuoteModel(
+        projectId: projectId,
         amountDue: 14000,
         baseFee: 10000,
         vat: 1200,
@@ -111,11 +112,14 @@ void main() {
       );
     });
 
-    test('getPaymentDetails returns Failure for non-existent payment id', () async {
-      final result = await repository.getPaymentDetails('INVALID-ID');
+    test(
+      'getPaymentDetails returns Failure for non-existent payment id',
+      () async {
+        final result = await repository.getPaymentDetails('INVALID-ID');
 
-      expect(result, isA<Failure<PaymentModel>>());
-    });
+        expect(result, isA<Failure<PaymentModel>>());
+      },
+    );
 
     test('delegates payment quote retrieval to the data source', () async {
       final result = await repository.getPaymentQuote('PROJ-001');
@@ -123,7 +127,8 @@ void main() {
       expect(result, isA<Success<PaymentQuoteModel>>());
       result.when(
         success: (quote) => expect(quote.amountDue, equals(14000)),
-        failure: (error) => fail('Expected success but got failure: ${error.message}'),
+        failure: (error) =>
+            fail('Expected success but got failure: ${error.message}'),
       );
     });
 
@@ -147,9 +152,7 @@ void main() {
       MockConfig.reset();
     });
 
-    tearDown(() {
-      MockConfig.reset();
-    });
+    tearDown(MockConfig.reset);
 
     test('returns Success data when scenario is success', () async {
       MockConfig.setScenario(MockRepositoryKey.billing, MockScenario.success);

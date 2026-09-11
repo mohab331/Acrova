@@ -35,8 +35,8 @@ class ReviewSection extends StatelessWidget {
               Text(
                 title.toUpperCase(),
                 style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                      color: Resources.colors.luxuryGoldLight,
-                    ),
+                  color: Resources.colors.luxuryGoldLight,
+                ),
               ),
               GestureDetector(
                 onTap: () =>
@@ -44,10 +44,14 @@ class ReviewSection extends StatelessWidget {
                 child: Container(
                   padding: EdgeInsets.all(Resources.horizontalDims.$8),
                   decoration: BoxDecoration(
-                    color: Resources.colors.luxuryGoldLight.withValues(alpha: 0.08),
+                    color: Resources.colors.luxuryGoldLight.withValues(
+                      alpha: 0.08,
+                    ),
                     borderRadius: BorderRadius.circular(Resources.radius.$r10),
                     border: Border.all(
-                      color: Resources.colors.luxuryGoldLight.withValues(alpha: 0.18),
+                      color: Resources.colors.luxuryGoldLight.withValues(
+                        alpha: 0.18,
+                      ),
                     ),
                   ),
                   child: Icon(
@@ -72,19 +76,19 @@ class ReviewSection extends StatelessWidget {
                     child: Text(
                       r.label,
                       style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                            fontSize: Resources.fontSizes.$12,
-                            color: Resources.colors.luxuryBodyMuted,
-                          ),
+                        fontSize: Resources.fontSizes.$12,
+                        color: Resources.colors.luxuryBodyMuted,
+                      ),
                     ),
                   ),
                   const Spacer(),
                   Text(
                     r.value,
                     style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                          fontSize: Resources.fontSizes.$12,
-                          fontWeight: Resources.fontWeights.semiBold,
-                          color: Resources.colors.luxuryInk,
-                        ),
+                      fontSize: Resources.fontSizes.$12,
+                      fontWeight: Resources.fontWeights.semiBold,
+                      color: Resources.colors.luxuryInk,
+                    ),
                   ),
                 ],
               ),

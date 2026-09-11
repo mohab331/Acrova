@@ -34,7 +34,9 @@ class PreviousVersionCard extends StatelessWidget {
                     width: Resources.squareDims.$48,
                     height: Resources.squareDims.$48,
                     decoration: BoxDecoration(
-                      color: Resources.colors.luxuryBackground, // equivalent to surface-container-high
+                      color: Resources
+                          .colors
+                          .luxuryBackground, // equivalent to surface-container-high
                       borderRadius: BorderRadius.circular(Resources.radius.$r2),
                     ),
                     alignment: Alignment.center,

@@ -5,11 +5,7 @@ import 'package:acrova/utils/extensions/theme_extension.dart';
 import 'package:flutter/material.dart';
 
 class PortfolioGridCard extends StatelessWidget {
-  const PortfolioGridCard({
-    required this.item,
-    required this.onTap,
-    super.key,
-  });
+  const PortfolioGridCard({required this.item, required this.onTap, super.key});
 
   final PortfolioItem item;
   final VoidCallback onTap;

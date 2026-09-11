@@ -90,7 +90,9 @@ class DashboardProjectCardItem extends StatelessWidget {
                   children: [
                     Expanded(
                       child: ClipRRect(
-                        borderRadius: BorderRadius.circular(Resources.radius.$r4),
+                        borderRadius: BorderRadius.circular(
+                          Resources.radius.$r4,
+                        ),
                         child: LinearProgressIndicator(
                           value: project.progressRatio,
                           backgroundColor: Resources.colors.luxuryProgressTrack,

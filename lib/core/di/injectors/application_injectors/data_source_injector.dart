@@ -41,9 +41,8 @@ class DataSourcesInjector implements BaseInjector {
     ),
 
     () => serviceLocatorInstance.registerLazySingleton<BaseAuthDataSource>(
-      () => RemoteAuthDataSource(
-        apiClient: serviceLocatorInstance<ApiClient>(),
-      ),
+      () =>
+          RemoteAuthDataSource(apiClient: serviceLocatorInstance<ApiClient>()),
     ),
 
     () => serviceLocatorInstance.registerLazySingleton<BaseDashboardDataSource>(
@@ -68,10 +67,10 @@ class DataSourcesInjector implements BaseInjector {
 
     () => serviceLocatorInstance
         .registerLazySingleton<BaseNotificationsDataSource>(
-      () => RemoteNotificationsDataSource(
-        apiClient: serviceLocatorInstance<ApiClient>(),
-      ),
-    ),
+          () => RemoteNotificationsDataSource(
+            apiClient: serviceLocatorInstance<ApiClient>(),
+          ),
+        ),
 
     () => serviceLocatorInstance.registerLazySingleton<BaseRevisionsDataSource>(
       () => RemoteRevisionsDataSource(

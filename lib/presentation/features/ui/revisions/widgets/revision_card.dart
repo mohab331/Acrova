@@ -5,8 +5,8 @@ import 'package:acrova/presentation/features/ui/revisions/widgets/revision_statu
 import 'package:acrova/utils/enums/revision_status_enum.dart';
 import 'package:acrova/utils/extensions/localization_extension.dart';
 import 'package:acrova/utils/extensions/theme_extension.dart';
+import 'package:acrova/utils/formatters/app_formatter.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 
 class RevisionCard extends StatelessWidget {
   const RevisionCard({required this.revision, required this.onTap, super.key});
@@ -17,7 +17,13 @@ class RevisionCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = context.localization;
-    final date = DateFormat('MMM dd, yyyy').format(revision?.createdAt ?? DateTime.now());
+    final date =
+        AppFormatter.formatDate(
+          revision?.createdAt,
+          format: 'MMM dd, yyyy',
+          locale: Localizations.localeOf(context).languageCode,
+        ) ??
+        '';
 
     return Container(
       decoration: BoxDecoration(
@@ -44,7 +50,9 @@ class RevisionCard extends StatelessWidget {
                     ),
                   ),
                   SizedBox(width: Resources.horizontalDims.$8),
-                  RevisionStatusChip(status: revision?.status ?? RevisionStatus.completed),
+                  RevisionStatusChip(
+                    status: revision?.status ?? RevisionStatus.completed,
+                  ),
                 ],
               ),
               Row(
@@ -83,7 +91,11 @@ class RevisionCard extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Expanded(child: CollaboratorAvatars(initials: revision?.collaborators ?? [])),
+              Expanded(
+                child: CollaboratorAvatars(
+                  initials: revision?.collaborators ?? [],
+                ),
+              ),
               const Spacer(),
               GestureDetector(
                 onTap: onTap,

@@ -4,11 +4,7 @@ import 'package:acrova/presentation/features/ui/profile/widgets/profile_menu_ite
 import 'package:flutter/material.dart';
 
 class ProfileSection extends StatelessWidget {
-  const ProfileSection({
-    required this.title,
-    required this.items,
-    super.key,
-  });
+  const ProfileSection({required this.title, required this.items, super.key});
 
   final String title;
   final List<ProfileMenuItem> items;

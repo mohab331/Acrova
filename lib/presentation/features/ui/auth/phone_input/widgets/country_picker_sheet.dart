@@ -58,7 +58,9 @@ class _CountryPickerSheetState extends State<CountryPickerSheet> {
         ),
         decoration: BoxDecoration(
           color: Resources.colors.luxurySurface,
-          borderRadius: BorderRadius.vertical(top: Radius.circular(Resources.radius.$r25)),
+          borderRadius: BorderRadius.vertical(
+            top: Radius.circular(Resources.radius.$r25),
+          ),
         ),
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -109,11 +111,12 @@ class _CountryPickerSheetState extends State<CountryPickerSheet> {
                   filled: true,
                   fillColor: Resources.colors.luxuryInputBg,
                   border: OutlineInputBorder(
-                    borderRadius:
-                        BorderRadius.circular(Resources.radius.$r8),
+                    borderRadius: BorderRadius.circular(Resources.radius.$r8),
                     borderSide: BorderSide.none,
                   ),
-                  contentPadding: EdgeInsets.symmetric(vertical: Resources.verticalDims.$12),
+                  contentPadding: EdgeInsets.symmetric(
+                    vertical: Resources.verticalDims.$12,
+                  ),
                 ),
               ),
             ),
@@ -129,10 +132,8 @@ class _CountryPickerSheetState extends State<CountryPickerSheet> {
                   vertical: Resources.verticalDims.$8,
                 ),
                 itemCount: _filtered.length,
-                separatorBuilder: (_, __) => Divider(
-                  height: 1,
-                  color: Resources.colors.luxuryBorder,
-                ),
+                separatorBuilder: (_, __) =>
+                    Divider(height: 1, color: Resources.colors.luxuryBorder),
                 itemBuilder: (context, i) {
                   final country = _filtered[i];
                   final isSelected = country.iso2 == widget.selected.iso2;

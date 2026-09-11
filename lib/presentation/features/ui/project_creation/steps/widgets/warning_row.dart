@@ -24,8 +24,8 @@ class WarningRow extends StatelessWidget {
             child: Text(
               text,
               style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                    color: Resources.colors.luxuryWarning,
-                  ),
+                color: Resources.colors.luxuryWarning,
+              ),
             ),
           ),
         ],

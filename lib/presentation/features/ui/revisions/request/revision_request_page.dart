@@ -65,10 +65,13 @@ class _RevisionRequestViewState extends State<_RevisionRequestView> {
       child: CommonScreen(
         padding: EdgeInsets.zero,
         resizeToAvoidBottomInset: false,
-        appBar: AppAuthBrandHeader(label: l10n.revisionRequestTitle,showBack: true,),
+        appBar: AppAuthBrandHeader(
+          label: l10n.revisionRequestTitle,
+          showBack: true,
+        ),
         child: BlocBuilder<RevisionRequestCubit, RevisionRequestState>(
           builder: (context, state) {
-            if ( state.isLoading || state.cubitStatus == CubitStatus.initial) {
+            if (state.isLoading || state.cubitStatus == CubitStatus.initial) {
               return const RevisionRequestSkeleton();
             }
             if (state.isError || state.quota == null) {

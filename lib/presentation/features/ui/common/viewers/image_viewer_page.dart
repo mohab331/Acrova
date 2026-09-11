@@ -10,17 +10,11 @@ class ImageViewerArgs {
   final String title;
   final String urlOrAsset;
 
-  const ImageViewerArgs({
-    required this.title,
-    required this.urlOrAsset,
-  });
+  const ImageViewerArgs({required this.title, required this.urlOrAsset});
 }
 
 class ImageViewerPage extends StatelessWidget {
-  const ImageViewerPage({
-    required this.args,
-    super.key,
-  });
+  const ImageViewerPage({required this.args, super.key});
 
   final ImageViewerArgs args;
 
@@ -46,7 +40,10 @@ class ImageViewerPage extends StatelessWidget {
           IconButton(
             icon: const Icon(Icons.download_rounded, color: Colors.white),
             onPressed: () {
-              DownloadHelper.downloadAndShare(args.urlOrAsset, '${args.title}.jpg');
+              DownloadHelper.downloadAndShare(
+                args.urlOrAsset,
+                '${args.title}.jpg',
+              );
             },
           ),
         ],
@@ -58,9 +55,7 @@ class ImageViewerPage extends StatelessWidget {
             : CachedNetworkImageProvider(args.urlOrAsset),
         minScale: PhotoViewComputedScale.contained,
         maxScale: PhotoViewComputedScale.covered * 2.0,
-        backgroundDecoration: const BoxDecoration(
-          color: Colors.black,
-        ),
+        backgroundDecoration: const BoxDecoration(color: Colors.black),
       ),
     );
   }

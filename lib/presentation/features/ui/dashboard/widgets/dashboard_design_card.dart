@@ -38,11 +38,11 @@ class DashboardDesignCard extends StatelessWidget {
                           DashboardDesignCardPlaceholder(height: height),
                     )
                   : hasUrl
-                      ? AppCachedNetworkImage(
-                          imageUrl: design.imageUrl!,
-                          radius: Resources.radius.$r12,
-                        )
-                      : DashboardDesignCardPlaceholder(height: height),
+                  ? AppCachedNetworkImage(
+                      imageUrl: design.imageUrl!,
+                      radius: Resources.radius.$r12,
+                    )
+                  : DashboardDesignCardPlaceholder(height: height),
             ),
             Positioned.fill(
               child: Container(

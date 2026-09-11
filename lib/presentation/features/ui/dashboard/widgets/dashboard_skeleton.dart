@@ -16,42 +16,94 @@ class DashboardSkeleton extends StatelessWidget {
             SizedBox(height: Resources.verticalDims.$20),
             Row(
               children: [
-                SkeletonBox(width: 42.r, height: 42.r, radius: Resources.radius.$r100),
+                SkeletonBox(
+                  width: 42.r,
+                  height: 42.r,
+                  radius: Resources.radius.$r100,
+                ),
                 SizedBox(width: Resources.horizontalDims.$12),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    SkeletonBox(width: Resources.horizontalDims.$60, height: Resources.verticalDims.$10),
+                    SkeletonBox(
+                      width: Resources.horizontalDims.$60,
+                      height: Resources.verticalDims.$10,
+                    ),
                     SizedBox(height: Resources.verticalDims.$4),
-                    SkeletonBox(width: Resources.horizontalDims.$100, height: Resources.verticalDims.$16),
+                    SkeletonBox(
+                      width: Resources.horizontalDims.$100,
+                      height: Resources.verticalDims.$16,
+                    ),
                   ],
                 ),
               ],
             ),
             SizedBox(height: Resources.verticalDims.$24),
-            SkeletonBox(width: double.infinity, height: 130.h, radius: Resources.radius.$r16),
+            SkeletonBox(
+              width: double.infinity,
+              height: 130.h,
+              radius: Resources.radius.$r16,
+            ),
             SizedBox(height: Resources.verticalDims.$32),
-            SkeletonBox(width: Resources.horizontalDims.$120, height: Resources.verticalDims.$18),
+            SkeletonBox(
+              width: Resources.horizontalDims.$120,
+              height: Resources.verticalDims.$18,
+            ),
             SizedBox(height: Resources.verticalDims.$16),
-            SkeletonBox(width: double.infinity, height: 100.h, radius: Resources.radius.$r8),
+            SkeletonBox(
+              width: double.infinity,
+              height: 100.h,
+              radius: Resources.radius.$r8,
+            ),
             SizedBox(height: Resources.verticalDims.$12),
-            SkeletonBox(width: double.infinity, height: 100.h, radius: Resources.radius.$r8),
+            SkeletonBox(
+              width: double.infinity,
+              height: 100.h,
+              radius: Resources.radius.$r8,
+            ),
             SizedBox(height: Resources.verticalDims.$32),
-            SkeletonBox(width: Resources.horizontalDims.$120, height: Resources.verticalDims.$18),
+            SkeletonBox(
+              width: Resources.horizontalDims.$120,
+              height: Resources.verticalDims.$18,
+            ),
             SizedBox(height: Resources.verticalDims.$16),
             Row(
               children: [
-                Expanded(child: SkeletonBox(width: double.infinity, height: 60.h, radius: Resources.radius.$r8)),
+                Expanded(
+                  child: SkeletonBox(
+                    width: double.infinity,
+                    height: 60.h,
+                    radius: Resources.radius.$r8,
+                  ),
+                ),
                 SizedBox(width: Resources.horizontalDims.$12),
-                Expanded(child: SkeletonBox(width: double.infinity, height: 60.h, radius: Resources.radius.$r8)),
+                Expanded(
+                  child: SkeletonBox(
+                    width: double.infinity,
+                    height: 60.h,
+                    radius: Resources.radius.$r8,
+                  ),
+                ),
               ],
             ),
             SizedBox(height: Resources.verticalDims.$12),
             Row(
               children: [
-                Expanded(child: SkeletonBox(width: double.infinity, height: 60.h, radius: Resources.radius.$r8)),
+                Expanded(
+                  child: SkeletonBox(
+                    width: double.infinity,
+                    height: 60.h,
+                    radius: Resources.radius.$r8,
+                  ),
+                ),
                 SizedBox(width: Resources.horizontalDims.$12),
-                Expanded(child: SkeletonBox(width: double.infinity, height: 60.h, radius: Resources.radius.$r8)),
+                Expanded(
+                  child: SkeletonBox(
+                    width: double.infinity,
+                    height: 60.h,
+                    radius: Resources.radius.$r8,
+                  ),
+                ),
               ],
             ),
           ],

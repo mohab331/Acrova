@@ -13,11 +13,31 @@ class ShellScaffold extends StatelessWidget {
   List<NavTab> _buildTabs(BuildContext context) {
     final loc = context.localization;
     return [
-      NavTab(icon: Icons.home_outlined, activeIcon: Icons.home, label: loc.navHome),
-      NavTab(icon: Icons.folder_outlined, activeIcon: Icons.folder, label: loc.navProjects),
-      NavTab(icon: Icons.account_balance_wallet_outlined, activeIcon: Icons.account_balance_wallet, label: loc.navPortfolio),
-      NavTab(icon: Icons.chat_bubble_outline, activeIcon: Icons.chat_bubble, label: loc.navMessages),
-      NavTab(icon: Icons.person_outline, activeIcon: Icons.person, label: loc.navProfile),
+      NavTab(
+        icon: Icons.home_outlined,
+        activeIcon: Icons.home,
+        label: loc.navHome,
+      ),
+      NavTab(
+        icon: Icons.folder_outlined,
+        activeIcon: Icons.folder,
+        label: loc.navProjects,
+      ),
+      NavTab(
+        icon: Icons.account_balance_wallet_outlined,
+        activeIcon: Icons.account_balance_wallet,
+        label: loc.navPortfolio,
+      ),
+      NavTab(
+        icon: Icons.chat_bubble_outline,
+        activeIcon: Icons.chat_bubble,
+        label: loc.navMessages,
+      ),
+      NavTab(
+        icon: Icons.person_outline,
+        activeIcon: Icons.person,
+        label: loc.navProfile,
+      ),
     ];
   }
 

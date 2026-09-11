@@ -6,7 +6,7 @@ import 'package:acrova/utils/helpers/safe_async_call.dart';
 
 class NotificationsRepoImpl implements BaseNotificationsRepo {
   const NotificationsRepoImpl({required BaseNotificationsDataSource dataSource})
-      : _dataSource = dataSource;
+    : _dataSource = dataSource;
 
   final BaseNotificationsDataSource _dataSource;
 

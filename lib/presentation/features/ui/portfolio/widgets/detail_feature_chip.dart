@@ -10,7 +10,10 @@ class DetailFeatureChip extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: Resources.horizontalDims.$12, vertical: Resources.verticalDims.$6),
+      padding: EdgeInsets.symmetric(
+        horizontal: Resources.horizontalDims.$12,
+        vertical: Resources.verticalDims.$6,
+      ),
       decoration: BoxDecoration(
         color: Resources.colors.luxuryProgressTrack,
         borderRadius: BorderRadius.circular(Resources.radius.$r100),

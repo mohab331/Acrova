@@ -3,17 +3,14 @@ import 'package:acrova/presentation/features/common_widgets/images/app_cached_ne
 import 'package:flutter/material.dart';
 
 class AvatarWidget extends StatelessWidget {
-  const AvatarWidget({
-    required this.userName,
-    this.avatarUrl,
-    super.key,
-  });
+  const AvatarWidget({this.userName, this.avatarUrl, super.key});
 
   final String? avatarUrl;
-  final String userName;
+  final String? userName;
 
   @override
   Widget build(BuildContext context) {
+    final displayName = userName?.trim() ?? '';
     return Container(
       width: Resources.squareDims.$42,
       height: Resources.squareDims.$42,
@@ -26,14 +23,10 @@ class AvatarWidget extends StatelessWidget {
         ),
       ),
       child: avatarUrl != null
-          ? ClipOval(
-              child: AppCachedNetworkImage(
-                imageUrl: avatarUrl!,
-              ),
-            )
+          ? ClipOval(child: AppCachedNetworkImage(imageUrl: avatarUrl!))
           : Center(
               child: Text(
-                userName.isNotEmpty ? userName[0].toUpperCase() : 'A',
+                displayName.firstOrNull?.toUpperCase() ?? '',
                 style: TextStyle(
                   fontFamily: Resources.fonts.manrope,
                   fontSize: Resources.fontSizes.$16,

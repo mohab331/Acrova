@@ -10,11 +10,7 @@ import 'package:flutter/material.dart';
 /// - Radius: 4px (pill-ish but contained)
 /// - Padding: 4px vertical, 8px horizontal
 class AppStatusChip extends StatelessWidget {
-  const AppStatusChip({
-    required this.status,
-    this.locale,
-    super.key,
-  });
+  const AppStatusChip({required this.status, this.locale, super.key});
 
   final ProjectStatus status;
 
@@ -23,7 +19,8 @@ class AppStatusChip extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isAr = (locale ?? Localizations.localeOf(context)).languageCode == 'ar';
+    final isAr =
+        (locale ?? Localizations.localeOf(context)).languageCode == 'ar';
     final label = isAr ? status.displayLabelAr : status.displayLabel;
 
     return Container(

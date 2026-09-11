@@ -18,18 +18,17 @@ class ProfileCubitState extends Equatable {
 
   bool get isLoading => cubitStatus == CubitStatus.loading;
   bool get isSuccess => cubitStatus == CubitStatus.success;
-  bool get isError   => cubitStatus == CubitStatus.error;
+  bool get isError => cubitStatus == CubitStatus.error;
 
   ProfileCubitState copyWith({
     CubitStatus? cubitStatus,
     UserProfileModel? profile,
     AppErrorModel? appErrorModel,
-  }) =>
-      ProfileCubitState(
-        cubitStatus: cubitStatus ?? this.cubitStatus,
-        profile: profile ?? this.profile,
-        appErrorModel: appErrorModel,
-      );
+  }) => ProfileCubitState(
+    cubitStatus: cubitStatus ?? this.cubitStatus,
+    profile: profile ?? this.profile,
+    appErrorModel: appErrorModel,
+  );
 
   @override
   List<Object?> get props => [cubitStatus, profile, appErrorModel];

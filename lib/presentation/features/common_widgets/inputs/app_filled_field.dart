@@ -28,8 +28,9 @@ class AppFilledField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final hasError = error != null;
-    final borderColor =
-        hasError ? Resources.colors.luxuryError : Resources.colors.luxuryBorder;
+    final borderColor = hasError
+        ? Resources.colors.luxuryError
+        : Resources.colors.luxuryBorder;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -96,9 +97,9 @@ class AppFilledField extends StatelessWidget {
   }
 
   UnderlineInputBorder _border(Color color) => UnderlineInputBorder(
-        borderSide: BorderSide(color: color, width: AppBorderWidths.$2),
-        borderRadius: BorderRadius.vertical(
-          top: Radius.circular(Resources.radius.$r2),
-        ),
-      );
+    borderSide: BorderSide(color: color, width: AppBorderWidths.$2),
+    borderRadius: BorderRadius.vertical(
+      top: Radius.circular(Resources.radius.$r2),
+    ),
+  );
 }

@@ -3,11 +3,12 @@ import 'package:flutter/widgets.dart';
 
 /// Lifecycle status of a customer revision request.
 enum RevisionStatus {
-  inProgress,
-  completed,
-}
+  inProgress('in_progress'),
+  completed('completed');
 
-extension RevisionStatusX on RevisionStatus {
+  final String value;
+  const RevisionStatus(this.value);
+
   String get displayLabel {
     switch (this) {
       case RevisionStatus.inProgress:
@@ -29,21 +30,21 @@ extension RevisionStatusX on RevisionStatus {
   String localizedLabel(BuildContext context) =>
       context.isRtl ? displayLabelAr : displayLabel;
 
-  String get jsonKey {
-    switch (this) {
-      case RevisionStatus.inProgress:
-        return 'in_progress';
-      case RevisionStatus.completed:
-        return 'completed';
-    }
-  }
+  String get jsonKey => value;
 
   bool get isInProgress => this == RevisionStatus.inProgress;
 
+  static RevisionStatus? fromValue(String? value) {
+    if (value == null) return null;
+    for (final item in RevisionStatus.values) {
+      if (item.value == value || item.name == value) {
+        return item;
+      }
+    }
+    return null;
+  }
+
   static RevisionStatus fromJson(String value) {
-    return RevisionStatus.values.firstWhere(
-      (e) => e.jsonKey == value,
-      orElse: () => RevisionStatus.inProgress,
-    );
+    return fromValue(value) ?? RevisionStatus.inProgress;
   }
 }

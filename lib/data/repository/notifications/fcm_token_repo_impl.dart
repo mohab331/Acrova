@@ -60,9 +60,7 @@ class FcmTokenRepoImpl implements BaseFCMTokenRepo {
 
   @override
   Future<void> requestPermission() async {
-    await FirebaseMessaging.instance.requestPermission(
-      
-    );
+    await FirebaseMessaging.instance.requestPermission();
   }
 
   Future<Result<NetworkResponse<void>>> updateToken({

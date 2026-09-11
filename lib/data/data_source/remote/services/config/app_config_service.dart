@@ -5,7 +5,8 @@ import 'package:acrova/data/data_source/remote/services/config/constants/config_
 import 'package:acrova/data/models/response/config/min_app_version_response_model.dart';
 
 class AppConfigService {
-  const AppConfigService({required ApiClient apiClient}) : _apiClient = apiClient;
+  const AppConfigService({required ApiClient apiClient})
+    : _apiClient = apiClient;
 
   final ApiClient _apiClient;
 

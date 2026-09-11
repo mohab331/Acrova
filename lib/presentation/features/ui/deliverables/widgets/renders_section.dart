@@ -8,10 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 class RendersSection extends StatelessWidget {
-  const RendersSection({
-    required this.renders,
-    super.key,
-  });
+  const RendersSection({required this.renders, super.key});
 
   final List<RenderModel> renders;
 
@@ -48,10 +45,7 @@ class RendersSection extends StatelessWidget {
         Row(
           children: [
             if (renders.isNotEmpty)
-              Expanded(
-                flex: 2,
-                child: _RenderCard(render: renders[0]),
-              ),
+              Expanded(flex: 2, child: _RenderCard(render: renders[0])),
             if (renders.length > 1) ...[
               SizedBox(width: Resources.horizontalDims.$8),
               Expanded(
@@ -81,7 +75,8 @@ class _RenderCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AspectRatio(
-      aspectRatio: 1, // square items in the small column, the main column will stretch based on flex but for now aspect ratio 1 is a good base
+      aspectRatio:
+          1, // square items in the small column, the main column will stretch based on flex but for now aspect ratio 1 is a good base
       child: GestureDetector(
         onTap: () {
           context.push(
@@ -97,10 +92,7 @@ class _RenderCard extends StatelessWidget {
           child: Stack(
             fit: StackFit.expand,
             children: [
-              Image.asset(
-                render.imageAsset,
-                fit: BoxFit.cover,
-              ),
+              Image.asset(render.imageAsset, fit: BoxFit.cover),
               Positioned(
                 top: Resources.verticalDims.$6,
                 left: Resources.horizontalDims.$6,

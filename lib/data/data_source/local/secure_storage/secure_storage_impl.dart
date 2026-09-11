@@ -6,7 +6,7 @@ class SecureStorageImpl implements BaseSecureStorage {
 
   @override
   Future<void> write<T>(String key, T? value) async {
-    if(value == null) {
+    if (value == null) {
       await delete(key);
     } else {
       await _secureStorage.write(key: key, value: value.toString());
@@ -15,7 +15,6 @@ class SecureStorageImpl implements BaseSecureStorage {
 
   @override
   Future<String?> read(String key) => _secureStorage.read(key: key);
-
 
   @override
   Future<void> delete(String key) async {

@@ -19,7 +19,11 @@ class AppBlocObserver extends BlocObserver {
   }
 
   @override
-  void onError(final BlocBase bloc, final Object error, final StackTrace stackTrace) {
+  void onError(
+    final BlocBase bloc,
+    final Object error,
+    final StackTrace stackTrace,
+  ) {
     super.onError(bloc, error, stackTrace);
     if (kDebugMode) {
       debugPrint('onError -- ${bloc.runtimeType}, $error');

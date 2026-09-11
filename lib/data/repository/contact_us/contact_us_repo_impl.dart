@@ -10,6 +10,5 @@ class ContactUsRepoImpl implements BaseContactUsRepo {
     required String email,
     required String mobileNumber,
     required String details,
-  }) =>
-      safeAsyncCall(() async {});
+  }) => safeAsyncCall(() async {});
 }

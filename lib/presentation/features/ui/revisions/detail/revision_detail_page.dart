@@ -35,8 +35,9 @@ class RevisionDetailPage extends StatelessWidget {
           revisionsRepo: serviceLocatorInstance<BaseRevisionsRepo>(),
           initialRevision: revision,
         );
-        if (revision == null && revisionId != null) {
-          cubit.fetchRevision(revisionId!);
+        final id = revisionId;
+        if (revision == null && id != null) {
+          cubit.fetchRevision(id);
         }
         return cubit;
       },
@@ -87,7 +88,6 @@ class RevisionDetailsContent extends StatelessWidget {
 
     final r = state.revision!;
     return SingleChildScrollView(
-
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

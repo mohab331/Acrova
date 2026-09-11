@@ -56,7 +56,6 @@ class RevisionRequestSkeleton extends StatelessWidget {
               height: Resources.verticalDims.$120,
               radius: Resources.radius.$r2,
             ),
-
           ],
         ),
       ),

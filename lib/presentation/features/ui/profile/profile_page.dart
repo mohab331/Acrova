@@ -4,7 +4,7 @@ import 'package:acrova/presentation/app/navigation/app_route_enum.dart';
 import 'package:acrova/presentation/app/resources/resources.dart';
 import 'package:acrova/presentation/features/common_widgets/app_bar/app_avatar_header.dart';
 import 'package:acrova/presentation/features/common_widgets/common_screen/common_screen.dart';
-import 'package:acrova/presentation/features/common_widgets/feedback/app_error_state.dart';
+import 'package:acrova/presentation/features/common_widgets/feedback/common_error_widget.dart';
 import 'package:acrova/presentation/features/cubit/auth/auth_cubit.dart';
 import 'package:acrova/presentation/features/cubit/localization/localization_cubit.dart';
 import 'package:acrova/presentation/features/cubit/profile/profile_cubit.dart';
@@ -77,8 +77,9 @@ class _ProfilePageState extends State<ProfilePage> {
             return Column(
               children: [
                 AvatarHeader(
-                  userName: state.profile?.name ?? '',
-                  notificationCount: 2,
+                  userName: state.profile?.name,
+                  notificationCount: 0,
+                  avatarUrl: state.profile?.avatarUrl,
                 ),
                 Flexible(
                   child: Builder(
@@ -88,10 +89,8 @@ class _ProfilePageState extends State<ProfilePage> {
                         return const ProfileSkeleton();
                       }
                       if (state.isError) {
-                        return AppErrorState(
-                          message:
-                              state.appErrorModel?.message ??
-                              context.localization.profileLoadError,
+                        return CommonErrorWidget(
+                          error: state.appErrorModel,
                           onRetry: () =>
                               context.read<ProfileCubit>().fetchProfile(),
                         );

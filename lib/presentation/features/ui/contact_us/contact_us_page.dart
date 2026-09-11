@@ -9,10 +9,7 @@ class ContactUsArgs {
   final String? email;
   final String? mobileNumber;
 
-  ContactUsArgs({
-    this.email,
-    this.mobileNumber,
-  });
+  ContactUsArgs({this.email, this.mobileNumber});
 }
 
 class ContactUsPage extends StatelessWidget {
@@ -32,6 +29,3 @@ class ContactUsPage extends StatelessWidget {
     );
   }
 }
-
-
-

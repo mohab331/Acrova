@@ -42,17 +42,17 @@ class ProjectSuccessDialog extends StatelessWidget {
             Text(
               context.localization.projectCreationSuccessTitle,
               style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                    color: Resources.colors.luxuryNavy,
-                    fontWeight: Resources.fontWeights.bold,
-                  ),
+                color: Resources.colors.luxuryNavy,
+                fontWeight: Resources.fontWeights.bold,
+              ),
               textAlign: TextAlign.center,
             ),
             SizedBox(height: Resources.verticalDims.$8),
             Text(
               context.localization.projectCreationSuccessSubtitle(projectId),
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    color: Resources.colors.luxuryBody,
-                  ),
+                color: Resources.colors.luxuryBody,
+              ),
               textAlign: TextAlign.center,
             ),
             SizedBox(height: Resources.verticalDims.$28),

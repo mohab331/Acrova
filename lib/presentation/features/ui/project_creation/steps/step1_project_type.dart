@@ -65,8 +65,9 @@ class Step1ProjectType extends StatelessWidget {
                     icon: t.icon,
                     description: t.description,
                     isSelected: state.selectedType == t.type,
-                    onTap: () =>
-                        context.read<ProjectCreationCubit>().selectProjectType(t.type),
+                    onTap: () => context
+                        .read<ProjectCreationCubit>()
+                        .selectProjectType(t.type),
                   ),
                 ),
               ),

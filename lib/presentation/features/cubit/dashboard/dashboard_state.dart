@@ -11,11 +11,7 @@ class DashboardCubitState extends Equatable {
   });
 
   const DashboardCubitState.initial()
-      : this(
-          cubitStatus: CubitStatus.initial,
-          data: null,
-          appErrorModel: null,
-        );
+    : this(cubitStatus: CubitStatus.initial, data: null, appErrorModel: null);
 
   final CubitStatus cubitStatus;
   final DashboardDataModel? data;
@@ -29,12 +25,11 @@ class DashboardCubitState extends Equatable {
     CubitStatus? cubitStatus,
     DashboardDataModel? data,
     AppErrorModel? appErrorModel,
-  }) =>
-      DashboardCubitState(
-        cubitStatus: cubitStatus ?? this.cubitStatus,
-        data: data ?? this.data,
-        appErrorModel: appErrorModel ?? this.appErrorModel,
-      );
+  }) => DashboardCubitState(
+    cubitStatus: cubitStatus ?? this.cubitStatus,
+    data: data ?? this.data,
+    appErrorModel: appErrorModel ?? this.appErrorModel,
+  );
 
   @override
   List<Object?> get props => [cubitStatus, data, appErrorModel];

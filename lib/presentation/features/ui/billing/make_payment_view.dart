@@ -4,20 +4,23 @@ import 'package:acrova/core/di/dependency_injector.dart';
 import 'package:acrova/data/models/billing/payment_model.dart';
 import 'package:acrova/domain/repository/billing/base_billing_repo.dart';
 import 'package:acrova/presentation/app/navigation/app_route_enum.dart';
+import 'package:acrova/presentation/app/navigation/args/navigation_args.dart';
 import 'package:acrova/presentation/app/resources/resources.dart';
 import 'package:acrova/presentation/features/common_widgets/app_bar/app_auth_brand_header.dart';
 import 'package:acrova/presentation/features/common_widgets/buttons/app_primary_button.dart';
 import 'package:acrova/presentation/features/common_widgets/common_screen/common_screen.dart';
+import 'package:acrova/presentation/features/common_widgets/feedback/common_error_widget.dart';
+import 'package:acrova/presentation/features/common_widgets/feedback/common_shimmer_loading.dart';
 import 'package:acrova/presentation/features/cubit/billing/make_payment_cubit.dart';
 import 'package:acrova/presentation/features/cubit/billing/make_payment_state.dart';
 import 'package:acrova/utils/extensions/localization_extension.dart';
 import 'package:acrova/utils/extensions/theme_extension.dart';
+import 'package:acrova/utils/formatters/app_formatter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:intl/intl.dart';
 
 class MakePaymentView extends StatelessWidget {
   const MakePaymentView({super.key});
@@ -42,76 +45,115 @@ class _MakePaymentContent extends StatelessWidget {
 
     return BlocConsumer<MakePaymentCubit, MakePaymentState>(
       listener: (context, state) {
-        if (state.status == MakePaymentStatus.success) {
-          context.go(AppRouteEnum.paymentSuccessPage.path);
+        if (state.isSuccess) {
+          context.go(
+            AppRouteEnum.paymentSuccessPage.path,
+            extra: PaymentSuccessArgs(
+              amount: state.quote != null
+                  ? (AppFormatter.formatAmount(state.quote!.amountDue) ?? '')
+                  : '',
+            ),
+          );
         }
       },
       builder: (context, state) {
         return CommonScreen(
           bottomPadding: 0,
-          bottomNavigationBar: Container(
-            padding: EdgeInsets.only(
-              top: Resources.verticalDims.$16,
-              left: Resources.horizontalDims.$24,
-              right: Resources.horizontalDims.$24,
-              bottom: Resources.verticalDims.$32,
-            ),
-            decoration: BoxDecoration(
-              color: Resources.colors.luxurySurface,
-              boxShadow: [
-                BoxShadow(
-                  color: Resources.colors.luxuryInk.withValues(alpha: 0.05),
-                  blurRadius: 20,
-                  offset: const Offset(0, -5),
-                ),
-              ],
-            ),
-            child: AppPrimaryButton(
-              label: loc.makePaymentUploadAndPay,
-              isLoading: state.status == MakePaymentStatus.uploading,
-              onPressed: () {
-                if (state.receiptImage != null) {
-                  context.read<MakePaymentCubit>().submitPayment();
-                } else {
-                  context.go(AppRouteEnum.paymentSuccessPage.path);
-                }
-              },
-            ),
-          ),
-          appBar: AppAuthBrandHeader(showBack: true, label: loc.makePaymentTitle),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Flexible(
-                child: SingleChildScrollView(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      _AmountDueCard(quote: state.quote),
-                      SizedBox(height: Resources.verticalDims.$32),
-                      _BankDetailsCard(quote: state.quote),
-                      SizedBox(height: Resources.verticalDims.$32),
-                      _UploadPortal(state: state),
-                      SizedBox(height: Resources.verticalDims.$32),
-                      Text(
-                        loc.makePaymentManualReviewNotice,
-                        style: context.textTheme.bodyMedium?.copyWith(
-                          color: Resources.colors.luxuryBody.withValues(
-                            alpha: 0.8,
-                          ),
-                          height: Resources.lineHeights.$1_5,
+          bottomNavigationBar: state.isError && state.quote == null
+              ? null
+              : Container(
+                  padding: EdgeInsets.only(
+                    top: Resources.verticalDims.$16,
+                    left: Resources.horizontalDims.$24,
+                    right: Resources.horizontalDims.$24,
+                    bottom: Resources.verticalDims.$32,
+                  ),
+                  decoration: BoxDecoration(
+                    color: Resources.colors.luxurySurface,
+                    boxShadow: [
+                      BoxShadow(
+                        color: Resources.colors.luxuryInk.withValues(
+                          alpha: 0.05,
                         ),
-                        textAlign: TextAlign.center,
+                        blurRadius: 20,
+                        offset: const Offset(0, -5),
                       ),
-                      SizedBox(height: Resources.verticalDims.$32),
                     ],
                   ),
+                  child: AppPrimaryButton(
+                    label: loc.makePaymentUploadAndPay,
+                    isLoading: state.isSubmitting,
+                    onPressed: () {
+                      if (state.receiptImage != null) {
+                        context.read<MakePaymentCubit>().submitPayment();
+                      } else {
+                        context.go(
+                          AppRouteEnum.paymentSuccessPage.path,
+                          extra: PaymentSuccessArgs(
+                            amount: state.quote != null
+                                ? (AppFormatter.formatAmount(
+                                        state.quote!.amountDue,
+                                      ) ??
+                                      '')
+                                : '',
+                          ),
+                        );
+                      }
+                    },
+                  ),
                 ),
-              ),
-            ],
+          appBar: AppAuthBrandHeader(
+            showBack: true,
+            label: loc.makePaymentTitle,
           ),
+          child: _buildBody(context, state),
         );
       },
+    );
+  }
+
+  Widget _buildBody(BuildContext context, MakePaymentState state) {
+    final loc = context.localization;
+
+    if (state.isLoading && state.quote == null) {
+      return const CommonShimmerLoading(isDetail: true);
+    }
+
+    if (state.isError && state.quote == null) {
+      return CommonErrorWidget(
+        error: state.error,
+        onRetry: () => context.read<MakePaymentCubit>().fetchQuote(),
+      );
+    }
+
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Flexible(
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                _AmountDueCard(quote: state.quote),
+                SizedBox(height: Resources.verticalDims.$32),
+                _BankDetailsCard(quote: state.quote),
+                SizedBox(height: Resources.verticalDims.$32),
+                _UploadPortal(state: state),
+                SizedBox(height: Resources.verticalDims.$32),
+                Text(
+                  loc.makePaymentManualReviewNotice,
+                  style: context.textTheme.bodyMedium?.copyWith(
+                    color: Resources.colors.luxuryBody.withValues(alpha: 0.8),
+                    height: Resources.lineHeights.$1_5,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+                SizedBox(height: Resources.verticalDims.$32),
+              ],
+            ),
+          ),
+        ),
+      ],
     );
   }
 }
@@ -125,18 +167,14 @@ class _AmountDueCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final loc = context.localization;
     final currency = quote?.currency ?? 'SAR';
-    final amountDue = quote?.amountDue != null
-        ? NumberFormat('#,##0').format(quote!.amountDue)
-        : '14,000';
-    final baseFee = quote?.baseFee != null
-        ? NumberFormat('#,##0').format(quote!.baseFee)
-        : '10,000';
-    final vat = quote?.vat != null
-        ? NumberFormat('#,##0').format(quote!.vat)
-        : '1,200';
-    final total = quote?.total != null
-        ? NumberFormat('#,##0').format(quote!.total)
-        : '11,200';
+    final amountDue = quote != null
+        ? AppFormatter.formatAmount(quote!.amountDue)
+        : '-';
+    final baseFee = quote != null
+        ? AppFormatter.formatAmount(quote!.baseFee)
+        : '-';
+    final vat = quote != null ? AppFormatter.formatAmount(quote!.vat) : '-';
+    final total = quote != null ? AppFormatter.formatAmount(quote!.total) : '-';
 
     return Container(
       decoration: BoxDecoration(
@@ -253,9 +291,7 @@ class _BankDetailsCard extends StatelessWidget {
     final bankName = quote?.bankName.isNotEmpty == true
         ? quote!.bankName
         : loc.bankNameDefault;
-    final iban = quote?.iban.isNotEmpty == true
-        ? quote!.iban
-        : 'SA00 1000 0000 0000 0000 0000';
+    final iban = quote?.iban.isNotEmpty == true ? quote!.iban : '-';
     final accountName = quote?.accountName.isNotEmpty == true
         ? quote!.accountName
         : loc.bankAccountNameDefault;
@@ -284,15 +320,9 @@ class _BankDetailsCard extends StatelessWidget {
             hasCopy: false,
           ),
           SizedBox(height: Resources.verticalDims.$16),
-          _BankInfoItem(
-            label: loc.makePaymentIban,
-            value: iban,
-          ),
+          _BankInfoItem(label: loc.makePaymentIban, value: iban),
           SizedBox(height: Resources.verticalDims.$16),
-          _BankInfoItem(
-            label: loc.makePaymentAccountName,
-            value: accountName,
-          ),
+          _BankInfoItem(label: loc.makePaymentAccountName, value: accountName),
         ],
       ),
     );
@@ -348,7 +378,7 @@ class _BankInfoItem extends StatelessWidget {
             ],
           ),
         ),
-        if (hasCopy)
+        if (hasCopy && value != '-')
           GestureDetector(
             onTap: () => _copyToClipboard(context, value),
             child: Text(

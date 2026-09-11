@@ -1,3 +1,1 @@
-class AuthEndpoint {
-
-}
+class AuthEndpoint {}

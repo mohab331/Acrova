@@ -44,7 +44,9 @@ class Step5MediaUpload extends StatelessWidget {
                 ),
                 child: Container(
                   width: double.infinity,
-                  padding: EdgeInsets.symmetric(vertical: Resources.verticalDims.$22),
+                  padding: EdgeInsets.symmetric(
+                    vertical: Resources.verticalDims.$22,
+                  ),
                   decoration: BoxDecoration(
                     color: Resources.colors.luxuryInputBg,
                     borderRadius: BorderRadius.circular(Resources.radius.$r8),
@@ -64,18 +66,18 @@ class Step5MediaUpload extends StatelessWidget {
                       Text(
                         l10n.mediaUploadCta.toUpperCase(),
                         style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                              fontSize: Resources.fontSizes.$12,
-                              fontWeight: Resources.fontWeights.bold,
-                              color: Resources.colors.luxuryGoldLight,
-                            ),
+                          fontSize: Resources.fontSizes.$12,
+                          fontWeight: Resources.fontWeights.bold,
+                          color: Resources.colors.luxuryGoldLight,
+                        ),
                       ),
                       SizedBox(height: Resources.verticalDims.$4),
                       Text(
                         l10n.mediaUploadFormatNotice,
                         style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                              fontSize: Resources.fontSizes.$10,
-                              color: Resources.colors.luxuryBodyMuted,
-                            ),
+                          fontSize: Resources.fontSizes.$10,
+                          color: Resources.colors.luxuryBodyMuted,
+                        ),
                       ),
                     ],
                   ),
@@ -85,18 +87,18 @@ class Step5MediaUpload extends StatelessWidget {
               Text(
                 l10n.mediaUploadOptional,
                 style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                      color: Resources.colors.luxuryWarning,
-                    ),
+                  color: Resources.colors.luxuryWarning,
+                ),
               ),
               if (state.mediaPaths.isNotEmpty) ...[
                 SizedBox(height: Resources.verticalDims.$20),
                 Text(
                   l10n.mediaUploadPhotoCount(state.mediaPaths.length),
                   style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                        fontSize: Resources.fontSizes.$12,
-                        fontWeight: Resources.fontWeights.bold,
-                        color: Resources.colors.luxuryNavy,
-                      ),
+                    fontSize: Resources.fontSizes.$12,
+                    fontWeight: Resources.fontWeights.bold,
+                    color: Resources.colors.luxuryNavy,
+                  ),
                 ),
                 SizedBox(height: Resources.verticalDims.$12),
                 ListView.separated(

@@ -32,7 +32,10 @@ class RevisionRequestForm extends StatelessWidget {
       children: [
         Expanded(
           child: SingleChildScrollView(
-            padding:  EdgeInsets.symmetric(horizontal: Resources.horizontalDims.$20,vertical: Resources.verticalDims.$16),
+            padding: EdgeInsets.symmetric(
+              horizontal: Resources.horizontalDims.$20,
+              vertical: Resources.verticalDims.$16,
+            ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [

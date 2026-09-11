@@ -9,10 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 class BlueprintsSection extends StatelessWidget {
-  const BlueprintsSection({
-    required this.blueprints,
-    super.key,
-  });
+  const BlueprintsSection({required this.blueprints, super.key});
 
   final List<BlueprintModel> blueprints;
 
@@ -34,100 +31,114 @@ class BlueprintsSection extends StatelessWidget {
           ],
         ),
         SizedBox(height: Resources.verticalDims.$8),
-        ...blueprints.map((blueprint) => Container(
-          margin: EdgeInsets.only(top: Resources.verticalDims.$8),
-          padding: EdgeInsets.all(Resources.squareDims.$16),
-          decoration: BoxDecoration(
-            color: Resources.colors.luxurySurface,
-            borderRadius: BorderRadius.circular(Resources.radius.$r12),
-            boxShadow: AppShadows.card,
+        ...blueprints.map(
+          (blueprint) => Container(
+            margin: EdgeInsets.only(top: Resources.verticalDims.$8),
+            padding: EdgeInsets.all(Resources.squareDims.$16),
+            decoration: BoxDecoration(
+              color: Resources.colors.luxurySurface,
+              borderRadius: BorderRadius.circular(Resources.radius.$r12),
+              boxShadow: AppShadows.card,
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Row(
+                  children: [
+                    Container(
+                      width: Resources.squareDims.$40,
+                      height: Resources.squareDims.$40,
+                      decoration: BoxDecoration(
+                        color: Resources.colors.luxuryError.withValues(
+                          alpha: 0.1,
+                        ),
+                        borderRadius: BorderRadius.circular(
+                          Resources.radius.$r4,
+                        ),
+                      ),
+                      child: Center(
+                        child: Icon(
+                          Icons.picture_as_pdf,
+                          color: Resources.colors.luxuryError,
+                        ),
+                      ),
+                    ),
+                    SizedBox(width: Resources.horizontalDims.$16),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          blueprint.title,
+                          style: context.textTheme.titleSmall?.copyWith(
+                            color: Resources.colors.luxuryNavy,
+                            fontWeight: Resources.fontWeights.semiBold,
+                          ),
+                        ),
+                        Text(
+                          '${blueprint.size} • ${blueprint.format}',
+                          style: context.textTheme.labelMedium?.copyWith(
+                            color: Resources.colors.luxuryBodyMuted,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+                Row(
+                  children: [
+                    IconButton(
+                      onPressed: () {
+                        context.push(
+                          AppRouteEnum.pdfViewerPage.path,
+                          extra: PdfViewerArgs(
+                            title: blueprint.title,
+                            urlOrAsset: blueprint.urlOrAsset,
+                          ),
+                        );
+                      },
+                      icon: Icon(
+                        Icons.visibility_outlined,
+                        color: Resources.colors.luxuryGoldLight,
+                      ),
+                      style: IconButton.styleFrom(
+                        hoverColor: Resources.colors.luxuryGoldLight.withValues(
+                          alpha: 0.2,
+                        ),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(
+                            Resources.radius.$r4,
+                          ),
+                        ),
+                      ),
+                    ),
+                    IconButton(
+                      onPressed: () {
+                        DownloadHelper.downloadAndShare(
+                          blueprint.urlOrAsset,
+                          '${blueprint.title}.pdf',
+                        );
+                      },
+                      icon: Icon(
+                        Icons.download_outlined,
+                        color: Resources.colors.luxuryGoldLight,
+                      ),
+                      style: IconButton.styleFrom(
+                        hoverColor: Resources.colors.luxuryGoldLight.withValues(
+                          alpha: 0.2,
+                        ),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(
+                            Resources.radius.$r4,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
           ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Row(
-                children: [
-                  Container(
-                    width: Resources.squareDims.$40,
-                    height: Resources.squareDims.$40,
-                    decoration: BoxDecoration(
-                      color: Resources.colors.luxuryError.withValues(alpha: 0.1),
-                      borderRadius: BorderRadius.circular(Resources.radius.$r4),
-                    ),
-                    child: Center(
-                      child: Icon(
-                        Icons.picture_as_pdf,
-                        color: Resources.colors.luxuryError,
-                      ),
-                    ),
-                  ),
-                  SizedBox(width: Resources.horizontalDims.$16),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        blueprint.title,
-                        style: context.textTheme.titleSmall?.copyWith(
-                          color: Resources.colors.luxuryNavy,
-                          fontWeight: Resources.fontWeights.semiBold,
-                        ),
-                      ),
-                      Text(
-                        '${blueprint.size} • ${blueprint.format}',
-                        style: context.textTheme.labelMedium?.copyWith(
-                          color: Resources.colors.luxuryBodyMuted,
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-              Row(
-                children: [
-                  IconButton(
-                    onPressed: () {
-                      context.push(
-                        AppRouteEnum.pdfViewerPage.path,
-                        extra: PdfViewerArgs(
-                          title: blueprint.title,
-                          urlOrAsset: blueprint.urlOrAsset,
-                        ),
-                      );
-                    },
-                    icon: Icon(
-                      Icons.visibility_outlined,
-                      color: Resources.colors.luxuryGoldLight,
-                    ),
-                    style: IconButton.styleFrom(
-                      hoverColor: Resources.colors.luxuryGoldLight.withValues(alpha: 0.2),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(Resources.radius.$r4),
-                      ),
-                    ),
-                  ),
-                  IconButton(
-                    onPressed: () {
-                      DownloadHelper.downloadAndShare(
-                        blueprint.urlOrAsset,
-                        '${blueprint.title}.pdf',
-                      );
-                    },
-                    icon: Icon(
-                      Icons.download_outlined,
-                      color: Resources.colors.luxuryGoldLight,
-                    ),
-                    style: IconButton.styleFrom(
-                      hoverColor: Resources.colors.luxuryGoldLight.withValues(alpha: 0.2),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(Resources.radius.$r4),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ],
-          ),
-        )),
+        ),
       ],
     );
   }

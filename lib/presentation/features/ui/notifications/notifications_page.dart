@@ -16,19 +16,15 @@ class NotificationsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider<NotificationsCubit>(
       create: (context) =>
-      serviceLocatorInstance<NotificationsCubit>()
-        ..fetchNotifications(),
+          serviceLocatorInstance<NotificationsCubit>()..fetchNotifications(),
       child: CommonScreen(
-            bottomPadding: 0,
-            appBar: AppAuthBrandHeader(
-              showBack: true,
-              label: context.localization.notificationsTitle,
-            ),
-            child: const NotificationContent(),
-          ),
+        bottomPadding: 0,
+        appBar: AppAuthBrandHeader(
+          showBack: true,
+          label: context.localization.notificationsTitle,
+        ),
+        child: const NotificationContent(),
+      ),
     );
   }
 }
-
-
-

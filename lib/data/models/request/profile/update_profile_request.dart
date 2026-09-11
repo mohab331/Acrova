@@ -17,11 +17,11 @@ class UpdateProfileRequest extends Equatable {
   final String? avatarPath;
 
   Map<String, dynamic> toJson() => {
-        'name': name,
-        'email': email,
-        'mobile_number': mobileNumber,
-        if (avatarPath != null) 'avatar_path': avatarPath,
-      };
+    'name': name,
+    'email': email,
+    'mobile_number': mobileNumber,
+    if (avatarPath != null) 'avatar_path': avatarPath,
+  };
 
   @override
   List<Object?> get props => [name, email, mobileNumber, avatarPath];

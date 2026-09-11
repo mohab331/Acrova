@@ -16,10 +16,8 @@ class _PulsingDotState extends State<PulsingDot>
   @override
   void initState() {
     super.initState();
-    _ctrl = AnimationController(
-      vsync: this,
-      duration: AppDurations.pulse,
-    )..repeat(reverse: true);
+    _ctrl = AnimationController(vsync: this, duration: AppDurations.pulse)
+      ..repeat(reverse: true);
     _anim = Tween<double>(begin: 0.4, end: 1.0).animate(_ctrl);
   }
 

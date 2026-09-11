@@ -13,7 +13,10 @@ class AppIconStepper extends StatelessWidget {
     this.icons,
     this.labels,
     super.key,
-  }) : assert(icons != null || labels != null, 'Must provide either icons or labels');
+  }) : assert(
+         icons != null || labels != null,
+         'Must provide either icons or labels',
+       );
 
   /// Total number of stages in the pipeline.
   final int totalSteps;
@@ -30,7 +33,9 @@ class AppIconStepper extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final int segments = totalSteps - 1;
-    final double progressPercent = segments > 0 ? (currentStep / segments) : 0.0;
+    final double progressPercent = segments > 0
+        ? (currentStep / segments)
+        : 0.0;
 
     return LayoutBuilder(
       builder: (context, constraints) {
@@ -42,7 +47,9 @@ class AppIconStepper extends StatelessWidget {
           children: [
             // Background line (Pending stages)
             Positioned(
-              top: Resources.squareDims.$10, // Centers vertically behind the 20px active dot
+              top: Resources
+                  .squareDims
+                  .$10, // Centers vertically behind the 20px active dot
               left: paddingHorizontal,
               right: paddingHorizontal,
               child: Container(
@@ -50,7 +57,7 @@ class AppIconStepper extends StatelessWidget {
                 color: Resources.colors.luxuryProgressTrack,
               ),
             ),
-            
+
             // Foreground line (Completed stages)
             Positioned(
               top: Resources.squareDims.$10,
@@ -63,7 +70,7 @@ class AppIconStepper extends StatelessWidget {
                 color: Resources.colors.luxuryNavy,
               ),
             ),
-            
+
             // Dots and Labels/Icons
             Row(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -77,7 +84,9 @@ class AppIconStepper extends StatelessWidget {
                 } else if (isActive) {
                   itemColor = Resources.colors.luxuryGoldLight;
                 } else {
-                  itemColor = Resources.colors.luxuryBodyMuted.withOpacity(0.6); // Slightly dimmed
+                  itemColor = Resources.colors.luxuryBodyMuted.withValues(
+                    alpha: 0.6,
+                  ); // Slightly dimmed
                 }
 
                 Widget dot;
@@ -89,12 +98,16 @@ class AppIconStepper extends StatelessWidget {
                       color: Resources.colors.luxuryGoldLight,
                       shape: BoxShape.circle,
                       border: Border.all(
-                        color: Resources.colors.luxuryGoldLight.withOpacity(0.2),
+                        color: Resources.colors.luxuryGoldLight.withValues(
+                          alpha: 0.2,
+                        ),
                         width: 4,
                       ),
                       boxShadow: [
                         BoxShadow(
-                          color: Resources.colors.luxuryGoldLight.withOpacity(0.2),
+                          color: Resources.colors.luxuryGoldLight.withValues(
+                            alpha: 0.2,
+                          ),
                           blurRadius: 8,
                           spreadRadius: 2,
                         ),
@@ -105,7 +118,9 @@ class AppIconStepper extends StatelessWidget {
                   dot = Container(
                     width: Resources.squareDims.$16,
                     height: Resources.squareDims.$16,
-                    margin: EdgeInsets.only(top: Resources.squareDims.$2), // Centers the 16px dot within the 20px row
+                    margin: EdgeInsets.only(
+                      top: Resources.squareDims.$2,
+                    ), // Centers the 16px dot within the 20px row
                     decoration: BoxDecoration(
                       color: isCompleted
                           ? Resources.colors.luxuryNavy
@@ -133,7 +148,7 @@ class AppIconStepper extends StatelessWidget {
                       fontWeight: isActive
                           ? Resources.fontWeights.extraBold
                           : Resources.fontWeights.bold,
-                      letterSpacing: 0, 
+                      letterSpacing: 0,
                       color: itemColor,
                     ),
                   );

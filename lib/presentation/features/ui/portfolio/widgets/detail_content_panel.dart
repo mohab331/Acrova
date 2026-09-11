@@ -20,7 +20,9 @@ class DetailContentPanel extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         color: Resources.colors.luxurySurface,
-        borderRadius: BorderRadius.vertical(top: Radius.circular(Resources.radius.$r16)),
+        borderRadius: BorderRadius.vertical(
+          top: Radius.circular(Resources.radius.$r16),
+        ),
         boxShadow: AppShadows.sheet,
       ),
       child: Column(
@@ -38,7 +40,12 @@ class DetailContentPanel extends StatelessWidget {
             ),
           ),
           Padding(
-            padding: EdgeInsets.fromLTRB(Resources.horizontalDims.$24, Resources.verticalDims.$24, Resources.horizontalDims.$24, Resources.verticalDims.$120),
+            padding: EdgeInsets.fromLTRB(
+              Resources.horizontalDims.$24,
+              Resources.verticalDims.$24,
+              Resources.horizontalDims.$24,
+              Resources.verticalDims.$120,
+            ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [

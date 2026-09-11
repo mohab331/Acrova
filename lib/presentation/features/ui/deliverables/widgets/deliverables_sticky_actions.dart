@@ -26,7 +26,8 @@ class DeliverablesStickyActions extends StatelessWidget {
           left: Resources.horizontalDims.$24,
           right: Resources.horizontalDims.$24,
           top: Resources.verticalDims.$16,
-          bottom: MediaQuery.paddingOf(context).bottom + Resources.verticalDims.$24,
+          bottom:
+              MediaQuery.paddingOf(context).bottom + Resources.verticalDims.$24,
         ),
         child: Column(
           children: [

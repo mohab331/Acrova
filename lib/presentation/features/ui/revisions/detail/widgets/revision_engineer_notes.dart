@@ -50,7 +50,8 @@ class RevisionEngineerNotes extends StatelessWidget {
                 ),
                 child: revision.engineerAvatarUrl != null
                     ? AppCachedNetworkImage(
-                        imageUrl: revision.engineerAvatarUrl!)
+                        imageUrl: revision.engineerAvatarUrl!,
+                      )
                     : Icon(
                         Icons.engineering_outlined,
                         size: Resources.iconSizes.$24,
@@ -91,7 +92,9 @@ class RevisionEngineerNotes extends StatelessWidget {
               children: [
                 Container(
                   width: AppBorderWidths.$2,
-                  color: Resources.colors.luxuryGoldLight.withValues(alpha: 0.4),
+                  color: Resources.colors.luxuryGoldLight.withValues(
+                    alpha: 0.4,
+                  ),
                 ),
                 SizedBox(width: Resources.horizontalDims.$16),
                 Expanded(

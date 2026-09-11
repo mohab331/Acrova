@@ -3,11 +3,7 @@ import 'package:acrova/utils/extensions/theme_extension.dart';
 import 'package:flutter/material.dart';
 
 class DetailSpecCell extends StatelessWidget {
-  const DetailSpecCell({
-    required this.label,
-    required this.value,
-    super.key,
-  });
+  const DetailSpecCell({required this.label, required this.value, super.key});
 
   final String label;
   final String value;
@@ -15,7 +11,10 @@ class DetailSpecCell extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: Resources.horizontalDims.$16, vertical: Resources.verticalDims.$12),
+      padding: EdgeInsets.symmetric(
+        horizontal: Resources.horizontalDims.$16,
+        vertical: Resources.verticalDims.$12,
+      ),
       decoration: BoxDecoration(
         color: Resources.colors.luxuryInputBg,
         borderRadius: BorderRadius.circular(Resources.radius.$r4),

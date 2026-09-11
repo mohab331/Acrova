@@ -2,7 +2,6 @@ import 'package:acrova/data/models/project/project_model.dart';
 import 'package:acrova/presentation/app/resources/resources.dart';
 import 'package:acrova/presentation/features/common_widgets/chips/app_status_chip.dart';
 import 'package:acrova/presentation/features/ui/projects/widgets/project_image.dart';
-import 'package:acrova/utils/enums/project_type_enum.dart';
 import 'package:acrova/utils/extensions/localization_extension.dart';
 import 'package:acrova/utils/extensions/theme_extension.dart';
 import 'package:flutter/material.dart';
@@ -24,7 +23,10 @@ class StandardProjectCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          ProjectImage(thumbnailUrl: project.thumbnailUrl, height: Resources.verticalDims.$160),
+          ProjectImage(
+            thumbnailUrl: project.thumbnailUrl,
+            height: Resources.verticalDims.$160,
+          ),
           Padding(
             padding: EdgeInsets.all(Resources.horizontalDims.$16),
             child: Column(
@@ -88,8 +90,7 @@ class StandardProjectCard extends StatelessWidget {
                 ),
                 SizedBox(height: Resources.verticalDims.$8),
                 ClipRRect(
-                  borderRadius:
-                      BorderRadius.circular(Resources.radius.$r100),
+                  borderRadius: BorderRadius.circular(Resources.radius.$r100),
                   child: LinearProgressIndicator(
                     value: project.progressRatio,
                     minHeight: 4,
