@@ -4,19 +4,15 @@ import 'package:acrova/utils/enums/cubit_status.dart';
 import 'package:equatable/equatable.dart';
 
 class ProfileCubitState extends Equatable {
-  const ProfileCubitState({
-    required this.cubitStatus,
-    this.profile,
-    this.appErrorModel,
-  });
+  const ProfileCubitState({required this.cubitStatus, this.appErrorModel});
 
   const ProfileCubitState.initial() : this(cubitStatus: CubitStatus.initial);
 
   final CubitStatus cubitStatus;
-  final UserProfileModel? profile;
   final AppErrorModel? appErrorModel;
 
-  bool get isLoading => cubitStatus == CubitStatus.loading;
+  bool get isLoading =>
+      cubitStatus == CubitStatus.loading || cubitStatus == CubitStatus.initial;
   bool get isSuccess => cubitStatus == CubitStatus.success;
   bool get isError => cubitStatus == CubitStatus.error;
 
@@ -26,10 +22,9 @@ class ProfileCubitState extends Equatable {
     AppErrorModel? appErrorModel,
   }) => ProfileCubitState(
     cubitStatus: cubitStatus ?? this.cubitStatus,
-    profile: profile ?? this.profile,
     appErrorModel: appErrorModel,
   );
 
   @override
-  List<Object?> get props => [cubitStatus, profile, appErrorModel];
+  List<Object?> get props => [cubitStatus, appErrorModel];
 }
