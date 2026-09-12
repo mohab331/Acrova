@@ -92,12 +92,13 @@ class AvatarWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (avatarPath != null) {
+    if (avatarPath?.isNotEmpty ?? false) {
       return Image.file(File(avatarPath!), fit: BoxFit.cover);
     }
-    if (avatarUrl != null && avatarUrl!.isNotEmpty) {
+    if (avatarPath == null && (avatarUrl?.isNotEmpty ?? false)) {
       return AppCachedNetworkImage(imageUrl: avatarUrl!);
     }
+
     return Icon(
       Icons.person_outline,
       size: Resources.iconSizes.$48,

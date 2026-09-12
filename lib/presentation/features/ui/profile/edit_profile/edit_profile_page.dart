@@ -5,15 +5,17 @@ import 'package:acrova/domain/repository/auth/base_auth_repo.dart';
 import 'package:acrova/presentation/app/resources/resources.dart';
 import 'package:acrova/presentation/features/common_widgets/app_bar/app_auth_brand_header.dart';
 import 'package:acrova/presentation/features/common_widgets/common_screen/common_screen.dart';
+import 'package:acrova/presentation/features/cubit/auth/auth_cubit.dart';
 import 'package:acrova/presentation/features/ui/profile/edit_profile/cubit/edit_profile_cubit.dart';
 import 'package:acrova/presentation/features/ui/profile/edit_profile/cubit/edit_profile_state.dart';
 import 'package:acrova/presentation/features/ui/profile/edit_profile/widgets/change_photo_sheet.dart';
-import 'package:acrova/presentation/features/ui/profile/edit_profile/widgets/edit_profile_error_banner.dart';
 import 'package:acrova/presentation/features/ui/profile/edit_profile/widgets/edit_profile_form.dart';
 import 'package:acrova/presentation/features/ui/profile/edit_profile/widgets/edit_profile_photo_section.dart';
 import 'package:acrova/presentation/features/ui/profile/edit_profile/widgets/edit_profile_submit_button.dart';
 import 'package:acrova/utils/enums/cubit_status.dart';
 import 'package:acrova/utils/extensions/localization_extension.dart';
+import 'package:acrova/utils/extensions/navigation_extension.dart';
+import 'package:acrova/utils/helpers/ui_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -30,13 +32,14 @@ class EditProfilePage extends StatelessWidget {
         imagePicker: serviceLocatorInstance<BaseImagePickerService>(),
         initialProfile: profile,
       ),
-      child: const _EditProfileView(),
+      child: _EditProfileView(profile: profile),
     );
   }
 }
 
 class _EditProfileView extends StatefulWidget {
-  const _EditProfileView();
+  const _EditProfileView({required this.profile});
+  final UserProfileModel profile;
 
   @override
   State<_EditProfileView> createState() => _EditProfileViewState();
@@ -82,26 +85,7 @@ class _EditProfileViewState extends State<_EditProfileView> {
   @override
   Widget build(BuildContext context) {
     return BlocListener<EditProfileCubit, EditProfileState>(
-      listenWhen: (p, c) => p.cubitStatus != c.cubitStatus,
-      listener: (context, state) {
-        if (state.cubitStatus == CubitStatus.success &&
-            state.updatedProfile != null) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(context.localization.editProfileSuccess),
-              backgroundColor: Resources.colors.luxurySuccess,
-            ),
-          );
-          Navigator.of(context).pop(state.updatedProfile);
-        } else if (state.cubitStatus == CubitStatus.error) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(state.appErrorModel?.message ?? ''),
-              backgroundColor: Resources.colors.luxuryError,
-            ),
-          );
-        }
-      },
+      listener: _handleEditProfileListener,
       child: CommonScreen(
         resizeToAvoidBottomInset: false,
         padding: EdgeInsets.zero,
@@ -111,20 +95,6 @@ class _EditProfileViewState extends State<_EditProfileView> {
         ),
         child: Column(
           children: [
-            BlocBuilder<EditProfileCubit, EditProfileState>(
-              buildWhen: (p, c) => p.showErrorBanner != c.showErrorBanner,
-              builder: (context, state) {
-                return AnimatedSize(
-                  duration: AppDurations.normal,
-                  child: state.showErrorBanner
-                      ? EditProfileErrorBanner(
-                          onDismiss: () =>
-                              context.read<EditProfileCubit>().dismissBanner(),
-                        )
-                      : const SizedBox.shrink(),
-                );
-              },
-            ),
             Expanded(
               child: SingleChildScrollView(
                 padding: EdgeInsets.only(
@@ -135,17 +105,11 @@ class _EditProfileViewState extends State<_EditProfileView> {
                 child: Column(
                   children: [
                     BlocBuilder<EditProfileCubit, EditProfileState>(
-                      buildWhen: (p, c) =>
-                          p.avatarPath != c.avatarPath ||
-                          p.avatarRemoved != c.avatarRemoved,
+                      buildWhen: (p, c) => p.avatarPath != c.avatarPath,
                       builder: (context, state) {
                         return EditProfilePhotoSection(
-                          avatarUrl: state.avatarRemoved
-                              ? null
-                              : state.avatarUrl,
-                          avatarPath: state.avatarRemoved
-                              ? null
-                              : state.avatarPath,
+                          avatarUrl: widget.profile.avatarUrl,
+                          avatarPath: state.avatarPath,
                           onChangePhoto: () => _onChangePhoto(context),
                         );
                       },
@@ -165,5 +129,25 @@ class _EditProfileViewState extends State<_EditProfileView> {
         ),
       ),
     );
+  }
+
+  void _handleEditProfileListener(
+    BuildContext context,
+    EditProfileState state,
+  ) {
+    if (state.cubitStatus == CubitStatus.success) {
+      CustomToastification.success(
+        context: context,
+        message: 'Updated Successfully',
+      ).showToast();
+      context.pop();
+      context.read<AuthCubit>().getUser();
+    }
+    if (state.cubitStatus == CubitStatus.error) {
+      CustomToastification.error(
+        context: context,
+        errorModel: state.appErrorModel,
+      ).showToast();
+    }
   }
 }

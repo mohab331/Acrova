@@ -48,6 +48,9 @@ abstract final class AppValidators {
 
     var digits = trimmed.replaceAll(RegExp(r'\D'), '');
 
+    if (!digits.startsWith('966')) {
+      return 'Saudi mobile number should start with +966';
+    }
     // Strip Saudi country code
     if (digits.startsWith('966')) {
       digits = digits.substring(3);

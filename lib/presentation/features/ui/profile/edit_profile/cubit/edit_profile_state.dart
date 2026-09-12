@@ -1,6 +1,7 @@
 import 'package:acrova/core/error/app_error_model.dart';
 import 'package:acrova/data/models/profile/user_profile_model.dart';
 import 'package:acrova/utils/enums/cubit_status.dart';
+import 'package:acrova/utils/validation/app_validators.dart';
 import 'package:equatable/equatable.dart';
 
 class EditProfileState extends Equatable {
@@ -9,15 +10,9 @@ class EditProfileState extends Equatable {
     required this.name,
     required this.email,
     required this.mobileNumber,
-    this.avatarPath,
-    this.avatarUrl,
-    this.avatarRemoved = false,
-    this.nameError,
-    this.emailError,
-    this.mobileError,
-    this.showErrorBanner = false,
-    this.updatedProfile,
     this.appErrorModel,
+    this.avatarPath,
+    required this.initialProfile,
   });
 
   factory EditProfileState.fromProfile(UserProfileModel profile) =>
@@ -26,67 +21,57 @@ class EditProfileState extends Equatable {
         name: profile.name ?? '',
         email: profile.email ?? '',
         mobileNumber: profile.mobileNumber ?? '',
-        avatarUrl: profile.avatarUrl,
+        initialProfile: profile,
       );
 
   final CubitStatus cubitStatus;
   final String name;
   final String email;
   final String mobileNumber;
-
-  /// Local path of a newly-picked avatar.
+  final AppErrorModel? appErrorModel;
   final String? avatarPath;
 
-  /// Existing remote avatar url.
-  final String? avatarUrl;
+  final UserProfileModel? initialProfile;
 
-  /// Whether the user removed the current photo (shows placeholder).
-  final bool avatarRemoved;
+  bool get enableSubmit {
+    final bool isSameName =
+        (initialProfile?.name?.trim().toLowerCase() ==
+        name.trim().toLowerCase());
+    final bool isSameEmail =
+        (initialProfile?.email?.trim().toLowerCase() !=
+        email.trim().toLowerCase());
+    final bool isSameMobile =
+        (initialProfile?.mobileNumber?.trim().toLowerCase() !=
+        mobileNumber.trim().toLowerCase());
+    final bool hasAvatar = (avatarPath?.isNotEmpty ?? false);
 
-  final String? nameError;
-  final String? emailError;
-  final String? mobileError;
+    return (!isSameMobile || !isSameEmail || !isSameName || hasAvatar) &&
+        validate();
+  }
 
-  /// Whether the top "please correct errors" banner is visible.
-  final bool showErrorBanner;
-
-  /// Set on a successful save.
-  final UserProfileModel? updatedProfile;
-
-  final AppErrorModel? appErrorModel;
-
-  bool get isSubmitting => cubitStatus == CubitStatus.loading;
-  bool get isSuccess => cubitStatus == CubitStatus.success;
-  bool get isError => cubitStatus == CubitStatus.error;
+  bool validate() {
+    final bool isNameValid = AppValidators.name(name) == null;
+    final bool isEmailValid = AppValidators.isValidEmail(email);
+    final bool isMobileValid = AppValidators.isValidSaudiPhone(mobileNumber);
+    return isNameValid && isEmailValid && isMobileValid;
+  }
 
   EditProfileState copyWith({
     CubitStatus? cubitStatus,
     String? name,
     String? email,
     String? mobileNumber,
-    String? avatarPath,
-    String? avatarUrl,
-    bool? avatarRemoved,
-    String? Function()? nameError,
-    String? Function()? emailError,
-    String? Function()? mobileError,
-    bool? showErrorBanner,
-    UserProfileModel? updatedProfile,
     AppErrorModel? appErrorModel,
+    String? avatarPath,
+    UserProfileModel? profile,
   }) => EditProfileState(
     cubitStatus: cubitStatus ?? this.cubitStatus,
     name: name ?? this.name,
     email: email ?? this.email,
     mobileNumber: mobileNumber ?? this.mobileNumber,
-    avatarPath: avatarPath ?? this.avatarPath,
-    avatarUrl: avatarUrl ?? this.avatarUrl,
-    avatarRemoved: avatarRemoved ?? this.avatarRemoved,
-    nameError: nameError != null ? nameError() : this.nameError,
-    emailError: emailError != null ? emailError() : this.emailError,
-    mobileError: mobileError != null ? mobileError() : this.mobileError,
-    showErrorBanner: showErrorBanner ?? this.showErrorBanner,
-    updatedProfile: updatedProfile ?? this.updatedProfile,
     appErrorModel: appErrorModel,
+    avatarPath: avatarPath,
+    initialProfile: profile ?? this.initialProfile,
   );
 
   @override
@@ -96,13 +81,7 @@ class EditProfileState extends Equatable {
     email,
     mobileNumber,
     avatarPath,
-    avatarUrl,
-    avatarRemoved,
-    nameError,
-    emailError,
-    mobileError,
-    showErrorBanner,
-    updatedProfile,
     appErrorModel,
+    initialProfile,
   ];
 }
