@@ -1,10 +1,8 @@
 import 'package:acrova/data/data_source/local/services/image_picker/base_image_picker_service.dart';
-import 'package:acrova/data/models/interior_design/moodboard_model.dart';
 import 'package:acrova/domain/repository/project/base_project_repo.dart';
 import 'package:acrova/presentation/features/cubit/interior_design/interior_design_state.dart';
 import 'package:acrova/utils/enums/cubit_status.dart';
 import 'package:acrova/utils/enums/interior_design_enums.dart';
-import 'package:acrova/utils/helpers/safe_async_call.dart';
 import 'package:acrova/utils/logging/app_logger.dart';
 import 'package:acrova/utils/validation/app_validators.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -24,16 +22,19 @@ class InteriorDesignCubit extends Cubit<InteriorDesignState> {
 
   Future<void> loadInitialData() async {
     emit(state.copyWith(status: CubitStatus.loading));
-    await safeCubitCall<List<MoodboardModel>>(
-      call: projectRepo.getMoodboards,
-      onSuccess: (boards) => emit(
-        state.copyWith(
-          status: CubitStatus.initial,
-          availableMoodboards: boards,
-        ),
-      ),
-      onError: (error) =>
-          emit(state.copyWith(status: CubitStatus.error, error: error)),
+    final result = await projectRepo.getMoodboards();
+    result.when(
+      success: (boards) {
+        emit(
+          state.copyWith(
+            status: CubitStatus.initial,
+            availableMoodboards: boards,
+          ),
+        );
+      },
+      failure: (error) {
+        emit(state.copyWith(status: CubitStatus.error, error: error));
+      },
     );
   }
 
@@ -176,11 +177,14 @@ class InteriorDesignCubit extends Cubit<InteriorDesignState> {
     if (!state.isValid) return;
     emit(state.copyWith(status: CubitStatus.loading));
 
-    await safeCubitCall<void>(
-      call: () => projectRepo.submitInteriorDesign(state.toRequest()),
-      onSuccess: (_) => emit(state.copyWith(status: CubitStatus.success)),
-      onError: (error) =>
-          emit(state.copyWith(status: CubitStatus.error, error: error)),
+    final result = await projectRepo.submitInteriorDesign(state.toRequest());
+    result.when(
+      success: (data) {
+        emit(state.copyWith(status: CubitStatus.success));
+      },
+      failure: (error) {
+        emit(state.copyWith(status: CubitStatus.error, error: error));
+      },
     );
   }
 }

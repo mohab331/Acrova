@@ -11,10 +11,10 @@ class AppNotificationModel extends Equatable {
     this.projectId,
   });
 
-  final String id;
-  final String title;
-  final String body;
-  final DateTime createdAt;
+  final String? id;
+  final String? title;
+  final String? body;
+  final DateTime? createdAt;
   final bool isRead;
 
   /// Optional related project (for deep-linking when available).
@@ -31,24 +31,15 @@ class AppNotificationModel extends Equatable {
 
   factory AppNotificationModel.fromJson(Map<String, dynamic> json) =>
       AppNotificationModel(
-        id: json['id'] as String,
-        title: json['title'] as String? ?? '',
-        body: json['body'] as String? ?? '',
+        id: json['id'],
+        title: json['title'],
+        body: json['body'],
         createdAt:
             DateTime.tryParse(json['created_at'] as String? ?? '') ??
             DateTime.now(),
-        isRead: json['is_read'] as bool? ?? false,
-        projectId: json['project_id'] as String?,
+        isRead: bool.tryParse(json['is_read']?.toString() ?? '') ?? false,
+        projectId: json['project_id'],
       );
-
-  Map<String, dynamic> toJson() => {
-    'id': id,
-    'title': title,
-    'body': body,
-    'created_at': createdAt.toIso8601String(),
-    'is_read': isRead,
-    'project_id': projectId,
-  };
 
   @override
   List<Object?> get props => [id, title, body, createdAt, isRead, projectId];

@@ -24,7 +24,7 @@ class _OtpCountdownTimerState extends State<OtpCountdownTimer> {
   @override
   void initState() {
     super.initState();
-    _initialSeconds = widget.timer.inMinutes;
+    _initialSeconds = widget.timer.inSeconds;
     _remaining = _initialSeconds;
     _timer = Timer.periodic(const Duration(seconds: 1), (_) {
       if (!mounted) return;

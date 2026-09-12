@@ -1,36 +1,38 @@
 import 'package:acrova/core/error/app_error_model.dart';
-import 'package:acrova/data/models/dashboard/dashboard_data_model.dart';
+import 'package:acrova/data/models/project/project_model.dart';
 import 'package:acrova/utils/enums/cubit_status.dart';
 import 'package:equatable/equatable.dart';
 
-class DashboardCubitState extends Equatable {
-  const DashboardCubitState({
+class ProjectsCubitState extends Equatable {
+  const ProjectsCubitState({
     required this.cubitStatus,
-    this.data,
+    this.projects,
     this.appErrorModel,
   });
 
-  const DashboardCubitState.initial()
-    : this(cubitStatus: CubitStatus.initial, data: null, appErrorModel: null);
+  const ProjectsCubitState.initial() : this(cubitStatus: CubitStatus.initial);
 
   final CubitStatus cubitStatus;
-  final DashboardDataModel? data;
+  final List<ProjectModel>? projects;
   final AppErrorModel? appErrorModel;
 
   bool get isLoading => cubitStatus == CubitStatus.loading;
   bool get isSuccess => cubitStatus == CubitStatus.success;
   bool get isError => cubitStatus == CubitStatus.error;
 
-  DashboardCubitState copyWith({
+  ProjectsCubitState copyWith({
     CubitStatus? cubitStatus,
-    DashboardDataModel? data,
+    List<ProjectModel>? projects,
     AppErrorModel? appErrorModel,
-  }) => DashboardCubitState(
+    String? userName,
+    int? notificationCount,
+    String? avatarUrl,
+  }) => ProjectsCubitState(
     cubitStatus: cubitStatus ?? this.cubitStatus,
-    data: data ?? this.data,
+    projects: projects ?? this.projects,
     appErrorModel: appErrorModel ?? this.appErrorModel,
   );
 
   @override
-  List<Object?> get props => [cubitStatus, data, appErrorModel];
+  List<Object?> get props => [cubitStatus, projects, appErrorModel];
 }

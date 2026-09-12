@@ -7,16 +7,16 @@ import 'package:flutter/material.dart';
 class DetailSpecGrid extends StatelessWidget {
   const DetailSpecGrid({required this.item, super.key});
 
-  final PortfolioItem item;
+  final PortfolioItem? item;
 
   @override
   Widget build(BuildContext context) {
     final l10n = context.localization;
     final specs = [
-      (l10n.specArea, item.area),
-      (l10n.specFloors, item.floors),
-      (l10n.specStyle, item.style),
-      (l10n.specLocation, item.location),
+      (l10n.specArea, item?.area),
+      (l10n.specFloors, item?.floors),
+      (l10n.specStyle, item?.style),
+      (l10n.specLocation, item?.location),
     ];
 
     return GridView.count(
@@ -27,7 +27,7 @@ class DetailSpecGrid extends StatelessWidget {
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
       children: specs
-          .map((s) => DetailSpecCell(label: s.$1, value: s.$2))
+          .map((s) => DetailSpecCell(label: s.$1, value: s.$2 ?? ''))
           .toList(),
     );
   }

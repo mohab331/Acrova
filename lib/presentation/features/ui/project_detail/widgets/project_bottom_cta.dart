@@ -11,43 +11,16 @@ class ProjectBottomCta extends StatelessWidget {
   const ProjectBottomCta({required this.project, super.key});
 
   final ProjectModel project;
-
-  Widget? _buildCta(BuildContext context) {
-    final loc = context.localization;
-    switch (project.status) {
-      case ProjectStatus.awaitingPayment:
-        return AppPrimaryButton(
-          label: loc.projectDetailUploadReceipt,
-          onPressed: () {},
-        );
-      case ProjectStatus.deliverablesReady:
-        return AppPrimaryButton(
-          label: loc.projectDetailViewDeliverables,
-          onPressed: () {
-            context.push(AppRouteEnum.deliverablesPage.path);
-          },
-        );
-      case ProjectStatus.revisionInProgress:
-        return AppPrimaryButton(
-          label: loc.projectDetailViewRevision,
-          onPressed: () {},
-        );
-      case ProjectStatus.completed:
-        return AppPrimaryButton(
-          label: loc.projectDetailPhaseIIInteriorDesign,
-          onPressed: () {
-            context.push(AppRouteEnum.interiorDesignPhaseOnePage.path);
-          },
-        );
-      default:
-        return null;
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
-    final cta = _buildCta(context);
-    if (cta == null) return const SizedBox.shrink();
+    final bool hideCTA =
+        (project.status != ProjectStatus.awaitingPayment ||
+        project.status != ProjectStatus.deliverablesReady ||
+        project.status == ProjectStatus.revisionInProgress ||
+        project.status == ProjectStatus.completed);
+    if (hideCTA) {
+      return const SizedBox.shrink();
+    }
     return Container(
       padding: EdgeInsets.only(
         top: Resources.verticalDims.$16,
@@ -65,7 +38,46 @@ class ProjectBottomCta extends StatelessWidget {
           ),
         ],
       ),
-      child: cta,
+      child: _CTA(project: project),
     );
+  }
+}
+
+class _CTA extends StatelessWidget {
+  const _CTA({required this.project, super.key});
+  final ProjectModel project;
+
+  @override
+  Widget build(BuildContext context) {
+    final loc = context.localization;
+    if (project.status == ProjectStatus.awaitingPayment) {
+      return AppPrimaryButton(
+        label: loc.projectDetailUploadReceipt,
+        onPressed: () {
+          context.pushNamed(AppRouteEnum.makePaymentPage.name);
+        },
+      );
+    } else if (project.status == ProjectStatus.deliverablesReady) {
+      return AppPrimaryButton(
+        label: loc.projectDetailViewDeliverables,
+        onPressed: () {
+          context.push(AppRouteEnum.deliverablesPage.path);
+        },
+      );
+    } else if (project.status == ProjectStatus.revisionInProgress) {
+      return AppPrimaryButton(
+        label: loc.projectDetailViewRevision,
+        onPressed: () {},
+      );
+    } else if (project.status == ProjectStatus.completed) {
+      return AppPrimaryButton(
+        label: loc.projectDetailPhaseIIInteriorDesign,
+        onPressed: () {
+          context.push(AppRouteEnum.interiorDesignPhaseOnePage.path);
+        },
+      );
+    } else {
+      return const SizedBox.shrink();
+    }
   }
 }

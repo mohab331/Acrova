@@ -15,16 +15,16 @@ class PortfolioItem extends Equatable {
     this.walkthroughVideo,
   });
 
-  final String id;
-  final String style;
-  final String category;
-  final String title;
-  final String location;
-  final String area;
-  final String floors;
-  final String narrative;
-  final List<String> imageUrls;
-  final List<String> features;
+  final String? id;
+  final String? style;
+  final String? category;
+  final String? title;
+  final String? location;
+  final String? area;
+  final String? floors;
+  final String? narrative;
+  final List<String>? imageUrls;
+  final List<String>? features;
   final String? walkthroughVideo;
 
   @override

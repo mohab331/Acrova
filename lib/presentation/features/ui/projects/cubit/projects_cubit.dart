@@ -50,18 +50,19 @@ class ProjectsCubit extends Cubit<ProjectsCubitState> {
       );
     }
 
-    await safeCubitCall<List<ProjectModel>>(
-      call: _projectRepo.getProjects,
-      onSuccess: (projects) {
+   final result =  await  _projectRepo.getProjects();
+
+    result.when(
+      success: (projects) {
         emit(
           state.copyWith(cubitStatus: CubitStatus.success, projects: projects),
         );
       },
-      onError: (error) {
+      failure: (error) {
         emit(
           state.copyWith(cubitStatus: CubitStatus.error, appErrorModel: error),
         );
-      },
+      }
     );
   }
 }

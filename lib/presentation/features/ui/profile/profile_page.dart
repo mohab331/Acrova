@@ -2,7 +2,6 @@ import 'package:acrova/core/di/dependency_injector.dart';
 import 'package:acrova/data/models/profile/user_profile_model.dart';
 import 'package:acrova/presentation/app/navigation/app_route_enum.dart';
 import 'package:acrova/presentation/app/resources/resources.dart';
-import 'package:acrova/presentation/features/common_widgets/app_bar/app_avatar_header.dart';
 import 'package:acrova/presentation/features/common_widgets/common_screen/common_screen.dart';
 import 'package:acrova/presentation/features/common_widgets/feedback/common_error_widget.dart';
 import 'package:acrova/presentation/features/cubit/auth/auth_cubit.dart';
@@ -76,11 +75,6 @@ class _ProfilePageState extends State<ProfilePage> {
           builder: (context, state) {
             return Column(
               children: [
-                AvatarHeader(
-                  userName: state.profile?.name,
-                  notificationCount: 0,
-                  avatarUrl: state.profile?.avatarUrl,
-                ),
                 Flexible(
                   child: Builder(
                     builder: (context) {

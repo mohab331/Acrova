@@ -15,14 +15,16 @@ class ProfileCubit extends Cubit<ProfileCubitState> {
 
   Future<void> fetchProfile() async {
     emit(state.copyWith(cubitStatus: CubitStatus.loading));
-    await safeCubitCall<UserProfileModel>(
-      call: _authRepo.getUserProfile,
-      onSuccess: (profile) => emit(
-        state.copyWith(cubitStatus: CubitStatus.success, profile: profile),
-      ),
-      onError: (error) => emit(
-        state.copyWith(cubitStatus: CubitStatus.error, appErrorModel: error),
-      ),
+    final result = await _authRepo.getUserProfile();
+    result.when(
+      success: (data) {
+        emit(state.copyWith(cubitStatus: CubitStatus.success, profile: data));
+      },
+      failure: (error) {
+        emit(
+          state.copyWith(cubitStatus: CubitStatus.error, appErrorModel: error),
+        );
+      },
     );
   }
 

@@ -3,7 +3,6 @@ import 'package:acrova/data/models/profile/user_profile_model.dart';
 import 'package:acrova/data/models/request/profile/update_profile_request.dart';
 import 'package:acrova/domain/repository/auth/base_auth_repo.dart';
 import 'package:acrova/utils/enums/cubit_status.dart';
-import 'package:acrova/utils/helpers/safe_async_call.dart';
 import 'package:acrova/utils/logging/app_logger.dart';
 import 'package:acrova/utils/validation/app_validators.dart';
 import 'package:bloc/bloc.dart';
@@ -129,22 +128,22 @@ class EditProfileCubit extends Cubit<EditProfileState> {
       state.copyWith(cubitStatus: CubitStatus.loading, showErrorBanner: false),
     );
 
-    await safeCubitCall<UserProfileModel>(
-      call: () => _authRepo.updateUserProfile(
-        UpdateProfileRequest(
-          name: state.name.trim(),
-          email: state.email.trim(),
-          mobileNumber: state.mobileNumber.trim(),
-          avatarPath: state.avatarPath,
-        ),
+    final result = await _authRepo.updateUserProfile(
+      UpdateProfileRequest(
+        name: state.name.trim(),
+        email: state.email.trim(),
+        mobileNumber: state.mobileNumber.trim(),
+        avatarPath: state.avatarPath,
       ),
-      onSuccess: (profile) => emit(
+    );
+    result.when(
+      success: (profile) => emit(
         state.copyWith(
           cubitStatus: CubitStatus.success,
           updatedProfile: profile,
         ),
       ),
-      onError: (error) => emit(
+      failure: (error) => emit(
         state.copyWith(cubitStatus: CubitStatus.error, appErrorModel: error),
       ),
     );

@@ -9,30 +9,23 @@ class RevisionQuotaModel extends Equatable {
     this.currency = 'SAR',
   });
 
-  final int used;
-  final int total;
+  final int? used;
+  final int? total;
 
   /// Cost of an additional paid revision once the free allowance is exhausted.
-  final num paidCost;
-  final String currency;
+  final num? paidCost;
+  final String? currency;
 
-  int get remaining => (total - used).clamp(0, total);
+  int get remaining => ((total ?? 0) - (used ?? 0)).clamp(0, (total ?? 0));
   bool get hasFreeRemaining => remaining > 0;
 
   factory RevisionQuotaModel.fromJson(Map<String, dynamic> json) =>
       RevisionQuotaModel(
-        used: json['used'] as int? ?? 0,
-        total: json['total'] as int? ?? 0,
-        paidCost: json['paid_cost'] as num? ?? 0,
-        currency: json['currency'] as String? ?? 'SAR',
+        used: json['used'],
+        total: json['total'],
+        paidCost: json['paid_cost'],
+        currency: json['currency'],
       );
-
-  Map<String, dynamic> toJson() => {
-    'used': used,
-    'total': total,
-    'paid_cost': paidCost,
-    'currency': currency,
-  };
 
   @override
   List<Object?> get props => [used, total, paidCost, currency];

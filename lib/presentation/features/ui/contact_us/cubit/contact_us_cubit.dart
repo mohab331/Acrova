@@ -1,6 +1,5 @@
 import 'package:acrova/domain/repository/contact_us/base_contact_us_repo.dart';
 import 'package:acrova/utils/enums/cubit_status.dart';
-import 'package:acrova/utils/helpers/safe_async_call.dart';
 import 'package:acrova/utils/validation/app_validators.dart';
 import 'package:bloc/bloc.dart';
 
@@ -51,14 +50,14 @@ class ContactUsCubit extends Cubit<ContactUsState> {
 
     emit(state.copyWith(cubitStatus: CubitStatus.loading));
 
-    await safeCubitCall<void>(
-      call: () => _contactUsRepo.submitInquiry(
-        email: email,
-        mobileNumber: state.mobileNumber.trim(),
-        details: details,
-      ),
-      onSuccess: (_) => emit(state.copyWith(cubitStatus: CubitStatus.success)),
-      onError: (error) => emit(
+    final result = await _contactUsRepo.submitInquiry(
+      email: email,
+      mobileNumber: state.mobileNumber.trim(),
+      details: details,
+    );
+    result.when(
+      success: (_) => emit(state.copyWith(cubitStatus: CubitStatus.success)),
+      failure: (error) => emit(
         state.copyWith(cubitStatus: CubitStatus.error, appErrorModel: error),
       ),
     );

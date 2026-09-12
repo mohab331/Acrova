@@ -1,6 +1,5 @@
 import 'package:acrova/data/data_source/base/base_project_data_source.dart';
 import 'package:acrova/data/data_source/remote/network/api_client.dart';
-import 'package:acrova/data/models/dashboard/dashboard_data_model.dart';
 import 'package:acrova/data/models/interior_design/moodboard_model.dart';
 import 'package:acrova/data/models/project/create_project_request.dart';
 import 'package:acrova/data/models/project/interior_design_request.dart';
@@ -10,11 +9,6 @@ class RemoteProjectDataSource implements BaseProjectDataSource {
   RemoteProjectDataSource({required this.apiClient});
 
   final ApiClient apiClient;
-
-  @override
-  Future<DashboardDataModel> getDashboard() async {
-    throw UnimplementedError('Remote getDashboard not implemented yet');
-  }
 
   @override
   Future<List<ProjectModel>> getProjects() async {

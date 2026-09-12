@@ -135,17 +135,15 @@ class ProjectCreationCubit extends Cubit<ProjectCreationState> {
 
     emit(state.copyWith(cubitStatus: CubitStatus.loading));
 
-    await safeCubitCall<ProjectModel>(
-      call: () => _projectRepo.createProject(state.toRequest()),
-      onSuccess: (project) {
-        emit(
-          state.copyWith(
-            cubitStatus: CubitStatus.success,
-            createdProject: project,
-          ),
-        );
-      },
-      onError: (error) {
+    final result = await _projectRepo.createProject(state.toRequest());
+    result.when(
+      success: (project) => emit(
+        state.copyWith(
+          cubitStatus: CubitStatus.success,
+          createdProject: project,
+        ),
+      ),
+      failure: (error) {
         emit(
           state.copyWith(cubitStatus: CubitStatus.error, appErrorModel: error),
         );

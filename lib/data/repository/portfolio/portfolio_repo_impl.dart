@@ -7,6 +7,11 @@ class PortfolioRepoImpl implements BasePortfolioRepo {
 
   @override
   Future<Result<List<PortfolioItem>>> getPortfolioItems() async {
-    return const Success([]);
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<Result<PortfolioItem>> getPortfolioItemByID(String id) {
+    throw UnimplementedError();
   }
 }

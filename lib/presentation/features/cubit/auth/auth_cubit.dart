@@ -53,6 +53,29 @@ class AuthCubit extends Cubit<AuthCubitState> {
     );
   }
 
+  Future<void> getUser() async {
+    emit(state.copyWith(getUserCubitStatus: CubitStatus.loading));
+    final response = await _baseAuthRepo.getUserProfile();
+    response.when(
+      success: (data) {
+        emit(
+          state.copyWith(
+            getUserCubitStatus: CubitStatus.success,
+            userModel: data,
+          ),
+        );
+      },
+      failure: (error) {
+        emit(
+          state.copyWith(
+            getUserCubitStatus: CubitStatus.error,
+            getUserErrorModel: error,
+          ),
+        );
+      },
+    );
+  }
+
   Future<void> verifyOtp(String? otp) async {
     if (otp.isNullOrEmpty) {
       emit(

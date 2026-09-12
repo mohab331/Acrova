@@ -69,23 +69,4 @@ Future<void> safeAsync({
   }
 }
 
-/// Helper for Cubits calling repository methods that return `Result<T>`.
-///
-/// Catches unexpected exceptions, unwraps the `Result`, and safely dispatches to
-/// [onSuccess] or [onError].
-Future<void> safeCubitCall<T>({
-  required Future<Result<T>> Function() call,
-  required void Function(T data) onSuccess,
-  required void Function(AppErrorModel error) onError,
-}) async {
-  try {
-    final result = await call();
-    result.when(success: onSuccess, failure: onError);
-  } catch (e, s) {
-    AppLogger.instance.logError(e.toString(), error: e, stackTrace: s);
-    final error = e is AppErrorModel
-        ? e
-        : AppErrorModel.fromException(e, stackTrace: s);
-    onError(error);
-  }
-}
+

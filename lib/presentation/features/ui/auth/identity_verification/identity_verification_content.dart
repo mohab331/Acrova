@@ -37,28 +37,13 @@ class IdentityVerificationContent extends StatelessWidget {
         BlocListener<AuthCubit, AuthCubitState>(
           listenWhen: (previous, current) =>
               previous.verifyOTPCubitStatus != current.verifyOTPCubitStatus,
-          listener: (context, state) {
-            if (state.verifyOTPCubitStatus == CubitStatus.success) {
-              context.pushReplacement(AppRouteEnum.homePage.name);
-            }
-          },
+          listener: _handleVerifyOTPStateListener,
         ),
 
         BlocListener<AuthCubit, AuthCubitState>(
           listenWhen: (previous, current) =>
               previous.resendOTPCubitStatus != current.resendOTPCubitStatus,
-          listener: (context, state) {
-            if (state.resendOTPCubitStatus == CubitStatus.success) {
-              CustomToastification.success(
-                context: context,
-                message: context.localization.resend_otp_success,
-              ).showToast();
-            }
-
-            if (state.resendOTPCubitStatus == CubitStatus.error) {
-              context.read<OTPCubit>().decrementResendOtpCount();
-            }
-          },
+          listener: _handleResendOTPStateListener,
         ),
 
         BlocListener<OTPCubit, OTPState>(listener: (context, state) {}),
@@ -136,22 +121,28 @@ class IdentityVerificationContent extends StatelessWidget {
     );
   }
 
-  void _handleAuthStateListener(BuildContext context, AuthCubitState state) {
-    if (state.verifyOTPCubitStatus == CubitStatus.success) {
-      context.pushReplacement(AppRouteEnum.homePage.name);
-      return;
-    }
-
+  void _handleResendOTPStateListener(
+    BuildContext context,
+    AuthCubitState state,
+  ) {
     if (state.resendOTPCubitStatus == CubitStatus.success) {
       CustomToastification.success(
         context: context,
         message: context.localization.resend_otp_success,
       ).showToast();
-      return;
     }
 
     if (state.resendOTPCubitStatus == CubitStatus.error) {
       context.read<OTPCubit>().decrementResendOtpCount();
+    }
+  }
+
+  void _handleVerifyOTPStateListener(
+    BuildContext context,
+    AuthCubitState state,
+  ) {
+    if (state.verifyOTPCubitStatus == CubitStatus.success) {
+      context.goTo(AppRouteEnum.homePage.name);
     }
   }
 }

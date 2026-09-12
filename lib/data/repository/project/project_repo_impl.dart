@@ -1,5 +1,4 @@
 import 'package:acrova/data/data_source/base/base_project_data_source.dart';
-import 'package:acrova/data/models/dashboard/dashboard_data_model.dart';
 import 'package:acrova/data/models/interior_design/moodboard_model.dart';
 import 'package:acrova/data/models/project/create_project_request.dart';
 import 'package:acrova/data/models/project/interior_design_request.dart';
@@ -13,10 +12,6 @@ class ProjectRepoImpl implements BaseProjectRepo {
     : _dataSource = dataSource;
 
   final BaseProjectDataSource _dataSource;
-
-  @override
-  Future<Result<DashboardDataModel>> getDashboard() =>
-      safeAsyncCall(_dataSource.getDashboard);
 
   @override
   Future<Result<List<ProjectModel>>> getProjects() =>

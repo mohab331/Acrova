@@ -4,6 +4,7 @@ import 'package:acrova/presentation/features/cubit/interior_design/interior_desi
 import 'package:acrova/presentation/features/cubit/interior_design/interior_design_state.dart';
 import 'package:acrova/utils/extensions/localization_extension.dart';
 import 'package:acrova/utils/extensions/theme_extension.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -55,7 +56,7 @@ class AestheticProfilingSection extends StatelessWidget {
                         width: AppBorderWidths.$2,
                       ),
                       image: DecorationImage(
-                        image: NetworkImage(mb.url),
+                        image: CachedNetworkImageProvider(mb.url),
                         fit: BoxFit.cover,
                       ),
                     ),

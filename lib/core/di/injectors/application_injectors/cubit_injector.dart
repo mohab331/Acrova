@@ -16,15 +16,16 @@ import 'package:acrova/presentation/features/cubit/auth/auth_cubit.dart';
 import 'package:acrova/presentation/features/cubit/billing/make_payment_cubit.dart';
 import 'package:acrova/presentation/features/cubit/billing/payment_details_cubit.dart';
 import 'package:acrova/presentation/features/cubit/billing/payment_history_cubit.dart';
-import 'package:acrova/presentation/features/cubit/dashboard/dashboard_cubit.dart';
 import 'package:acrova/presentation/features/cubit/deliverables/deliverables_cubit.dart';
 import 'package:acrova/presentation/features/cubit/localization/localization_cubit.dart';
-import 'package:acrova/presentation/features/cubit/portfolio/portfolio_cubit.dart';
 import 'package:acrova/presentation/features/cubit/profile/profile_cubit.dart';
 import 'package:acrova/presentation/features/cubit/project_detail/project_detail_cubit.dart';
-import 'package:acrova/presentation/features/cubit/projects/projects_cubit.dart';
 import 'package:acrova/presentation/features/ui/contact_us/cubit/contact_us_cubit.dart';
+import 'package:acrova/presentation/features/ui/dashboard/cubit/dashboard_cubit.dart';
 import 'package:acrova/presentation/features/ui/notifications/cubit/notifications_cubit.dart';
+import 'package:acrova/presentation/features/ui/portfolio/cubit/portflio_details/portfolio_details_cubit.dart';
+import 'package:acrova/presentation/features/ui/portfolio/cubit/portfolio_cubit.dart';
+import 'package:acrova/presentation/features/ui/projects/cubit/projects_cubit.dart';
 import 'package:acrova/presentation/features/ui/revisions/cubit/revisions/revisions_cubit.dart';
 import 'package:acrova/presentation/features/ui/splash/splash/cubit/splash_cubit.dart';
 
@@ -44,9 +45,7 @@ class CubitsInjector implements BaseInjector {
     ),
 
     () => serviceLocatorInstance.registerFactory<DashboardCubit>(
-      () => DashboardCubit(
-        projectRepo: serviceLocatorInstance<BaseProjectRepo>(),
-      ),
+      () => DashboardCubit(),
     ),
 
     () => serviceLocatorInstance.registerFactory<ProjectsCubit>(
@@ -85,6 +84,12 @@ class CubitsInjector implements BaseInjector {
     () => serviceLocatorInstance.registerFactory<RevisionsCubit>(
       () => RevisionsCubit(
         revisionsRepo: serviceLocatorInstance<BaseRevisionsRepo>(),
+      ),
+    ),
+
+    () => serviceLocatorInstance.registerFactory<PortfolioDetailsCubit>(
+      () => PortfolioDetailsCubit(
+        portfolioRepo: serviceLocatorInstance<BasePortfolioRepo>(),
       ),
     ),
 

@@ -1,4 +1,5 @@
 import 'package:acrova/presentation/app/resources/resources.dart';
+import 'package:acrova/presentation/features/common_widgets/app_bar/app_avatar_header.dart';
 import 'package:acrova/presentation/features/ui/shell/widgets/bottom_nav.dart';
 import 'package:acrova/presentation/features/ui/shell/widgets/nav_tab.dart';
 import 'package:acrova/utils/extensions/localization_extension.dart';
@@ -29,11 +30,6 @@ class ShellScaffold extends StatelessWidget {
         label: loc.navPortfolio,
       ),
       NavTab(
-        icon: Icons.chat_bubble_outline,
-        activeIcon: Icons.chat_bubble,
-        label: loc.navMessages,
-      ),
-      NavTab(
         icon: Icons.person_outline,
         activeIcon: Icons.person,
         label: loc.navProfile,
@@ -45,7 +41,19 @@ class ShellScaffold extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Resources.colors.luxuryBackground,
-      body: navigationShell,
+      body: Column(
+        children: [
+          Padding(
+            padding: EdgeInsetsDirectional.only(
+              start: Resources.horizontalDims.$20,
+              end: Resources.horizontalDims.$20,
+              top: Resources.verticalDims.$16,
+            ),
+            child: const AvatarHeader(),
+          ),
+          Expanded(child: navigationShell),
+        ],
+      ),
       bottomNavigationBar: BottomNav(
         tabs: _buildTabs(context),
         currentIndex: navigationShell.currentIndex,

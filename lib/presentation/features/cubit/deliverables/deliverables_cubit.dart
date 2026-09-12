@@ -1,7 +1,6 @@
 import 'package:acrova/domain/repository/deliverables/base_deliverables_repo.dart';
 import 'package:acrova/presentation/features/cubit/deliverables/deliverables_state.dart';
 import 'package:acrova/utils/enums/cubit_status.dart';
-import 'package:acrova/utils/helpers/safe_async_call.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class DeliverablesCubit extends Cubit<DeliverablesState> {
@@ -14,9 +13,9 @@ class DeliverablesCubit extends Cubit<DeliverablesState> {
   Future<void> fetchDeliverables() async {
     emit(state.copyWith(status: CubitStatus.loading));
 
-    await safeCubitCall<DeliverablesData>(
-      call: _deliverablesRepo.getDeliverables,
-      onSuccess: (data) {
+    final result = await _deliverablesRepo.getDeliverables();
+    result.when(
+      success: (data) {
         emit(
           state.copyWith(
             status: CubitStatus.success,
@@ -29,7 +28,7 @@ class DeliverablesCubit extends Cubit<DeliverablesState> {
           ),
         );
       },
-      onError: (error) {
+      failure: (error) {
         emit(state.copyWith(status: CubitStatus.error, error: error));
       },
     );

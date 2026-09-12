@@ -1,28 +1,31 @@
-import 'package:acrova/data/models/dashboard/dashboard_data_model.dart';
+import 'package:acrova/data/models/portfolio/portfolio_item.dart';
+import 'package:acrova/presentation/app/navigation/app_route_enum.dart';
 import 'package:acrova/presentation/app/resources/resources.dart';
 import 'package:acrova/presentation/features/common_widgets/images/app_cached_network_image.dart';
-import 'package:acrova/presentation/features/ui/dashboard/widgets/dashboard_design_card_placeholder.dart';
+import 'package:acrova/utils/extensions/navigation_extension.dart';
 import 'package:acrova/utils/extensions/theme_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class DashboardDesignCard extends StatelessWidget {
   const DashboardDesignCard({
-    required this.design,
     required this.height,
+    required this.portfolioItem,
     super.key,
   });
 
-  final DesignModel design;
   final double height;
+  final PortfolioItem? portfolioItem;
 
   @override
   Widget build(BuildContext context) {
-    final hasAsset = design.imageAsset != null;
-    final hasUrl = design.imageUrl != null;
-
     return GestureDetector(
-      onTap: () {},
+      onTap: () {
+        context.push(
+          AppRouteEnum.portfolioDetailPage.name,
+          extra: portfolioItem,
+        );
+      },
       child: ClipRRect(
         borderRadius: BorderRadius.circular(Resources.radius.$r12),
         child: Stack(
@@ -30,19 +33,10 @@ class DashboardDesignCard extends StatelessWidget {
             SizedBox(
               height: height.h,
               width: double.infinity,
-              child: hasAsset
-                  ? Image.asset(
-                      design.imageAsset!,
-                      fit: BoxFit.cover,
-                      errorBuilder: (_, __, ___) =>
-                          DashboardDesignCardPlaceholder(height: height),
-                    )
-                  : hasUrl
-                  ? AppCachedNetworkImage(
-                      imageUrl: design.imageUrl!,
-                      radius: Resources.radius.$r12,
-                    )
-                  : DashboardDesignCardPlaceholder(height: height),
+              child: AppCachedNetworkImage(
+                imageUrl: portfolioItem?.imageUrls?.firstOrNull ?? '',
+                radius: Resources.radius.$r12,
+              ),
             ),
             Positioned.fill(
               child: Container(
@@ -64,7 +58,7 @@ class DashboardDesignCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    design.styleTag.toUpperCase(),
+                    portfolioItem?.style?.toUpperCase() ?? '',
                     style: context.textTheme.labelSmall?.copyWith(
                       fontSize: Resources.fontSizes.$8,
                       fontWeight: Resources.fontWeights.extraBold,
@@ -74,7 +68,7 @@ class DashboardDesignCard extends StatelessWidget {
                   ),
                   SizedBox(height: Resources.verticalDims.$3),
                   Text(
-                    design.title,
+                    portfolioItem?.title ?? '',
                     style: context.textTheme.titleMedium?.copyWith(
                       fontSize: Resources.fontSizes.$14,
                       fontWeight: Resources.fontWeights.semiBold,

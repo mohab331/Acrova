@@ -3,7 +3,6 @@ import 'package:acrova/domain/repository/billing/base_billing_repo.dart';
 import 'package:acrova/presentation/features/cubit/billing/payment_history_state.dart';
 import 'package:acrova/utils/enums/cubit_status.dart';
 import 'package:acrova/utils/enums/payment_filter_enum.dart';
-import 'package:acrova/utils/helpers/safe_async_call.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class PaymentHistoryCubit extends Cubit<PaymentHistoryState> {
@@ -15,9 +14,9 @@ class PaymentHistoryCubit extends Cubit<PaymentHistoryState> {
 
   Future<void> fetchPayments() async {
     emit(state.copyWith(status: CubitStatus.loading));
-    await safeCubitCall<List<PaymentModel>>(
-      call: _billingRepo.getPayments,
-      onSuccess: (payments) {
+    final result = await _billingRepo.getPayments();
+    result.when(
+      success: (payments) {
         emit(
           state.copyWith(
             status: CubitStatus.success,
@@ -26,7 +25,7 @@ class PaymentHistoryCubit extends Cubit<PaymentHistoryState> {
           ),
         );
       },
-      onError: (error) {
+      failure: (error) {
         emit(state.copyWith(status: CubitStatus.error, error: error));
       },
     );

@@ -7,7 +7,6 @@ import 'package:acrova/data/data_source/remote/network/models/network_response.d
 import 'package:acrova/data/models/auth/verify_otp_request_model.dart';
 import 'package:acrova/data/models/auth/verify_otp_response_model.dart';
 import 'package:acrova/data/models/billing/payment_model.dart';
-import 'package:acrova/data/models/dashboard/dashboard_data_model.dart';
 import 'package:acrova/data/models/interior_design/moodboard_model.dart';
 import 'package:acrova/data/models/notification/app_notification_model.dart';
 import 'package:acrova/data/models/portfolio/portfolio_item.dart';
@@ -41,11 +40,17 @@ import 'package:acrova/utils/enums/revision_status_enum.dart';
 import 'package:acrova/utils/helpers/result.dart';
 
 class _MockBase {
+  static const Duration _mockDelay = Duration(seconds: 2);
+
   bool shouldThrow(MockRepositoryKey key) =>
       MockConfig.scenario(key) == MockScenario.error;
 
   bool isEmpty(MockRepositoryKey key) =>
       MockConfig.scenario(key) == MockScenario.empty;
+
+  Future<void> simulateDelay() async {
+    await Future.delayed(_mockDelay);
+  }
 
   Failure<T> mockError<T>([String message = 'Mock operation failed']) =>
       Failure(
@@ -61,6 +66,9 @@ class MockAuthRepo extends _MockBase implements BaseAuthRepo {
   @override
   Future<Result<void>> login(String phoneNumber) async {
     if (shouldThrow(MockRepositoryKey.auth)) return mockError();
+
+    await simulateDelay();
+
     return const Success(null);
   }
 
@@ -69,6 +77,9 @@ class MockAuthRepo extends _MockBase implements BaseAuthRepo {
     VerifyOTPRequestModel verifyOTPRequestModel,
   ) async {
     if (shouldThrow(MockRepositoryKey.auth)) return mockError();
+
+    await simulateDelay();
+
     return const Success(
       VerifyOTPResponseModel(
         refreshToken: 'qwjkndfkjnqwoiqewoineqw',
@@ -85,12 +96,18 @@ class MockAuthRepo extends _MockBase implements BaseAuthRepo {
     required String language,
   }) async {
     if (shouldThrow(MockRepositoryKey.auth)) return mockError();
+
+    await simulateDelay();
+
     return const Success(null);
   }
 
   @override
   Future<Result<UserProfileModel>> getUserProfile() async {
     if (shouldThrow(MockRepositoryKey.auth)) return mockError();
+
+    await simulateDelay();
+
     return Success(
       UserProfileModel(
         name: 'Mohab Osama',
@@ -112,6 +129,9 @@ class MockAuthRepo extends _MockBase implements BaseAuthRepo {
     UpdateProfileRequest request,
   ) async {
     if (shouldThrow(MockRepositoryKey.auth)) return mockError();
+
+    await simulateDelay();
+
     return Success(
       UserProfileModel(
         name: request.name,
@@ -130,19 +150,28 @@ class MockAuthRepo extends _MockBase implements BaseAuthRepo {
   }
 
   @override
-  Future<Result<String?>> getRefreshToken() async =>
-      const Success('mock_refresh_token');
+  Future<Result<String?>> getRefreshToken() async {
+    await simulateDelay();
+    return const Success('mock_refresh_token');
+  }
 
   @override
-  Future<Result<String?>> getAccessToken() async =>
-      const Success('mock_access_token');
+  Future<Result<String?>> getAccessToken() async {
+    await simulateDelay();
+    return const Success('mock_access_token');
+  }
 
   @override
-  Future<Result<String?>> getFCMToken() async =>
-      const Success('mock_fcm_token');
+  Future<Result<String?>> getFCMToken() async {
+    await simulateDelay();
+    return const Success('mock_fcm_token');
+  }
 
   @override
-  Future<Result<void>> clearUserData() async => const Success(null);
+  Future<Result<void>> clearUserData() async {
+    await simulateDelay();
+    return const Success(null);
+  }
 }
 
 class MockProjectRepo extends _MockBase implements BaseProjectRepo {
@@ -222,57 +251,29 @@ class MockProjectRepo extends _MockBase implements BaseProjectRepo {
   ];
 
   @override
-  Future<Result<DashboardDataModel>> getDashboard() async {
-    if (shouldThrow(MockRepositoryKey.project)) return mockError();
-    if (isEmpty(MockRepositoryKey.project)) {
-      return const Success(
-        DashboardDataModel(
-          userName: '',
-          recentProjects: [],
-          exploreDesigns: [],
-          notificationCount: 0,
-        ),
-      );
-    }
-    return Success(
-      DashboardDataModel(
-        userName: 'Mohab',
-        recentProjects: _mockProjects,
-        exploreDesigns: [
-          DesignModel(
-            id: 'design_01',
-            title: 'Modern Minimalist Villa',
-            styleTag: 'MODERNISM',
-            imageAsset: Resources.drawables.img1,
-          ),
-          DesignModel(
-            id: 'design_02',
-            title: 'Najdi Heritage Manor',
-            styleTag: 'TRADITIONAL',
-            imageAsset: Resources.drawables.img2,
-          ),
-        ],
-        notificationCount: 2,
-        avatarUrl:
-            'https://png.pngtree.com/png-vector/20231019/ourmid/pngtree-user-profile-avatar-png-image_10211467.png',
-      ),
-    );
-  }
-
-  @override
   Future<Result<List<ProjectModel>>> getProjects() async {
     if (shouldThrow(MockRepositoryKey.project)) return mockError();
-    if (isEmpty(MockRepositoryKey.project)) return const Success([]);
+
+    await simulateDelay();
+
+    if (isEmpty(MockRepositoryKey.project)) {
+      return const Success([]);
+    }
+
     return Success(_mockProjects);
   }
 
   @override
   Future<Result<ProjectModel>> getProject(String id) async {
     if (shouldThrow(MockRepositoryKey.project)) return mockError();
+
+    await simulateDelay();
+
     final project = _mockProjects.firstWhere(
       (p) => p.id == id,
       orElse: () => _mockProjects.first,
     );
+
     return Success(project);
   }
 
@@ -281,6 +282,9 @@ class MockProjectRepo extends _MockBase implements BaseProjectRepo {
     CreateProjectRequest request,
   ) async {
     if (shouldThrow(MockRepositoryKey.project)) return mockError();
+
+    await simulateDelay();
+
     final newProject = ProjectModel(
       id: 'ARC-2024-${DateTime.now().millisecondsSinceEpoch % 100000}',
       name: '${request.projectType.displayLabel} Project',
@@ -305,6 +309,7 @@ class MockProjectRepo extends _MockBase implements BaseProjectRepo {
           'https://api.alhilwa.com.iq/uploads/projects/1774287086738-7ff23182f9452cf20ab58038546a.jpg',
       createdAt: DateTime.now(),
     );
+
     return Success(newProject);
   }
 
@@ -313,6 +318,9 @@ class MockProjectRepo extends _MockBase implements BaseProjectRepo {
     InteriorDesignRequest request,
   ) async {
     if (shouldThrow(MockRepositoryKey.project)) return mockError();
+
+    await simulateDelay();
+
     return const Success(null);
   }
 
@@ -350,7 +358,13 @@ class MockProjectRepo extends _MockBase implements BaseProjectRepo {
   @override
   Future<Result<List<MoodboardModel>>> getMoodboards() async {
     if (shouldThrow(MockRepositoryKey.project)) return mockError();
-    if (isEmpty(MockRepositoryKey.project)) return const Success([]);
+
+    await simulateDelay();
+
+    if (isEmpty(MockRepositoryKey.project)) {
+      return const Success([]);
+    }
+
     return const Success(_mockMoodboards);
   }
 }
@@ -405,17 +419,27 @@ class MockBillingRepo extends _MockBase implements BaseBillingRepo {
   @override
   Future<Result<List<PaymentModel>>> getPayments() async {
     if (shouldThrow(MockRepositoryKey.billing)) return mockError();
-    if (isEmpty(MockRepositoryKey.billing)) return const Success([]);
+
+    await simulateDelay();
+
+    if (isEmpty(MockRepositoryKey.billing)) {
+      return const Success([]);
+    }
+
     return Success(_mockPayments);
   }
 
   @override
   Future<Result<PaymentModel>> getPaymentDetails(String paymentId) async {
     if (shouldThrow(MockRepositoryKey.billing)) return mockError();
+
+    await simulateDelay();
+
     final payment = _mockPayments.firstWhere(
       (p) => p.id == paymentId,
       orElse: () => _mockPayments.first,
     );
+
     return Success(payment);
   }
 
@@ -425,12 +449,18 @@ class MockBillingRepo extends _MockBase implements BaseBillingRepo {
     required String receiptPath,
   }) async {
     if (shouldThrow(MockRepositoryKey.billing)) return mockError();
+
+    await simulateDelay();
+
     return const Success(null);
   }
 
   @override
   Future<Result<PaymentQuoteModel>> getPaymentQuote(String projectId) async {
     if (shouldThrow(MockRepositoryKey.billing)) return mockError();
+
+    await simulateDelay();
+
     if (isEmpty(MockRepositoryKey.billing)) {
       return Success(
         PaymentQuoteModel(
@@ -446,6 +476,7 @@ class MockBillingRepo extends _MockBase implements BaseBillingRepo {
         ),
       );
     }
+
     return Success(
       PaymentQuoteModel(
         projectId: projectId,
@@ -493,13 +524,22 @@ class MockNotificationsRepo extends _MockBase implements BaseNotificationsRepo {
   @override
   Future<Result<List<AppNotificationModel>>> getNotifications() async {
     if (shouldThrow(MockRepositoryKey.notifications)) return mockError();
-    if (isEmpty(MockRepositoryKey.notifications)) return const Success([]);
+
+    await simulateDelay();
+
+    if (isEmpty(MockRepositoryKey.notifications)) {
+      return const Success([]);
+    }
+
     return Success(_mockNotifications);
   }
 
   @override
   Future<Result<void>> markAllAsRead() async {
     if (shouldThrow(MockRepositoryKey.notifications)) return mockError();
+
+    await simulateDelay();
+
     return const Success(null);
   }
 }
@@ -534,28 +574,42 @@ class MockRevisionsRepo extends _MockBase implements BaseRevisionsRepo {
   @override
   Future<Result<List<RevisionModel>>> getRevisions() async {
     if (shouldThrow(MockRepositoryKey.revisions)) return mockError();
-    if (isEmpty(MockRepositoryKey.revisions)) return const Success([]);
+
+    await simulateDelay();
+
+    if (isEmpty(MockRepositoryKey.revisions)) {
+      return const Success([]);
+    }
+
     return Success(_mockRevisions);
   }
 
   @override
   Future<Result<RevisionModel>> getRevision(String id) async {
     if (shouldThrow(MockRepositoryKey.revisions)) return mockError();
+
+    await simulateDelay();
+
     final revision = _mockRevisions.firstWhere(
       (r) => r.id == id,
       orElse: () => _mockRevisions.first,
     );
+
     return Success(revision);
   }
 
   @override
   Future<Result<RevisionQuotaModel>> getQuota() async {
     if (shouldThrow(MockRepositoryKey.revisions)) return mockError();
+
+    await simulateDelay();
+
     if (isEmpty(MockRepositoryKey.revisions)) {
       return const Success(
         RevisionQuotaModel(used: 3, total: 3, currency: 'SAR', paidCost: 500),
       );
     }
+
     return const Success(
       RevisionQuotaModel(used: 1, total: 3, currency: 'SAR', paidCost: 500),
     );
@@ -566,6 +620,9 @@ class MockRevisionsRepo extends _MockBase implements BaseRevisionsRepo {
     CreateRevisionRequest request,
   ) async {
     if (shouldThrow(MockRepositoryKey.revisions)) return mockError();
+
+    await simulateDelay();
+
     final newRev = RevisionModel(
       id: 'rev_${DateTime.now().millisecondsSinceEpoch}',
       status: RevisionStatus.inProgress,
@@ -573,13 +630,20 @@ class MockRevisionsRepo extends _MockBase implements BaseRevisionsRepo {
       description: request.details,
       collaborators: const ['FA'],
     );
+
     return Success(newRev);
   }
 
   @override
   Future<Result<List<String>>> getDeliverableRefs() async {
     if (shouldThrow(MockRepositoryKey.revisions)) return mockError();
-    if (isEmpty(MockRepositoryKey.revisions)) return const Success([]);
+
+    await simulateDelay();
+
+    if (isEmpty(MockRepositoryKey.revisions)) {
+      return const Success([]);
+    }
+
     return const Success([
       'Floor Plan v1.1 — Main Residence',
       'Exterior Renderings v2',
@@ -592,7 +656,13 @@ class MockDashboardRepo extends _MockBase implements BaseDashboardRepo {
   @override
   Future<Result<Map<String, dynamic>>> getDashboardData() async {
     if (shouldThrow(MockRepositoryKey.dashboard)) return mockError();
-    if (isEmpty(MockRepositoryKey.dashboard)) return const Success({});
+
+    await simulateDelay();
+
+    if (isEmpty(MockRepositoryKey.dashboard)) {
+      return const Success({});
+    }
+
     return const Success({'userName': 'Mohab', 'notificationCount': 2});
   }
 }
@@ -729,8 +799,25 @@ class MockPortfolioRepo extends _MockBase implements BasePortfolioRepo {
   @override
   Future<Result<List<PortfolioItem>>> getPortfolioItems() async {
     if (shouldThrow(MockRepositoryKey.portfolio)) return mockError();
-    if (isEmpty(MockRepositoryKey.portfolio)) return const Success([]);
+
+    await simulateDelay();
+
+    if (isEmpty(MockRepositoryKey.portfolio)) {
+      return const Success([]);
+    }
+
     return Success(_mockItems);
+  }
+
+  @override
+  Future<Result<PortfolioItem>> getPortfolioItemByID(String id) async {
+    if (shouldThrow(MockRepositoryKey.portfolio)) return mockError();
+    await simulateDelay();
+    final item = _mockItems.firstWhere(
+      (p) => p.id == id,
+      orElse: () => _mockItems.first,
+    );
+    return Success(item);
   }
 }
 
@@ -738,6 +825,9 @@ class MockDeliverablesRepo extends _MockBase implements BaseDeliverablesRepo {
   @override
   Future<Result<DeliverablesData>> getDeliverables() async {
     if (shouldThrow(MockRepositoryKey.deliverables)) return mockError();
+
+    await simulateDelay();
+
     if (isEmpty(MockRepositoryKey.deliverables)) {
       return const Success(
         DeliverablesData(
@@ -750,6 +840,7 @@ class MockDeliverablesRepo extends _MockBase implements BaseDeliverablesRepo {
         ),
       );
     }
+
     return Success(
       DeliverablesData(
         projectName: 'AL-RIYADH ESTATE',
@@ -829,6 +920,9 @@ class MockContactUsRepo extends _MockBase implements BaseContactUsRepo {
     required String details,
   }) async {
     if (shouldThrow(MockRepositoryKey.contactUs)) return mockError();
+
+    await simulateDelay();
+
     return const Success(null);
   }
 }
@@ -838,6 +932,9 @@ class MockAppConfigRepo extends _MockBase implements BaseAppConfigRepo {
   Future<Result<NetworkResponse<MinAppVersionResponseModel>>>
   getMinAppVersion() async {
     if (shouldThrow(MockRepositoryKey.appConfig)) return mockError();
+
+    await simulateDelay();
+
     return Success(
       NetworkResponse(
         isSuccess: true,
@@ -851,18 +948,23 @@ class MockLocalizationRepo extends _MockBase implements BaseLocalizationRepo {
   @override
   Future<Result<void>> saveLocale(String languageCode) async {
     if (shouldThrow(MockRepositoryKey.localization)) return mockError();
+
+    await simulateDelay();
+
     return const Success(null);
   }
 
   @override
   Result<Locale?> getSavedLocale() {
     if (shouldThrow(MockRepositoryKey.localization)) return mockError();
+
     return const Success(null);
   }
 
   @override
   Future<Result<void>> clearLocale() async {
     if (shouldThrow(MockRepositoryKey.localization)) return mockError();
+    await simulateDelay();
     return const Success(null);
   }
 }

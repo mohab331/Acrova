@@ -43,46 +43,51 @@ class _ProjectDetailView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final heroHeight = MediaQuery.of(context).size.height * 0.4;
-
+    var projectDetailCubit = context.read<ProjectDetailCubit>();
     return BlocBuilder<ProjectDetailCubit, ProjectDetailState>(
       builder: (context, state) {
         if (state.isLoading || (state.project == null && !state.isError)) {
           return const CommonShimmerLoading(isDetail: true);
         }
-
         if (state.isError) {
           return CommonErrorWidget(
             error: state.appErrorModel,
-            onRetry: () => context.read<ProjectDetailCubit>().fetchProject(),
+            onRetry: () => projectDetailCubit.fetchProject(),
           );
         }
 
         final project = state.project!;
-        return Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Flexible(
-              child: SingleChildScrollView(
-                child: Column(
-                  children: [
-                    SizedBox(
-                      height: heroHeight,
-                      child: AppCachedNetworkImage(
-                        imageUrl: project.thumbnailUrl ?? '',
-                        width: double.infinity,
-                        radius: 0,
+        return RefreshIndicator(
+          onRefresh: () {
+            return projectDetailCubit.fetchProject();
+          },
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Flexible(
+                child: SingleChildScrollView(
+                  physics: const AlwaysScrollableScrollPhysics(),
+                  child: Column(
+                    children: [
+                      SizedBox(
+                        height: heroHeight,
+                        child: AppCachedNetworkImage(
+                          imageUrl: project.thumbnailUrl ?? '',
+                          width: double.infinity,
+                          radius: 0,
+                        ),
                       ),
-                    ),
-                    Transform.translate(
-                      offset: Offset(0, -Resources.verticalDims.$24),
-                      child: ProjectContentSheet(project: project),
-                    ),
-                  ],
+                      Transform.translate(
+                        offset: Offset(0, -Resources.verticalDims.$24),
+                        child: ProjectContentSheet(project: project),
+                      ),
+                    ],
+                  ),
                 ),
               ),
-            ),
-            ProjectBottomCta(project: project),
-          ],
+              ProjectBottomCta(project: project),
+            ],
+          ),
         );
       },
     );

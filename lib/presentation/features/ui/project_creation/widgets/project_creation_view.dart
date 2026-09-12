@@ -2,14 +2,13 @@ import 'package:acrova/core/di/dependency_injector.dart';
 import 'package:acrova/presentation/app/navigation/app_route_enum.dart';
 import 'package:acrova/presentation/app/resources/resources.dart';
 import 'package:acrova/presentation/features/common_widgets/common_screen/common_screen.dart';
-import 'package:acrova/presentation/features/cubit/dashboard/dashboard_cubit.dart';
 import 'package:acrova/presentation/features/cubit/project_creation/project_creation_cubit.dart';
 import 'package:acrova/presentation/features/cubit/project_creation/project_creation_state.dart';
-import 'package:acrova/presentation/features/cubit/projects/projects_cubit.dart';
 import 'package:acrova/presentation/features/ui/project_creation/widgets/project_success_dialog.dart';
 import 'package:acrova/presentation/features/ui/project_creation/widgets/wizard_app_bar.dart';
 import 'package:acrova/presentation/features/ui/project_creation/widgets/wizard_bottom_bar.dart';
 import 'package:acrova/presentation/features/ui/project_creation/widgets/wizard_step_body.dart';
+import 'package:acrova/presentation/features/ui/projects/cubit/projects_cubit.dart';
 import 'package:acrova/utils/extensions/localization_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -56,7 +55,6 @@ class ProjectCreationView extends StatelessWidget {
 
   void _handleListener(BuildContext context, ProjectCreationState state) {
     if (state.isSubmitSuccess && state.createdProject != null) {
-      serviceLocatorInstance<DashboardCubit>().fetchDashboardData();
       serviceLocatorInstance<ProjectsCubit>().fetchProjects();
       showDialog<void>(
         context: context,

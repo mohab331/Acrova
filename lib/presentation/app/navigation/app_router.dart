@@ -5,10 +5,7 @@ import 'package:acrova/data/models/profile/user_profile_model.dart';
 import 'package:acrova/data/models/revision/revision_model.dart';
 import 'package:acrova/presentation/app/navigation/args/navigation_args.dart';
 import 'package:acrova/presentation/features/cubit/auth/auth_cubit.dart';
-import 'package:acrova/presentation/features/cubit/dashboard/dashboard_cubit.dart';
 import 'package:acrova/presentation/features/cubit/deliverables/deliverables_state.dart';
-import 'package:acrova/presentation/features/cubit/profile/profile_cubit.dart';
-import 'package:acrova/presentation/features/cubit/projects/projects_cubit.dart';
 import 'package:acrova/presentation/features/ui/auth/identity_verification/identity_verification_page.dart';
 import 'package:acrova/presentation/features/ui/auth/phone_input/phone_input_page.dart';
 import 'package:acrova/presentation/features/ui/auth/profile_setup/profile_setup_page.dart';
@@ -23,7 +20,7 @@ import 'package:acrova/presentation/features/ui/contact_us/contact_us_page.dart'
 import 'package:acrova/presentation/features/ui/dashboard/dashboard_page.dart';
 import 'package:acrova/presentation/features/ui/deliverables/deliverables_page.dart';
 import 'package:acrova/presentation/features/ui/interior_design/interior_design_page.dart';
-import 'package:acrova/presentation/features/ui/messages/messages_page.dart';
+import 'package:acrova/presentation/features/ui/notifications/cubit/notifications_cubit.dart';
 import 'package:acrova/presentation/features/ui/notifications/notifications_page.dart';
 import 'package:acrova/presentation/features/ui/portfolio/portfolio_detail_page.dart';
 import 'package:acrova/presentation/features/ui/portfolio/portfolio_item.dart';
@@ -53,9 +50,6 @@ final _shellProjectsKey = GlobalKey<NavigatorState>(
 );
 final _shellPortfolioKey = GlobalKey<NavigatorState>(
   debugLabel: 'shell-portfolio',
-);
-final _shellMessagesKey = GlobalKey<NavigatorState>(
-  debugLabel: 'shell-messages',
 );
 final _shellProfileKey = GlobalKey<NavigatorState>(debugLabel: 'shell-profile');
 
@@ -151,8 +145,8 @@ class AppRouter {
         path: AppRouteEnum.portfolioDetailPage.path,
         name: AppRouteEnum.portfolioDetailPage.name,
         builder: (_, state) {
-          final item = state.extra as PortfolioItem;
-          return PortfolioDetailPage(item: item);
+          final item = state.extra as PortfolioItem?;
+          return PortfolioDetailPage(portfolioItem: item);
         },
       ),
 
@@ -307,9 +301,11 @@ class AppRouter {
       StatefulShellRoute.indexedStack(
         builder: (_, __, navigationShell) => MultiBlocProvider(
           providers: [
-            BlocProvider.value(value: serviceLocatorInstance<DashboardCubit>()),
-            BlocProvider.value(value: serviceLocatorInstance<ProjectsCubit>()),
-            BlocProvider.value(value: serviceLocatorInstance<ProfileCubit>()),
+            BlocProvider(
+              create: (_) =>
+                  serviceLocatorInstance<NotificationsCubit>()
+                    ..fetchNotifications(),
+            ),
           ],
           child: ShellScaffold(navigationShell: navigationShell),
         ),
@@ -344,17 +340,6 @@ class AppRouter {
                 path: AppRouteEnum.portfolioPage.path,
                 name: AppRouteEnum.portfolioPage.name,
                 builder: (_, __) => const PortfolioPage(),
-              ),
-            ],
-          ),
-          // MESSAGES tab
-          StatefulShellBranch(
-            navigatorKey: _shellMessagesKey,
-            routes: [
-              GoRoute(
-                path: AppRouteEnum.messagesPage.path,
-                name: AppRouteEnum.messagesPage.name,
-                builder: (_, __) => const MessagesPage(),
               ),
             ],
           ),
