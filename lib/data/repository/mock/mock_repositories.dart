@@ -4,6 +4,8 @@ import 'package:acrova/core/config/mock_config.dart';
 import 'package:acrova/core/error/app_error_model.dart';
 import 'package:acrova/core/error/error_codes_enum.dart';
 import 'package:acrova/data/data_source/remote/network/models/network_response.dart';
+import 'package:acrova/data/models/auth/verify_otp_request_model.dart';
+import 'package:acrova/data/models/auth/verify_otp_response_model.dart';
 import 'package:acrova/data/models/billing/payment_model.dart';
 import 'package:acrova/data/models/dashboard/dashboard_data_model.dart';
 import 'package:acrova/data/models/interior_design/moodboard_model.dart';
@@ -63,15 +65,16 @@ class MockAuthRepo extends _MockBase implements BaseAuthRepo {
   }
 
   @override
-  Future<Result<void>> verifyOtp(String otp) async {
+  Future<Result<VerifyOTPResponseModel>> verifyOtp(
+    VerifyOTPRequestModel verifyOTPRequestModel,
+  ) async {
     if (shouldThrow(MockRepositoryKey.auth)) return mockError();
-    return const Success(null);
-  }
-
-  @override
-  Future<Result<bool>> isNewUser() async {
-    if (shouldThrow(MockRepositoryKey.auth)) return mockError();
-    return const Success(false);
+    return const Success(
+      VerifyOTPResponseModel(
+        refreshToken: 'qwjkndfkjnqwoiqewoineqw',
+        accessToken: 'qwjkndfkjnqwoiqewoineqw',
+      ),
+    );
   }
 
   @override

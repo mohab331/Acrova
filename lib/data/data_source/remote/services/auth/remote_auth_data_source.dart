@@ -1,5 +1,7 @@
 import 'package:acrova/data/data_source/base/base_auth_data_source.dart';
 import 'package:acrova/data/data_source/remote/network/api_client.dart';
+import 'package:acrova/data/models/auth/verify_otp_request_model.dart';
+import 'package:acrova/data/models/auth/verify_otp_response_model.dart';
 import 'package:acrova/data/models/profile/user_profile_model.dart';
 import 'package:acrova/data/models/request/profile/update_profile_request.dart';
 
@@ -15,9 +17,10 @@ class RemoteAuthDataSource implements BaseAuthDataSource {
   }
 
   @override
-  Future<void> verifyOtp(String otp) async {
+  Future<VerifyOTPResponseModel> verifyOtp(VerifyOTPRequestModel otp) async {
     // TODO: implement real API call
     // await apiClient.post('auth/verify-otp', data: {'otp': otp});
+    throw UnimplementedError();
   }
 
   @override

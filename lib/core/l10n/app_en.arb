@@ -615,5 +615,7 @@
   "interiorDesignTagVibrant": "Vibrant",
   "interiorDesignTagSerene": "Serene",
   "bankNameDefault": "Saudi National Bank",
-  "bankAccountNameDefault": "Arcova Real Estate"
+  "bankAccountNameDefault": "Arcova Real Estate",
+  "resend_otp_success": "A new verification code has been sent.",
+  "resend_otp_limit": "You’ve reached the resend limit. Please try again shortly."
 }

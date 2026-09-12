@@ -1,9 +1,13 @@
+import 'package:acrova/data/models/auth/verify_otp_request_model.dart';
+import 'package:acrova/data/models/auth/verify_otp_response_model.dart';
 import 'package:acrova/data/models/profile/user_profile_model.dart';
 import 'package:acrova/data/models/request/profile/update_profile_request.dart';
 
 abstract class BaseAuthDataSource {
   Future<void> login(String phoneNumber);
-  Future<void> verifyOtp(String otp);
+  Future<VerifyOTPResponseModel> verifyOtp(
+    VerifyOTPRequestModel verifyOTPRequestModel,
+  );
   Future<bool> isNewUser();
   Future<void> saveUserProfile({
     required String name,

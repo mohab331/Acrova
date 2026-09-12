@@ -27,6 +27,9 @@ class PhoneInputState extends Equatable {
     );
   }
 
+  /// Full E.164-like phone string passed to the backend: e.g. "+96651XXXXXXX"
+  String get fullPhone => '${country.code}${phone.replaceAll(' ', '')}';
+
   @override
   List<Object?> get props => [country.iso2, phone, error];
 }

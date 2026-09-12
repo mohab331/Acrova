@@ -92,10 +92,7 @@ class AppRouter {
         path: AppRouteEnum.identityVerificationPage.path,
         name: AppRouteEnum.identityVerificationPage.name,
         builder: (_, state) {
-          final phoneNumber = state.extra is String
-              ? state.extra as String
-              : null;
-          return IdentityVerificationPage(phoneNumber: phoneNumber);
+          return const IdentityVerificationPage();
         },
       ),
       GoRoute(

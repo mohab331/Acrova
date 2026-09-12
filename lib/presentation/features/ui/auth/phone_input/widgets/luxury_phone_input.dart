@@ -1,6 +1,6 @@
 import 'package:acrova/presentation/app/resources/resources.dart';
+import 'package:acrova/presentation/features/ui/auth/phone_input/cubit/phone_input_cubit.dart';
 import 'package:acrova/presentation/features/ui/auth/phone_input/models/country.dart';
-import 'package:acrova/presentation/features/ui/auth/phone_input/phone_input_cubit.dart';
 import 'package:acrova/utils/extensions/localization_extension.dart';
 import 'package:acrova/utils/extensions/theme_extension.dart';
 import 'package:flutter/material.dart';
@@ -37,14 +37,6 @@ class _LuxuryPhoneInputState extends State<LuxuryPhoneInput> {
       builder: (context, state) {
         final cubit = context.read<PhoneInputCubit>();
         final hasError = state.error != null;
-
-        if (_controller.text != state.phone) {
-          _controller.value = TextEditingValue(
-            text: state.phone,
-            selection: TextSelection.collapsed(offset: state.phone.length),
-          );
-        }
-
         final borderColor = hasError
             ? Resources.colors.luxuryError
             : Resources.colors.luxuryGoldLight;
@@ -55,7 +47,7 @@ class _LuxuryPhoneInputState extends State<LuxuryPhoneInput> {
             Row(
               children: [
                 GestureDetector(
-                  onTap: () => _openCountryPicker(context, cubit),
+                  // onTap: () => _openCountryPicker(context, cubit),
                   behavior: HitTestBehavior.opaque,
                   child: Padding(
                     padding: EdgeInsets.only(
@@ -72,26 +64,34 @@ class _LuxuryPhoneInputState extends State<LuxuryPhoneInput> {
                             fontWeight: Resources.fontWeights.semiBold,
                           ),
                         ),
-                        SizedBox(width: Resources.horizontalDims.$4),
-                        Icon(
-                          Icons.keyboard_arrow_down_rounded,
-                          size: Resources.iconSizes.$16,
-                          color: Resources.colors.luxuryBody,
-                        ),
+                        // SizedBox(width: Resources.horizontalDims.$4),
+                        // Icon(
+                        //   Icons.keyboard_arrow_down_rounded,
+                        //   size: Resources.iconSizes.$16,
+                        //   color: Resources.colors.luxuryBody,
+                        // ),
                       ],
                     ),
                   ),
                 ),
 
                 Expanded(
-                  child: TextField(
+                  child: TextFormField(
                     controller: _controller,
                     keyboardType: TextInputType.phone,
                     textInputAction: TextInputAction.done,
                     inputFormatters: [
                       FilteringTextInputFormatter.allow(RegExp(r'[\d\s]')),
                     ],
-                    onChanged: cubit.onPhoneChanged,
+                    onChanged: (value) {
+                      _controller.text = PhoneFormatter.format(
+                        value,
+                        state.country,
+                      );
+                      cubit.onPhoneChanged(_controller.text);
+                    },
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
+                    autofocus: true,
                     style: context.textTheme.bodyMedium?.copyWith(
                       color: Resources.colors.luxuryInk,
                       fontWeight: Resources.fontWeights.semiBold,

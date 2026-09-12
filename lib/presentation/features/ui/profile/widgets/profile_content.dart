@@ -37,8 +37,8 @@ class ProfileContent extends StatelessWidget {
           ProfileHeaderCard(profile: profile, onEdit: onEdit),
           SizedBox(height: Resources.verticalDims.$24),
           ProfileStatsRow(
-            projectsCount: profile.projectsCount,
-            completedCount: profile.completedCount,
+            projectsCount: profile.projectsCount ?? 0,
+            completedCount: profile.completedCount ?? 0,
           ),
           SizedBox(height: Resources.verticalDims.$24),
           ProfileSection(

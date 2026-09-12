@@ -26,7 +26,9 @@ class AvatarWidget extends StatelessWidget {
           ? ClipOval(child: AppCachedNetworkImage(imageUrl: avatarUrl!))
           : Center(
               child: Text(
-                displayName.firstOrNull?.toUpperCase() ?? '',
+                displayName.isEmpty
+                    ? displayName
+                    : displayName[0].toUpperCase(),
                 style: TextStyle(
                   fontFamily: Resources.fonts.manrope,
                   fontSize: Resources.fontSizes.$16,

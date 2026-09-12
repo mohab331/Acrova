@@ -35,18 +35,15 @@ class AcrovaApp extends StatelessWidget {
         ),
         minTextAdapt: true,
         builder: (final context, final child) {
+          final localizationCubit = context.read<LocalizationCubit>();
           return ToastificationWrapper(
             child: MaterialApp.router(
               routerConfig: AppRouter.router,
               title: AppConstants.appName,
               debugShowCheckedModeBanner: false,
               locale: context.watch<LocalizationCubit>().state,
-              localizationsDelegates: context
-                  .read<LocalizationCubit>()
-                  .localizationDelegates,
-              supportedLocales: context
-                  .read<LocalizationCubit>()
-                  .supportedLocales,
+              localizationsDelegates: localizationCubit.localizationDelegates,
+              supportedLocales: localizationCubit.supportedLocales,
               builder: (final context, final child) {
                 final locale = Localizations.localeOf(context);
                 return MediaQuery(

@@ -2,7 +2,7 @@ import 'package:acrova/core/l10n/app_localizations.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 
-import 'models/country.dart';
+import '../models/country.dart';
 
 part 'phone_input_state.dart';
 
@@ -10,8 +10,7 @@ class PhoneInputCubit extends Cubit<PhoneInputState> {
   PhoneInputCubit() : super(PhoneInputState.initial());
 
   void onPhoneChanged(String value) {
-    final formatted = PhoneFormatter.format(value, state.country);
-    emit(state.copyWith(phone: formatted, clearError: true));
+    emit(state.copyWith(phone: value, clearError: true));
   }
 
   void onCountryChanged(Country country) {
@@ -27,8 +26,4 @@ class PhoneInputCubit extends Cubit<PhoneInputState> {
     }
     return true;
   }
-
-  /// Full E.164-like phone string passed to the backend: e.g. "+96651XXXXXXX"
-  String get fullPhone =>
-      '${state.country.code}${state.phone.replaceAll(' ', '')}';
 }

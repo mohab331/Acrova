@@ -45,7 +45,7 @@ class ProfileHeaderCard extends StatelessWidget {
           ),
           SizedBox(height: Resources.verticalDims.$16),
           Text(
-            profile.name,
+            profile.name ?? '',
             style: context.textTheme.labelLarge?.copyWith(
               fontSize: Resources.fontSizes.$20,
               fontWeight: Resources.fontWeights.bold,
@@ -54,7 +54,7 @@ class ProfileHeaderCard extends StatelessWidget {
           ),
           SizedBox(height: Resources.verticalDims.$8),
           Text(
-            profile.email,
+            profile.email ?? '',
             style: context.textTheme.bodyMedium?.copyWith(
               fontSize: Resources.fontSizes.$14,
               color: Resources.colors.luxuryBodyMuted,

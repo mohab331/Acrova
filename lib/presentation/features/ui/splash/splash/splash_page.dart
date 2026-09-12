@@ -40,6 +40,7 @@ class SplashPage extends StatelessWidget {
     }
 
     if (!context.mounted) return;
+
     if ((state.userToken?.isNotEmpty ?? false)) {
       context.goTo(AppRouteEnum.homePage.name);
     } else {

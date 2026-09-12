@@ -1,6 +1,5 @@
 import 'package:equatable/equatable.dart';
 
-/// Immutable read model for the signed-in customer's profile.
 class UserProfileModel extends Equatable {
   const UserProfileModel({
     required this.name,
@@ -11,19 +10,18 @@ class UserProfileModel extends Equatable {
     required this.memberSince,
     required this.projectsCount,
     required this.completedCount,
-    this.avatarUrl,
+    required this.avatarUrl,
   });
 
-  final String name;
-  final String email;
-  final String mobileNumber;
-  final String nationalId;
-  final String language; // 'en' | 'ar'
-  final DateTime memberSince;
-  final int projectsCount;
-  final int completedCount;
+  final String? name;
+  final String? email;
+  final String? mobileNumber;
+  final String? nationalId;
+  final String? language;
+  final DateTime? memberSince;
+  final int? projectsCount;
+  final int? completedCount;
   final String? avatarUrl;
-
   UserProfileModel copyWith({
     String? name,
     String? email,
@@ -48,17 +46,16 @@ class UserProfileModel extends Equatable {
 
   factory UserProfileModel.fromJson(Map<String, dynamic> json) =>
       UserProfileModel(
-        name: json['name'] as String? ?? '',
-        email: json['email'] as String? ?? '',
-        mobileNumber: json['mobile_number'] as String? ?? '',
-        nationalId: json['national_id'] as String? ?? '',
-        language: json['language'] as String? ?? 'en',
+        name: json['name'],
+        email: json['email'],
+        mobileNumber: json['mobile_number'],
+        nationalId: json['national_id'],
+        language: json['language'] ?? 'en',
         memberSince:
-            DateTime.tryParse(json['member_since'] as String? ?? '') ??
-            DateTime.now(),
-        projectsCount: json['projects_count'] as int? ?? 0,
-        completedCount: json['completed_count'] as int? ?? 0,
-        avatarUrl: json['avatar_url'] as String?,
+            DateTime.tryParse(json['member_since'] ?? '') ?? DateTime.now(),
+        projectsCount: json['projects_count'],
+        completedCount: json['completed_count'],
+        avatarUrl: json['avatar_url'],
       );
 
   Map<String, dynamic> toJson() => {
@@ -67,7 +64,7 @@ class UserProfileModel extends Equatable {
     'mobile_number': mobileNumber,
     'national_id': nationalId,
     'language': language,
-    'member_since': memberSince.toIso8601String(),
+    'member_since': memberSince?.toIso8601String(),
     'projects_count': projectsCount,
     'completed_count': completedCount,
     'avatar_url': avatarUrl,

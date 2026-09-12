@@ -23,9 +23,9 @@ class EditProfileState extends Equatable {
   factory EditProfileState.fromProfile(UserProfileModel profile) =>
       EditProfileState(
         cubitStatus: CubitStatus.initial,
-        name: profile.name,
-        email: profile.email,
-        mobileNumber: profile.mobileNumber,
+        name: profile.name ?? '',
+        email: profile.email ?? '',
+        mobileNumber: profile.mobileNumber ?? '',
         avatarUrl: profile.avatarUrl,
       );
 

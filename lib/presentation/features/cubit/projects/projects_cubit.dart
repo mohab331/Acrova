@@ -28,7 +28,9 @@ class ProjectsCubit extends Cubit<ProjectsCubitState> {
             success: (profile) {
               emit(
                 state.copyWith(
-                  userName: profile.name.isNotEmpty ? profile.name : null,
+                  userName: (profile.name?.isNotEmpty ?? false)
+                      ? profile.name
+                      : null,
                   avatarUrl: profile.avatarUrl,
                 ),
               );
