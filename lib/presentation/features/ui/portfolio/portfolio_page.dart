@@ -85,63 +85,66 @@ class _PortfolioPageViewState extends State<_PortfolioPageView> {
               child: SingleChildScrollView(
                 controller: _scrollController,
                 physics: const AlwaysScrollableScrollPhysics(),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  Text(
-                    context.localization.portfolioExploreTitle,
-                    style: context.textTheme.titleMedium?.copyWith(
-                      color: Resources.colors.luxuryNavy,
-                      fontWeight: Resources.fontWeights.semiBold,
-                    ),
-                  ),
-                  SizedBox(height: Resources.verticalDims.$4),
-                  Text(
-                    context.localization.portfolioExploreSubtitle,
-                    style: context.textTheme.labelMedium?.copyWith(
-                      color: Resources.colors.luxuryBodyMuted,
-                    ),
-                  ),
-                  SizedBox(height: Resources.verticalDims.$20),
-                  PortfolioFilterRow(
-                    selected: state.filter,
-                    onSelect: (f) =>
-                        context.read<PortfolioCubit>().setFilter(f),
-                    filters: state.filters,
-                  ),
-                  SizedBox(height: Resources.verticalDims.$20),
-                  if (items.isEmpty)
-                    Padding(
-                      padding: EdgeInsets.only(top: Resources.verticalDims.$80),
-                      child: Center(
-                        child: Text(
-                          context.localization.noDesignsCategory,
-                          style: TextStyle(
-                            fontSize: Resources.fontSizes.$14,
-                            color: Resources.colors.luxuryBodyMuted,
-                          ),
-                        ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    Text(
+                      context.localization.portfolioExploreTitle,
+                      style: context.textTheme.titleMedium?.copyWith(
+                        color: Resources.colors.luxuryNavy,
+                        fontWeight: Resources.fontWeights.semiBold,
                       ),
-                    )
-                  else
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        PortfolioHeroCard(
-                          item: items.first,
-                          onTap: () => _openDetail(context, items.first),
-                        ),
-                        if (items.length > 1) ...[
-                          SizedBox(height: Resources.verticalDims.$20),
-                          PortfolioGalleryGrid(
-                            items: items.skip(1).toList(),
-                            onTap: (item) => _openDetail(context, item),
-                          ),
-                        ],
-                      ],
                     ),
-                  SizedBox(height: Resources.verticalDims.$32),
-                ],
+                    SizedBox(height: Resources.verticalDims.$4),
+                    Text(
+                      context.localization.portfolioExploreSubtitle,
+                      style: context.textTheme.labelMedium?.copyWith(
+                        color: Resources.colors.luxuryBodyMuted,
+                      ),
+                    ),
+                    SizedBox(height: Resources.verticalDims.$20),
+                    PortfolioFilterRow(
+                      selected: state.filter,
+                      onSelect: (f) =>
+                          context.read<PortfolioCubit>().setFilter(f),
+                      filters: state.filters,
+                    ),
+                    SizedBox(height: Resources.verticalDims.$20),
+                    if (items.isEmpty)
+                      Padding(
+                        padding: EdgeInsets.only(
+                          top: Resources.verticalDims.$80,
+                        ),
+                        child: Center(
+                          child: Text(
+                            context.localization.noDesignsCategory,
+                            style: TextStyle(
+                              fontSize: Resources.fontSizes.$14,
+                              color: Resources.colors.luxuryBodyMuted,
+                            ),
+                          ),
+                        ),
+                      )
+                    else
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          PortfolioHeroCard(
+                            item: items.first,
+                            onTap: () => _openDetail(context, items.first),
+                          ),
+                          if (items.length > 1) ...[
+                            SizedBox(height: Resources.verticalDims.$20),
+                            PortfolioGalleryGrid(
+                              items: items.skip(1).toList(),
+                              onTap: (item) => _openDetail(context, item),
+                            ),
+                          ],
+                        ],
+                      ),
+                    SizedBox(height: Resources.verticalDims.$32),
+                  ],
+                ),
               ),
             ),
           ),
