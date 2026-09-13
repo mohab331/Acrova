@@ -1,18 +1,20 @@
+import 'package:acrova/presentation/app/navigation/app_route_enum.dart';
 import 'package:acrova/presentation/app/resources/resources.dart';
+import 'package:acrova/presentation/features/cubit/auth/auth_cubit.dart';
 import 'package:acrova/utils/extensions/localization_extension.dart';
+import 'package:acrova/utils/extensions/navigation_extension.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ProfileLogoutButton extends StatelessWidget {
-  const ProfileLogoutButton({required this.onLogout, super.key});
-
-  final VoidCallback onLogout;
+  const ProfileLogoutButton({super.key});
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
       width: double.infinity,
       child: OutlinedButton(
-        onPressed: onLogout,
+        onPressed: () => _logout(context),
         style: OutlinedButton.styleFrom(
           foregroundColor: Resources.colors.luxuryError,
           side: BorderSide(color: Resources.colors.luxuryError),
@@ -38,5 +40,12 @@ class ProfileLogoutButton extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  Future<void> _logout(BuildContext context) async {
+    await context.read<AuthCubit>().clearAuthData();
+    if (!context.mounted) return;
+    context.read<AuthCubit>().resetToInitial();
+    context.goTo(AppRouteEnum.welcomePage.path);
   }
 }

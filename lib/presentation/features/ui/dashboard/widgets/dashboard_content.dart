@@ -1,95 +1,68 @@
-import 'package:acrova/data/models/dashboard/dashboard_data_model.dart';
-import 'package:acrova/presentation/app/navigation/app_route_enum.dart';
 import 'package:acrova/presentation/app/resources/resources.dart';
-import 'package:acrova/presentation/features/common_widgets/app_bar/app_avatar_header.dart';
-import 'package:acrova/presentation/features/common_widgets/feedback/app_empty_state.dart';
-import 'package:acrova/presentation/features/common_widgets/layout/app_section_header.dart';
-import 'package:acrova/presentation/features/cubit/dashboard/dashboard_cubit.dart';
-import 'package:acrova/presentation/features/ui/dashboard/widgets/dashboard_design_gallery.dart';
+import 'package:acrova/presentation/features/common_widgets/feedback/app_error_state.dart';
+import 'package:acrova/presentation/features/cubit/auth/auth_cubit.dart';
 import 'package:acrova/presentation/features/ui/dashboard/widgets/dashboard_hero_banner.dart';
-import 'package:acrova/presentation/features/ui/dashboard/widgets/dashboard_project_card_item.dart';
-import 'package:acrova/presentation/features/ui/dashboard/widgets/dashboard_quick_actions_grid.dart';
-import 'package:acrova/utils/extensions/localization_extension.dart';
-import 'package:acrova/utils/extensions/theme_extension.dart';
+import 'package:acrova/presentation/features/ui/dashboard/widgets/explore_designs_section.dart';
+import 'package:acrova/presentation/features/ui/dashboard/widgets/quick_actions_section.dart';
+import 'package:acrova/presentation/features/ui/dashboard/widgets/recent_projects_section.dart';
+import 'package:acrova/presentation/features/ui/portfolio/cubit/portfolio_cubit.dart';
+import 'package:acrova/presentation/features/ui/projects/cubit/projects_cubit.dart';
+import 'package:acrova/utils/enums/cubit_status.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:go_router/go_router.dart';
 
 class DashboardContent extends StatelessWidget {
-  const DashboardContent({required this.data, super.key});
-
-  final DashboardDataModel data;
+  const DashboardContent({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final loc = context.localization;
+    final portfolioCubit = context.read<PortfolioCubit>();
+    final projectsCubit = context.read<ProjectsCubit>();
+    final authCubit = context.read<AuthCubit>();
+
+    final portfolioState = context.watch<PortfolioCubit>().state;
+    final projectsState = context.watch<ProjectsCubit>().state;
+    final authState = context.watch<AuthCubit>().state;
+
+    final isDashboardError = portfolioState.isError && projectsState.isError;
+
+    if (isDashboardError) {
+      return AppErrorState(
+        onRetry: () {
+          if (projectsState.isError) portfolioCubit.fetchPortfolio();
+          if (projectsState.isError) projectsCubit.fetchProjects();
+          if (authState.getUserCubitStatus == CubitStatus.error) {
+            authCubit.getUser();
+          }
+        },
+      );
+    }
 
     return RefreshIndicator(
       color: Resources.colors.luxuryGoldLight,
-      onRefresh: () => context.read<DashboardCubit>().fetchDashboardData(),
+      onRefresh: () => _onPullToRefresh(context),
       child: Column(
         children: [
-          AvatarHeader(
-            userName: data.userName,
-            notificationCount: data.notificationCount,
-            avatarUrl: data.avatarUrl,
-          ),
           Expanded(
             child: SingleChildScrollView(
+              physics: const AlwaysScrollableScrollPhysics(),
               child: Column(
+                mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const DashboardHeroBanner(),
                   SizedBox(height: Resources.verticalDims.$32),
-                  AppSectionHeader(
-                    title: loc.dashboardYourProjects,
-                    actionLabel: loc.dashboardViewAll,
-                    onActionTap: () =>
-                        context.go(AppRouteEnum.projectsPage.path),
-                    bottomSpacing: Resources.verticalDims.$16,
-                  ),
-                  if (data.recentProjects.isEmpty)
-                    AppEmptyState(
-                      icon: Icons.folder_open_outlined,
-                      title: loc.dashboardNoProjectsTitle,
-                      subtitle: loc.dashboardNoProjectsSubtitle,
-                      ctaLabel: loc.dashboardActionNewProject,
-                      onCtaTap: () =>
-                          context.push(AppRouteEnum.projectCreationPage.path),
-                    )
-                  else
-                    Column(
-                      children: data.recentProjects
-                          .map(
-                            (p) => Padding(
-                              padding: EdgeInsets.only(
-                                bottom: Resources.verticalDims.$12,
-                              ),
-                              child: DashboardProjectCardItem(project: p),
-                            ),
-                          )
-                          .toList(),
-                    ),
+
+                  /// Recent Projects Section ------------------------
+                  const RecentProjectsSection(),
                   SizedBox(height: Resources.verticalDims.$20),
-                  Text(
-                    loc.dashboardQuickActions,
-                    style: context.textTheme.titleLarge?.copyWith(
-                      color: Resources.colors.luxuryNavy,
-                      fontSize: Resources.fontSizes.$20,
-                      fontWeight: Resources.fontWeights.semiBold,
-                    ),
-                  ),
-                  SizedBox(height: Resources.verticalDims.$16),
-                  const DashboardQuickActionsGrid(),
+
+                  /// Quick Actions Grid ------------------------
+                  const QuickActionsSection(),
                   SizedBox(height: Resources.verticalDims.$32),
-                  AppSectionHeader(
-                    title: loc.dashboardExploreDesigns,
-                    actionLabel: loc.dashboardGallery,
-                    onActionTap: () =>
-                        context.goNamed(AppRouteEnum.portfolioPage.name),
-                    bottomSpacing: Resources.verticalDims.$16,
-                  ),
-                  DashboardDesignGallery(designs: data.exploreDesigns),
+
+                  /// Explore Designs Section ------------------------
+                  const ExploreDesignsSection(),
                   SizedBox(height: Resources.verticalDims.$32),
                 ],
               ),
@@ -98,5 +71,17 @@ class DashboardContent extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  Future<List<void>> _onPullToRefresh(BuildContext context) {
+    final portfolioCubit = context.read<PortfolioCubit>();
+    final projectsCubit = context.read<ProjectsCubit>();
+    final authCubit = context.read<AuthCubit>();
+
+    return Future.wait([
+      portfolioCubit.fetchPortfolio(),
+      projectsCubit.fetchProjects(),
+      authCubit.getUser(),
+    ]);
   }
 }

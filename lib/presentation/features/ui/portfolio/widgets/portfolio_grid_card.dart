@@ -22,7 +22,7 @@ class PortfolioGridCard extends StatelessWidget {
             fit: StackFit.expand,
             children: [
               AppCachedNetworkImage(
-                imageUrl: item.imageUrls.first,
+                imageUrl: item.imageUrls?.firstOrNull ?? '',
                 radius: Resources.radius.$r8,
               ),
               const DecoratedBox(
@@ -46,7 +46,7 @@ class PortfolioGridCard extends StatelessWidget {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       Text(
-                        item.style.toUpperCase(),
+                        item.style?.toUpperCase() ?? '',
                         style: context.textTheme.labelSmall?.copyWith(
                           fontSize: Resources.fontSizes.$8,
                           fontWeight: Resources.fontWeights.extraBold,
@@ -55,7 +55,7 @@ class PortfolioGridCard extends StatelessWidget {
                       ),
                       SizedBox(height: Resources.verticalDims.$4),
                       Text(
-                        item.title,
+                        item.title ?? '',
                         style: context.textTheme.titleMedium?.copyWith(
                           fontSize: Resources.fontSizes.$14,
                           fontWeight: Resources.fontWeights.semiBold,

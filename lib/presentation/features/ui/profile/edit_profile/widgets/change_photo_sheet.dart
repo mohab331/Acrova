@@ -6,16 +6,21 @@ import 'package:flutter/material.dart';
 enum ChangePhotoAction { camera, library, remove }
 
 /// Bottom sheet for choosing a profile-photo source.
-class ChangePhotoSheet extends StatelessWidget {
-  const ChangePhotoSheet({super.key});
+class PickFromSheet extends StatelessWidget {
+  const PickFromSheet({required this.showRemove, super.key});
+
+  final bool showRemove;
 
   /// Shows the sheet and resolves to the chosen [ChangePhotoAction] (or null).
-  static Future<ChangePhotoAction?> show(BuildContext context) {
+  static Future<ChangePhotoAction?> show(
+    BuildContext context, {
+    bool showRemove = true,
+  }) {
     return showModalBottomSheet<ChangePhotoAction>(
       context: context,
       backgroundColor: Colors.transparent,
       barrierColor: Resources.colors.luxuryInk.withValues(alpha: 0.6),
-      builder: (_) => const ChangePhotoSheet(),
+      builder: (_) => PickFromSheet(showRemove: showRemove),
     );
   }
 
@@ -58,14 +63,16 @@ class ChangePhotoSheet extends StatelessWidget {
                     onTap: () =>
                         Navigator.of(context).pop(ChangePhotoAction.library),
                   ),
-                  SizedBox(height: Resources.verticalDims.$16),
-                  _ActionRow(
-                    icon: Icons.delete_outline,
-                    label: l10n.changePhotoRemove,
-                    destructive: true,
-                    onTap: () =>
-                        Navigator.of(context).pop(ChangePhotoAction.remove),
-                  ),
+                  if (showRemove) ...[
+                    SizedBox(height: Resources.verticalDims.$16),
+                    _ActionRow(
+                      icon: Icons.delete_outline,
+                      label: l10n.changePhotoRemove,
+                      destructive: true,
+                      onTap: () =>
+                          Navigator.of(context).pop(ChangePhotoAction.remove),
+                    ),
+                  ],
                 ],
               ),
             ),

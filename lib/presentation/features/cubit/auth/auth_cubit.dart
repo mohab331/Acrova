@@ -1,6 +1,9 @@
+import 'package:acrova/core/error/app_error_model.dart';
+import 'package:acrova/data/models/auth/verify_otp_request_model.dart';
 import 'package:acrova/domain/repository/auth/base_auth_repo.dart';
 import 'package:acrova/domain/repository/notifications/base_fcm_token_repo.dart';
 import 'package:acrova/utils/enums/cubit_status.dart';
+import 'package:acrova/utils/extensions/non_null_extension.dart';
 import 'package:bloc/bloc.dart';
 
 import 'auth_state.dart';
@@ -16,72 +19,88 @@ class AuthCubit extends Cubit<AuthCubitState> {
   final BaseAuthRepo _baseAuthRepo;
   // ignore: unused_field
   final BaseFCMTokenRepo _fcmTokenRepo;
-
-  // ── Auth ──────────────────────────────────────────────────────────────────
-
-  /// Step 1: Send OTP to [phoneNumber].
-  Future<void> login(String phoneNumber) async {
-    emit(state.copyWith(cubitStatus: CubitStatus.loading));
+  Future<void> sendOTP(String phoneNumber) async {
+    emit(state.copyWith(sendOTPCubitStatus: CubitStatus.loading));
     final result = await _baseAuthRepo.login(phoneNumber);
     result.when(
-      success: (_) => emit(state.copyWith(cubitStatus: CubitStatus.success)),
+      success: (_) => emit(
+        state.copyWith(
+          sendOTPCubitStatus: CubitStatus.success,
+          phoneNumber: phoneNumber,
+        ),
+      ),
       failure: (error) => emit(
-        state.copyWith(cubitStatus: CubitStatus.error, appErrorModel: error),
+        state.copyWith(
+          sendOTPCubitStatus: CubitStatus.error,
+          sendOTPAppErrorModel: error,
+        ),
       ),
     );
   }
 
-  /// Step 2: Verify OTP then immediately check new-user flag.
-  ///
-  /// On success, [AuthCubitState.isNewUser] will be set:
-  /// - `true`  → navigate to ProfileSetupPage
-  /// - `false` → navigate to HomePage
-  Future<void> verifyOtpAndCheckNewUser(String otp) async {
-    emit(state.copyWith(cubitStatus: CubitStatus.loading));
+  Future<void> resendOTP() async {
+    emit(state.copyWith(resendOTPCubitStatus: CubitStatus.loading));
+    final result = await _baseAuthRepo.login(state.phoneNumber ?? '');
+    result.when(
+      success: (_) =>
+          emit(state.copyWith(resendOTPCubitStatus: CubitStatus.success)),
+      failure: (error) => emit(
+        state.copyWith(
+          resendOTPCubitStatus: CubitStatus.error,
+          resendOTPAppErrorModel: error,
+        ),
+      ),
+    );
+  }
 
-    final otpResult = await _baseAuthRepo.verifyOtp(otp);
-    otpResult.when(
-      success: (_) async {
-        final newUserResult = await _baseAuthRepo.isNewUser();
-        newUserResult.when(
-          success: (isNew) => emit(
-            state.copyWith(cubitStatus: CubitStatus.success, isNewUser: isNew),
-          ),
-          failure: (_) => emit(
-            state.copyWith(
-              cubitStatus: CubitStatus.success,
-              isNewUser: false, // default to home on check failure
-            ),
+  Future<void> getUser() async {
+    emit(state.copyWith(getUserCubitStatus: CubitStatus.loading));
+    final response = await _baseAuthRepo.getUserProfile();
+    response.when(
+      success: (data) {
+        emit(
+          state.copyWith(
+            getUserCubitStatus: CubitStatus.success,
+            userModel: data,
           ),
         );
       },
-      failure: (error) => emit(
-        state.copyWith(cubitStatus: CubitStatus.error, appErrorModel: error),
-      ),
+      failure: (error) {
+        emit(
+          state.copyWith(
+            getUserCubitStatus: CubitStatus.error,
+            getUserErrorModel: error,
+          ),
+        );
+      },
     );
   }
 
-  /// Step 3 (new users only): Save KYC profile then emit success.
-  /// Collects: full name, email, mobile number, national ID, preferred language.
-  Future<void> saveProfile({
-    required String name,
-    required String email,
-    required String nationalId,
-    required String language,
-  }) async {
-    emit(state.copyWith(cubitStatus: CubitStatus.loading));
-    final result = await _baseAuthRepo.saveProfile(
-      name: name,
-      email: email,
-      nationalId: nationalId,
-      language: language,
+  Future<void> verifyOtp(String? otp) async {
+    if (otp.isNullOrEmpty) {
+      emit(
+        state.copyWith(
+          verifyOTPCubitStatus: CubitStatus.error,
+          verifyOtpAppErrorModel: AppErrorModel.fromException(
+            ArgumentError('OTP is required', 'OTP'),
+          ),
+        ),
+      );
+      return;
+    }
+    emit(state.copyWith(verifyOTPCubitStatus: CubitStatus.loading));
+    final otpResult = await _baseAuthRepo.verifyOtp(
+      VerifyOTPRequestModel(otp: otp),
     );
-    result.when(
-      success: (_) => emit(
-        state.copyWith(cubitStatus: CubitStatus.success, isNewUser: false),
-      ),
+    otpResult.when(
+      success: (verifyOTPResponseModel) async {
+        emit(state.copyWith(verifyOTPCubitStatus: CubitStatus.success));
+      },
       failure: (error) => emit(
-        state.copyWith(cubitStatus: CubitStatus.error, appErrorModel: error),
+        state.copyWith(
+          verifyOTPCubitStatus: CubitStatus.error,
+          verifyOtpAppErrorModel: error,
+        ),
       ),
     );
   }

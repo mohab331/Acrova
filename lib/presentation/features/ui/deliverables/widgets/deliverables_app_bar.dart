@@ -1,7 +1,9 @@
 import 'dart:ui';
+
 import 'package:acrova/presentation/app/resources/resources.dart';
 import 'package:acrova/utils/extensions/localization_extension.dart';
 import 'package:acrova/utils/extensions/theme_extension.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -80,7 +82,7 @@ class DeliverablesAppBar extends StatelessWidget {
                     borderRadius: BorderRadius.circular(Resources.radius.$r4),
                     image: thumbnailUrl != null && thumbnailUrl!.isNotEmpty
                         ? DecorationImage(
-                            image: NetworkImage(thumbnailUrl!),
+                            image: CachedNetworkImageProvider(thumbnailUrl!),
                             fit: BoxFit.cover,
                           )
                         : null,

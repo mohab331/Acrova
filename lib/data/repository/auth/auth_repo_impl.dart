@@ -1,9 +1,12 @@
 import 'package:acrova/data/data_source/local/local_storage/base_local_storage.dart';
 import 'package:acrova/data/data_source/local/secure_storage/base_secure_storage.dart';
+import 'package:acrova/data/models/auth/verify_otp_request_model.dart';
+import 'package:acrova/data/models/auth/verify_otp_response_model.dart';
 import 'package:acrova/data/models/profile/user_profile_model.dart';
 import 'package:acrova/data/models/request/profile/update_profile_request.dart';
 import 'package:acrova/domain/repository/auth/base_auth_repo.dart';
 import 'package:acrova/utils/constants/secure_constants.dart';
+import 'package:acrova/utils/extensions/non_null_extension.dart';
 import 'package:acrova/utils/helpers/safe_async_call.dart';
 
 import '../../../utils/helpers/result.dart';
@@ -30,14 +33,27 @@ class AuthRepoImpl implements BaseAuthRepo {
   }
 
   @override
-  Future<Result<void>> verifyOtp(String otp) async {
+  Future<Result<VerifyOTPResponseModel>> verifyOtp(
+    VerifyOTPRequestModel verifyOTPRequestModel,
+  ) async {
     return safeAsyncCall(() async {
-      await _authDataSource.verifyOtp(otp);
+      final response = await _authDataSource.verifyOtp(verifyOTPRequestModel);
+      if (response.accessToken.isNullOrEmpty &&
+          response.refreshToken.isNullOrEmpty) {
+        throw Exception(
+          'Invalid Response: AccessToken: ${response.accessToken}, RefreshToken: ${response.refreshToken}',
+        );
+      }
+      await Future.wait([
+        _secureStorage.write(SecureConstants.accessToken, response.accessToken),
+        _secureStorage.write(
+          SecureConstants.refreshToken,
+          response.refreshToken,
+        ),
+      ]);
+      return response;
     });
   }
-
-  @override
-  Future<Result<bool>> isNewUser() => safeAsyncCall(_authDataSource.isNewUser);
 
   @override
   Future<Result<void>> saveProfile({

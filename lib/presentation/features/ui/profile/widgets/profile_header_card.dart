@@ -3,6 +3,7 @@ import 'package:acrova/presentation/app/resources/resources.dart';
 import 'package:acrova/presentation/features/common_widgets/cards/app_card.dart';
 import 'package:acrova/presentation/features/common_widgets/images/app_cached_network_image.dart';
 import 'package:acrova/utils/extensions/localization_extension.dart';
+import 'package:acrova/utils/extensions/media_query_extension.dart';
 import 'package:acrova/utils/extensions/theme_extension.dart';
 import 'package:flutter/material.dart';
 
@@ -25,6 +26,7 @@ class ProfileHeaderCard extends StatelessWidget {
       child: Column(
         children: [
           Container(
+            height: context.screenHeight * 0.1,
             width: Resources.squareDims.$80,
             decoration: BoxDecoration(
               shape: BoxShape.circle,
@@ -45,7 +47,7 @@ class ProfileHeaderCard extends StatelessWidget {
           ),
           SizedBox(height: Resources.verticalDims.$16),
           Text(
-            profile.name,
+            profile.name ?? '',
             style: context.textTheme.labelLarge?.copyWith(
               fontSize: Resources.fontSizes.$20,
               fontWeight: Resources.fontWeights.bold,
@@ -54,7 +56,7 @@ class ProfileHeaderCard extends StatelessWidget {
           ),
           SizedBox(height: Resources.verticalDims.$8),
           Text(
-            profile.email,
+            profile.email ?? '',
             style: context.textTheme.bodyMedium?.copyWith(
               fontSize: Resources.fontSizes.$14,
               color: Resources.colors.luxuryBodyMuted,

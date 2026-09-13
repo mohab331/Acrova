@@ -1,10 +1,7 @@
 import 'package:acrova/data/models/revision/revision_model.dart';
 import 'package:acrova/domain/repository/revisions/base_revisions_repo.dart';
-import 'package:acrova/utils/enums/cubit_status.dart';
-import 'package:acrova/utils/helpers/safe_async_call.dart';
-import 'package:bloc/bloc.dart';
-
-import 'revision_detail_state.dart';
+import 'package:acrova/presentation/features/ui/revisions/detail/cubit/revision_detail_state.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class RevisionDetailCubit extends Cubit<RevisionDetailState> {
   RevisionDetailCubit({
@@ -22,21 +19,21 @@ class RevisionDetailCubit extends Cubit<RevisionDetailState> {
   final BaseRevisionsRepo _revisionsRepo;
 
   Future<void> fetchRevision([String? id]) async {
-    final targetId = id ?? state.revisionId ?? state.revision?.id;
-    if (targetId == null || targetId.isEmpty) return;
-
-    emit(
-      state.copyWith(cubitStatus: CubitStatus.loading, revisionId: targetId),
-    );
-    await safeCubitCall<RevisionModel>(
-      call: () => _revisionsRepo.getRevision(targetId),
-      onSuccess: (revision) => emit(
-        state.copyWith(cubitStatus: CubitStatus.success, revision: revision),
-      ),
-      onError: (error) => emit(
-        state.copyWith(cubitStatus: CubitStatus.error, appErrorModel: error),
-      ),
-    );
+    // final targetId = id ?? state.revisionId ?? state.revision?.id;
+    // if (targetId == null || targetId.isEmpty) return;
+    //
+    // emit(
+    //   state.copyWith(cubitStatus: CubitStatus.loading, revisionId: targetId),
+    // );
+    // final result = await _revisionsRepo.getRevision(targetId);
+    // result.when(
+    //   success: (revision) => emit(
+    //     state.copyWith(cubitStatus: CubitStatus.success, revision: revision),
+    //   ),
+    //   failure: (error) => emit(
+    //     state.copyWith(cubitStatus: CubitStatus.error, appErrorModel: error),
+    //   ),
+    // );
   }
 
   Future<void> refresh() async {

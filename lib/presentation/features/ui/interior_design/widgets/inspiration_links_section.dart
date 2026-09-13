@@ -1,6 +1,6 @@
 import 'package:acrova/presentation/app/resources/resources.dart';
-import 'package:acrova/presentation/features/cubit/interior_design/interior_design_cubit.dart';
-import 'package:acrova/presentation/features/cubit/interior_design/interior_design_state.dart';
+import 'package:acrova/presentation/features/ui/interior_design/cubit/interior_design_cubit.dart';
+import 'package:acrova/presentation/features/ui/interior_design/cubit/interior_design_state.dart';
 import 'package:acrova/utils/extensions/localization_extension.dart';
 import 'package:acrova/utils/extensions/theme_extension.dart';
 import 'package:flutter/material.dart';

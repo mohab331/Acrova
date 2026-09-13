@@ -1,41 +1,72 @@
 import 'dart:io';
+
 import 'package:dio/dio.dart';
-import 'package:flutter/services.dart' show rootBundle;
+import 'package:flutter/services.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:share_plus/share_plus.dart';
 
 class DownloadHelper {
   DownloadHelper._();
 
-  /// Downloads a file from a URL (or loads an asset) and presents the native share sheet.
-  ///
-  /// The [urlOrAsset] can be a network URL or a local asset path (e.g. 'assets/images/img1.jpg').
-  /// The [fileName] is the suggested name of the file when saving.
   static Future<void> downloadAndShare(
     String urlOrAsset,
-    String fileName,
-  ) async {
+    String fileName, {
+    Rect? sharePositionOrigin,
+  }) async {
     try {
-      final Directory tempDir = await getTemporaryDirectory();
-      final File tempFile = File('${tempDir.path}/$fileName');
+      final tempDir = await getTemporaryDirectory();
 
-      if (urlOrAsset.startsWith('assets/')) {
-        // Handle mock asset files
-        final byteData = await rootBundle.load(urlOrAsset);
-        await tempFile.writeAsBytes(byteData.buffer.asUint8List());
-      } else {
-        // Handle network files
-        final dio = Dio();
-        await dio.download(urlOrAsset, tempFile.path);
+      final safeFileName = _sanitizeFileName(fileName);
+      final tempFile = File('${tempDir.path}/$safeFileName');
+
+      if (await tempFile.exists()) {
+        await tempFile.delete();
       }
 
-      // Present the share sheet
-      await SharePlus.instance.share(
-        ShareParams(files: [XFile(tempFile.path)], text: 'Sharing $fileName'),
+      if (urlOrAsset.startsWith('assets/')) {
+        final byteData = await rootBundle.load(urlOrAsset);
+
+        await tempFile.writeAsBytes(
+          byteData.buffer.asUint8List(
+            byteData.offsetInBytes,
+            byteData.lengthInBytes,
+          ),
+          flush: true,
+        );
+      } else {
+        final dio = Dio();
+
+        await dio.download(
+          urlOrAsset,
+          tempFile.path,
+          options: Options(
+            followRedirects: true,
+            validateStatus: (status) {
+              return status != null && status >= 200 && status < 300;
+            },
+          ),
+        );
+      }
+
+      if (!await tempFile.exists()) {
+        throw Exception('Failed to create downloaded file.');
+      }
+
+      await Share.shareXFiles(
+        [XFile(tempFile.path, name: safeFileName)],
+        sharePositionOrigin: Platform.isIOS
+            ? (sharePositionOrigin ?? const Rect.fromLTWH(0, 0, 1, 1))
+            : null,
       );
     } catch (e) {
-      // In a production app, we would log this to Crashlytics and show a Toastification error.
       rethrow;
     }
+  }
+
+  static String _sanitizeFileName(String fileName) {
+    return fileName
+        .split(RegExp(r'[/\\]'))
+        .last
+        .replaceAll(RegExp(r'[<>:"|?*]'), '_');
   }
 }

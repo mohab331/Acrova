@@ -13,7 +13,7 @@ class FeaturedProjectCard extends StatelessWidget {
 
   final ProjectModel project;
 
-  bool get _showActiveBadge => !project.status.isTerminal;
+  bool get _showActiveBadge => !(project.status?.isTerminal ?? false);
 
   @override
   Widget build(BuildContext context) {
@@ -69,7 +69,7 @@ class FeaturedProjectCard extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      project.id,
+                      project.id ?? '',
                       style: context.textTheme.labelMedium?.copyWith(
                         fontSize: Resources.fontSizes.$12,
                         fontWeight: Resources.fontWeights.medium,
@@ -81,7 +81,7 @@ class FeaturedProjectCard extends StatelessWidget {
                 ),
                 SizedBox(height: Resources.verticalDims.$8),
                 Text(
-                  project.name,
+                  project.name ?? '',
                   style: context.textTheme.titleLarge?.copyWith(
                     fontSize: Resources.fontSizes.$20,
                     fontWeight: Resources.fontWeights.bold,
@@ -140,7 +140,7 @@ class FeaturedProjectCard extends StatelessWidget {
 
   String _buildDescription(BuildContext context) {
     final parts = <String>[];
-    parts.add(project.type.localizedLabel(context));
+    parts.add(project.type?.localizedLabel(context) ?? '');
     if (project.location != null) parts.add(project.location!);
     return parts.join(' · ');
   }

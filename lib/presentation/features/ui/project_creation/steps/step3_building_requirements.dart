@@ -1,6 +1,6 @@
 import 'package:acrova/presentation/app/resources/resources.dart';
-import 'package:acrova/presentation/features/cubit/project_creation/project_creation_cubit.dart';
-import 'package:acrova/presentation/features/cubit/project_creation/project_creation_state.dart';
+import 'package:acrova/presentation/features/ui/project_creation/cubit/project_creation_cubit.dart';
+import 'package:acrova/presentation/features/ui/project_creation/cubit/project_creation_state.dart';
 import 'package:acrova/presentation/features/ui/project_creation/steps/widgets/room_counter.dart';
 import 'package:acrova/presentation/features/ui/project_creation/steps/widgets/toggle_grid.dart';
 import 'package:acrova/presentation/features/ui/project_creation/steps/widgets/toggle_item.dart';

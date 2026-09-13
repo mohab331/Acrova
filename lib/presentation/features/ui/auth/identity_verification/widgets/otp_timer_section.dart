@@ -5,8 +5,9 @@ import 'package:acrova/utils/extensions/theme_extension.dart';
 import 'package:flutter/material.dart';
 
 class OtpTimerSection extends StatelessWidget {
-  const OtpTimerSection({super.key});
+  const OtpTimerSection({required this.duration, super.key});
 
+  final Duration duration;
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -20,7 +21,7 @@ class OtpTimerSection extends StatelessWidget {
           ),
         ),
         SizedBox(height: Resources.verticalDims.$8),
-        const OtpCountdownTimer(),
+        OtpCountdownTimer(timer: duration),
       ],
     );
   }

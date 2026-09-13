@@ -3,12 +3,11 @@ import 'package:acrova/data/models/project/project_model.dart';
 import 'package:acrova/presentation/app/navigation/app_route_enum.dart';
 import 'package:acrova/presentation/app/navigation/args/navigation_args.dart';
 import 'package:acrova/presentation/app/resources/resources.dart';
-import 'package:acrova/presentation/features/common_widgets/app_bar/app_avatar_header.dart';
 import 'package:acrova/presentation/features/common_widgets/common_screen/common_screen.dart';
 import 'package:acrova/presentation/features/common_widgets/feedback/app_empty_state.dart';
 import 'package:acrova/presentation/features/common_widgets/feedback/common_error_widget.dart';
-import 'package:acrova/presentation/features/cubit/projects/projects_cubit.dart';
-import 'package:acrova/presentation/features/cubit/projects/projects_state.dart';
+import 'package:acrova/presentation/features/ui/projects/cubit/projects_cubit.dart';
+import 'package:acrova/presentation/features/ui/projects/cubit/projects_state.dart';
 import 'package:acrova/presentation/features/ui/projects/widgets/featured_project_card.dart';
 import 'package:acrova/presentation/features/ui/projects/widgets/projects_section_header.dart';
 import 'package:acrova/presentation/features/ui/projects/widgets/projects_skeleton.dart';
@@ -33,8 +32,10 @@ class _ProjectsPageState extends State<ProjectsPage> {
   List<ProjectModel> _applyFilter(List<ProjectModel> all) {
     return switch (_filter) {
       ProjectFilter.all => all,
-      ProjectFilter.active => all.where((p) => !p.status.isTerminal).toList(),
-      ProjectFilter.completed => all.where((p) => p.status.isTerminal).toList(),
+      ProjectFilter.active =>
+        all.where((p) => !(p.status?.isTerminal ?? false)).toList(),
+      ProjectFilter.completed =>
+        all.where((p) => (p.status?.isTerminal ?? false)).toList(),
     };
   }
 
@@ -49,11 +50,6 @@ class _ProjectsPageState extends State<ProjectsPage> {
           builder: (context, state) {
             return Column(
               children: [
-                AvatarHeader(
-                  userName: state.userName,
-                  notificationCount: state.notificationCount,
-                  avatarUrl: state.avatarUrl,
-                ),
                 Expanded(
                   child: Builder(
                     builder: (context) {
@@ -112,11 +108,12 @@ class _ProjectsPageState extends State<ProjectsPage> {
                                 SliverToBoxAdapter(
                                   child: GestureDetector(
                                     onTap: () {
-                                      final p = filtered.first;
+                                      final p = filtered.firstOrNull;
+                                      if (p == null) return;
                                       context.pushNamed(
                                         AppRouteEnum.projectDetailPage.name,
                                         extra: ProjectDetailArgs(
-                                          id: p.id,
+                                          id: p.id ?? '',
                                           title: p.name,
                                         ),
                                       );
@@ -144,7 +141,7 @@ class _ProjectsPageState extends State<ProjectsPage> {
                                       context.pushNamed(
                                         AppRouteEnum.projectDetailPage.name,
                                         extra: ProjectDetailArgs(
-                                          id: p.id,
+                                          id: p.id ?? '',
                                           title: p.name,
                                         ),
                                       );

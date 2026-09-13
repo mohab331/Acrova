@@ -3,6 +3,7 @@ import 'package:acrova/presentation/features/common_widgets/inputs/app_filled_fi
 import 'package:acrova/presentation/features/ui/profile/edit_profile/cubit/edit_profile_cubit.dart';
 import 'package:acrova/presentation/features/ui/profile/edit_profile/cubit/edit_profile_state.dart';
 import 'package:acrova/utils/extensions/localization_extension.dart';
+import 'package:acrova/utils/validation/app_validators.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -24,17 +25,13 @@ class EditProfileForm extends StatelessWidget {
     final cubit = context.read<EditProfileCubit>();
 
     return BlocBuilder<EditProfileCubit, EditProfileState>(
-      buildWhen: (p, c) =>
-          p.nameError != c.nameError ||
-          p.emailError != c.emailError ||
-          p.mobileError != c.mobileError,
       builder: (context, state) {
         return Column(
           children: [
             AppFilledField(
               controller: nameController,
               label: l10n.editProfileNameLabel,
-              error: state.nameError,
+              error: AppValidators.name(state.name),
               keyboardType: TextInputType.name,
               onChanged: cubit.updateName,
             ),
@@ -43,7 +40,7 @@ class EditProfileForm extends StatelessWidget {
               controller: mobileController,
               label: l10n.editProfileMobileLabel,
               hint: l10n.editProfileMobileHint,
-              error: state.mobileError,
+              error: AppValidators.saudiPhone(state.mobileNumber),
               keyboardType: TextInputType.phone,
               onChanged: cubit.updateMobile,
             ),
@@ -51,7 +48,7 @@ class EditProfileForm extends StatelessWidget {
             AppFilledField(
               controller: emailController,
               label: l10n.editProfileEmailLabel,
-              error: state.emailError,
+              error: AppValidators.email(state.email),
               keyboardType: TextInputType.emailAddress,
               onChanged: cubit.updateEmail,
             ),
@@ -60,18 +57,4 @@ class EditProfileForm extends StatelessWidget {
       },
     );
   }
-}
-
-/// Maps a validation error code to its localized message.
-String resolveEditProfileError(
-  BuildContext context,
-  EditProfileFieldError code,
-) {
-  final l10n = context.localization;
-  return switch (code) {
-    EditProfileFieldError.nameRequired => l10n.editProfileNameRequired,
-    EditProfileFieldError.emailRequired => l10n.editProfileEmailRequired,
-    EditProfileFieldError.emailInvalid => l10n.editProfileEmailInvalid,
-    EditProfileFieldError.mobileInvalid => l10n.editProfileMobileInvalid,
-  };
 }

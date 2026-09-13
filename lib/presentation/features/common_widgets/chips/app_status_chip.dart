@@ -12,7 +12,7 @@ import 'package:flutter/material.dart';
 class AppStatusChip extends StatelessWidget {
   const AppStatusChip({required this.status, this.locale, super.key});
 
-  final ProjectStatus status;
+  final ProjectStatus? status;
 
   /// Pass current locale to show Arabic label when needed.
   final Locale? locale;
@@ -21,7 +21,7 @@ class AppStatusChip extends StatelessWidget {
   Widget build(BuildContext context) {
     final isAr =
         (locale ?? Localizations.localeOf(context)).languageCode == 'ar';
-    final label = isAr ? status.displayLabelAr : status.displayLabel;
+    final label = isAr ? status?.displayLabelAr : status?.displayLabel;
 
     return Container(
       padding: EdgeInsets.symmetric(
@@ -29,15 +29,15 @@ class AppStatusChip extends StatelessWidget {
         vertical: Resources.verticalDims.$4,
       ),
       decoration: BoxDecoration(
-        color: status.chipBackground,
+        color: status?.chipBackground,
         borderRadius: BorderRadius.circular(Resources.radius.$r4),
       ),
       child: Text(
-        label.toUpperCase(),
+        label?.toUpperCase() ?? '',
         style: context.textTheme.labelSmall?.copyWith(
           fontSize: Resources.fontSizes.$8,
           fontWeight: Resources.fontWeights.extraBold,
-          color: status.chipForeground,
+          color: status?.chipForeground,
         ),
       ),
     );

@@ -552,5 +552,8 @@
   "interiorDesignTagVibrant": "حيوي",
   "interiorDesignTagSerene": "هادئ",
   "bankNameDefault": "البنك الأهلي السعودي",
-  "bankAccountNameDefault": "شركة أركوفا العقارية"
+  "bankAccountNameDefault": "شركة أركوفا العقارية",
+  "resend_otp_success": " تم إرسال رمز تحقق جديد.",
+  "resend_otp_limit": "لقد وصلت إلى الحد المسموح لإعادة الإرسال. يرجى المحاولة مرة أخرى بعد قليل."
+
 }

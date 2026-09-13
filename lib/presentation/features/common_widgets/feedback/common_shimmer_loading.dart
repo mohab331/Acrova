@@ -24,13 +24,21 @@ class CommonShimmerLoading extends StatelessWidget {
     }
 
     if (isDetail) {
-      return _buildDetailSkeleton(context);
+      return DetailShimmerSkeleton(padding: padding);
     }
 
-    return _buildListSkeleton(context);
+    return ListShimmerSkeleton(itemCount: itemCount, padding: padding);
   }
+}
 
-  Widget _buildListSkeleton(BuildContext context) {
+class ListShimmerSkeleton extends StatelessWidget {
+  const ListShimmerSkeleton({this.itemCount = 4, this.padding, super.key});
+
+  final int itemCount;
+  final EdgeInsetsGeometry? padding;
+
+  @override
+  Widget build(BuildContext context) {
     return AppSkeletonLoader(
       child: ListView.separated(
         padding:
@@ -44,51 +52,67 @@ class CommonShimmerLoading extends StatelessWidget {
         itemCount: itemCount,
         separatorBuilder: (_, __) =>
             SizedBox(height: Resources.verticalDims.$16),
-        itemBuilder: (_, __) => Container(
-          padding: EdgeInsets.all(Resources.horizontalDims.$16),
-          decoration: BoxDecoration(
-            color: Resources.colors.luxurySurface,
-            borderRadius: BorderRadius.circular(Resources.radius.$r8),
-            border: Border.all(color: Resources.colors.luxuryBorder),
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              SkeletonBox(
-                width: double.infinity,
-                height: Resources.verticalDims.$20,
-                radius: Resources.radius.$r4,
-              ),
-              SizedBox(height: Resources.verticalDims.$12),
-              SkeletonBox(
-                width: MediaQuery.of(context).size.width * 0.6,
-                height: Resources.verticalDims.$14,
-                radius: Resources.radius.$r4,
-              ),
-              SizedBox(height: Resources.verticalDims.$16),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  SkeletonBox(
-                    width: Resources.horizontalDims.$80,
-                    height: Resources.verticalDims.$16,
-                    radius: Resources.radius.$r4,
-                  ),
-                  SkeletonBox(
-                    width: Resources.horizontalDims.$60,
-                    height: Resources.verticalDims.$16,
-                    radius: Resources.radius.$r4,
-                  ),
-                ],
-              ),
-            ],
-          ),
-        ),
+        itemBuilder: (_, __) => const ListShimmerItem(),
       ),
     );
   }
+}
 
-  Widget _buildDetailSkeleton(BuildContext context) {
+class ListShimmerItem extends StatelessWidget {
+  const ListShimmerItem({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.all(Resources.horizontalDims.$16),
+      decoration: BoxDecoration(
+        color: Resources.colors.luxurySurface,
+        borderRadius: BorderRadius.circular(Resources.radius.$r8),
+        border: Border.all(color: Resources.colors.luxuryBorder),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          SkeletonBox(
+            width: double.infinity,
+            height: Resources.verticalDims.$20,
+            radius: Resources.radius.$r4,
+          ),
+          SizedBox(height: Resources.verticalDims.$12),
+          SkeletonBox(
+            width: MediaQuery.of(context).size.width * 0.6,
+            height: Resources.verticalDims.$14,
+            radius: Resources.radius.$r4,
+          ),
+          SizedBox(height: Resources.verticalDims.$16),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              SkeletonBox(
+                width: Resources.horizontalDims.$80,
+                height: Resources.verticalDims.$16,
+                radius: Resources.radius.$r4,
+              ),
+              SkeletonBox(
+                width: Resources.horizontalDims.$60,
+                height: Resources.verticalDims.$16,
+                radius: Resources.radius.$r4,
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class DetailShimmerSkeleton extends StatelessWidget {
+  const DetailShimmerSkeleton({this.padding, super.key});
+
+  final EdgeInsetsGeometry? padding;
+
+  @override
+  Widget build(BuildContext context) {
     return AppSkeletonLoader(
       child: SingleChildScrollView(
         padding:
@@ -98,41 +122,50 @@ class CommonShimmerLoading extends StatelessWidget {
               vertical: Resources.verticalDims.$16,
             ),
         physics: const NeverScrollableScrollPhysics(),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            SkeletonBox(
-              width: double.infinity,
-              height: Resources.verticalDims.$200,
-              radius: Resources.radius.$r12,
-            ),
-            SizedBox(height: Resources.verticalDims.$24),
-            SkeletonBox(
-              width: MediaQuery.of(context).size.width * 0.7,
-              height: Resources.verticalDims.$28,
-              radius: Resources.radius.$r4,
-            ),
-            SizedBox(height: Resources.verticalDims.$12),
-            SkeletonBox(
-              width: MediaQuery.of(context).size.width * 0.4,
-              height: Resources.verticalDims.$16,
-              radius: Resources.radius.$r4,
-            ),
-            SizedBox(height: Resources.verticalDims.$24),
-            SkeletonBox(
-              width: double.infinity,
-              height: Resources.verticalDims.$80,
-              radius: Resources.radius.$r8,
-            ),
-            SizedBox(height: Resources.verticalDims.$16),
-            SkeletonBox(
-              width: double.infinity,
-              height: Resources.verticalDims.$120,
-              radius: Resources.radius.$r8,
-            ),
-          ],
-        ),
+        child: const DetailShimmerContent(),
       ),
+    );
+  }
+}
+
+class DetailShimmerContent extends StatelessWidget {
+  const DetailShimmerContent({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        SkeletonBox(
+          width: double.infinity,
+          height: Resources.verticalDims.$200,
+          radius: Resources.radius.$r12,
+        ),
+        SizedBox(height: Resources.verticalDims.$24),
+        SkeletonBox(
+          width: MediaQuery.of(context).size.width * 0.7,
+          height: Resources.verticalDims.$28,
+          radius: Resources.radius.$r4,
+        ),
+        SizedBox(height: Resources.verticalDims.$12),
+        SkeletonBox(
+          width: MediaQuery.of(context).size.width * 0.4,
+          height: Resources.verticalDims.$16,
+          radius: Resources.radius.$r4,
+        ),
+        SizedBox(height: Resources.verticalDims.$24),
+        SkeletonBox(
+          width: double.infinity,
+          height: Resources.verticalDims.$80,
+          radius: Resources.radius.$r8,
+        ),
+        SizedBox(height: Resources.verticalDims.$16),
+        SkeletonBox(
+          width: double.infinity,
+          height: Resources.verticalDims.$120,
+          radius: Resources.radius.$r8,
+        ),
+      ],
     );
   }
 }

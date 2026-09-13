@@ -19,7 +19,7 @@ class ProjectHeader extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
-              project.type.name.toUpperCase(),
+              project.type?.name.toUpperCase() ?? '',
               style: context.textTheme.labelSmall?.copyWith(
                 fontSize: Resources.fontSizes.$10,
                 fontWeight: Resources.fontWeights.extraBold,
@@ -32,7 +32,7 @@ class ProjectHeader extends StatelessWidget {
         ),
         SizedBox(height: Resources.verticalDims.$8),
         Text(
-          project.name,
+          project.name ?? '',
           style: context.textTheme.labelLarge?.copyWith(
             fontSize: Resources.fontSizes.$18,
             fontWeight: Resources.fontWeights.semiBold,

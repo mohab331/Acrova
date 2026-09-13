@@ -4,10 +4,10 @@ import 'package:acrova/presentation/features/common_widgets/app_bar/app_auth_bra
 import 'package:acrova/presentation/features/common_widgets/common_screen/common_screen.dart';
 import 'package:acrova/presentation/features/cubit/auth/auth_cubit.dart';
 import 'package:acrova/presentation/features/cubit/auth/auth_state.dart';
-import 'package:acrova/presentation/features/ui/auth/phone_input/phone_input_cubit.dart';
 import 'package:acrova/presentation/features/ui/auth/phone_input/widgets/luxury_phone_input.dart';
 import 'package:acrova/presentation/features/ui/auth/phone_input/widgets/phone_continue_button.dart';
 import 'package:acrova/presentation/features/ui/auth/phone_input/widgets/terms_and_privacy_text.dart';
+import 'package:acrova/utils/enums/cubit_status.dart';
 import 'package:acrova/utils/extensions/localization_extension.dart';
 import 'package:acrova/utils/extensions/navigation_extension.dart';
 import 'package:acrova/utils/extensions/theme_extension.dart';
@@ -22,7 +22,8 @@ class PhoneInputView extends StatelessWidget {
     final l10n = context.localization;
 
     return BlocListener<AuthCubit, AuthCubitState>(
-      listenWhen: (prev, curr) => prev.cubitStatus != curr.cubitStatus,
+      listenWhen: (prev, curr) =>
+          prev.sendOTPCubitStatus != curr.sendOTPCubitStatus,
       listener: _handleAuthStateListener,
       child: CommonScreen(
         resizeToAvoidBottomInset: false,
@@ -67,22 +68,22 @@ class PhoneInputView extends StatelessWidget {
             ),
             SizedBox(height: Resources.verticalDims.$40),
             const PhoneContinueButton(),
-            SizedBox(height: Resources.verticalDims.$16),
-            Align(
-              alignment: AlignmentDirectional.centerEnd,
-              child: TextButton(
-                onPressed: () {},
-                style: TextButton.styleFrom(
-                  foregroundColor: Resources.colors.luxuryBody,
-                ),
-                child: Text(
-                  l10n.identityVerificationIssue,
-                  style: context.textTheme.bodySmall?.copyWith(
-                    color: Resources.colors.luxuryBody,
-                  ),
-                ),
-              ),
-            ),
+            // SizedBox(height: Resources.verticalDims.$16),
+            // Align(
+            //   alignment: AlignmentDirectional.centerEnd,
+            //   child: TextButton(
+            //     onPressed: () {},
+            //     style: TextButton.styleFrom(
+            //       foregroundColor: Resources.colors.luxuryBody,
+            //     ),
+            //     child: Text(
+            //       l10n.identityVerificationIssue,
+            //       style: context.textTheme.bodySmall?.copyWith(
+            //         color: Resources.colors.luxuryBody,
+            //       ),
+            //     ),
+            //   ),
+            // ),
             const Spacer(),
             const Center(child: TermsAndPrivacyText()),
           ],
@@ -92,11 +93,8 @@ class PhoneInputView extends StatelessWidget {
   }
 
   void _handleAuthStateListener(BuildContext context, AuthCubitState state) {
-    if (state.isSuccess) {
-      context.push(
-        AppRouteEnum.identityVerificationPage.name,
-        extra: context.read<PhoneInputCubit>().fullPhone,
-      );
+    if (state.sendOTPCubitStatus == CubitStatus.success) {
+      context.push(AppRouteEnum.identityVerificationPage.name);
     }
   }
 }

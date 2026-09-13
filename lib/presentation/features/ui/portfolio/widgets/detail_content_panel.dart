@@ -11,7 +11,7 @@ import 'package:flutter/material.dart';
 class DetailContentPanel extends StatelessWidget {
   const DetailContentPanel({required this.item, super.key});
 
-  final PortfolioItem item;
+  final PortfolioItem? item;
 
   @override
   Widget build(BuildContext context) {
@@ -50,7 +50,7 @@ class DetailContentPanel extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  item.style.toUpperCase(),
+                  item?.style?.toUpperCase() ?? '',
                   style: context.textTheme.labelSmall?.copyWith(
                     fontSize: Resources.fontSizes.$10,
                     fontWeight: Resources.fontWeights.extraBold,
@@ -60,7 +60,7 @@ class DetailContentPanel extends StatelessWidget {
                 ),
                 SizedBox(height: Resources.verticalDims.$8),
                 Text(
-                  item.title,
+                  item?.title ?? '',
                   style: context.textTheme.labelLarge?.copyWith(
                     fontSize: Resources.fontSizes.$18,
                     fontWeight: Resources.fontWeights.semiBold,
@@ -71,11 +71,11 @@ class DetailContentPanel extends StatelessWidget {
                 SizedBox(height: Resources.verticalDims.$8),
                 Row(
                   children: [
-                    DetailMetaDot(text: item.location),
+                    DetailMetaDot(text: item?.location),
                     const DetailDotSeparator(),
-                    DetailMetaDot(text: item.area),
+                    DetailMetaDot(text: item?.area),
                     const DetailDotSeparator(),
-                    DetailMetaDot(text: item.floors),
+                    DetailMetaDot(text: item?.floors),
                   ],
                 ),
                 SizedBox(height: Resources.verticalDims.$32),
@@ -89,7 +89,7 @@ class DetailContentPanel extends StatelessWidget {
                 ),
                 SizedBox(height: Resources.verticalDims.$12),
                 Text(
-                  item.narrative,
+                  item?.narrative ?? '',
                   style: context.textTheme.bodyMedium?.copyWith(
                     fontSize: Resources.fontSizes.$14,
                     color: Resources.colors.luxuryBody,
@@ -120,9 +120,11 @@ class DetailContentPanel extends StatelessWidget {
                 Wrap(
                   spacing: Resources.horizontalDims.$8,
                   runSpacing: Resources.verticalDims.$8,
-                  children: item.features
-                      .map((f) => DetailFeatureChip(label: f))
-                      .toList(),
+                  children:
+                      item?.features
+                          ?.map((f) => DetailFeatureChip(label: f))
+                          .toList() ??
+                      [],
                 ),
               ],
             ),

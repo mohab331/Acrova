@@ -1,8 +1,8 @@
 import 'package:acrova/presentation/app/resources/resources.dart';
 import 'package:acrova/presentation/features/common_widgets/app_bar/app_back_button.dart';
 import 'package:acrova/presentation/features/common_widgets/progress/app_icon_stepper.dart';
-import 'package:acrova/presentation/features/cubit/project_creation/project_creation_cubit.dart';
-import 'package:acrova/presentation/features/cubit/project_creation/project_creation_state.dart';
+import 'package:acrova/presentation/features/ui/project_creation/cubit/project_creation_cubit.dart';
+import 'package:acrova/presentation/features/ui/project_creation/cubit/project_creation_state.dart';
 import 'package:acrova/utils/extensions/localization_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

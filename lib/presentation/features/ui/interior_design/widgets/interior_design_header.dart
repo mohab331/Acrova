@@ -46,7 +46,9 @@ class InteriorDesignHeader extends StatelessWidget {
           ),
           SizedBox(height: Resources.verticalDims.$16),
           Text(
-            project.name.isNotEmpty ? project.name : l10n.projectTypeVillaLabel,
+            (project.name?.isNotEmpty ?? false)
+                ? (project.name ?? '')
+                : l10n.projectTypeVillaLabel,
             style: context.textTheme.titleMedium?.copyWith(
               fontWeight: Resources.fontWeights.semiBold,
               color: Resources.colors.luxuryNavy,
@@ -155,7 +157,7 @@ class InteriorDesignHeader extends StatelessWidget {
           ],
 
           // Deliverables Foldable Section
-          if (project.deliverables.isNotEmpty) ...[
+          if (project.deliverables?.isNotEmpty ?? false) ...[
             Divider(color: Resources.colors.luxuryBorder),
             Theme(
               data: Theme.of(
@@ -195,7 +197,7 @@ class InteriorDesignHeader extends StatelessWidget {
                         ),
                       ),
                       child: Text(
-                        '${project.deliverables.length}',
+                        '${project.deliverables?.length}',
                         style: TextStyle(
                           fontSize: Resources.fontSizes.$10,
                           fontWeight: Resources.fontWeights.bold,
@@ -205,9 +207,11 @@ class InteriorDesignHeader extends StatelessWidget {
                     ),
                   ],
                 ),
-                children: project.deliverables
-                    .map((d) => _DeliverableItem(deliverable: d))
-                    .toList(),
+                children:
+                    project.deliverables?.map((e) {
+                      return _DeliverableItem(deliverable: e);
+                    }).toList() ??
+                    [],
               ),
             ),
           ],
@@ -288,10 +292,10 @@ class InteriorDesignHeader extends StatelessWidget {
 class _DeliverableItem extends StatelessWidget {
   const _DeliverableItem({required this.deliverable});
 
-  final DeliverableModel deliverable;
+  final DeliverableModel? deliverable;
 
   IconData _getIcon() {
-    switch (deliverable.type) {
+    switch (deliverable?.type) {
       case DeliverableType.pdf:
         return Icons.picture_as_pdf_outlined;
       case DeliverableType.image:
@@ -306,7 +310,7 @@ class _DeliverableItem extends StatelessWidget {
   }
 
   Color _getColor() {
-    switch (deliverable.type) {
+    switch (deliverable?.type) {
       case DeliverableType.pdf:
         return Resources.colors.filePdf;
       case DeliverableType.image:
@@ -323,7 +327,7 @@ class _DeliverableItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final formattedDate = AppFormatter.formatDate(
-      deliverable.createdAt,
+      deliverable?.createdAt,
       locale: Localizations.localeOf(context).languageCode,
     );
 
@@ -352,7 +356,7 @@ class _DeliverableItem extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  deliverable.title,
+                  deliverable?.title ?? '',
                   style: context.textTheme.bodySmall?.copyWith(
                     fontWeight: Resources.fontWeights.semiBold,
                     color: Resources.colors.luxuryNavy,

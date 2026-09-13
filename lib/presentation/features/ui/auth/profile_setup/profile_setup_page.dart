@@ -78,12 +78,6 @@ class _ProfileSetupPageState extends State<ProfileSetupPage> {
 
   void _submit(BuildContext context) {
     if (!_validate(context)) return;
-    context.read<AuthCubit>().saveProfile(
-      name: _nameController.text.trim(),
-      email: _emailController.text.trim(),
-      nationalId: _nationalIdController.text.trim(),
-      language: _language,
-    );
   }
 
   @override
@@ -91,14 +85,14 @@ class _ProfileSetupPageState extends State<ProfileSetupPage> {
     final l10n = context.localization;
 
     return BlocListener<AuthCubit, AuthCubitState>(
-      listenWhen: (p, c) => p.cubitStatus != c.cubitStatus,
+      listenWhen: (p, c) => p.getUserCubitStatus != c.getUserCubitStatus,
       listener: (context, state) {
-        if (state.isSuccess) {
+        if (state.getUserCubitStatus == CubitStatus.success) {
           context.pushReplacement(AppRouteEnum.homePage.name);
-        } else if (state.isError) {
+        } else if (state.getUserCubitStatus == CubitStatus.error) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text(state.appErrorModel?.message ?? ''),
+              content: Text(state.getUserErrorModel?.message ?? ''),
               backgroundColor: Resources.colors.luxuryError,
             ),
           );
@@ -185,10 +179,11 @@ class _ProfileSetupPageState extends State<ProfileSetupPage> {
               ),
               SizedBox(height: Resources.verticalDims.$32),
               BlocBuilder<AuthCubit, AuthCubitState>(
-                buildWhen: (p, c) => p.cubitStatus != c.cubitStatus,
+                buildWhen: (p, c) =>
+                    p.getUserCubitStatus != c.getUserCubitStatus,
                 builder: (context, state) {
                   return EnterAcrovaButton(
-                    isLoading: state.cubitStatus == CubitStatus.loading,
+                    isLoading: state.getUserCubitStatus == CubitStatus.loading,
                     onPressed: () => _submit(context),
                   );
                 },

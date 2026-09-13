@@ -54,7 +54,7 @@ class _RevisionDetailView extends StatelessWidget {
     return BlocBuilder<RevisionDetailCubit, RevisionDetailState>(
       builder: (context, state) {
         final title = state.revision != null
-            ? context.localization.revisionDetailTitle(state.revision!.id)
+            ? context.localization.revisionDetailTitle(state.revision?.id ?? '')
             : context.localization.revisionDetailModifications;
 
         return CommonScreen(
@@ -93,7 +93,7 @@ class RevisionDetailsContent extends StatelessWidget {
         children: [
           RevisionStatusSection(revision: r),
           SizedBox(height: Resources.verticalDims.$32),
-          RevisionModifications(description: r.description),
+          RevisionModifications(description: r.description ?? ''),
           SizedBox(height: Resources.verticalDims.$32),
           const RevisionComparison(),
           if (r.engineerNote != null) ...[

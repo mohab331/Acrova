@@ -1,8 +1,8 @@
 import 'dart:async';
 
 import 'package:acrova/presentation/app/resources/resources.dart';
-import 'package:acrova/presentation/features/cubit/project_creation/project_creation_cubit.dart';
-import 'package:acrova/presentation/features/cubit/project_creation/project_creation_state.dart';
+import 'package:acrova/presentation/features/ui/project_creation/cubit/project_creation_cubit.dart';
+import 'package:acrova/presentation/features/ui/project_creation/cubit/project_creation_state.dart';
 import 'package:acrova/presentation/features/ui/project_creation/steps/widgets/media_item.dart';
 import 'package:acrova/utils/extensions/localization_extension.dart';
 import 'package:acrova/utils/extensions/theme_extension.dart';

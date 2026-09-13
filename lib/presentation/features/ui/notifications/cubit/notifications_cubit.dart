@@ -1,4 +1,3 @@
-import 'package:acrova/data/models/notification/app_notification_model.dart';
 import 'package:acrova/domain/repository/notifications/base_notifications_repo.dart';
 import 'package:acrova/utils/enums/cubit_status.dart';
 import 'package:acrova/utils/helpers/safe_async_call.dart';
@@ -16,15 +15,15 @@ class NotificationsCubit extends Cubit<NotificationsCubitState> {
 
   Future<void> fetchNotifications() async {
     emit(state.copyWith(cubitStatus: CubitStatus.loading));
-    await safeCubitCall<List<AppNotificationModel>>(
-      call: _notificationsRepo.getNotifications,
-      onSuccess: (notifications) => emit(
+    final result = await _notificationsRepo.getNotifications();
+    result.when(
+      success: (notifications) => emit(
         state.copyWith(
           cubitStatus: CubitStatus.success,
           notifications: notifications,
         ),
       ),
-      onError: (error) => emit(
+      failure: (error) => emit(
         state.copyWith(cubitStatus: CubitStatus.error, appErrorModel: error),
       ),
     );

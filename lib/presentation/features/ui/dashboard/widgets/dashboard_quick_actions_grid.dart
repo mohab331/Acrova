@@ -1,9 +1,12 @@
 import 'package:acrova/presentation/app/navigation/app_route_enum.dart';
 import 'package:acrova/presentation/app/resources/resources.dart';
+import 'package:acrova/presentation/features/cubit/auth/auth_cubit.dart';
+import 'package:acrova/presentation/features/ui/contact_us/contact_us_page.dart';
 import 'package:acrova/presentation/features/ui/dashboard/widgets/dashboard_quick_action.dart';
 import 'package:acrova/presentation/features/ui/dashboard/widgets/dashboard_quick_action_card.dart';
 import 'package:acrova/utils/extensions/localization_extension.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
 class DashboardQuickActionsGrid extends StatelessWidget {
@@ -12,6 +15,7 @@ class DashboardQuickActionsGrid extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final loc = context.localization;
+    var authCubit = context.read<AuthCubit>();
 
     final actions = [
       DashboardQuickAction(
@@ -22,7 +26,15 @@ class DashboardQuickActionsGrid extends StatelessWidget {
       DashboardQuickAction(
         icon: Icons.headset_mic_outlined,
         label: loc.dashboardActionSupport,
-        onTap: () => context.go(AppRouteEnum.messagesPage.path),
+        onTap: () {
+          context.pushNamed(
+            AppRouteEnum.contactUsPage.name,
+            extra: ContactUsArgs(
+              email: authCubit.state.userModel?.email,
+              mobileNumber: authCubit.state.userModel?.mobileNumber,
+            ),
+          );
+        },
       ),
       DashboardQuickAction(
         icon: Icons.account_balance_outlined,

@@ -41,7 +41,10 @@ class _OtpDigitFieldState extends State<OtpDigitField> {
         : Resources.colors.luxuryInputBorder;
 
     return MaterialPinField(
+      autoFocus: true,
+      autoDismissKeyboard: true,
       obscureText: true,
+      enablePaste: true,
       pinController: _pinController,
       theme: MaterialPinTheme(
         obscuringCharacter: '*',

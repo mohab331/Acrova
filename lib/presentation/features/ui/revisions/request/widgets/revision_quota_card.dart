@@ -72,7 +72,7 @@ class _FreeRevisionCard extends StatelessWidget {
           ),
           Flexible(
             child: Text(
-              l10n.revisionQuotaIncluded(quota.total),
+              l10n.revisionQuotaIncluded(quota.total ?? 0),
               textAlign: TextAlign.end,
               style: context.textTheme.bodySmall?.copyWith(
                 fontSize: Resources.fontSizes.$13,
@@ -158,7 +158,7 @@ class _PaidRevisionCard extends StatelessWidget {
                 ),
               ),
               Text(
-                '${quota.currency} ${quota.paidCost.toStringAsFixed(0)}',
+                '${quota.currency} ${quota.paidCost?.toStringAsFixed(0)}',
                 style: TextStyle(
                   fontFamily: Resources.fonts.notoSerif,
                   fontSize: Resources.fontSizes.$20,

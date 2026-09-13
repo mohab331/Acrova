@@ -1,6 +1,6 @@
+import 'package:acrova/data/models/portfolio/portfolio_item.dart';
 import 'package:acrova/presentation/app/navigation/app_route_enum.dart';
 import 'package:acrova/presentation/app/resources/resources.dart';
-import 'package:acrova/presentation/features/cubit/deliverables/deliverables_state.dart';
 import 'package:acrova/utils/extensions/localization_extension.dart';
 import 'package:acrova/utils/extensions/theme_extension.dart';
 import 'package:acrova/utils/helpers/download_helper.dart';
@@ -49,7 +49,7 @@ class WalkthroughsSection extends StatelessWidget {
                             top: Radius.circular(Resources.radius.$r12),
                           ),
                           child: Image.asset(
-                            walkthrough.imageAsset,
+                            walkthrough.thumbnailImageUrl ?? '',
                             fit: BoxFit.cover,
                           ),
                         ),
@@ -115,7 +115,7 @@ class WalkthroughsSection extends StatelessWidget {
                             ),
                           ),
                           child: Text(
-                            walkthrough.duration,
+                            walkthrough.duration ?? '',
                             style: context.textTheme.labelSmall?.copyWith(
                               color: Colors.white,
                               fontWeight: Resources.fontWeights.bold,
@@ -135,7 +135,7 @@ class WalkthroughsSection extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              walkthrough.title,
+                              walkthrough.title ?? '',
                               style: context.textTheme.titleMedium?.copyWith(
                                 color: Resources.colors.luxuryNavy,
                                 fontWeight: Resources.fontWeights.bold,
@@ -152,9 +152,8 @@ class WalkthroughsSection extends StatelessWidget {
                         IconButton(
                           onPressed: () {
                             DownloadHelper.downloadAndShare(
-                              walkthrough
-                                  .imageAsset, // We're sharing the asset image as a placeholder for the actual video download
-                              '${walkthrough.title}.mp4',
+                              walkthrough.videoUrl ?? '',
+                              '${walkthrough.title}',
                             );
                           },
                           icon: Icon(
