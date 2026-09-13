@@ -1,41 +1,28 @@
+import 'package:acrova/data/models/portfolio/portfolio_item.dart';
 import 'package:acrova/presentation/app/resources/resources.dart';
 import 'package:acrova/presentation/features/common_widgets/app_bar/app_auth_brand_header.dart';
 import 'package:acrova/presentation/features/common_widgets/buttons/app_primary_button.dart';
 import 'package:acrova/presentation/features/common_widgets/common_screen/common_screen.dart';
-import 'package:acrova/presentation/features/cubit/deliverables/deliverables_state.dart';
 import 'package:acrova/utils/extensions/localization_extension.dart';
 import 'package:acrova/utils/extensions/theme_extension.dart';
 import 'package:acrova/utils/helpers/download_helper.dart';
 import 'package:flutter/material.dart';
 
-import 'widgets/previous_version_card.dart';
 import 'widgets/walkthrough_video_player.dart';
 
 class WalkthroughScreen extends StatelessWidget {
-  const WalkthroughScreen({
-    this.walkthrough,
-    this.projectName = '',
-    this.videoUrl = '',
-    this.thumbnailUrl = '',
-    super.key,
-  });
+  const WalkthroughScreen({super.key, required this.walkthrough});
 
   final WalkthroughModel? walkthrough;
-  final String projectName;
-  final String videoUrl;
-  final String thumbnailUrl;
 
   @override
   Widget build(BuildContext context) {
     final loc = context.localization;
-    final title =
-        walkthrough?.title ??
-        (projectName.isNotEmpty ? projectName : loc.walkthroughTitle);
+    final title = walkthrough?.title;
     final duration = walkthrough?.duration ?? '';
     final size = walkthrough?.size ?? '';
-    final activeVideoUrl = walkthrough?.videoUrl ?? videoUrl;
-    final activeThumbnailUrl = walkthrough?.imageAsset ?? thumbnailUrl;
-    final previousVersions = walkthrough?.previousVersions ?? const [];
+    final activeVideoUrl = walkthrough?.videoUrl;
+    final activeThumbnailUrl = walkthrough?.thumbnailImageUrl;
 
     return CommonScreen(
       bottomPadding: 0,
@@ -62,8 +49,11 @@ class WalkthroughScreen extends StatelessWidget {
               size: Resources.fontSizes.$20,
             ),
             onPressed: () {
-              if (activeVideoUrl.isNotEmpty) {
-                DownloadHelper.downloadAndShare(activeVideoUrl, '$title.mp4');
+              if (activeVideoUrl?.isNotEmpty ?? false) {
+                DownloadHelper.downloadAndShare(
+                  activeVideoUrl ?? '',
+                  '$title.${walkthrough?.format}',
+                );
               }
             },
           ),
@@ -75,7 +65,7 @@ class WalkthroughScreen extends StatelessWidget {
           children: [
             // Video Player
             WalkthroughVideoPlayer(
-              videoUrl: activeVideoUrl,
+              videoUrl: activeVideoUrl ?? '',
               thumbnailUrl: activeThumbnailUrl,
             ),
 
@@ -85,9 +75,9 @@ class WalkthroughScreen extends StatelessWidget {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                if (projectName.isNotEmpty) ...[
+                if (title?.isNotEmpty ?? false) ...[
                   Text(
-                    projectName,
+                    title ?? '',
                     style: context.textTheme.titleLarge?.copyWith(
                       color: Resources.colors.luxuryNavy,
                       fontWeight: FontWeight.bold,
@@ -96,15 +86,6 @@ class WalkthroughScreen extends StatelessWidget {
                   ),
                   SizedBox(height: Resources.verticalDims.$8),
                 ],
-                Text(
-                  title,
-                  style: context.textTheme.labelLarge?.copyWith(
-                    color: Resources.colors.luxuryBodyMuted,
-                    fontWeight: FontWeight.w500,
-                    letterSpacing: 0.5,
-                  ),
-                ),
-
                 SizedBox(height: Resources.verticalDims.$24),
 
                 // Technical Specs
@@ -189,39 +170,6 @@ class WalkthroughScreen extends StatelessWidget {
                 ),
               ],
             ),
-
-            if (previousVersions.isNotEmpty) ...[
-              SizedBox(height: Resources.verticalDims.$40),
-              Container(
-                color: Resources.colors.luxuryBackground.withAlpha(240),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      loc.walkthroughPreviousVersions,
-                      style: context.textTheme.labelLarge?.copyWith(
-                        fontSize: Resources.fontSizes.$18,
-                        fontWeight: Resources.fontWeights.semiBold,
-                        color: Resources.colors.luxuryNavy,
-                      ),
-                    ),
-                    ...previousVersions.map(
-                      (v) => Padding(
-                        padding: EdgeInsets.only(
-                          top: Resources.verticalDims.$16,
-                        ),
-                        child: PreviousVersionCard(
-                          version: v.version,
-                          dateAndSize: v.dateAndSize,
-                          onTap: () {},
-                        ),
-                      ),
-                    ),
-                    SizedBox(height: Resources.verticalDims.$32),
-                  ],
-                ),
-              ),
-            ],
           ],
         ),
       ),

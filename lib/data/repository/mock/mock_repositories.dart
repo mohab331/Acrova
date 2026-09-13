@@ -33,7 +33,7 @@ import 'package:acrova/domain/repository/portfolio/base_portfolio_repo.dart';
 import 'package:acrova/domain/repository/project/base_project_repo.dart';
 import 'package:acrova/domain/repository/revisions/base_revisions_repo.dart';
 import 'package:acrova/presentation/app/resources/resources.dart';
-import 'package:acrova/presentation/features/cubit/deliverables/deliverables_state.dart';
+import 'package:acrova/presentation/features/ui/deliverables/cubit/deliverables_state.dart';
 import 'package:acrova/utils/enums/project_status_enum.dart';
 import 'package:acrova/utils/enums/project_type_enum.dart';
 import 'package:acrova/utils/enums/revision_status_enum.dart';
@@ -688,10 +688,32 @@ class MockPortfolioRepo extends _MockBase implements BasePortfolioRepo {
         'Formal Gardens',
         'Smart Lighting',
       ],
-      walkthroughVideo: 'https://samplelib.com/mp4/sample-5s.mp4',
+      walkthroughModel: WalkthroughModel(
+        description:
+            'A sweeping neoclassical estate that draws on European grand-villa proportions while embracing the Saudi climate. Symmetrical colonnades frame a central porte-cochère, and hand-carved stone detailing flows through every facade elevation.',
+        format: '.mp4',
+        quality: '4K',
+        size: '50 mb',
+        thumbnailImageUrl:
+            'https://lh3.googleusercontent.com/aida-public/AB6AXuAGNrH52huyQGEWIQKQDVt92V2iuZo5qfnXAZK9FoC3dzU0Y9NILlAN4FFLdIMcVnyP-G_iZ3RN3xrBhEJdOtMWcWap7toLFJHebSsfzYogzatTwl9D8swWRLXNDOzxKSLX3LjCSFvZX2VEU9uIRFBCfgKVBMCJlQQ6syNRJFiVOXkAlRuCZY7suJqiJ63eQ4m3ucqA8bkltfduLosOXBLwvUOXEfRK0pzy_vAluc6ZWsx_yjGvny4xtx2kQaHb3f-6dMOiNmzTapY',
+        title: 'Grand Residence Walkthrough',
+        videoUrl: 'https://samplelib.com/mp4/sample-5s.mp4',
+        duration: '3:38 m',
+      ),
     ),
     PortfolioItem(
-      walkthroughVideo: 'https://samplelib.com/mp4/sample-5s.mp4',
+      walkthroughModel: WalkthroughModel(
+        description:
+            'A sweeping neoclassical estate that draws on European grand-villa proportions while embracing the Saudi climate. Symmetrical colonnades frame a central porte-cochère, and hand-carved stone detailing flows through every facade elevation.',
+        format: '.mp4',
+        quality: '4K',
+        size: '50 mb',
+        thumbnailImageUrl:
+            'https://lh3.googleusercontent.com/aida-public/AB6AXuAGNrH52huyQGEWIQKQDVt92V2iuZo5qfnXAZK9FoC3dzU0Y9NILlAN4FFLdIMcVnyP-G_iZ3RN3xrBhEJdOtMWcWap7toLFJHebSsfzYogzatTwl9D8swWRLXNDOzxKSLX3LjCSFvZX2VEU9uIRFBCfgKVBMCJlQQ6syNRJFiVOXkAlRuCZY7suJqiJ63eQ4m3ucqA8bkltfduLosOXBLwvUOXEfRK0pzy_vAluc6ZWsx_yjGvny4xtx2kQaHb3f-6dMOiNmzTapY',
+        title: 'Grand Residence Walkthrough',
+        videoUrl: 'https://samplelib.com/mp4/sample-5s.mp4',
+        duration: '3:38 m',
+      ),
       id: 'alrashidi',
       style: 'Contemporary Arabic',
       category: 'exterior',
@@ -887,24 +909,15 @@ class MockDeliverablesRepo extends _MockBase implements BaseDeliverablesRepo {
         ],
         walkthroughs: [
           WalkthroughModel(
-            imageAsset: Resources.drawables.img1,
+            thumbnailImageUrl: Resources.drawables.img1,
             title: 'Walkthrough v1.2 — Full Interior Tour',
             duration: '02:45 m',
             size: '124 MB',
-            format: 'MP4 (4K)',
+            format: 'MP4',
+            quality: '4K',
             videoUrl: 'https://samplelib.com/mp4/sample-5s.mp4',
             description:
                 'Experience the seamless architectural flow of the Al-Rashidi estate. This updated render captures the intricate interplay of shadow and light across the travertine halls during the golden hour, highlighting the newly integrated water feature and custom millwork.',
-            previousVersions: const [
-              WalkthroughVersionModel(
-                version: 'Walkthrough v1.1',
-                dateAndSize: 'Oct 24, 2023 • 118 MB',
-              ),
-              WalkthroughVersionModel(
-                version: 'Walkthrough v1.0',
-                dateAndSize: 'Oct 12, 2023 • 112 MB',
-              ),
-            ],
           ),
         ],
       ),

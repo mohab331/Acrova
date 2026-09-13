@@ -5,7 +5,6 @@ import 'package:acrova/presentation/features/common_widgets/app_bar/app_auth_bra
 import 'package:acrova/presentation/features/common_widgets/common_screen/common_screen.dart';
 import 'package:acrova/presentation/features/common_widgets/feedback/common_error_widget.dart';
 import 'package:acrova/presentation/features/common_widgets/feedback/common_shimmer_loading.dart';
-import 'package:acrova/presentation/features/cubit/deliverables/deliverables_state.dart';
 import 'package:acrova/presentation/features/ui/portfolio/cubit/portflio_details/portfolio_details_cubit.dart';
 import 'package:acrova/presentation/features/ui/portfolio/cubit/portflio_details/portfolio_details_state.dart';
 import 'package:acrova/presentation/features/ui/portfolio/portfolio_item.dart';
@@ -151,20 +150,9 @@ class _PortfolioDetailSuccessWidgetState
               onStartProject: () =>
                   context.push(AppRouteEnum.projectCreationPage.path),
               onWatchWalkthrough: () {
-                final walkthrough = WalkthroughModel(
-                  imageAsset: (widget.item?.imageUrls?.isNotEmpty ?? false)
-                      ? (widget.item?.imageUrls?.first ?? '')
-                      : '',
-                  title: (widget.item?.title ?? ''),
-                  duration: '',
-                  size: '',
-                  format: 'MP4',
-                  videoUrl: widget.item?.walkthroughVideo ?? '',
-                  description: widget.item?.narrative,
-                );
                 context.push(
                   AppRouteEnum.walkthroughPage.path,
-                  extra: walkthrough,
+                  extra: widget.item?.walkthroughModel,
                 );
               },
             ),

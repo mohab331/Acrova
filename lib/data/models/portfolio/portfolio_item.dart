@@ -12,7 +12,7 @@ class PortfolioItem extends Equatable {
     required this.narrative,
     required this.imageUrls,
     required this.features,
-    this.walkthroughVideo,
+    this.walkthroughModel,
   });
 
   final String? id;
@@ -25,7 +25,7 @@ class PortfolioItem extends Equatable {
   final String? narrative;
   final List<String>? imageUrls;
   final List<String>? features;
-  final String? walkthroughVideo;
+  final WalkthroughModel? walkthroughModel;
 
   @override
   List<Object?> get props => [
@@ -39,6 +39,52 @@ class PortfolioItem extends Equatable {
     narrative,
     imageUrls,
     features,
-    walkthroughVideo,
+  ];
+}
+
+class WalkthroughModel extends Equatable {
+  final String? thumbnailImageUrl;
+  final String? videoUrl;
+  final String? quality;
+  final String? duration;
+  final String? size;
+  final String? description;
+
+  final String? format;
+  final String? title;
+
+  const WalkthroughModel({
+    this.thumbnailImageUrl,
+    this.videoUrl,
+    this.quality,
+    this.duration,
+    this.size,
+    this.description,
+    this.title,
+    this.format,
+  });
+
+  factory WalkthroughModel.fromJson(Map<String, dynamic> json) {
+    return WalkthroughModel(
+      thumbnailImageUrl: json['thumbnailImageUrl'],
+      videoUrl: json['videoUrl'],
+      quality: json['quality'],
+      duration: json['duration'],
+      size: json['size'],
+      description: json['description'],
+      title: json['title'],
+      format: json['format'],
+    );
+  }
+  @override
+  List<Object?> get props => [
+    thumbnailImageUrl,
+    videoUrl,
+    quality,
+    duration,
+    size,
+    description,
+    title,
+    format,
   ];
 }

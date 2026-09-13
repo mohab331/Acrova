@@ -1,4 +1,5 @@
-import 'package:acrova/presentation/features/cubit/deliverables/deliverables_state.dart';
+import 'package:acrova/data/models/portfolio/portfolio_item.dart';
+import 'package:acrova/presentation/features/ui/deliverables/cubit/deliverables_state.dart';
 import 'package:acrova/utils/helpers/result.dart';
 
 class DeliverablesData {

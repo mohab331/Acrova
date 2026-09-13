@@ -6,8 +6,8 @@ import 'package:acrova/presentation/features/common_widgets/buttons/app_primary_
 import 'package:acrova/presentation/features/common_widgets/buttons/app_secondary_button.dart';
 import 'package:acrova/presentation/features/common_widgets/common_screen/common_screen.dart';
 import 'package:acrova/presentation/features/common_widgets/feedback/common_error_widget.dart';
-import 'package:acrova/presentation/features/cubit/deliverables/deliverables_cubit.dart';
-import 'package:acrova/presentation/features/cubit/deliverables/deliverables_state.dart';
+import 'package:acrova/presentation/features/ui/deliverables/cubit/deliverables_cubit.dart';
+import 'package:acrova/presentation/features/ui/deliverables/cubit/deliverables_state.dart';
 import 'package:acrova/presentation/features/ui/deliverables/widgets/blueprints_section.dart';
 import 'package:acrova/presentation/features/ui/deliverables/widgets/deliverables_loading_skeleton.dart';
 import 'package:acrova/presentation/features/ui/deliverables/widgets/renders_section.dart';

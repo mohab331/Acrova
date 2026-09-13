@@ -1,8 +1,8 @@
 import 'dart:async';
 
 import 'package:acrova/presentation/app/resources/resources.dart';
-import 'package:acrova/presentation/features/cubit/interior_design/interior_design_cubit.dart';
-import 'package:acrova/presentation/features/cubit/interior_design/interior_design_state.dart';
+import 'package:acrova/presentation/features/ui/interior_design/cubit/interior_design_cubit.dart';
+import 'package:acrova/presentation/features/ui/interior_design/cubit/interior_design_state.dart';
 import 'package:acrova/presentation/features/ui/interior_design/widgets/aesthetic_profiling_section.dart';
 import 'package:acrova/presentation/features/ui/interior_design/widgets/inspiration_links_section.dart';
 import 'package:acrova/presentation/features/ui/project_creation/steps/widgets/media_item.dart';

@@ -6,7 +6,6 @@ import 'package:acrova/utils/enums/interior_design_enums.dart';
 import 'package:equatable/equatable.dart';
 
 class InteriorDesignState extends Equatable {
-  final String projectId;
   final InteriorDesignScope scope;
   final List<String> specificRooms;
   final String customScopeNotes;
@@ -25,7 +24,6 @@ class InteriorDesignState extends Equatable {
   final AppErrorModel? error;
 
   const InteriorDesignState({
-    required this.projectId,
     this.scope = InteriorDesignScope.all,
     this.specificRooms = const [],
     this.customScopeNotes = '',
@@ -61,7 +59,7 @@ class InteriorDesignState extends Equatable {
   String get budgetTierString => budgetTier?.value ?? '';
   String get timelineString => timeline?.value ?? '';
 
-  InteriorDesignRequest toRequest() {
+  InteriorDesignRequest toRequest({required String projectId}) {
     return InteriorDesignRequest(
       projectId: projectId,
       scope: scope.value,
@@ -97,7 +95,6 @@ class InteriorDesignState extends Equatable {
     AppErrorModel? error,
   }) {
     return InteriorDesignState(
-      projectId: projectId,
       scope: scope ?? this.scope,
       specificRooms: specificRooms ?? this.specificRooms,
       customScopeNotes: customScopeNotes ?? this.customScopeNotes,
@@ -120,7 +117,6 @@ class InteriorDesignState extends Equatable {
 
   @override
   List<Object?> get props => [
-    projectId,
     scope,
     specificRooms,
     customScopeNotes,

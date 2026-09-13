@@ -1,27 +1,32 @@
 import 'package:acrova/presentation/app/resources/resources.dart';
 import 'package:acrova/utils/extensions/localization_extension.dart';
 import 'package:acrova/utils/extensions/theme_extension.dart';
+import 'package:acrova/utils/logging/app_logger.dart';
 import 'package:chewie/chewie.dart';
 import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
 
 class WalkthroughVideoPlayer extends StatefulWidget {
-  final String videoUrl;
-  final String? thumbnailUrl;
-
   const WalkthroughVideoPlayer({
     super.key,
     required this.videoUrl,
-    required this.thumbnailUrl,
+    this.thumbnailUrl,
   });
+
+  final String videoUrl;
+  final String? thumbnailUrl;
 
   @override
   State<WalkthroughVideoPlayer> createState() => _WalkthroughVideoPlayerState();
 }
 
 class _WalkthroughVideoPlayerState extends State<WalkthroughVideoPlayer> {
-  late VideoPlayerController _videoPlayerController;
+  VideoPlayerController? _videoPlayerController;
   ChewieController? _chewieController;
+
+  String? _error;
+  bool _isLoading = true;
+  bool _showThumbnail = true;
 
   @override
   void initState() {
@@ -29,31 +34,47 @@ class _WalkthroughVideoPlayerState extends State<WalkthroughVideoPlayer> {
     _initializePlayer();
   }
 
-  String? _error;
-  bool _showThumbnail = true;
   Future<void> _initializePlayer() async {
-    if (widget.videoUrl.isEmpty) {
+    if (widget.videoUrl.trim().isEmpty) {
+      if (mounted) {
+        setState(() {
+          _isLoading = false;
+          _error = 'Video URL is empty';
+        });
+      }
       return;
     }
+
     try {
-      setState(() {
-        _error = null;
-      });
+      final uri = Uri.tryParse(widget.videoUrl);
 
-      final url = Uri.tryParse(widget.videoUrl);
-
-      if (url == null) {
-        throw Exception("Invalid video url");
+      if (uri == null ||
+          !uri.hasScheme ||
+          (uri.scheme != 'http' && uri.scheme != 'https')) {
+        throw Exception('Invalid video URL');
       }
 
-      _videoPlayerController = VideoPlayerController.networkUrl(url);
+      final controller = VideoPlayerController.networkUrl(uri);
 
-      await _videoPlayerController.initialize();
+      _videoPlayerController = controller;
+
+      await controller.initialize();
+
+      if (!mounted) {
+        await controller.dispose();
+        return;
+      }
 
       _chewieController = ChewieController(
-        videoPlayerController: _videoPlayerController,
-        aspectRatio: 16 / 9,
+        videoPlayerController: controller,
+        aspectRatio: controller.value.aspectRatio > 0
+            ? controller.value.aspectRatio
+            : 16 / 9,
+        autoPlay: false,
+        looping: false,
         showOptions: false,
+        allowFullScreen: true,
+        allowMuting: true,
         materialProgressColors: ChewieProgressColors(
           playedColor: Resources.colors.luxuryGoldLight,
           handleColor: Resources.colors.luxuryGoldLight,
@@ -67,15 +88,45 @@ class _WalkthroughVideoPlayerState extends State<WalkthroughVideoPlayer> {
           backgroundColor: Colors.white24,
         ),
       );
-    } catch (e) {
-      _error = e.toString();
+
+      setState(() {
+        _isLoading = false;
+        _error = null;
+      });
+    } catch (e, stackTrace) {
+      AppLogger.instance.logError(
+        'WalkthroughVideoPlayer',
+        error: e,
+        stackTrace: stackTrace,
+      );
+
+      if (!mounted) return;
+
+      setState(() {
+        _isLoading = false;
+        _error = e.toString();
+      });
     }
+  }
+
+  void _playVideo() {
+    final controller = _videoPlayerController;
+
+    if (controller == null || !controller.value.isInitialized) {
+      return;
+    }
+
+    setState(() {
+      _showThumbnail = false;
+    });
+
+    controller.play();
   }
 
   @override
   void dispose() {
-    _videoPlayerController.dispose();
     _chewieController?.dispose();
+    _videoPlayerController?.dispose();
     super.dispose();
   }
 
@@ -88,27 +139,36 @@ class _WalkthroughVideoPlayerState extends State<WalkthroughVideoPlayer> {
         child: Stack(
           fit: StackFit.expand,
           children: [
-            if (_chewieController != null &&
-                _chewieController!.videoPlayerController.value.isInitialized)
-              Chewie(controller: _chewieController!),
+            // Video
+            if (_chewieController != null)
+              Chewie(controller: _chewieController!)
+            else
+              Container(color: Resources.colors.luxurySurface),
 
-            if (_showThumbnail)
+            // Loading
+            if (_isLoading) const Center(child: CircularProgressIndicator()),
+
+            // Thumbnail / play button
+            if (!_isLoading && _error == null && _showThumbnail)
               GestureDetector(
-                onTap: () {
-                  _chewieController?.play();
-                  setState(() {
-                    _showThumbnail = false;
-                  });
-                },
+                onTap: _playVideo,
                 child: Stack(
                   fit: StackFit.expand,
                   children: [
                     if (widget.thumbnailUrl != null)
-                      Image.network(widget.thumbnailUrl!, fit: BoxFit.cover)
+                      Image.network(
+                        widget.thumbnailUrl!,
+                        fit: BoxFit.cover,
+                        errorBuilder: (_, __, ___) {
+                          return Container(
+                            color: Resources.colors.luxurySurface,
+                          );
+                        },
+                      )
                     else
                       Container(color: Resources.colors.luxurySurface),
 
-                    Container(color: Colors.black12),
+                    Container(color: Colors.black26),
 
                     const Center(
                       child: Icon(
@@ -121,9 +181,11 @@ class _WalkthroughVideoPlayerState extends State<WalkthroughVideoPlayer> {
                 ),
               ),
 
-            if (_error != null)
+            // Error
+            if (!_isLoading && _error != null)
               Container(
                 color: Colors.black,
+                padding: const EdgeInsets.all(24),
                 child: Center(
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
@@ -136,6 +198,7 @@ class _WalkthroughVideoPlayerState extends State<WalkthroughVideoPlayer> {
                       SizedBox(height: Resources.verticalDims.$16),
                       Text(
                         context.localization.walkthroughUnableToLoadVideo,
+                        textAlign: TextAlign.center,
                         style: context.textTheme.bodyMedium?.copyWith(
                           color: Colors.white,
                         ),

@@ -1,6 +1,6 @@
 import 'package:acrova/data/data_source/local/services/image_picker/base_image_picker_service.dart';
 import 'package:acrova/domain/repository/project/base_project_repo.dart';
-import 'package:acrova/presentation/features/cubit/interior_design/interior_design_state.dart';
+import 'package:acrova/presentation/features/ui/interior_design/cubit/interior_design_state.dart';
 import 'package:acrova/utils/enums/cubit_status.dart';
 import 'package:acrova/utils/enums/interior_design_enums.dart';
 import 'package:acrova/utils/logging/app_logger.dart';
@@ -11,9 +11,8 @@ class InteriorDesignCubit extends Cubit<InteriorDesignState> {
   InteriorDesignCubit({
     required this.projectRepo,
     required BaseImagePickerService imagePicker,
-    required String projectId,
   }) : _imagePicker = imagePicker,
-       super(InteriorDesignState(projectId: projectId)) {
+       super(const InteriorDesignState()) {
     loadInitialData();
   }
 
@@ -173,11 +172,13 @@ class InteriorDesignCubit extends Cubit<InteriorDesignState> {
     emit(state.copyWith(inspirationLinks: list));
   }
 
-  Future<void> submit() async {
+  Future<void> submit({required String projectID}) async {
     if (!state.isValid) return;
     emit(state.copyWith(status: CubitStatus.loading));
 
-    final result = await projectRepo.submitInteriorDesign(state.toRequest());
+    final result = await projectRepo.submitInteriorDesign(
+      state.toRequest(projectId: projectID),
+    );
     result.when(
       success: (data) {
         emit(state.copyWith(status: CubitStatus.success));

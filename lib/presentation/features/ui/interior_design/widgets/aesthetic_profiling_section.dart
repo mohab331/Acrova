@@ -1,7 +1,7 @@
 import 'package:acrova/data/models/interior_design/interior_design_palette_model.dart';
 import 'package:acrova/presentation/app/resources/resources.dart';
-import 'package:acrova/presentation/features/cubit/interior_design/interior_design_cubit.dart';
-import 'package:acrova/presentation/features/cubit/interior_design/interior_design_state.dart';
+import 'package:acrova/presentation/features/ui/interior_design/cubit/interior_design_cubit.dart';
+import 'package:acrova/presentation/features/ui/interior_design/cubit/interior_design_state.dart';
 import 'package:acrova/utils/extensions/localization_extension.dart';
 import 'package:acrova/utils/extensions/theme_extension.dart';
 import 'package:cached_network_image/cached_network_image.dart';

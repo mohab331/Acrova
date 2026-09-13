@@ -1,4 +1,5 @@
 import 'package:acrova/core/error/app_error_model.dart';
+import 'package:acrova/data/models/portfolio/portfolio_item.dart';
 import 'package:acrova/utils/enums/cubit_status.dart';
 import 'package:equatable/equatable.dart';
 
@@ -37,39 +38,6 @@ class WalkthroughVersionModel extends Equatable {
 
   @override
   List<Object?> get props => [version, dateAndSize];
-}
-
-class WalkthroughModel extends Equatable {
-  const WalkthroughModel({
-    required this.title,
-    required this.duration,
-    required this.size,
-    required this.format,
-    required this.imageAsset,
-    this.videoUrl,
-    this.description,
-    this.previousVersions = const [],
-  });
-  final String title;
-  final String duration;
-  final String size;
-  final String format;
-  final String imageAsset;
-  final String? videoUrl;
-  final String? description;
-  final List<WalkthroughVersionModel> previousVersions;
-
-  @override
-  List<Object?> get props => [
-    title,
-    duration,
-    size,
-    format,
-    imageAsset,
-    videoUrl,
-    description,
-    previousVersions,
-  ];
 }
 
 class DeliverablesState extends Equatable {

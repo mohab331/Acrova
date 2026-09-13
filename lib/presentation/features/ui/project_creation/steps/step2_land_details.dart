@@ -1,6 +1,6 @@
 import 'package:acrova/presentation/app/resources/resources.dart';
-import 'package:acrova/presentation/features/cubit/project_creation/project_creation_cubit.dart';
-import 'package:acrova/presentation/features/cubit/project_creation/project_creation_state.dart';
+import 'package:acrova/presentation/features/ui/project_creation/cubit/project_creation_cubit.dart';
+import 'package:acrova/presentation/features/ui/project_creation/cubit/project_creation_state.dart';
 import 'package:acrova/presentation/features/ui/project_creation/steps/widgets/floor_counter.dart';
 import 'package:acrova/presentation/features/ui/project_creation/steps/widgets/sbc_warning_card.dart';
 import 'package:acrova/presentation/features/ui/project_creation/steps/widgets/wizard_text_field.dart';

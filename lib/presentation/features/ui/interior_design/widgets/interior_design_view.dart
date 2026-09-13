@@ -6,8 +6,8 @@ import 'package:acrova/presentation/features/common_widgets/buttons/app_primary_
 import 'package:acrova/presentation/features/common_widgets/common_screen/common_screen.dart';
 import 'package:acrova/presentation/features/common_widgets/feedback/common_error_widget.dart';
 import 'package:acrova/presentation/features/common_widgets/feedback/common_shimmer_loading.dart';
-import 'package:acrova/presentation/features/cubit/interior_design/interior_design_cubit.dart';
-import 'package:acrova/presentation/features/cubit/interior_design/interior_design_state.dart';
+import 'package:acrova/presentation/features/ui/interior_design/cubit/interior_design_cubit.dart';
+import 'package:acrova/presentation/features/ui/interior_design/cubit/interior_design_state.dart';
 import 'package:acrova/presentation/features/ui/interior_design/widgets/interior_design_form.dart';
 import 'package:acrova/presentation/features/ui/interior_design/widgets/interior_design_header.dart';
 import 'package:acrova/presentation/features/ui/project_detail/cubit/project_detail_cubit.dart';
@@ -113,7 +113,9 @@ class InteriorDesignView extends StatelessWidget {
                           isLoading: state.isLoading,
                           enabled: state.isValid,
                           onPressed: () {
-                            context.read<InteriorDesignCubit>().submit();
+                            context.read<InteriorDesignCubit>().submit(
+                              projectID: projectId,
+                            );
                           },
                         ),
                       ),
