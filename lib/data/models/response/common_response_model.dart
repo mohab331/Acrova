@@ -10,6 +10,16 @@ class CommonResponseModel extends Equatable {
     return CommonResponseModel(id: json['id'], title: json['title']);
   }
 
+  Map<String, dynamic> toJson() => {
+    'id': id,
+    'title': title,
+  };
+
   @override
   List<Object?> get props => [id, title];
+
+  @override
+  String toString() {
+    return 'CommonResponseModel(id: $id, title: $title)';
+  }
 }

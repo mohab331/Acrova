@@ -1,5 +1,5 @@
 import 'package:acrova/core/error/app_error_model.dart';
-import 'package:acrova/data/models/portfolio/portfolio_item.dart';
+import 'package:acrova/data/models/response/portfolio/portfolio_item_response_model.dart';
 import 'package:acrova/utils/enums/cubit_status.dart';
 import 'package:equatable/equatable.dart';
 
@@ -12,7 +12,7 @@ class PortfolioDetailsState extends Equatable {
 
   final CubitStatus cubitStatus;
   final AppErrorModel? appErrorModel;
-  final PortfolioItem? portfolioItem;
+  final PortfolioItemResponseModel? portfolioItem;
 
   bool get isLoading => cubitStatus == CubitStatus.loading;
   bool get isSuccess => cubitStatus == CubitStatus.success;
@@ -21,7 +21,7 @@ class PortfolioDetailsState extends Equatable {
   PortfolioDetailsState copyWith({
     CubitStatus? cubitStatus,
     AppErrorModel? appErrorModel,
-    PortfolioItem? portfolioItem,
+    PortfolioItemResponseModel? portfolioItem,
   }) {
     return PortfolioDetailsState(
       cubitStatus: cubitStatus ?? this.cubitStatus,

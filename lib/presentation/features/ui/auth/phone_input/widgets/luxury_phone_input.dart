@@ -132,6 +132,7 @@ class _LuxuryPhoneInputState extends State<LuxuryPhoneInput> {
     );
   }
 
+  // ignore: unused_element
   void _openCountryPicker(BuildContext context, PhoneInputCubit cubit) {
     showModalBottomSheet<void>(
       context: context,

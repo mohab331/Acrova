@@ -1,3 +1,4 @@
+import 'package:acrova/data/models/request/portfolio/get_portfolio_item_request_model.dart';
 import 'package:acrova/domain/repository/portfolio/base_portfolio_repo.dart';
 import 'package:acrova/presentation/features/ui/portfolio/cubit/portflio_details/portfolio_details_state.dart';
 import 'package:acrova/utils/enums/cubit_status.dart';
@@ -15,7 +16,9 @@ class PortfolioDetailsCubit extends Cubit<PortfolioDetailsState> {
 
     emit(state.copyWith(cubitStatus: CubitStatus.loading));
 
-    final result = await _portfolioRepo.getPortfolioItemByID(portfolioId);
+    final result = await _portfolioRepo.getPortfolioItemByID(
+      GetPortfolioItemRequestModel(id: portfolioId),
+    );
     result.when(
       success: (data) {
         emit(

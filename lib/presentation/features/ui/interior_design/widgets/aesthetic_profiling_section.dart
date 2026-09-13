@@ -40,9 +40,9 @@ class AestheticProfilingSection extends StatelessWidget {
               itemCount: moodboards.length,
               itemBuilder: (context, index) {
                 final mb = moodboards[index];
-                final isSelected = state.moodboards.contains(mb.id);
+                final isSelected = mb.id != null && state.moodboards.contains(mb.id);
                 return GestureDetector(
-                  onTap: () => cubit.toggleMoodboard(mb.id),
+                  onTap: () => mb.id != null ? cubit.toggleMoodboard(mb.id!) : null,
                   child: AnimatedContainer(
                     duration: AppDurations.fast,
                     decoration: BoxDecoration(
@@ -55,10 +55,12 @@ class AestheticProfilingSection extends StatelessWidget {
                             : Resources.colors.transparent,
                         width: AppBorderWidths.$2,
                       ),
-                      image: DecorationImage(
-                        image: CachedNetworkImageProvider(mb.url),
-                        fit: BoxFit.cover,
-                      ),
+                      image: mb.url != null
+                          ? DecorationImage(
+                              image: CachedNetworkImageProvider(mb.url!),
+                              fit: BoxFit.cover,
+                            )
+                          : null,
                     ),
                     child: Stack(
                       children: [

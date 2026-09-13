@@ -1,5 +1,5 @@
 import 'package:acrova/core/error/app_error_model.dart';
-import 'package:acrova/data/models/billing/payment_model.dart';
+import 'package:acrova/data/models/response/billing/payment_response_model.dart';
 import 'package:acrova/utils/enums/cubit_status.dart';
 import 'package:equatable/equatable.dart';
 
@@ -13,7 +13,7 @@ class PaymentDetailsState extends Equatable {
 
   final CubitStatus status;
   final String? paymentId;
-  final PaymentModel? payment;
+  final PaymentResponseModel? payment;
   final AppErrorModel? error;
 
   bool get isLoading =>
@@ -24,7 +24,7 @@ class PaymentDetailsState extends Equatable {
   PaymentDetailsState copyWith({
     CubitStatus? status,
     String? paymentId,
-    PaymentModel? payment,
+    PaymentResponseModel? payment,
     AppErrorModel? error,
   }) {
     return PaymentDetailsState(

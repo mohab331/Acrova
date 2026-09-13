@@ -1,6 +1,10 @@
 import 'package:acrova/core/config/mock_config.dart';
 import 'package:acrova/data/data_source/base/base_billing_data_source.dart';
-import 'package:acrova/data/models/billing/payment_model.dart';
+import 'package:acrova/data/models/request/billing/get_payment_details_request_model.dart';
+import 'package:acrova/data/models/request/billing/get_payment_quote_request_model.dart';
+import 'package:acrova/data/models/request/billing/submit_payment_request_model.dart';
+import 'package:acrova/data/models/response/billing/payment_quote_response_model.dart';
+import 'package:acrova/data/models/response/billing/payment_response_model.dart';
 import 'package:acrova/data/repository/billing/billing_repo_impl.dart';
 import 'package:acrova/data/repository/mock/mock_repositories.dart';
 import 'package:acrova/utils/helpers/result.dart';
@@ -11,8 +15,8 @@ class _StubBillingDataSource implements BaseBillingDataSource {
   String? submittedReceiptPath;
 
   @override
-  Future<List<PaymentModel>> getPayments() async => [
-    PaymentModel(
+  Future<List<PaymentResponseModel>> getPayments() async => [
+    PaymentResponseModel(
       id: 'PAY-001',
       projectId: 'PROJ-001',
       projectName: 'Al-Yasmeen Estate',
@@ -28,9 +32,11 @@ class _StubBillingDataSource implements BaseBillingDataSource {
   ];
 
   @override
-  Future<PaymentModel> getPaymentDetails(String paymentId) async {
-    if (paymentId == 'PAY-001') {
-      return PaymentModel(
+  Future<PaymentResponseModel> getPaymentDetails(
+    GetPaymentDetailsRequestModel request,
+  ) async {
+    if (request.paymentId == 'PAY-001') {
+      return PaymentResponseModel(
         id: 'PAY-001',
         projectId: 'PROJ-001',
         projectName: 'Al-Yasmeen Estate',
@@ -48,9 +54,11 @@ class _StubBillingDataSource implements BaseBillingDataSource {
   }
 
   @override
-  Future<PaymentQuoteModel> getPaymentQuote(String projectId) async =>
-      PaymentQuoteModel(
-        projectId: projectId,
+  Future<PaymentQuoteResponseModel> getPaymentQuote(
+    GetPaymentQuoteRequestModel request,
+  ) async =>
+      PaymentQuoteResponseModel(
+        projectId: request.projectId,
         amountDue: 14000,
         baseFee: 10000,
         vat: 1200,
@@ -62,12 +70,9 @@ class _StubBillingDataSource implements BaseBillingDataSource {
       );
 
   @override
-  Future<void> submitPayment({
-    required String projectId,
-    required String receiptPath,
-  }) async {
-    submittedProjectId = projectId;
-    submittedReceiptPath = receiptPath;
+  Future<void> submitPayment(SubmitPaymentRequestModel request) async {
+    submittedProjectId = request.projectId;
+    submittedReceiptPath = request.receiptPath;
   }
 }
 
@@ -84,7 +89,7 @@ void main() {
     test('getPayments returns Success with list of payments', () async {
       final result = await repository.getPayments();
 
-      expect(result, isA<Success<List<PaymentModel>>>());
+      expect(result, isA<Success<List<PaymentResponseModel>>>());
       result.when(
         success: (payments) {
           expect(payments, isNotEmpty);
@@ -97,9 +102,11 @@ void main() {
     });
 
     test('getPaymentDetails returns Success for valid payment id', () async {
-      final result = await repository.getPaymentDetails('PAY-001');
+      final result = await repository.getPaymentDetails(
+        const GetPaymentDetailsRequestModel(paymentId: 'PAY-001'),
+      );
 
-      expect(result, isA<Success<PaymentModel>>());
+      expect(result, isA<Success<PaymentResponseModel>>());
       result.when(
         success: (payment) {
           expect(payment.id, equals('PAY-001'));
@@ -115,16 +122,20 @@ void main() {
     test(
       'getPaymentDetails returns Failure for non-existent payment id',
       () async {
-        final result = await repository.getPaymentDetails('INVALID-ID');
+        final result = await repository.getPaymentDetails(
+          const GetPaymentDetailsRequestModel(paymentId: 'INVALID-ID'),
+        );
 
-        expect(result, isA<Failure<PaymentModel>>());
+        expect(result, isA<Failure<PaymentResponseModel>>());
       },
     );
 
     test('delegates payment quote retrieval to the data source', () async {
-      final result = await repository.getPaymentQuote('PROJ-001');
+      final result = await repository.getPaymentQuote(
+        const GetPaymentQuoteRequestModel(projectId: 'PROJ-001'),
+      );
 
-      expect(result, isA<Success<PaymentQuoteModel>>());
+      expect(result, isA<Success<PaymentQuoteResponseModel>>());
       result.when(
         success: (quote) => expect(quote.amountDue, equals(14000)),
         failure: (error) =>
@@ -134,8 +145,10 @@ void main() {
 
     test('delegates receipt submission to the data source', () async {
       final result = await repository.submitPayment(
-        projectId: 'PROJ-001',
-        receiptPath: '/tmp/receipt.jpg',
+        const SubmitPaymentRequestModel(
+          projectId: 'PROJ-001',
+          receiptPath: '/tmp/receipt.jpg',
+        ),
       );
 
       expect(result, isA<Success<void>>());
@@ -158,17 +171,19 @@ void main() {
       MockConfig.setScenario(MockRepositoryKey.billing, MockScenario.success);
 
       final paymentsResult = await mockRepo.getPayments();
-      expect(paymentsResult, isA<Success<List<PaymentModel>>>());
+      expect(paymentsResult, isA<Success<List<PaymentResponseModel>>>());
 
-      final quoteResult = await mockRepo.getPaymentQuote('proj_001');
-      expect(quoteResult, isA<Success<PaymentQuoteModel>>());
+      final quoteResult = await mockRepo.getPaymentQuote(
+        const GetPaymentQuoteRequestModel(projectId: 'proj_001'),
+      );
+      expect(quoteResult, isA<Success<PaymentQuoteResponseModel>>());
     });
 
     test('returns empty data when scenario is empty', () async {
       MockConfig.setScenario(MockRepositoryKey.billing, MockScenario.empty);
 
       final paymentsResult = await mockRepo.getPayments();
-      expect(paymentsResult, isA<Success<List<PaymentModel>>>());
+      expect(paymentsResult, isA<Success<List<PaymentResponseModel>>>());
       paymentsResult.when(
         success: (payments) => expect(payments, isEmpty),
         failure: (_) => fail('Expected success with empty list'),
@@ -179,10 +194,12 @@ void main() {
       MockConfig.setScenario(MockRepositoryKey.billing, MockScenario.error);
 
       final paymentsResult = await mockRepo.getPayments();
-      expect(paymentsResult, isA<Failure<List<PaymentModel>>>());
+      expect(paymentsResult, isA<Failure<List<PaymentResponseModel>>>());
 
-      final quoteResult = await mockRepo.getPaymentQuote('proj_001');
-      expect(quoteResult, isA<Failure<PaymentQuoteModel>>());
+      final quoteResult = await mockRepo.getPaymentQuote(
+        const GetPaymentQuoteRequestModel(projectId: 'proj_001'),
+      );
+      expect(quoteResult, isA<Failure<PaymentQuoteResponseModel>>());
     });
   });
 }

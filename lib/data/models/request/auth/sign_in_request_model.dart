@@ -1,8 +1,6 @@
-import 'package:equatable/equatable.dart';
-
 import '../base_request_model.dart';
 
-class SignInRequestModel extends Equatable implements BaseRequestModel {
+class SignInRequestModel extends BaseRequestModel {
   final String? phone;
   final String? password;
   final String? firebaseTokenKey;
@@ -32,4 +30,13 @@ class SignInRequestModel extends Equatable implements BaseRequestModel {
 
   @override
   List<Object?> get props => [phone, password, firebaseTokenKey];
+
+  @override
+  String toString() {
+    return 'SignInRequestModel('
+        'phone: $phone, '
+        'password: $password, '
+        'firebaseTokenKey: $firebaseTokenKey'
+        ')';
+  }
 }

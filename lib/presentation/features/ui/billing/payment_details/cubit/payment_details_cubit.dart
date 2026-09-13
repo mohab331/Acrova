@@ -1,3 +1,4 @@
+import 'package:acrova/data/models/request/billing/get_payment_details_request_model.dart';
 import 'package:acrova/domain/repository/billing/base_billing_repo.dart';
 import 'package:acrova/presentation/features/ui/billing/payment_details/cubit/payment_details_state.dart';
 import 'package:acrova/utils/enums/cubit_status.dart';
@@ -15,7 +16,9 @@ class PaymentDetailsCubit extends Cubit<PaymentDetailsState> {
     if (id == null || id.isEmpty) return;
 
     emit(state.copyWith(status: CubitStatus.loading, paymentId: id));
-    final result = await _billingRepo.getPaymentDetails(id);
+    final result = await _billingRepo.getPaymentDetails(
+      GetPaymentDetailsRequestModel(paymentId: id),
+    );
     result.when(
       success: (payment) {
         emit(state.copyWith(status: CubitStatus.success, payment: payment));

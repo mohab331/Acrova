@@ -1,5 +1,5 @@
 import 'package:acrova/core/error/app_error_model.dart';
-import 'package:acrova/data/models/portfolio/portfolio_item.dart';
+import 'package:acrova/data/models/response/portfolio/portfolio_item_response_model.dart';
 import 'package:acrova/utils/enums/cubit_status.dart';
 import 'package:acrova/utils/extensions/localization_extension.dart';
 import 'package:equatable/equatable.dart';
@@ -15,7 +15,7 @@ class PortfolioState extends Equatable {
   });
 
   final CubitStatus status;
-  final List<PortfolioItem> items;
+  final List<PortfolioItemResponseModel> items;
   final AppErrorModel? error;
   final String? filter;
   final List<String> filters;
@@ -25,7 +25,7 @@ class PortfolioState extends Equatable {
   bool get isSuccess => status == CubitStatus.success;
   bool get isError => status == CubitStatus.error;
 
-  List<PortfolioItem> getFilteredItems(BuildContext context) {
+  List<PortfolioItemResponseModel> getFilteredItems(BuildContext context) {
     if (filter?.toLowerCase().trim() ==
         context.localization.filterAll.toLowerCase().trim()) {
       return items;
@@ -40,7 +40,7 @@ class PortfolioState extends Equatable {
 
   PortfolioState copyWith({
     CubitStatus? status,
-    List<PortfolioItem>? items,
+    List<PortfolioItemResponseModel>? items,
     String? filter,
     AppErrorModel? error,
     List<String>? filters,

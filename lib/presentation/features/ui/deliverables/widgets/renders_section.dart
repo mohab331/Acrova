@@ -83,7 +83,7 @@ class _RenderCard extends StatelessWidget {
             AppRouteEnum.imageViewerPage.path,
             extra: ImageViewerArgs(
               title: context.localization.deliverables3dRender,
-              urlOrAsset: render.imageAsset,
+              urlOrAsset: render.imageAsset ?? '',
             ),
           );
         },
@@ -92,7 +92,7 @@ class _RenderCard extends StatelessWidget {
           child: Stack(
             fit: StackFit.expand,
             children: [
-              Image.asset(render.imageAsset, fit: BoxFit.cover),
+              Image.asset(render.imageAsset ?? '', fit: BoxFit.cover),
               Positioned(
                 top: Resources.verticalDims.$6,
                 left: Resources.horizontalDims.$6,
@@ -106,7 +106,7 @@ class _RenderCard extends StatelessWidget {
                     borderRadius: BorderRadius.circular(Resources.radius.$r4),
                   ),
                   child: Text(
-                    render.resolution,
+                    render.resolution ?? '',
                     style: context.textTheme.labelSmall?.copyWith(
                       color: Colors.white,
                       fontWeight: Resources.fontWeights.bold,

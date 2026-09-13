@@ -1,6 +1,6 @@
 import '../base_request_model.dart';
 
-class SignUpRequestModel implements BaseRequestModel {
+class SignUpRequestModel extends BaseRequestModel {
   final String? phone;
   final String? password;
   final String? name;
@@ -52,5 +52,32 @@ class SignUpRequestModel implements BaseRequestModel {
       'country': country,
       'phoneKey': phoneKey,
     };
+  }
+
+  @override
+  List<Object?> get props => [
+    phone,
+    password,
+    name,
+    email,
+    address,
+    nationalID,
+    dateOfBirth,
+    cityID,
+    carTypeID,
+    providerID,
+    firebaseTokenKey,
+    countryISO,
+    country,
+    phoneKey,
+  ];
+
+  @override
+  String toString() {
+    return 'SignUpRequestModel('
+        'phone: $phone, '
+        'name: $name, '
+        'email: $email'
+        ')';
   }
 }

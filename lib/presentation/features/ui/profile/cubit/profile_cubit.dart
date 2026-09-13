@@ -1,5 +1,5 @@
-import 'package:acrova/data/models/profile/user_profile_model.dart';
-import 'package:acrova/data/models/request/profile/update_profile_request.dart';
+import 'package:acrova/data/models/request/profile/update_profile_request_model.dart';
+import 'package:acrova/data/models/response/profile/user_profile_response_model.dart';
 import 'package:acrova/domain/repository/auth/base_auth_repo.dart';
 import 'package:acrova/utils/enums/cubit_status.dart';
 import 'package:bloc/bloc.dart';
@@ -13,10 +13,10 @@ class ProfileCubit extends Cubit<ProfileCubitState> {
 
   final BaseAuthRepo _authRepo;
 
-  Future<void> updateProfile(UserProfileModel profile) async {
+  Future<void> updateProfile(UserProfileResponseModel profile) async {
     emit(state.copyWith(cubitStatus: CubitStatus.loading));
     final result = await _authRepo.updateUserProfile(
-      UpdateProfileRequest(
+      UpdateProfileRequestModel(
         name: profile.name ?? '',
         email: profile.email ?? '',
         mobileNumber: profile.mobileNumber ?? '',

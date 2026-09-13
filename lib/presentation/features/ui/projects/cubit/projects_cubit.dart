@@ -1,4 +1,3 @@
-import 'package:acrova/data/models/project/project_model.dart';
 import 'package:acrova/domain/repository/auth/base_auth_repo.dart';
 import 'package:acrova/domain/repository/project/base_project_repo.dart';
 import 'package:acrova/utils/enums/cubit_status.dart';

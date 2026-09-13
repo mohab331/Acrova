@@ -1,9 +1,8 @@
-import 'package:equatable/equatable.dart';
-
 import '../base_request_model.dart';
 
-class ReAuthRequestModel extends Equatable implements BaseRequestModel {
+class ReAuthRequestModel extends BaseRequestModel {
   const ReAuthRequestModel({required this.refreshToken});
+
   final String refreshToken;
 
   @override
@@ -12,5 +11,10 @@ class ReAuthRequestModel extends Equatable implements BaseRequestModel {
   @override
   Map<String, dynamic> toJson() {
     return {'refreshToken': refreshToken};
+  }
+
+  @override
+  String toString() {
+    return 'ReAuthRequestModel(refreshToken: $refreshToken)';
   }
 }

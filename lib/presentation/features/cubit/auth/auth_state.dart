@@ -1,5 +1,5 @@
 import 'package:acrova/core/error/app_error_model.dart';
-import 'package:acrova/data/models/profile/user_profile_model.dart';
+import 'package:acrova/data/models/response/profile/user_profile_response_model.dart';
 import 'package:acrova/utils/enums/cubit_status.dart';
 import 'package:equatable/equatable.dart';
 
@@ -37,7 +37,7 @@ class AuthCubitState extends Equatable {
   final CubitStatus resendOTPCubitStatus;
 
   final AppErrorModel? resendOTPAppErrorModel;
-  final UserProfileModel? userModel;
+  final UserProfileResponseModel? userModel;
   final AppErrorModel? sendOTPAppErrorModel;
   final AppErrorModel? verifyOtpAppErrorModel;
   final AppErrorModel? getUserErrorModel;
@@ -49,7 +49,7 @@ class AuthCubitState extends Equatable {
     CubitStatus? verifyOTPCubitStatus,
     CubitStatus? getUserCubitStatus,
     CubitStatus? resendOTPCubitStatus,
-    UserProfileModel? userModel,
+    UserProfileResponseModel? userModel,
     AppErrorModel? sendOTPAppErrorModel,
     AppErrorModel? verifyOtpAppErrorModel,
     AppErrorModel? getUserErrorModel,

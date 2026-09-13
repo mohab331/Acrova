@@ -1,6 +1,6 @@
 import 'package:acrova/data/data_source/local/services/image_picker/base_image_picker_service.dart';
-import 'package:acrova/data/models/profile/user_profile_model.dart';
-import 'package:acrova/data/models/request/profile/update_profile_request.dart';
+import 'package:acrova/data/models/request/profile/update_profile_request_model.dart';
+import 'package:acrova/data/models/response/profile/user_profile_response_model.dart';
 import 'package:acrova/domain/repository/auth/base_auth_repo.dart';
 import 'package:acrova/utils/enums/cubit_status.dart';
 import 'package:acrova/utils/logging/app_logger.dart';
@@ -13,7 +13,7 @@ class EditProfileCubit extends Cubit<EditProfileState> {
   EditProfileCubit({
     required BaseAuthRepo authRepo,
     required BaseImagePickerService imagePicker,
-    required UserProfileModel initialProfile,
+    required UserProfileResponseModel initialProfile,
   }) : _authRepo = authRepo,
        _imagePicker = imagePicker,
        super(EditProfileState.fromProfile(initialProfile));
@@ -68,7 +68,7 @@ class EditProfileCubit extends Cubit<EditProfileState> {
     emit(state.copyWith(cubitStatus: CubitStatus.loading));
 
     final result = await _authRepo.updateUserProfile(
-      UpdateProfileRequest(
+      UpdateProfileRequestModel(
         name: state.name.trim(),
         email: state.email.trim(),
         mobileNumber: state.mobileNumber.trim(),

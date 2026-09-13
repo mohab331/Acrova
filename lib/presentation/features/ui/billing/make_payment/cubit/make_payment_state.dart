@@ -1,5 +1,5 @@
 import 'package:acrova/core/error/app_error_model.dart';
-import 'package:acrova/data/models/billing/payment_model.dart';
+import 'package:acrova/data/models/response/billing/payment_quote_response_model.dart';
 import 'package:acrova/utils/enums/cubit_status.dart';
 import 'package:equatable/equatable.dart';
 import 'package:image_picker/image_picker.dart';
@@ -17,7 +17,7 @@ class MakePaymentState extends Equatable {
   final CubitStatus submittingStatus;
   final CubitStatus fetchQuoteStatus;
   final XFile? receiptImage;
-  final PaymentQuoteModel? quote;
+  final PaymentQuoteResponseModel? quote;
   final AppErrorModel? submittingError;
   final AppErrorModel? fetchQuoteError;
 
@@ -32,7 +32,7 @@ class MakePaymentState extends Equatable {
     CubitStatus? fetchQuoteStatus,
     XFile? receiptImage,
     bool clearReceiptImage = false,
-    PaymentQuoteModel? quote,
+    PaymentQuoteResponseModel? quote,
     AppErrorModel? submittingError,
     AppErrorModel? fetchQuoteError,
   }) {

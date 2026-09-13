@@ -1,6 +1,6 @@
 import 'package:acrova/core/error/app_error_model.dart';
-import 'package:acrova/data/models/interior_design/moodboard_model.dart';
-import 'package:acrova/data/models/project/interior_design_request.dart';
+import 'package:acrova/data/models/request/project/interior_design_request_model.dart';
+import 'package:acrova/data/models/response/project/moodboard_response_model.dart';
 import 'package:acrova/utils/enums/cubit_status.dart';
 import 'package:acrova/utils/enums/interior_design_enums.dart';
 import 'package:equatable/equatable.dart';
@@ -18,7 +18,7 @@ class InteriorDesignState extends Equatable {
   final String extraNotes;
   final List<String> inspirationMediaPaths;
   final List<String> inspirationLinks;
-  final List<MoodboardModel> availableMoodboards;
+  final List<MoodboardResponseModel> availableMoodboards;
 
   final CubitStatus status;
   final AppErrorModel? error;
@@ -59,8 +59,8 @@ class InteriorDesignState extends Equatable {
   String get budgetTierString => budgetTier?.value ?? '';
   String get timelineString => timeline?.value ?? '';
 
-  InteriorDesignRequest toRequest({required String projectId}) {
-    return InteriorDesignRequest(
+  InteriorDesignRequestModel toRequest({required String projectId}) {
+    return InteriorDesignRequestModel(
       projectId: projectId,
       scope: scope.value,
       specificRooms: specificRooms,
@@ -90,7 +90,7 @@ class InteriorDesignState extends Equatable {
     String? extraNotes,
     List<String>? inspirationMediaPaths,
     List<String>? inspirationLinks,
-    List<MoodboardModel>? availableMoodboards,
+    List<MoodboardResponseModel>? availableMoodboards,
     CubitStatus? status,
     AppErrorModel? error,
   }) {

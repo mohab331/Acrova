@@ -1,5 +1,5 @@
 import 'package:acrova/core/error/app_error_model.dart';
-import 'package:acrova/data/models/project/project_model.dart';
+import 'package:acrova/data/models/response/project/project_response_model.dart';
 import 'package:acrova/utils/enums/cubit_status.dart';
 import 'package:equatable/equatable.dart';
 
@@ -13,7 +13,7 @@ class ProjectsCubitState extends Equatable {
   const ProjectsCubitState.initial() : this(cubitStatus: CubitStatus.initial);
 
   final CubitStatus cubitStatus;
-  final List<ProjectModel>? projects;
+  final List<ProjectResponseModel>? projects;
   final AppErrorModel? appErrorModel;
 
   bool get isLoading => cubitStatus == CubitStatus.loading;
@@ -22,7 +22,7 @@ class ProjectsCubitState extends Equatable {
 
   ProjectsCubitState copyWith({
     CubitStatus? cubitStatus,
-    List<ProjectModel>? projects,
+    List<ProjectResponseModel>? projects,
     AppErrorModel? appErrorModel,
     String? userName,
     int? notificationCount,

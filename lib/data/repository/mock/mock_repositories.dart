@@ -4,22 +4,38 @@ import 'package:acrova/core/config/mock_config.dart';
 import 'package:acrova/core/error/app_error_model.dart';
 import 'package:acrova/core/error/error_codes_enum.dart';
 import 'package:acrova/data/data_source/remote/network/models/network_response.dart';
-import 'package:acrova/data/models/auth/verify_otp_request_model.dart';
-import 'package:acrova/data/models/auth/verify_otp_response_model.dart';
-import 'package:acrova/data/models/billing/payment_model.dart';
-import 'package:acrova/data/models/interior_design/moodboard_model.dart';
-import 'package:acrova/data/models/notification/app_notification_model.dart';
-import 'package:acrova/data/models/portfolio/portfolio_item.dart';
-import 'package:acrova/data/models/profile/user_profile_model.dart';
-import 'package:acrova/data/models/project/create_project_request.dart';
-import 'package:acrova/data/models/project/deliverable_model.dart';
-import 'package:acrova/data/models/project/interior_design_request.dart';
-import 'package:acrova/data/models/project/project_model.dart';
-import 'package:acrova/data/models/request/profile/update_profile_request.dart';
-import 'package:acrova/data/models/request/revision/create_revision_request.dart';
+import 'package:acrova/data/models/request/auth/save_profile_request_model.dart';
+import 'package:acrova/data/models/request/auth/send_otp_request_model.dart';
+import 'package:acrova/data/models/request/auth/verify_otp_request_model.dart';
+import 'package:acrova/data/models/request/billing/get_payment_details_request_model.dart';
+import 'package:acrova/data/models/request/billing/get_payment_quote_request_model.dart';
+import 'package:acrova/data/models/request/billing/submit_payment_request_model.dart';
+import 'package:acrova/data/models/request/contact_us/submit_inquiry_request_model.dart';
+import 'package:acrova/data/models/request/portfolio/get_portfolio_item_request_model.dart';
+import 'package:acrova/data/models/request/profile/update_profile_request_model.dart';
+import 'package:acrova/data/models/request/project/create_project_request_model.dart';
+import 'package:acrova/data/models/request/project/get_project_request_model.dart';
+import 'package:acrova/data/models/request/project/interior_design_request_model.dart';
+import 'package:acrova/data/models/request/revision/create_revision_request_model.dart';
+import 'package:acrova/data/models/request/revision/get_revision_request_model.dart';
+import 'package:acrova/data/models/response/auth/verify_otp_response_model.dart';
+import 'package:acrova/data/models/response/billing/payment_quote_response_model.dart';
+import 'package:acrova/data/models/response/billing/payment_response_model.dart';
 import 'package:acrova/data/models/response/config/min_app_version_response_model.dart';
-import 'package:acrova/data/models/revision/revision_model.dart';
-import 'package:acrova/data/models/revision/revision_quota_model.dart';
+import 'package:acrova/data/models/response/dashboard/dashboard_response_model.dart';
+import 'package:acrova/data/models/response/deliverables/blueprint_response_model.dart';
+import 'package:acrova/data/models/response/deliverables/deliverables_response_model.dart';
+import 'package:acrova/data/models/response/deliverables/render_response_model.dart';
+import 'package:acrova/data/models/response/notification/app_notification_response_model.dart';
+import 'package:acrova/data/models/response/portfolio/portfolio_item_response_model.dart';
+import 'package:acrova/data/models/response/portfolio/walkthrough_response_model.dart';
+import 'package:acrova/data/models/response/profile/user_profile_response_model.dart';
+import 'package:acrova/data/models/response/project/deliverable_response_model.dart';
+import 'package:acrova/data/models/response/project/engineer_response_model.dart';
+import 'package:acrova/data/models/response/project/moodboard_response_model.dart';
+import 'package:acrova/data/models/response/project/project_response_model.dart';
+import 'package:acrova/data/models/response/revision/revision_quota_response_model.dart';
+import 'package:acrova/data/models/response/revision/revision_response_model.dart';
 import 'package:acrova/domain/repository/auth/base_auth_repo.dart';
 import 'package:acrova/domain/repository/billing/base_billing_repo.dart';
 import 'package:acrova/domain/repository/config/base_app_config_repo.dart';
@@ -32,7 +48,6 @@ import 'package:acrova/domain/repository/portfolio/base_portfolio_repo.dart';
 import 'package:acrova/domain/repository/project/base_project_repo.dart';
 import 'package:acrova/domain/repository/revisions/base_revisions_repo.dart';
 import 'package:acrova/presentation/app/resources/resources.dart';
-import 'package:acrova/presentation/features/ui/deliverables/cubit/deliverables_state.dart';
 import 'package:acrova/utils/enums/project_status_enum.dart';
 import 'package:acrova/utils/enums/project_type_enum.dart';
 import 'package:acrova/utils/enums/revision_status_enum.dart';
@@ -63,7 +78,7 @@ class _MockBase {
 
 class MockAuthRepo extends _MockBase implements BaseAuthRepo {
   @override
-  Future<Result<void>> login(String phoneNumber) async {
+  Future<Result<void>> login(SendOTPRequestModel request) async {
     if (shouldThrow(MockRepositoryKey.auth)) return mockError();
 
     await simulateDelay();
@@ -88,12 +103,7 @@ class MockAuthRepo extends _MockBase implements BaseAuthRepo {
   }
 
   @override
-  Future<Result<void>> saveProfile({
-    required String name,
-    required String email,
-    required String nationalId,
-    required String language,
-  }) async {
+  Future<Result<void>> saveProfile(SaveProfileRequestModel request) async {
     if (shouldThrow(MockRepositoryKey.auth)) return mockError();
 
     await simulateDelay();
@@ -102,13 +112,13 @@ class MockAuthRepo extends _MockBase implements BaseAuthRepo {
   }
 
   @override
-  Future<Result<UserProfileModel>> getUserProfile() async {
+  Future<Result<UserProfileResponseModel>> getUserProfile() async {
     if (shouldThrow(MockRepositoryKey.auth)) return mockError();
 
     await simulateDelay();
 
     return Success(
-      UserProfileModel(
+      UserProfileResponseModel(
         name: 'Mohab Osama',
         email: 'mohab@acrova.sa',
         mobileNumber: '+966500000000',
@@ -124,15 +134,15 @@ class MockAuthRepo extends _MockBase implements BaseAuthRepo {
   }
 
   @override
-  Future<Result<UserProfileModel>> updateUserProfile(
-    UpdateProfileRequest request,
+  Future<Result<UserProfileResponseModel>> updateUserProfile(
+    UpdateProfileRequestModel request,
   ) async {
     if (shouldThrow(MockRepositoryKey.auth)) return mockError();
 
     await simulateDelay();
 
     return Success(
-      UserProfileModel(
+      UserProfileResponseModel(
         name: request.name,
         email: request.email,
         mobileNumber: request.mobileNumber,
@@ -174,8 +184,8 @@ class MockAuthRepo extends _MockBase implements BaseAuthRepo {
 }
 
 class MockProjectRepo extends _MockBase implements BaseProjectRepo {
-  static final List<ProjectModel> _mockProjects = [
-    ProjectModel(
+  static final List<ProjectResponseModel> _mockProjects = [
+    ProjectResponseModel(
       id: 'proj_001',
       name: 'Villa Al-Nakheel',
       type: ProjectType.villa,
@@ -199,7 +209,7 @@ class MockProjectRepo extends _MockBase implements BaseProjectRepo {
       smartHomeLevel: 'Full Integration',
       description:
           'An exceptional contemporary residence blending minimalist lines with premium materials. Designed to maximize natural light while maintaining absolute privacy.',
-      engineer: const EngineerModel(
+      engineer: const EngineerResponseModel(
         name: 'Eng. Abdullah Al-Rashid',
         specialization: 'Lead Structural Engineer',
         avatarUrl:
@@ -215,7 +225,7 @@ class MockProjectRepo extends _MockBase implements BaseProjectRepo {
       ],
       estimatedTimeline: '١٢ يوماً',
       deliverables: [
-        DeliverableModel(
+        DeliverableResponseModel(
           id: 'del_001',
           title: 'Ground Floor Architectural Plan',
           type: DeliverableType.pdf,
@@ -225,7 +235,7 @@ class MockProjectRepo extends _MockBase implements BaseProjectRepo {
       ],
       createdAt: DateTime(2024, 1, 15),
     ),
-    ProjectModel(
+    ProjectResponseModel(
       id: 'proj_002',
       name: 'Commercial Complex Al-Malqa',
       status: ProjectStatus.awaitingPricing,
@@ -250,7 +260,7 @@ class MockProjectRepo extends _MockBase implements BaseProjectRepo {
   ];
 
   @override
-  Future<Result<List<ProjectModel>>> getProjects() async {
+  Future<Result<List<ProjectResponseModel>>> getProjects() async {
     if (shouldThrow(MockRepositoryKey.project)) return mockError();
 
     await simulateDelay();
@@ -263,13 +273,15 @@ class MockProjectRepo extends _MockBase implements BaseProjectRepo {
   }
 
   @override
-  Future<Result<ProjectModel>> getProject(String id) async {
+  Future<Result<ProjectResponseModel>> getProject(
+    GetProjectRequestModel request,
+  ) async {
     if (shouldThrow(MockRepositoryKey.project)) return mockError();
 
     await simulateDelay();
 
     final project = _mockProjects.firstWhere(
-      (p) => p.id == id,
+      (p) => p.id == request.id,
       orElse: () => _mockProjects.first,
     );
 
@@ -277,14 +289,14 @@ class MockProjectRepo extends _MockBase implements BaseProjectRepo {
   }
 
   @override
-  Future<Result<ProjectModel>> createProject(
-    CreateProjectRequest request,
+  Future<Result<ProjectResponseModel>> createProject(
+    CreateProjectRequestModel request,
   ) async {
     if (shouldThrow(MockRepositoryKey.project)) return mockError();
 
     await simulateDelay();
 
-    final newProject = ProjectModel(
+    final newProject = ProjectResponseModel(
       id: 'ARC-2024-${DateTime.now().millisecondsSinceEpoch % 100000}',
       name: '${request.projectType.displayLabel} Project',
       type: request.projectType,
@@ -314,7 +326,7 @@ class MockProjectRepo extends _MockBase implements BaseProjectRepo {
 
   @override
   Future<Result<void>> submitInteriorDesign(
-    InteriorDesignRequest request,
+    InteriorDesignRequestModel request,
   ) async {
     if (shouldThrow(MockRepositoryKey.project)) return mockError();
 
@@ -323,29 +335,29 @@ class MockProjectRepo extends _MockBase implements BaseProjectRepo {
     return const Success(null);
   }
 
-  static const List<MoodboardModel> _mockMoodboards = [
-    MoodboardModel(
+  static const List<MoodboardResponseModel> _mockMoodboards = [
+    MoodboardResponseModel(
       id: 'mb_1',
       url:
           'https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&q=80&w=400',
       label: 'Modern Minimalist',
       labelAr: 'تصميم تبسيطي حديث',
     ),
-    MoodboardModel(
+    MoodboardResponseModel(
       id: 'mb_2',
       url:
           'https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&q=80&w=400',
       label: 'Warm Organic',
       labelAr: 'طبيعي دافئ',
     ),
-    MoodboardModel(
+    MoodboardResponseModel(
       id: 'mb_3',
       url:
           'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&q=80&w=400',
       label: 'Dark Luxury',
       labelAr: 'فخامة داكنة',
     ),
-    MoodboardModel(
+    MoodboardResponseModel(
       id: 'mb_4',
       url:
           'https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?auto=format&fit=crop&q=80&w=400',
@@ -355,7 +367,7 @@ class MockProjectRepo extends _MockBase implements BaseProjectRepo {
   ];
 
   @override
-  Future<Result<List<MoodboardModel>>> getMoodboards() async {
+  Future<Result<List<MoodboardResponseModel>>> getMoodboards() async {
     if (shouldThrow(MockRepositoryKey.project)) return mockError();
 
     await simulateDelay();
@@ -369,8 +381,8 @@ class MockProjectRepo extends _MockBase implements BaseProjectRepo {
 }
 
 class MockBillingRepo extends _MockBase implements BaseBillingRepo {
-  static final List<PaymentModel> _mockPayments = [
-    PaymentModel(
+  static final List<PaymentResponseModel> _mockPayments = [
+    PaymentResponseModel(
       id: 'pay_001',
       projectId: 'proj_001',
       projectName: 'Villa Al-Nakheel',
@@ -385,7 +397,7 @@ class MockBillingRepo extends _MockBase implements BaseBillingRepo {
       receiptUrl:
           'https://lh3.googleusercontent.com/aida-public/AB6AXuBO6D4aCgL7uutbd62c8gJ63feroaBUiwiIzmPSLd3KJ5RO1BEGoISuBUtitPTzM5ZqAUiHEfEHkhRsVotQh9IkIH6Pe9PjA-s17sjSJWjSJa7DrvBTlgXtY3G-Jv1nJL5q_FI3-t4mM7Mt6Xo_DpcsnYjtUnBE7r9SLGjtAE7cM741WiX-H3LUhjVaT5GbrAka-I-agO42IinP3rTSPW0UN2nEXmapFrLxhjHGeeyw48c9XemgPcwl',
     ),
-    PaymentModel(
+    PaymentResponseModel(
       id: 'pay_002',
       projectId: 'proj_002',
       projectName: 'Al-Narjis Commercial Plaza',
@@ -398,7 +410,7 @@ class MockBillingRepo extends _MockBase implements BaseBillingRepo {
       iban: 'SA0380000000608010167520',
       accountName: 'Arcova Architecture & Design',
     ),
-    PaymentModel(
+    PaymentResponseModel(
       id: 'pay_003',
       projectId: 'proj_001',
       projectName: 'Villa Al-Nakheel',
@@ -416,7 +428,7 @@ class MockBillingRepo extends _MockBase implements BaseBillingRepo {
   ];
 
   @override
-  Future<Result<List<PaymentModel>>> getPayments() async {
+  Future<Result<List<PaymentResponseModel>>> getPayments() async {
     if (shouldThrow(MockRepositoryKey.billing)) return mockError();
 
     await simulateDelay();
@@ -429,13 +441,15 @@ class MockBillingRepo extends _MockBase implements BaseBillingRepo {
   }
 
   @override
-  Future<Result<PaymentModel>> getPaymentDetails(String paymentId) async {
+  Future<Result<PaymentResponseModel>> getPaymentDetails(
+    GetPaymentDetailsRequestModel request,
+  ) async {
     if (shouldThrow(MockRepositoryKey.billing)) return mockError();
 
     await simulateDelay();
 
     final payment = _mockPayments.firstWhere(
-      (p) => p.id == paymentId,
+      (p) => p.id == request.paymentId,
       orElse: () => _mockPayments.first,
     );
 
@@ -443,10 +457,9 @@ class MockBillingRepo extends _MockBase implements BaseBillingRepo {
   }
 
   @override
-  Future<Result<void>> submitPayment({
-    required String projectId,
-    required String receiptPath,
-  }) async {
+  Future<Result<void>> submitPayment(
+    SubmitPaymentRequestModel request,
+  ) async {
     if (shouldThrow(MockRepositoryKey.billing)) return mockError();
 
     await simulateDelay();
@@ -455,15 +468,17 @@ class MockBillingRepo extends _MockBase implements BaseBillingRepo {
   }
 
   @override
-  Future<Result<PaymentQuoteModel>> getPaymentQuote(String projectId) async {
+  Future<Result<PaymentQuoteResponseModel>> getPaymentQuote(
+    GetPaymentQuoteRequestModel request,
+  ) async {
     if (shouldThrow(MockRepositoryKey.billing)) return mockError();
 
     await simulateDelay();
 
     if (isEmpty(MockRepositoryKey.billing)) {
       return Success(
-        PaymentQuoteModel(
-          projectId: projectId,
+        PaymentQuoteResponseModel(
+          projectId: request.projectId,
           amountDue: 0,
           baseFee: 0,
           vat: 0,
@@ -477,8 +492,8 @@ class MockBillingRepo extends _MockBase implements BaseBillingRepo {
     }
 
     return Success(
-      PaymentQuoteModel(
-        projectId: projectId,
+      PaymentQuoteResponseModel(
+        projectId: request.projectId,
         amountDue: 14000,
         baseFee: 10000,
         vat: 1200,
@@ -493,8 +508,8 @@ class MockBillingRepo extends _MockBase implements BaseBillingRepo {
 }
 
 class MockNotificationsRepo extends _MockBase implements BaseNotificationsRepo {
-  static final List<AppNotificationModel> _mockNotifications = [
-    AppNotificationModel(
+  static final List<AppNotificationResponseModel> _mockNotifications = [
+    AppNotificationResponseModel(
       id: 'notif_001',
       title: 'Structural Blueprints Ready',
       body: 'Phase 2 construction drawings are now available for review.',
@@ -502,7 +517,7 @@ class MockNotificationsRepo extends _MockBase implements BaseNotificationsRepo {
       isRead: false,
       projectId: 'proj_001',
     ),
-    AppNotificationModel(
+    AppNotificationResponseModel(
       id: 'notif_002',
       title: 'Payment Verified',
       body: 'Your payment of SAR 14,000 for Villa Al-Nakheel was approved.',
@@ -510,7 +525,7 @@ class MockNotificationsRepo extends _MockBase implements BaseNotificationsRepo {
       isRead: false,
       projectId: 'proj_001',
     ),
-    AppNotificationModel(
+    AppNotificationResponseModel(
       id: 'notif_003',
       title: 'Revision Completed',
       body: 'Architectural changes to the master suite have been incorporated.',
@@ -521,7 +536,7 @@ class MockNotificationsRepo extends _MockBase implements BaseNotificationsRepo {
   ];
 
   @override
-  Future<Result<List<AppNotificationModel>>> getNotifications() async {
+  Future<Result<List<AppNotificationResponseModel>>> getNotifications() async {
     if (shouldThrow(MockRepositoryKey.notifications)) return mockError();
 
     await simulateDelay();
@@ -544,8 +559,8 @@ class MockNotificationsRepo extends _MockBase implements BaseNotificationsRepo {
 }
 
 class MockRevisionsRepo extends _MockBase implements BaseRevisionsRepo {
-  static final List<RevisionModel> _mockRevisions = [
-    RevisionModel(
+  static final List<RevisionResponseModel> _mockRevisions = [
+    RevisionResponseModel(
       id: 'rev_001',
       status: RevisionStatus.completed,
       createdAt: DateTime(2024, 2, 10),
@@ -557,7 +572,7 @@ class MockRevisionsRepo extends _MockBase implements BaseRevisionsRepo {
       engineerNote:
           'Structural check cleared. Beam adjustments noted in sheet S-04.',
     ),
-    RevisionModel(
+    RevisionResponseModel(
       id: 'rev_002',
       status: RevisionStatus.inProgress,
       createdAt: DateTime(2024, 2, 16),
@@ -571,7 +586,7 @@ class MockRevisionsRepo extends _MockBase implements BaseRevisionsRepo {
   ];
 
   @override
-  Future<Result<List<RevisionModel>>> getRevisions() async {
+  Future<Result<List<RevisionResponseModel>>> getRevisions() async {
     if (shouldThrow(MockRepositoryKey.revisions)) return mockError();
 
     await simulateDelay();
@@ -584,13 +599,15 @@ class MockRevisionsRepo extends _MockBase implements BaseRevisionsRepo {
   }
 
   @override
-  Future<Result<RevisionModel>> getRevision(String id) async {
+  Future<Result<RevisionResponseModel>> getRevision(
+    GetRevisionRequestModel request,
+  ) async {
     if (shouldThrow(MockRepositoryKey.revisions)) return mockError();
 
     await simulateDelay();
 
     final revision = _mockRevisions.firstWhere(
-      (r) => r.id == id,
+      (r) => r.id == request.id,
       orElse: () => _mockRevisions.first,
     );
 
@@ -598,31 +615,41 @@ class MockRevisionsRepo extends _MockBase implements BaseRevisionsRepo {
   }
 
   @override
-  Future<Result<RevisionQuotaModel>> getQuota() async {
+  Future<Result<RevisionQuotaResponseModel>> getQuota() async {
     if (shouldThrow(MockRepositoryKey.revisions)) return mockError();
 
     await simulateDelay();
 
     if (isEmpty(MockRepositoryKey.revisions)) {
       return const Success(
-        RevisionQuotaModel(used: 3, total: 3, currency: 'SAR', paidCost: 500),
+        RevisionQuotaResponseModel(
+          used: 3,
+          total: 3,
+          currency: 'SAR',
+          paidCost: 500,
+        ),
       );
     }
 
     return const Success(
-      RevisionQuotaModel(used: 1, total: 3, currency: 'SAR', paidCost: 500),
+      RevisionQuotaResponseModel(
+        used: 1,
+        total: 3,
+        currency: 'SAR',
+        paidCost: 500,
+      ),
     );
   }
 
   @override
-  Future<Result<RevisionModel>> createRevision(
-    CreateRevisionRequest request,
+  Future<Result<RevisionResponseModel>> createRevision(
+    CreateRevisionRequestModel request,
   ) async {
     if (shouldThrow(MockRepositoryKey.revisions)) return mockError();
 
     await simulateDelay();
 
-    final newRev = RevisionModel(
+    final newRev = RevisionResponseModel(
       id: 'rev_${DateTime.now().millisecondsSinceEpoch}',
       status: RevisionStatus.inProgress,
       createdAt: DateTime.now(),
@@ -653,22 +680,24 @@ class MockRevisionsRepo extends _MockBase implements BaseRevisionsRepo {
 
 class MockDashboardRepo extends _MockBase implements BaseDashboardRepo {
   @override
-  Future<Result<Map<String, dynamic>>> getDashboardData() async {
+  Future<Result<DashboardResponseModel>> getDashboardData() async {
     if (shouldThrow(MockRepositoryKey.dashboard)) return mockError();
 
     await simulateDelay();
 
     if (isEmpty(MockRepositoryKey.dashboard)) {
-      return const Success({});
+      return const Success(DashboardResponseModel());
     }
 
-    return const Success({'userName': 'Mohab', 'notificationCount': 2});
+    return const Success(
+      DashboardResponseModel(userName: 'Mohab', notificationCount: 2),
+    );
   }
 }
 
 class MockPortfolioRepo extends _MockBase implements BasePortfolioRepo {
-  static const List<PortfolioItem> _mockItems = [
-    PortfolioItem(
+  static const List<PortfolioItemResponseModel> _mockItems = [
+    PortfolioItemResponseModel(
       id: 'grand_residence',
       style: 'Neoclassicism',
       category: 'exterior',
@@ -687,7 +716,7 @@ class MockPortfolioRepo extends _MockBase implements BasePortfolioRepo {
         'Formal Gardens',
         'Smart Lighting',
       ],
-      walkthroughModel: WalkthroughModel(
+      walkthroughModel: WalkthroughResponseModel(
         description:
             'A sweeping neoclassical estate that draws on European grand-villa proportions while embracing the Saudi climate. Symmetrical colonnades frame a central porte-cochère, and hand-carved stone detailing flows through every facade elevation.',
         format: '.mp4',
@@ -700,8 +729,8 @@ class MockPortfolioRepo extends _MockBase implements BasePortfolioRepo {
         duration: '3:38 m',
       ),
     ),
-    PortfolioItem(
-      walkthroughModel: WalkthroughModel(
+    PortfolioItemResponseModel(
+      walkthroughModel: WalkthroughResponseModel(
         description:
             'A sweeping neoclassical estate that draws on European grand-villa proportions while embracing the Saudi climate. Symmetrical colonnades frame a central porte-cochère, and hand-carved stone detailing flows through every facade elevation.',
         format: '.mp4',
@@ -735,7 +764,7 @@ class MockPortfolioRepo extends _MockBase implements BasePortfolioRepo {
         'Smart Home Ready',
       ],
     ),
-    PortfolioItem(
+    PortfolioItemResponseModel(
       id: 'glass_villa',
       style: 'Modernism',
       category: 'modern',
@@ -755,7 +784,7 @@ class MockPortfolioRepo extends _MockBase implements BasePortfolioRepo {
         'Solar Canopy',
       ],
     ),
-    PortfolioItem(
+    PortfolioItemResponseModel(
       id: 'al_omran',
       style: 'Traditional',
       category: 'traditional',
@@ -775,7 +804,7 @@ class MockPortfolioRepo extends _MockBase implements BasePortfolioRepo {
         'Traditional Mashrabiya',
       ],
     ),
-    PortfolioItem(
+    PortfolioItemResponseModel(
       id: 'the_majlis',
       style: 'Interior',
       category: 'interior',
@@ -795,7 +824,7 @@ class MockPortfolioRepo extends _MockBase implements BasePortfolioRepo {
         'Ambient Lighting',
       ],
     ),
-    PortfolioItem(
+    PortfolioItemResponseModel(
       id: 'desert_pavilion',
       style: 'Exterior',
       category: 'exterior',
@@ -818,7 +847,7 @@ class MockPortfolioRepo extends _MockBase implements BasePortfolioRepo {
   ];
 
   @override
-  Future<Result<List<PortfolioItem>>> getPortfolioItems() async {
+  Future<Result<List<PortfolioItemResponseModel>>> getPortfolioItems() async {
     if (shouldThrow(MockRepositoryKey.portfolio)) return mockError();
 
     await simulateDelay();
@@ -831,11 +860,13 @@ class MockPortfolioRepo extends _MockBase implements BasePortfolioRepo {
   }
 
   @override
-  Future<Result<PortfolioItem>> getPortfolioItemByID(String id) async {
+  Future<Result<PortfolioItemResponseModel>> getPortfolioItemByID(
+    GetPortfolioItemRequestModel request,
+  ) async {
     if (shouldThrow(MockRepositoryKey.portfolio)) return mockError();
     await simulateDelay();
     final item = _mockItems.firstWhere(
-      (p) => p.id == id,
+      (p) => p.id == request.id,
       orElse: () => _mockItems.first,
     );
     return Success(item);
@@ -844,14 +875,14 @@ class MockPortfolioRepo extends _MockBase implements BasePortfolioRepo {
 
 class MockDeliverablesRepo extends _MockBase implements BaseDeliverablesRepo {
   @override
-  Future<Result<DeliverablesData>> getDeliverables() async {
+  Future<Result<DeliverablesResponseModel>> getDeliverables() async {
     if (shouldThrow(MockRepositoryKey.deliverables)) return mockError();
 
     await simulateDelay();
 
     if (isEmpty(MockRepositoryKey.deliverables)) {
       return const Success(
-        DeliverablesData(
+        DeliverablesResponseModel(
           blueprints: [],
           renders: [],
           walkthroughs: [],
@@ -863,28 +894,28 @@ class MockDeliverablesRepo extends _MockBase implements BaseDeliverablesRepo {
     }
 
     return Success(
-      DeliverablesData(
+      DeliverablesResponseModel(
         projectName: 'AL-RIYADH ESTATE',
         projectThumbnailUrl:
-            'https://api.alhilwa.com.iq/uploads/projects/1774287086738-7ff23182f9452cf20ab58038546a.jpg',
+          'https://api.alhilwa.com.iq/uploads/projects/1774287086738-7ff23182f9452cf20ab58038546a.jpg',
         allFilesZipUrl:
-            'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf',
+          'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf',
         blueprints: const [
-          BlueprintModel(
+          BlueprintResponseModel(
             title: 'Ground Floor Architectural Plan',
             size: '24.5 MB',
             format: 'PDF',
             urlOrAsset:
                 'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf',
           ),
-          BlueprintModel(
+          BlueprintResponseModel(
             title: 'First Floor & Roof Terrace Plan',
             size: '18.2 MB',
             format: 'PDF',
             urlOrAsset:
                 'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf',
           ),
-          BlueprintModel(
+          BlueprintResponseModel(
             title: 'Structural Foundation & MEP Layout',
             size: '31.0 MB',
             format: 'PDF',
@@ -893,21 +924,21 @@ class MockDeliverablesRepo extends _MockBase implements BaseDeliverablesRepo {
           ),
         ],
         renders: [
-          RenderModel(
+          RenderResponseModel(
             imageAsset: Resources.drawables.img1,
             resolution: '4K UHD',
           ),
-          RenderModel(
+          RenderResponseModel(
             imageAsset: Resources.drawables.img2,
             resolution: '4K UHD',
           ),
-          RenderModel(
+          RenderResponseModel(
             imageAsset: Resources.drawables.design1,
             resolution: '4K UHD',
           ),
         ],
         walkthroughs: [
-          WalkthroughModel(
+          WalkthroughResponseModel(
             thumbnailImageUrl: Resources.drawables.img1,
             title: 'Walkthrough v1.2 — Full Interior Tour',
             duration: '02:45 m',
@@ -926,11 +957,7 @@ class MockDeliverablesRepo extends _MockBase implements BaseDeliverablesRepo {
 
 class MockContactUsRepo extends _MockBase implements BaseContactUsRepo {
   @override
-  Future<Result<void>> submitInquiry({
-    required String email,
-    required String mobileNumber,
-    required String details,
-  }) async {
+  Future<Result<void>> submitInquiry(SubmitInquiryRequestModel request) async {
     if (shouldThrow(MockRepositoryKey.contactUs)) return mockError();
 
     await simulateDelay();

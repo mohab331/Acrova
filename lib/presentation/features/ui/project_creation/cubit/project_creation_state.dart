@@ -1,6 +1,6 @@
 import 'package:acrova/core/error/app_error_model.dart';
-import 'package:acrova/data/models/project/create_project_request.dart';
-import 'package:acrova/data/models/project/project_model.dart';
+import 'package:acrova/data/models/request/project/create_project_request_model.dart';
+import 'package:acrova/data/models/response/project/project_response_model.dart';
 import 'package:acrova/utils/enums/cubit_status.dart';
 import 'package:acrova/utils/enums/design_style_enum.dart';
 import 'package:acrova/utils/enums/project_type_enum.dart';
@@ -44,7 +44,7 @@ class ProjectCreationState extends Equatable {
 
   final int currentStep;
   final CubitStatus cubitStatus;
-  final ProjectModel? createdProject;
+  final ProjectResponseModel? createdProject;
   final AppErrorModel? appErrorModel;
 
   // Step 1
@@ -150,7 +150,7 @@ class ProjectCreationState extends Equatable {
       sbcAreaWarning || sbcFloorWarning || sbcWidthAdvisory;
 
   /// Build the final request object from accumulated wizard data.
-  CreateProjectRequest toRequest() => CreateProjectRequest(
+  CreateProjectRequestModel toRequest() => CreateProjectRequestModel(
     projectType: selectedType!,
     location: location.trim(),
     landAreaSqm: landAreaSqm!,
@@ -175,7 +175,7 @@ class ProjectCreationState extends Equatable {
   ProjectCreationState copyWith({
     int? currentStep,
     CubitStatus? cubitStatus,
-    ProjectModel? createdProject,
+    ProjectResponseModel? createdProject,
     AppErrorModel? appErrorModel,
     ProjectType? selectedType,
     String? location,

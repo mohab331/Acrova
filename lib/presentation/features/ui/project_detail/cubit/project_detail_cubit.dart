@@ -1,3 +1,4 @@
+import 'package:acrova/data/models/request/project/get_project_request_model.dart';
 import 'package:acrova/domain/repository/project/base_project_repo.dart';
 import 'package:acrova/presentation/features/ui/project_detail/cubit/project_detail_state.dart';
 import 'package:acrova/utils/enums/cubit_status.dart';
@@ -16,7 +17,9 @@ class ProjectDetailCubit extends Cubit<ProjectDetailState> {
 
     emit(state.copyWith(cubitStatus: CubitStatus.loading, projectId: id));
 
-    final result = await _projectRepo.getProject(id);
+    final result = await _projectRepo.getProject(
+      GetProjectRequestModel(id: id),
+    );
     result.when(
       success: (data) {
         emit(state.copyWith(cubitStatus: CubitStatus.success, project: data));

@@ -1,5 +1,5 @@
 import 'package:acrova/core/error/app_error_model.dart';
-import 'package:acrova/data/models/notification/app_notification_model.dart';
+import 'package:acrova/data/models/response/notification/app_notification_response_model.dart';
 import 'package:acrova/utils/enums/cubit_status.dart';
 import 'package:equatable/equatable.dart';
 
@@ -14,7 +14,7 @@ class NotificationsCubitState extends Equatable {
     : this(cubitStatus: CubitStatus.initial);
 
   final CubitStatus cubitStatus;
-  final List<AppNotificationModel>? notifications;
+  final List<AppNotificationResponseModel>? notifications;
   final AppErrorModel? appErrorModel;
 
   bool get isLoading => cubitStatus == CubitStatus.loading;
@@ -24,11 +24,11 @@ class NotificationsCubitState extends Equatable {
   bool get isEmpty => (notifications ?? const []).isEmpty;
 
   int get unreadCount =>
-      (notifications ?? const []).where((n) => !n.isRead).length;
+      (notifications ?? const []).where((n) => n.isRead != true).length;
 
   NotificationsCubitState copyWith({
     CubitStatus? cubitStatus,
-    List<AppNotificationModel>? notifications,
+    List<AppNotificationResponseModel>? notifications,
     AppErrorModel? appErrorModel,
   }) => NotificationsCubitState(
     cubitStatus: cubitStatus ?? this.cubitStatus,

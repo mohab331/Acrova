@@ -44,7 +44,7 @@ class ProjectBottomCta extends StatelessWidget {
 }
 
 class _CTA extends StatelessWidget {
-  const _CTA({required this.project, super.key});
+  const _CTA({required this.project});
   final ProjectModel project;
 
   @override

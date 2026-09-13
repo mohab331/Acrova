@@ -1,5 +1,5 @@
 import 'package:acrova/core/error/app_error_model.dart';
-import 'package:acrova/data/models/profile/user_profile_model.dart';
+import 'package:acrova/data/models/response/profile/user_profile_response_model.dart';
 import 'package:acrova/utils/enums/cubit_status.dart';
 import 'package:acrova/utils/validation/app_validators.dart';
 import 'package:equatable/equatable.dart';
@@ -15,7 +15,7 @@ class EditProfileState extends Equatable {
     required this.initialProfile,
   });
 
-  factory EditProfileState.fromProfile(UserProfileModel profile) =>
+  factory EditProfileState.fromProfile(UserProfileResponseModel profile) =>
       EditProfileState(
         cubitStatus: CubitStatus.initial,
         name: profile.name ?? '',
@@ -31,7 +31,7 @@ class EditProfileState extends Equatable {
   final AppErrorModel? appErrorModel;
   final String? avatarPath;
 
-  final UserProfileModel? initialProfile;
+  final UserProfileResponseModel? initialProfile;
 
   bool get enableSubmit {
     final bool isSameName =
@@ -63,7 +63,7 @@ class EditProfileState extends Equatable {
     String? mobileNumber,
     AppErrorModel? appErrorModel,
     String? avatarPath,
-    UserProfileModel? profile,
+    UserProfileResponseModel? profile,
   }) => EditProfileState(
     cubitStatus: cubitStatus ?? this.cubitStatus,
     name: name ?? this.name,
@@ -71,7 +71,7 @@ class EditProfileState extends Equatable {
     mobileNumber: mobileNumber ?? this.mobileNumber,
     appErrorModel: appErrorModel,
     avatarPath: avatarPath,
-    initialProfile: profile ?? this.initialProfile,
+    initialProfile: profile ?? initialProfile,
   );
 
   @override

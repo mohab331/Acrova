@@ -1,11 +1,12 @@
-import 'package:acrova/data/models/request/revision/create_revision_request.dart';
-import 'package:acrova/data/models/revision/revision_model.dart';
-import 'package:acrova/data/models/revision/revision_quota_model.dart';
+import 'package:acrova/data/models/request/revision/create_revision_request_model.dart';
+import 'package:acrova/data/models/request/revision/get_revision_request_model.dart';
+import 'package:acrova/data/models/response/revision/revision_quota_response_model.dart';
+import 'package:acrova/data/models/response/revision/revision_response_model.dart';
 
 abstract class BaseRevisionsDataSource {
-  Future<List<RevisionModel>> getRevisions();
-  Future<RevisionModel> getRevision(String id);
-  Future<RevisionQuotaModel> getQuota();
-  Future<RevisionModel> createRevision(CreateRevisionRequest request);
+  Future<List<RevisionResponseModel>> getRevisions();
+  Future<RevisionResponseModel> getRevision(GetRevisionRequestModel request);
+  Future<RevisionQuotaResponseModel> getQuota();
+  Future<RevisionResponseModel> createRevision(CreateRevisionRequestModel request);
   Future<List<String>> getDeliverableRefs();
 }

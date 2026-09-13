@@ -11,6 +11,15 @@ class MinAppVersionResponseModel extends Equatable {
     );
   }
 
+  Map<String, dynamic> toJson() => {
+    'content': minAppVersion,
+  };
+
   @override
   List<Object?> get props => [minAppVersion];
+
+  @override
+  String toString() {
+    return 'MinAppVersionResponseModel(minAppVersion: $minAppVersion)';
+  }
 }

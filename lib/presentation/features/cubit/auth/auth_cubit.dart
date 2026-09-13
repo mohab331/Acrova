@@ -1,5 +1,6 @@
 import 'package:acrova/core/error/app_error_model.dart';
 import 'package:acrova/data/models/auth/verify_otp_request_model.dart';
+import 'package:acrova/data/models/request/auth/send_otp_request_model.dart';
 import 'package:acrova/domain/repository/auth/base_auth_repo.dart';
 import 'package:acrova/domain/repository/notifications/base_fcm_token_repo.dart';
 import 'package:acrova/utils/enums/cubit_status.dart';
@@ -21,7 +22,9 @@ class AuthCubit extends Cubit<AuthCubitState> {
   final BaseFCMTokenRepo _fcmTokenRepo;
   Future<void> sendOTP(String phoneNumber) async {
     emit(state.copyWith(sendOTPCubitStatus: CubitStatus.loading));
-    final result = await _baseAuthRepo.login(phoneNumber);
+    final result = await _baseAuthRepo.login(
+      SendOTPRequestModel(phone: phoneNumber),
+    );
     result.when(
       success: (_) => emit(
         state.copyWith(
@@ -40,7 +43,9 @@ class AuthCubit extends Cubit<AuthCubitState> {
 
   Future<void> resendOTP() async {
     emit(state.copyWith(resendOTPCubitStatus: CubitStatus.loading));
-    final result = await _baseAuthRepo.login(state.phoneNumber ?? '');
+    final result = await _baseAuthRepo.login(
+      SendOTPRequestModel(phone: state.phoneNumber ?? ''),
+    );
     result.when(
       success: (_) =>
           emit(state.copyWith(resendOTPCubitStatus: CubitStatus.success)),

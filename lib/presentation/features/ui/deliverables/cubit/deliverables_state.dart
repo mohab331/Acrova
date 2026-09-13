@@ -1,32 +1,13 @@
 import 'package:acrova/core/error/app_error_model.dart';
-import 'package:acrova/data/models/portfolio/portfolio_item.dart';
+import 'package:acrova/data/models/response/deliverables/blueprint_response_model.dart';
+import 'package:acrova/data/models/response/deliverables/render_response_model.dart';
+import 'package:acrova/data/models/response/portfolio/walkthrough_response_model.dart';
 import 'package:acrova/utils/enums/cubit_status.dart';
 import 'package:equatable/equatable.dart';
 
-class BlueprintModel extends Equatable {
-  const BlueprintModel({
-    required this.title,
-    required this.size,
-    required this.format,
-    required this.urlOrAsset,
-  });
-  final String title;
-  final String size;
-  final String format;
-  final String urlOrAsset;
+typedef BlueprintModel = BlueprintResponseModel;
 
-  @override
-  List<Object?> get props => [title, size, format, urlOrAsset];
-}
-
-class RenderModel extends Equatable {
-  const RenderModel({required this.resolution, required this.imageAsset});
-  final String resolution;
-  final String imageAsset;
-
-  @override
-  List<Object?> get props => [resolution, imageAsset];
-}
+typedef RenderModel = RenderResponseModel;
 
 class WalkthroughVersionModel extends Equatable {
   const WalkthroughVersionModel({
@@ -54,9 +35,9 @@ class DeliverablesState extends Equatable {
 
   final CubitStatus status;
   final AppErrorModel? error;
-  final List<BlueprintModel> blueprints;
-  final List<RenderModel> renders;
-  final List<WalkthroughModel> walkthroughs;
+  final List<BlueprintResponseModel> blueprints;
+  final List<RenderResponseModel> renders;
+  final List<WalkthroughResponseModel> walkthroughs;
   final String? projectName;
   final String? projectThumbnailUrl;
   final String? allFilesZipUrl;
@@ -69,9 +50,9 @@ class DeliverablesState extends Equatable {
   DeliverablesState copyWith({
     CubitStatus? status,
     AppErrorModel? error,
-    List<BlueprintModel>? blueprints,
-    List<RenderModel>? renders,
-    List<WalkthroughModel>? walkthroughs,
+    List<BlueprintResponseModel>? blueprints,
+    List<RenderResponseModel>? renders,
+    List<WalkthroughResponseModel>? walkthroughs,
     String? projectName,
     String? projectThumbnailUrl,
     String? allFilesZipUrl,

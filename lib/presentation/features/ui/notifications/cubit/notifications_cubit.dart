@@ -31,7 +31,7 @@ class NotificationsCubit extends Cubit<NotificationsCubitState> {
 
   Future<void> markAllAsRead() async {
     final current = state.notifications;
-    if (current == null || current.every((n) => n.isRead)) return;
+    if (current == null || current.every((n) => n.isRead == true)) return;
 
     // Optimistic update.
     emit(

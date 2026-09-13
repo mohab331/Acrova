@@ -1,3 +1,4 @@
+import 'package:acrova/data/models/request/contact_us/submit_inquiry_request_model.dart';
 import 'package:acrova/domain/repository/contact_us/base_contact_us_repo.dart';
 import 'package:acrova/utils/enums/cubit_status.dart';
 import 'package:acrova/utils/validation/app_validators.dart';
@@ -51,9 +52,11 @@ class ContactUsCubit extends Cubit<ContactUsState> {
     emit(state.copyWith(cubitStatus: CubitStatus.loading));
 
     final result = await _contactUsRepo.submitInquiry(
-      email: email,
-      mobileNumber: state.mobileNumber.trim(),
-      details: details,
+      SubmitInquiryRequestModel(
+        email: email,
+        mobileNumber: state.mobileNumber.trim(),
+        details: details,
+      ),
     );
     result.when(
       success: (_) => emit(state.copyWith(cubitStatus: CubitStatus.success)),

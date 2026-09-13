@@ -1,5 +1,5 @@
 import 'package:acrova/data/data_source/base/base_notifications_data_source.dart';
-import 'package:acrova/data/models/notification/app_notification_model.dart';
+import 'package:acrova/data/models/response/notification/app_notification_response_model.dart';
 import 'package:acrova/domain/repository/notifications/base_notifications_repo.dart';
 import 'package:acrova/utils/helpers/result.dart';
 import 'package:acrova/utils/helpers/safe_async_call.dart';
@@ -11,7 +11,7 @@ class NotificationsRepoImpl implements BaseNotificationsRepo {
   final BaseNotificationsDataSource _dataSource;
 
   @override
-  Future<Result<List<AppNotificationModel>>> getNotifications() =>
+  Future<Result<List<AppNotificationResponseModel>>> getNotifications() =>
       safeAsyncCall(_dataSource.getNotifications);
 
   @override

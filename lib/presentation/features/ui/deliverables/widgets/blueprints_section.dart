@@ -68,14 +68,14 @@ class BlueprintsSection extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          blueprint.title,
+                          blueprint.title ?? '',
                           style: context.textTheme.titleSmall?.copyWith(
                             color: Resources.colors.luxuryNavy,
                             fontWeight: Resources.fontWeights.semiBold,
                           ),
                         ),
                         Text(
-                          '${blueprint.size} • ${blueprint.format}',
+                          '${blueprint.size ?? ''} • ${blueprint.format ?? ''}',
                           style: context.textTheme.labelMedium?.copyWith(
                             color: Resources.colors.luxuryBodyMuted,
                           ),
@@ -91,8 +91,8 @@ class BlueprintsSection extends StatelessWidget {
                         context.push(
                           AppRouteEnum.pdfViewerPage.path,
                           extra: PdfViewerArgs(
-                            title: blueprint.title,
-                            urlOrAsset: blueprint.urlOrAsset,
+                            title: blueprint.title ?? '',
+                            urlOrAsset: blueprint.urlOrAsset ?? '',
                           ),
                         );
                       },
@@ -114,8 +114,8 @@ class BlueprintsSection extends StatelessWidget {
                     IconButton(
                       onPressed: () {
                         DownloadHelper.downloadAndShare(
-                          blueprint.urlOrAsset,
-                          '${blueprint.title}.pdf',
+                          blueprint.urlOrAsset ?? '',
+                          '${blueprint.title ?? ''}.pdf',
                         );
                       },
                       icon: Icon(

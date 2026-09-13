@@ -1,4 +1,4 @@
-import 'package:acrova/data/models/revision/revision_model.dart';
+import 'package:acrova/data/models/response/revision/revision_response_model.dart';
 import 'package:acrova/presentation/app/resources/resources.dart';
 import 'package:acrova/utils/extensions/localization_extension.dart';
 import 'package:acrova/utils/extensions/theme_extension.dart';
@@ -8,7 +8,7 @@ import 'package:flutter/material.dart';
 class RevisionStatusSection extends StatelessWidget {
   const RevisionStatusSection({required this.revision, super.key});
 
-  final RevisionModel revision;
+  final RevisionResponseModel revision;
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +20,7 @@ class RevisionStatusSection extends StatelessWidget {
           locale: Localizations.localeOf(context).languageCode,
         ) ??
         '';
-    final label = revision.status.localizedLabel(context);
+    final label = revision.status?.localizedLabel(context) ?? '';
 
     return Container(
       padding: EdgeInsets.all(Resources.horizontalDims.$24),
@@ -69,7 +69,7 @@ class RevisionStatusSection extends StatelessWidget {
                   boxShadow: AppShadows.card,
                 ),
                 child: Icon(
-                  revision.status.isInProgress
+                  revision.status?.isInProgress == true
                       ? Icons.hourglass_top_rounded
                       : Icons.check_circle,
                   color: Resources.colors.luxuryGold,

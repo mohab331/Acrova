@@ -1,5 +1,5 @@
 import 'package:acrova/core/error/app_error_model.dart';
-import 'package:acrova/data/models/profile/user_profile_model.dart';
+import 'package:acrova/data/models/response/profile/user_profile_response_model.dart';
 import 'package:acrova/utils/enums/cubit_status.dart';
 import 'package:equatable/equatable.dart';
 
@@ -18,7 +18,7 @@ class ProfileCubitState extends Equatable {
 
   ProfileCubitState copyWith({
     CubitStatus? cubitStatus,
-    UserProfileModel? profile,
+    UserProfileResponseModel? profile,
     AppErrorModel? appErrorModel,
   }) => ProfileCubitState(
     cubitStatus: cubitStatus ?? this.cubitStatus,

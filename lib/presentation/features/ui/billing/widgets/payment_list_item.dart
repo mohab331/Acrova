@@ -1,4 +1,4 @@
-import 'package:acrova/data/models/billing/payment_model.dart';
+import 'package:acrova/data/models/response/billing/payment_response_model.dart';
 import 'package:acrova/presentation/app/resources/resources.dart';
 import 'package:acrova/utils/extensions/theme_extension.dart';
 import 'package:flutter/material.dart';
@@ -11,7 +11,7 @@ class PaymentListItem extends StatelessWidget {
     super.key,
   });
 
-  final PaymentModel payment;
+  final PaymentResponseModel payment;
   final VoidCallback onTap;
 
   IconData? _getIcon() {
@@ -46,8 +46,12 @@ class PaymentListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final formattedDate = DateFormat('dd MMM yyyy').format(payment.date);
-    final formattedAmount = NumberFormat('#,##0').format(payment.amount);
+    final formattedDate = payment.date != null
+        ? DateFormat('dd MMM yyyy').format(payment.date!)
+        : '';
+    final formattedAmount = payment.amount != null
+        ? NumberFormat('#,##0').format(payment.amount)
+        : '';
 
     return GestureDetector(
       onTap: onTap,

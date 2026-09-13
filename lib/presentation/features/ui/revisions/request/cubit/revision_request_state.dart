@@ -1,6 +1,6 @@
 import 'package:acrova/core/error/app_error_model.dart';
-import 'package:acrova/data/models/revision/revision_model.dart';
-import 'package:acrova/data/models/revision/revision_quota_model.dart';
+import 'package:acrova/data/models/response/revision/revision_quota_response_model.dart';
+import 'package:acrova/data/models/response/revision/revision_response_model.dart';
 import 'package:acrova/utils/enums/cubit_status.dart';
 import 'package:acrova/utils/enums/revision_category_enum.dart';
 import 'package:equatable/equatable.dart';
@@ -24,7 +24,7 @@ class RevisionRequestState extends Equatable {
 
   /// Tracks the quota load (loading → skeleton, error → error, success → form).
   final CubitStatus cubitStatus;
-  final RevisionQuotaModel? quota;
+  final RevisionQuotaResponseModel? quota;
   final List<String> deliverables;
 
   final String? deliverableRef;
@@ -35,7 +35,7 @@ class RevisionRequestState extends Equatable {
   final String? detailsError;
 
   final bool isSubmitting;
-  final RevisionModel? createdRevision;
+  final RevisionResponseModel? createdRevision;
   final AppErrorModel? appErrorModel;
 
   bool get isLoading => cubitStatus == CubitStatus.loading;
@@ -44,7 +44,7 @@ class RevisionRequestState extends Equatable {
 
   RevisionRequestState copyWith({
     CubitStatus? cubitStatus,
-    RevisionQuotaModel? quota,
+    RevisionQuotaResponseModel? quota,
     List<String>? deliverables,
     RevisionCategory? Function()? selectedCategory,
     String? Function()? deliverableRef,
@@ -53,7 +53,7 @@ class RevisionRequestState extends Equatable {
     String? Function()? categoryError,
     String? Function()? detailsError,
     bool? isSubmitting,
-    RevisionModel? createdRevision,
+    RevisionResponseModel? createdRevision,
     AppErrorModel? appErrorModel,
   }) => RevisionRequestState(
     cubitStatus: cubitStatus ?? this.cubitStatus,

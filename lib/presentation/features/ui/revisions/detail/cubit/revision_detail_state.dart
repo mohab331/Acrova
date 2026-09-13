@@ -1,5 +1,5 @@
 import 'package:acrova/core/error/app_error_model.dart';
-import 'package:acrova/data/models/revision/revision_model.dart';
+import 'package:acrova/data/models/response/revision/revision_response_model.dart';
 import 'package:acrova/utils/enums/cubit_status.dart';
 import 'package:equatable/equatable.dart';
 
@@ -11,17 +11,19 @@ class RevisionDetailState extends Equatable {
     this.appErrorModel,
   });
 
-  RevisionDetailState.initial({RevisionModel? revision, String? revisionId})
-    : this(
-        cubitStatus: revision != null
-            ? CubitStatus.success
-            : CubitStatus.initial,
-        revision: revision,
-        revisionId: revisionId ?? revision?.id,
-      );
+  RevisionDetailState.initial({
+    RevisionResponseModel? revision,
+    String? revisionId,
+  }) : this(
+         cubitStatus: revision != null
+             ? CubitStatus.success
+             : CubitStatus.initial,
+         revision: revision,
+         revisionId: revisionId ?? revision?.id,
+       );
 
   final CubitStatus cubitStatus;
-  final RevisionModel? revision;
+  final RevisionResponseModel? revision;
   final String? revisionId;
   final AppErrorModel? appErrorModel;
 
@@ -31,7 +33,7 @@ class RevisionDetailState extends Equatable {
 
   RevisionDetailState copyWith({
     CubitStatus? cubitStatus,
-    RevisionModel? revision,
+    RevisionResponseModel? revision,
     String? revisionId,
     AppErrorModel? appErrorModel,
   }) => RevisionDetailState(

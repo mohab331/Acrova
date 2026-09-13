@@ -1,9 +1,11 @@
 import 'package:acrova/data/data_source/base/base_auth_data_source.dart';
 import 'package:acrova/data/data_source/remote/network/api_client.dart';
-import 'package:acrova/data/models/auth/verify_otp_request_model.dart';
-import 'package:acrova/data/models/auth/verify_otp_response_model.dart';
-import 'package:acrova/data/models/profile/user_profile_model.dart';
-import 'package:acrova/data/models/request/profile/update_profile_request.dart';
+import 'package:acrova/data/models/request/auth/save_profile_request_model.dart';
+import 'package:acrova/data/models/request/auth/send_otp_request_model.dart';
+import 'package:acrova/data/models/request/auth/verify_otp_request_model.dart';
+import 'package:acrova/data/models/request/profile/update_profile_request_model.dart';
+import 'package:acrova/data/models/response/auth/verify_otp_response_model.dart';
+import 'package:acrova/data/models/response/profile/user_profile_response_model.dart';
 
 class RemoteAuthDataSource implements BaseAuthDataSource {
   final ApiClient apiClient;
@@ -11,45 +13,38 @@ class RemoteAuthDataSource implements BaseAuthDataSource {
   RemoteAuthDataSource({required this.apiClient});
 
   @override
-  Future<void> login(String phoneNumber) async {
-    // TODO: implement real API call
-    // await apiClient.post('auth/login', data: {'phone_number': phoneNumber});
+  Future<void> login(SendOTPRequestModel request) async {
+    // await apiClient.post('auth/login', data: request.toJson());
   }
 
   @override
-  Future<VerifyOTPResponseModel> verifyOtp(VerifyOTPRequestModel otp) async {
-    // TODO: implement real API call
-    // await apiClient.post('auth/verify-otp', data: {'otp': otp});
+  Future<VerifyOTPResponseModel> verifyOtp(VerifyOTPRequestModel verifyOTPRequestModel) async {
+    // await apiClient.post('auth/verify-otp', data: verifyOTPRequestModel.toJson());
     throw UnimplementedError();
   }
 
   @override
   Future<bool> isNewUser() async {
-    // TODO: GET /users/me and check onboarding_complete flag
+    // GET /users/me and check onboarding_complete flag
     return false;
   }
 
   @override
-  Future<void> saveUserProfile({
-    required String name,
-    required String email,
-    required String nationalId,
-    required String language,
-  }) async {
-    // TODO: PATCH /users/profile with {name, email, mobile, national_id, language}
+  Future<void> saveUserProfile(SaveProfileRequestModel request) async {
+    // PATCH /users/profile with request.toJson()
   }
 
   @override
-  Future<UserProfileModel> getUserProfile() async {
-    // TODO: GET /users/me
+  Future<UserProfileResponseModel> getUserProfile() async {
+    // GET /users/me
     throw UnimplementedError('Remote getUserProfile not implemented yet');
   }
 
   @override
-  Future<UserProfileModel> updateUserProfile(
-    UpdateProfileRequest request,
+  Future<UserProfileResponseModel> updateUserProfile(
+    UpdateProfileRequestModel request,
   ) async {
-    // TODO: PATCH /users/profile with request.toJson()
+    // PATCH /users/profile with request.toJson()
     throw UnimplementedError('Remote updateUserProfile not implemented yet');
   }
 
@@ -70,6 +65,6 @@ class RemoteAuthDataSource implements BaseAuthDataSource {
 
   @override
   Future<void> clearUserData() async {
-    // TODO: clear user data remote (e.g. invalidate session)
+    // clear user data remote (e.g. invalidate session)
   }
 }

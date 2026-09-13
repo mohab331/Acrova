@@ -19,9 +19,9 @@ class DeliverablesCubit extends Cubit<DeliverablesState> {
         emit(
           state.copyWith(
             status: CubitStatus.success,
-            blueprints: data.blueprints,
-            renders: data.renders,
-            walkthroughs: data.walkthroughs,
+            blueprints: data.blueprints ?? const [],
+            renders: data.renders ?? const [],
+            walkthroughs: data.walkthroughs ?? const [],
             projectName: data.projectName,
             projectThumbnailUrl: data.projectThumbnailUrl,
             allFilesZipUrl: data.allFilesZipUrl,

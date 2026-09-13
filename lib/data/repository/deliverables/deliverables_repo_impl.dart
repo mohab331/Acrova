@@ -1,3 +1,4 @@
+import 'package:acrova/data/models/response/deliverables/deliverables_response_model.dart';
 import 'package:acrova/domain/repository/deliverables/base_deliverables_repo.dart';
 import 'package:acrova/utils/helpers/result.dart';
 
@@ -5,9 +6,9 @@ class DeliverablesRepoImpl implements BaseDeliverablesRepo {
   DeliverablesRepoImpl();
 
   @override
-  Future<Result<DeliverablesData>> getDeliverables() async {
+  Future<Result<DeliverablesResponseModel>> getDeliverables() async {
     return const Success(
-      DeliverablesData(blueprints: [], renders: [], walkthroughs: []),
+      DeliverablesResponseModel(blueprints: [], renders: [], walkthroughs: []),
     );
   }
 }

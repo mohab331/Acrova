@@ -1,4 +1,6 @@
 import 'package:acrova/data/data_source/local/services/image_picker/base_image_picker_service.dart';
+import 'package:acrova/data/models/request/billing/get_payment_quote_request_model.dart';
+import 'package:acrova/data/models/request/billing/submit_payment_request_model.dart';
 import 'package:acrova/domain/repository/billing/base_billing_repo.dart';
 import 'package:acrova/presentation/features/ui/billing/make_payment/cubit/make_payment_state.dart';
 import 'package:acrova/utils/enums/cubit_status.dart';
@@ -19,7 +21,9 @@ class MakePaymentCubit extends Cubit<MakePaymentState> {
 
   Future<void> fetchQuote({String? projectId}) async {
     emit(state.copyWith(fetchQuoteStatus: CubitStatus.loading));
-    final result = await _billingRepo.getPaymentQuote(projectId ?? '');
+    final result = await _billingRepo.getPaymentQuote(
+      GetPaymentQuoteRequestModel(projectId: projectId ?? ''),
+    );
     result.when(
       success: (quote) => emit(
         state.copyWith(fetchQuoteStatus: CubitStatus.success, quote: quote),
@@ -59,8 +63,10 @@ class MakePaymentCubit extends Cubit<MakePaymentState> {
 
     emit(state.copyWith(submittingStatus: CubitStatus.loading));
     final result = await _billingRepo.submitPayment(
-      projectId: projectId ?? '',
-      receiptPath: state.receiptImage!.path,
+      SubmitPaymentRequestModel(
+        projectId: projectId ?? '',
+        receiptPath: state.receiptImage!.path,
+      ),
     );
     result.when(
       success: (_) =>

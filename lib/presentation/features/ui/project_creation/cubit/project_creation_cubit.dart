@@ -1,11 +1,9 @@
 import 'package:acrova/data/data_source/local/services/image_picker/base_image_picker_service.dart';
-import 'package:acrova/data/models/project/project_model.dart';
 import 'package:acrova/domain/repository/project/base_project_repo.dart';
 import 'package:acrova/utils/enums/cubit_status.dart';
 import 'package:acrova/utils/enums/design_style_enum.dart';
 import 'package:acrova/utils/enums/project_type_enum.dart';
 import 'package:acrova/utils/enums/smart_home_level_enum.dart';
-import 'package:acrova/utils/helpers/safe_async_call.dart';
 import 'package:acrova/utils/logging/app_logger.dart';
 import 'package:bloc/bloc.dart';
 

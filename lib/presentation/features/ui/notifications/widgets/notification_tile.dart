@@ -1,4 +1,4 @@
-import 'package:acrova/data/models/notification/app_notification_model.dart';
+import 'package:acrova/data/models/response/notification/app_notification_response_model.dart';
 import 'package:acrova/presentation/app/resources/resources.dart';
 import 'package:acrova/utils/extensions/theme_extension.dart';
 import 'package:acrova/utils/formatters/app_formatter.dart';
@@ -11,7 +11,7 @@ class NotificationTile extends StatelessWidget {
     super.key,
   });
 
-  final AppNotificationModel? notification;
+  final AppNotificationResponseModel? notification;
   final VoidCallback onTap;
 
   @override

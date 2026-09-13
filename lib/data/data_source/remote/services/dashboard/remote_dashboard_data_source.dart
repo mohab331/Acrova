@@ -1,5 +1,6 @@
 import 'package:acrova/data/data_source/base/base_dashboard_data_source.dart';
 import 'package:acrova/data/data_source/remote/network/api_client.dart';
+import 'package:acrova/data/models/response/dashboard/dashboard_response_model.dart';
 
 class RemoteDashboardDataSource implements BaseDashboardDataSource {
   final ApiClient apiClient;
@@ -7,10 +8,9 @@ class RemoteDashboardDataSource implements BaseDashboardDataSource {
   RemoteDashboardDataSource({required this.apiClient});
 
   @override
-  Future<Map<String, dynamic>> getDashboardData() async {
-    // TODO: implement real API call
-    // final response = await apiClient.get('dashboard');
-    // return response.data as Map<String, dynamic>;
-    return {};
+  Future<DashboardResponseModel> getDashboardData() async {
+    // final response = await apiClient.get('dashboard', onMap: DashboardResponseModel.fromJson);
+    // return response.data ?? const DashboardResponseModel();
+    return const DashboardResponseModel();
   }
 }

@@ -1,7 +1,10 @@
-import 'package:acrova/data/models/portfolio/portfolio_item.dart';
+import 'package:acrova/data/models/request/portfolio/get_portfolio_item_request_model.dart';
+import 'package:acrova/data/models/response/portfolio/portfolio_item_response_model.dart';
 import 'package:acrova/utils/helpers/result.dart';
 
 abstract class BasePortfolioRepo {
-  Future<Result<List<PortfolioItem>>> getPortfolioItems();
-  Future<Result<PortfolioItem>> getPortfolioItemByID(String id);
+  Future<Result<List<PortfolioItemResponseModel>>> getPortfolioItems();
+  Future<Result<PortfolioItemResponseModel>> getPortfolioItemByID(
+    GetPortfolioItemRequestModel request,
+  );
 }
