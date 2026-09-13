@@ -1,6 +1,7 @@
 import 'package:acrova/core/error/app_error_model.dart';
 import 'package:acrova/data/models/billing/payment_model.dart';
 import 'package:acrova/presentation/app/navigation/app_route_enum.dart';
+import 'package:acrova/presentation/app/navigation/args/navigation_args.dart';
 import 'package:acrova/presentation/app/resources/resources.dart';
 import 'package:acrova/presentation/features/ui/billing/payment_details/widgets/payment_grid_item.dart';
 import 'package:acrova/utils/extensions/localization_extension.dart';
@@ -316,7 +317,10 @@ class PaymentDetailsCard extends StatelessWidget {
     bool isSuccess,
   ) async {
     if (isPending) {
-      context.push(AppRouteEnum.makePaymentPage.name);
+      context.push(
+        AppRouteEnum.makePaymentPage.name,
+        extra: MakePaymentArgs(projectId: payment.projectId ?? payment.id),
+      );
       return;
     }
     if (isSuccess && (payment.receiptUrl?.isNotEmpty ?? false)) {

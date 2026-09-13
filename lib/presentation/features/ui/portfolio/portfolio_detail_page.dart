@@ -1,5 +1,6 @@
 import 'package:acrova/core/di/dependency_injector.dart';
 import 'package:acrova/presentation/app/navigation/app_route_enum.dart';
+import 'package:acrova/presentation/app/navigation/args/navigation_args.dart';
 import 'package:acrova/presentation/app/resources/resources.dart';
 import 'package:acrova/presentation/features/common_widgets/app_bar/app_auth_brand_header.dart';
 import 'package:acrova/presentation/features/common_widgets/common_screen/common_screen.dart';
@@ -17,9 +18,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
 class PortfolioDetailPage extends StatefulWidget {
-  const PortfolioDetailPage({required this.portfolioItem, super.key});
+  const PortfolioDetailPage({this.args, super.key});
 
-  final PortfolioItem? portfolioItem;
+  final PortfolioDetailArgs? args;
+
+  PortfolioItem? get portfolioItem => args?.portfolioItem;
 
   @override
   State<PortfolioDetailPage> createState() => _PortfolioDetailPageState();
@@ -31,7 +34,10 @@ class _PortfolioDetailPageState extends State<PortfolioDetailPage> {
     return BlocProvider<PortfolioDetailsCubit>(
       create: (context) =>
           serviceLocatorInstance<PortfolioDetailsCubit>()
-            ..fetchPortfolio(portfolioId: widget.portfolioItem?.id),
+            ..fetchPortfolio(
+              portfolioId:
+                  widget.args?.portfolioId ?? widget.portfolioItem?.id,
+            ),
 
       child: CommonScreen(
         padding: EdgeInsets.zero,
@@ -152,7 +158,9 @@ class _PortfolioDetailSuccessWidgetState
               onWatchWalkthrough: () {
                 context.push(
                   AppRouteEnum.walkthroughPage.path,
-                  extra: widget.item?.walkthroughModel,
+                  extra: WalkthroughArgs(
+                    walkthrough: widget.item?.walkthroughModel,
+                  ),
                 );
               },
             ),

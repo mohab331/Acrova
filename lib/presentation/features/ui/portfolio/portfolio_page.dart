@@ -1,5 +1,6 @@
 import 'package:acrova/core/di/dependency_injector.dart';
 import 'package:acrova/presentation/app/navigation/app_route_enum.dart';
+import 'package:acrova/presentation/app/navigation/args/navigation_args.dart';
 import 'package:acrova/presentation/app/resources/resources.dart';
 import 'package:acrova/presentation/features/common_widgets/common_screen/common_screen.dart';
 import 'package:acrova/presentation/features/common_widgets/feedback/common_error_widget.dart';
@@ -33,7 +34,10 @@ class _PortfolioPageView extends StatelessWidget {
   const _PortfolioPageView();
 
   void _openDetail(BuildContext context, PortfolioItem item) {
-    context.pushNamed(AppRouteEnum.portfolioDetailPage.name, extra: item);
+    context.pushNamed(
+      AppRouteEnum.portfolioDetailPage.name,
+      extra: PortfolioDetailArgs(portfolioItem: item),
+    );
   }
 
   @override

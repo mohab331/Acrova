@@ -1,9 +1,9 @@
 import 'package:acrova/data/models/profile/user_profile_model.dart';
 import 'package:acrova/presentation/app/navigation/app_route_enum.dart';
+import 'package:acrova/presentation/app/navigation/args/navigation_args.dart';
 import 'package:acrova/presentation/app/resources/resources.dart';
 import 'package:acrova/presentation/features/cubit/auth/auth_cubit.dart';
 import 'package:acrova/presentation/features/cubit/localization/localization_cubit.dart';
-import 'package:acrova/presentation/features/ui/contact_us/contact_us_page.dart';
 import 'package:acrova/presentation/features/ui/profile/widgets/change_language_sheet.dart';
 import 'package:acrova/presentation/features/ui/profile/widgets/profile_header_card.dart';
 import 'package:acrova/presentation/features/ui/profile/widgets/profile_logout_button.dart';
@@ -80,7 +80,7 @@ class ProfileContent extends StatelessWidget {
               ],
             ),
             SizedBox(height: Resources.verticalDims.$24),
-            ProfileLogoutButton(),
+            const ProfileLogoutButton(),
             SizedBox(height: Resources.verticalDims.$32),
           ],
         ),
@@ -89,7 +89,10 @@ class ProfileContent extends StatelessWidget {
   }
 
   void _openEdit(BuildContext context, UserProfileModel profile) {
-    context.push(AppRouteEnum.editProfilePage.name, extra: profile);
+    context.push(
+      AppRouteEnum.editProfilePage.name,
+      extra: EditProfileArgs(profile: profile),
+    );
   }
 
   Future<void> _openLanguageSheet(BuildContext context) async {

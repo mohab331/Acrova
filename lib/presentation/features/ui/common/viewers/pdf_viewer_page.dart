@@ -1,3 +1,4 @@
+import 'package:acrova/presentation/app/navigation/args/navigation_args.dart';
 import 'package:acrova/presentation/app/resources/resources.dart';
 import 'package:acrova/utils/extensions/theme_extension.dart';
 import 'package:acrova/utils/helpers/download_helper.dart';
@@ -5,20 +6,19 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
-class PdfViewerArgs {
-  final String title;
-  final String urlOrAsset;
-
-  const PdfViewerArgs({required this.title, required this.urlOrAsset});
-}
+export 'package:acrova/presentation/app/navigation/args/navigation_args.dart'
+    show PdfViewerArgs;
 
 class PdfViewerPage extends StatelessWidget {
-  const PdfViewerPage({required this.args, super.key});
+  const PdfViewerPage({this.args, super.key});
 
-  final PdfViewerArgs args;
+  final PdfViewerArgs? args;
 
   @override
   Widget build(BuildContext context) {
+    final title = args?.title ?? '';
+    final urlOrAsset = args?.urlOrAsset ?? '';
+
     return Scaffold(
       backgroundColor: Resources.colors.luxurySurface,
       appBar: AppBar(
@@ -29,7 +29,7 @@ class PdfViewerPage extends StatelessWidget {
           onPressed: () => context.pop(),
         ),
         title: Text(
-          args.title,
+          title,
           style: context.textTheme.titleMedium?.copyWith(
             color: Resources.colors.luxuryNavy,
             fontWeight: Resources.fontWeights.semiBold,
@@ -42,17 +42,21 @@ class PdfViewerPage extends StatelessWidget {
               color: Resources.colors.luxuryGoldLight,
             ),
             onPressed: () {
-              DownloadHelper.downloadAndShare(
-                args.urlOrAsset,
-                '${args.title}.pdf',
-              );
+              if (urlOrAsset.isNotEmpty) {
+                DownloadHelper.downloadAndShare(
+                  urlOrAsset,
+                  '$title.pdf',
+                );
+              }
             },
           ),
         ],
       ),
-      body: args.urlOrAsset.startsWith('assets/')
-          ? SfPdfViewer.asset(args.urlOrAsset)
-          : SfPdfViewer.network(args.urlOrAsset),
+      body: urlOrAsset.isEmpty
+          ? const SizedBox.shrink()
+          : (urlOrAsset.startsWith('assets/')
+              ? SfPdfViewer.asset(urlOrAsset)
+              : SfPdfViewer.network(urlOrAsset)),
     );
   }
 }

@@ -1,4 +1,5 @@
 import 'package:acrova/presentation/app/navigation/app_route_enum.dart';
+import 'package:acrova/presentation/app/navigation/args/navigation_args.dart';
 import 'package:acrova/presentation/app/resources/resources.dart';
 import 'package:acrova/presentation/features/common_widgets/buttons/app_primary_button.dart';
 import 'package:acrova/presentation/features/common_widgets/common_screen/common_screen.dart';
@@ -9,13 +10,14 @@ import 'package:go_router/go_router.dart';
 
 class PaymentSuccessView extends StatelessWidget {
   const PaymentSuccessView({
-    required this.amount,
-    this.referenceNumber,
+    this.args,
     super.key,
   });
 
-  final String amount;
-  final String? referenceNumber;
+  final PaymentSuccessArgs? args;
+
+  String get amount => args?.amount ?? '';
+  String? get referenceNumber => args?.referenceNumber;
 
   @override
   Widget build(BuildContext context) {

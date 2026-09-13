@@ -21,13 +21,16 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
 class MakePaymentView extends StatelessWidget {
-  const MakePaymentView({super.key});
+  const MakePaymentView({this.args, super.key});
+
+  final MakePaymentArgs? args;
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) =>
-          serviceLocatorInstance<MakePaymentCubit>()..fetchQuote(),
+          serviceLocatorInstance<MakePaymentCubit>()
+            ..fetchQuote(projectId: args?.projectId),
       child: const _MakePaymentContent(),
     );
   }
