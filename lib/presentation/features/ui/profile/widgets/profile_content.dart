@@ -61,53 +61,54 @@ class _ProfileContentState extends State<ProfileContent> {
                 profile: widget.profile,
                 onEdit: () => _openEdit(context, widget.profile),
               ),
-            SizedBox(height: Resources.verticalDims.$24),
-            ProfileStatsRow(
-              projectsCount: profile.projectsCount ?? 0,
-              completedCount: profile.completedCount ?? 0,
-            ),
-            SizedBox(height: Resources.verticalDims.$24),
-            ProfileSection(
-              title: loc.preferences,
-              items: [
-                ProfileMenuItem(
-                  icon: Icons.language_outlined,
-                  label: loc.language,
-                  trailing: Text(
-                    context.locale.languageCode,
-                    style: context.textTheme.bodySmall?.copyWith(
-                      fontSize: Resources.fontSizes.$12,
-                      color: Resources.colors.luxuryBodyMuted,
+              SizedBox(height: Resources.verticalDims.$24),
+              ProfileStatsRow(
+                projectsCount: profile.projectsCount ?? 0,
+                completedCount: profile.completedCount ?? 0,
+              ),
+              SizedBox(height: Resources.verticalDims.$24),
+              ProfileSection(
+                title: loc.preferences,
+                items: [
+                  ProfileMenuItem(
+                    icon: Icons.language_outlined,
+                    label: loc.language,
+                    trailing: Text(
+                      context.locale.languageCode,
+                      style: context.textTheme.bodySmall?.copyWith(
+                        fontSize: Resources.fontSizes.$12,
+                        color: Resources.colors.luxuryBodyMuted,
+                      ),
+                    ),
+                    onTap: () => _openLanguageSheet(context),
+                  ),
+                ],
+              ),
+              SizedBox(height: Resources.verticalDims.$20),
+              ProfileSection(
+                title: loc.helpAndSupport,
+                items: [
+                  ProfileMenuItem(
+                    icon: Icons.contact_support_outlined,
+                    label: loc.contactSupport,
+                    onTap: () => _openContact(
+                      context,
+                      email: profile.email,
+                      mobileNumber: profile.mobileNumber,
                     ),
                   ),
-                  onTap: () => _openLanguageSheet(context),
-                ),
-              ],
-            ),
-            SizedBox(height: Resources.verticalDims.$20),
-            ProfileSection(
-              title: loc.helpAndSupport,
-              items: [
-                ProfileMenuItem(
-                  icon: Icons.contact_support_outlined,
-                  label: loc.contactSupport,
-                  onTap: () => _openContact(
-                    context,
-                    email: profile.email,
-                    mobileNumber: profile.mobileNumber,
+                  ProfileMenuItem(
+                    icon: Icons.description_outlined,
+                    label: loc.termsAndPrivacy,
+                    onTap: () {},
                   ),
-                ),
-                ProfileMenuItem(
-                  icon: Icons.description_outlined,
-                  label: loc.termsAndPrivacy,
-                  onTap: () {},
-                ),
-              ],
-            ),
-            SizedBox(height: Resources.verticalDims.$24),
-            const ProfileLogoutButton(),
-            SizedBox(height: Resources.verticalDims.$32),
-          ],
+                ],
+              ),
+              SizedBox(height: Resources.verticalDims.$24),
+              const ProfileLogoutButton(),
+              SizedBox(height: Resources.verticalDims.$32),
+            ],
+          ),
         ),
       ),
     );
