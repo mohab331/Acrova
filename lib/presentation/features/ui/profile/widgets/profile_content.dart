@@ -10,32 +10,57 @@ import 'package:acrova/presentation/features/ui/profile/widgets/profile_logout_b
 import 'package:acrova/presentation/features/ui/profile/widgets/profile_menu_item.dart';
 import 'package:acrova/presentation/features/ui/profile/widgets/profile_section.dart';
 import 'package:acrova/presentation/features/ui/profile/widgets/profile_stats_row.dart';
+import 'package:acrova/presentation/features/ui/shell/widgets/bottom_nav_reselect_scope.dart';
 import 'package:acrova/utils/extensions/localization_extension.dart';
 import 'package:acrova/utils/extensions/navigation_extension.dart';
 import 'package:acrova/utils/extensions/theme_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class ProfileContent extends StatelessWidget {
+class ProfileContent extends StatefulWidget {
   const ProfileContent({required this.profile, super.key});
 
   final UserProfileModel profile;
 
   @override
+  State<ProfileContent> createState() => _ProfileContentState();
+}
+
+class _ProfileContentState extends State<ProfileContent> {
+  final ScrollController _scrollController = ScrollController();
+  final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
+      GlobalKey<RefreshIndicatorState>();
+
+  UserProfileModel get profile => widget.profile;
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final loc = context.localization;
 
-    return RefreshIndicator(
+    return BottomNavScrollAndRefreshListener(
+      tabIndex: 3,
+      scrollController: _scrollController,
+      refreshIndicatorKey: _refreshIndicatorKey,
       onRefresh: () => context.read<AuthCubit>().getUser(),
-      child: SingleChildScrollView(
-        physics: const AlwaysScrollableScrollPhysics(),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            ProfileHeaderCard(
-              profile: profile,
-              onEdit: () => _openEdit(context, profile),
-            ),
+      child: RefreshIndicator(
+        key: _refreshIndicatorKey,
+        onRefresh: () => context.read<AuthCubit>().getUser(),
+        child: SingleChildScrollView(
+          controller: _scrollController,
+          physics: const AlwaysScrollableScrollPhysics(),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              ProfileHeaderCard(
+                profile: widget.profile,
+                onEdit: () => _openEdit(context, widget.profile),
+              ),
             SizedBox(height: Resources.verticalDims.$24),
             ProfileStatsRow(
               projectsCount: profile.projectsCount ?? 0,

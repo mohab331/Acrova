@@ -11,6 +11,7 @@ import 'package:acrova/presentation/features/ui/portfolio/widgets/portfolio_filt
 import 'package:acrova/presentation/features/ui/portfolio/widgets/portfolio_gallery_grid.dart';
 import 'package:acrova/presentation/features/ui/portfolio/widgets/portfolio_hero_card.dart';
 import 'package:acrova/presentation/features/ui/projects/widgets/projects_skeleton.dart';
+import 'package:acrova/presentation/features/ui/shell/widgets/bottom_nav_reselect_scope.dart';
 import 'package:acrova/utils/extensions/localization_extension.dart';
 import 'package:acrova/utils/extensions/theme_extension.dart';
 import 'package:flutter/material.dart';
@@ -30,8 +31,23 @@ class PortfolioPage extends StatelessWidget {
   }
 }
 
-class _PortfolioPageView extends StatelessWidget {
+class _PortfolioPageView extends StatefulWidget {
   const _PortfolioPageView();
+
+  @override
+  State<_PortfolioPageView> createState() => _PortfolioPageViewState();
+}
+
+class _PortfolioPageViewState extends State<_PortfolioPageView> {
+  final ScrollController _scrollController = ScrollController();
+  final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
+      GlobalKey<RefreshIndicatorState>();
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
 
   void _openDetail(BuildContext context, PortfolioItem item) {
     context.pushNamed(
@@ -58,10 +74,17 @@ class _PortfolioPageView extends StatelessWidget {
 
           final items = state.getFilteredItems(context);
 
-          return RefreshIndicator(
+          return BottomNavScrollAndRefreshListener(
+            tabIndex: 2,
+            scrollController: _scrollController,
+            refreshIndicatorKey: _refreshIndicatorKey,
             onRefresh: () => context.read<PortfolioCubit>().fetchPortfolio(),
-            child: SingleChildScrollView(
-              physics: const AlwaysScrollableScrollPhysics(),
+            child: RefreshIndicator(
+              key: _refreshIndicatorKey,
+              onRefresh: () => context.read<PortfolioCubit>().fetchPortfolio(),
+              child: SingleChildScrollView(
+                controller: _scrollController,
+                physics: const AlwaysScrollableScrollPhysics(),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
