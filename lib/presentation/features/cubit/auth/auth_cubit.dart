@@ -42,10 +42,6 @@ class AuthCubit extends Cubit<AuthCubitState> {
     );
   }
 
-  void loginAsGuest() {
-    setUserStatus(UserStatus.visitor);
-  }
-
   void setUserStatus(UserStatus userStatus) {
     emit(
       state.copyWith(
@@ -73,7 +69,6 @@ class AuthCubit extends Cubit<AuthCubitState> {
   }
 
   Future<void> getUser() async {
-    if (state.isVisitor) return;
     emit(state.copyWith(getUserCubitStatus: CubitStatus.loading));
     final response = await _baseAuthRepo.getUserProfile();
     response.when(

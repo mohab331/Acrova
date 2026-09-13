@@ -13,6 +13,7 @@ class EditProfileState extends Equatable {
     this.appErrorModel,
     this.avatarPath,
     required this.initialProfile,
+    required this.nationalID,
   });
 
   factory EditProfileState.fromProfile(UserProfileResponseModel profile) =>
@@ -22,38 +23,59 @@ class EditProfileState extends Equatable {
         email: profile.email ?? '',
         mobileNumber: profile.mobileNumber ?? '',
         initialProfile: profile,
+        nationalID: profile.nationalId ?? '',
+        avatarPath: profile.avatarUrl,
       );
 
   final CubitStatus cubitStatus;
   final String name;
   final String email;
   final String mobileNumber;
+  final String nationalID;
   final AppErrorModel? appErrorModel;
   final String? avatarPath;
 
   final UserProfileResponseModel? initialProfile;
 
   bool get enableSubmit {
-    final bool isSameName =
-        (initialProfile?.name?.trim().toLowerCase() ==
-        name.trim().toLowerCase());
-    final bool isSameEmail =
-        (initialProfile?.email?.trim().toLowerCase() !=
-        email.trim().toLowerCase());
-    final bool isSameMobile =
-        (initialProfile?.mobileNumber?.trim().toLowerCase() !=
-        mobileNumber.trim().toLowerCase());
-    final bool hasAvatar = (avatarPath?.isNotEmpty ?? false);
+    final isSameName =
+        initialProfile?.name?.trim().toLowerCase() == name.trim().toLowerCase();
 
-    return (!isSameMobile || !isSameEmail || !isSameName || hasAvatar) &&
-        validate();
+    final isSameEmail =
+        initialProfile?.email?.trim().toLowerCase() ==
+        email.trim().toLowerCase();
+
+    final isSameMobile =
+        initialProfile?.mobileNumber?.trim() == mobileNumber.trim();
+
+    final isSameNationalId =
+        initialProfile?.nationalId?.trim() == nationalID.trim();
+
+    final hasAvatarChanged = avatarPath != initialProfile?.avatarUrl;
+
+    final hasChanges =
+        !isSameName ||
+        !isSameEmail ||
+        !isSameMobile ||
+        !isSameNationalId ||
+        hasAvatarChanged;
+
+    return hasChanges && validate();
   }
 
   bool validate() {
-    final bool isNameValid = AppValidators.name(name) == null;
-    final bool isEmailValid = AppValidators.isValidEmail(email);
-    final bool isMobileValid = AppValidators.isValidSaudiPhone(mobileNumber);
-    return isNameValid && isEmailValid && isMobileValid;
+    final nameTrimmed = name.trim();
+    final emailTrimmed = email.trim();
+    final mobileTrimmed = mobileNumber.trim();
+    final nationalIDTrimmed = nationalID.trim();
+
+    final bool isNameValid = AppValidators.name(nameTrimmed) == null;
+    final bool isEmailValid = AppValidators.isValidEmail(emailTrimmed);
+    final bool isMobileValid = AppValidators.isValidSaudiPhone(mobileTrimmed);
+    final bool isNationalValid = AppValidators.isValidSaudiNationalId(
+      nationalIDTrimmed,
+    );
+    return isNameValid && isEmailValid && isMobileValid && isNationalValid;
   }
 
   EditProfileState copyWith({
@@ -64,14 +86,16 @@ class EditProfileState extends Equatable {
     AppErrorModel? appErrorModel,
     String? avatarPath,
     UserProfileResponseModel? profile,
+    String? nationalId,
   }) => EditProfileState(
     cubitStatus: cubitStatus ?? this.cubitStatus,
     name: name ?? this.name,
     email: email ?? this.email,
     mobileNumber: mobileNumber ?? this.mobileNumber,
     appErrorModel: appErrorModel,
-    avatarPath: avatarPath,
+    avatarPath: avatarPath ?? this.avatarPath,
     initialProfile: profile ?? initialProfile,
+    nationalID: nationalId ?? this.nationalID,
   );
 
   @override
@@ -83,5 +107,6 @@ class EditProfileState extends Equatable {
     avatarPath,
     appErrorModel,
     initialProfile,
+    nationalID,
   ];
 }

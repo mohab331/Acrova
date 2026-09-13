@@ -1,8 +1,11 @@
 import 'dart:ui';
 
 import 'package:acrova/core/config/mock_config.dart';
+import 'package:acrova/core/di/dependency_injector.dart';
 import 'package:acrova/core/error/app_error_model.dart';
 import 'package:acrova/core/error/error_codes_enum.dart';
+import 'package:acrova/data/data_source/local/local_storage/base_local_storage.dart';
+import 'package:acrova/data/data_source/local/secure_storage/base_secure_storage.dart';
 import 'package:acrova/data/data_source/remote/network/models/network_response.dart';
 import 'package:acrova/data/models/request/auth/save_profile_request_model.dart';
 import 'package:acrova/data/models/request/auth/send_otp_request_model.dart';
@@ -21,7 +24,7 @@ import 'package:acrova/data/models/request/revision/get_revision_request_model.d
 import 'package:acrova/data/models/response/auth/verify_otp_response_model.dart';
 import 'package:acrova/data/models/response/billing/payment_quote_response_model.dart';
 import 'package:acrova/data/models/response/billing/payment_response_model.dart';
-import 'package:acrova/data/models/response/config/min_app_version_response_model.dart';
+import 'package:acrova/data/models/response/config/app_config_response_model.dart';
 import 'package:acrova/data/models/response/dashboard/dashboard_response_model.dart';
 import 'package:acrova/data/models/response/deliverables/blueprint_response_model.dart';
 import 'package:acrova/data/models/response/deliverables/deliverables_response_model.dart';
@@ -214,6 +217,8 @@ class MockAuthRepo extends _MockBase implements BaseAuthRepo {
     await simulateDelay();
     _currentProfile = null;
     _isVisitorMode = true;
+    await serviceLocatorInstance<BaseSecureStorage>().clear();
+    await serviceLocatorInstance<BaseLocalStorage>().clear();
     return const Success(null);
   }
 }

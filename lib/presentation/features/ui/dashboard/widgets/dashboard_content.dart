@@ -40,16 +40,13 @@ class _DashboardContentState extends State<DashboardContent> {
     final projectsState = context.watch<ProjectsCubit>().state;
     final authState = context.watch<AuthCubit>().state;
 
-    final isVisitor = authState.isVisitor;
-    final isDashboardError = isVisitor
-        ? portfolioState.isError
-        : (portfolioState.isError && projectsState.isError);
+    final isDashboardError = (portfolioState.isError && projectsState.isError);
 
     if (isDashboardError) {
       return AppErrorState(
         onRetry: () {
           if (portfolioState.isError) portfolioCubit.fetchPortfolio();
-          if (!isVisitor && projectsState.isError) projectsCubit.fetchProjects();
+          if (projectsState.isError) projectsCubit.fetchProjects();
           if (authState.getUserCubitStatus == CubitStatus.error) {
             authCubit.getUser();
           }
@@ -104,11 +101,10 @@ class _DashboardContentState extends State<DashboardContent> {
     final portfolioCubit = context.read<PortfolioCubit>();
     final projectsCubit = context.read<ProjectsCubit>();
     final authCubit = context.read<AuthCubit>();
-    final isVisitor = authCubit.state.isVisitor;
 
     return Future.wait([
       portfolioCubit.fetchPortfolio(),
-      if (!isVisitor) projectsCubit.fetchProjects(),
+      projectsCubit.fetchProjects(),
       authCubit.getUser(),
     ]);
   }

@@ -46,9 +46,10 @@ class AuthCubitState extends Equatable {
   final AppErrorModel? verifyOtpAppErrorModel;
   final AppErrorModel? getUserErrorModel;
   final String? phoneNumber;
-  bool get isVisitor => userStatus == UserStatus.visitor;
-  bool get isProfileCompleted =>
-      isFullyAuthenticated && !(userModel?.isProfileComplete ?? false);
+  bool get isProfileCompleted {
+    return isFullyAuthenticated && (userModel?.isProfileComplete ?? false);
+  }
+
   bool get isFullyAuthenticated => userStatus == UserStatus.authenticated;
 
   AuthCubitState copyWith({

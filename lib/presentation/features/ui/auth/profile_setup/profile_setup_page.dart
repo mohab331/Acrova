@@ -10,8 +10,6 @@ import 'package:acrova/presentation/features/cubit/auth/auth_cubit.dart';
 import 'package:acrova/presentation/features/ui/auth/profile_setup/cubit/profile_completion_cubit.dart';
 import 'package:acrova/presentation/features/ui/auth/profile_setup/cubit/profile_completion_state.dart';
 import 'package:acrova/presentation/features/ui/auth/profile_setup/widgets/enter_acrova_button.dart';
-import 'package:acrova/presentation/features/ui/auth/profile_setup/widgets/language_selector.dart';
-import 'package:acrova/presentation/features/ui/auth/profile_setup/widgets/profile_field_label.dart';
 import 'package:acrova/presentation/features/ui/profile/edit_profile/widgets/change_photo_sheet.dart';
 import 'package:acrova/presentation/features/ui/profile/edit_profile/widgets/edit_profile_photo_section.dart';
 import 'package:acrova/utils/extensions/localization_extension.dart';
@@ -66,12 +64,14 @@ class _ProfileSetupViewState extends State<_ProfileSetupView> {
   @override
   void initState() {
     super.initState();
-    final initialState = context.read<ProfileCompletionCubit>().state;
-    _nameController = TextEditingController(text: initialState.name);
-    _emailController = TextEditingController(text: initialState.email);
-    _mobileController = TextEditingController(text: initialState.mobileNumber);
-    _nationalIdController =
-        TextEditingController(text: initialState.nationalId);
+    final initialState = context.read<AuthCubit>().state.userModel;
+
+    _nameController = TextEditingController(text: initialState?.name);
+    _emailController = TextEditingController(text: initialState?.email);
+    _mobileController = TextEditingController(text: initialState?.mobileNumber);
+    _nationalIdController = TextEditingController(
+      text: initialState?.nationalId,
+    );
   }
 
   @override
@@ -217,15 +217,16 @@ class _ProfileSetupViewState extends State<_ProfileSetupView> {
               ),
               SizedBox(height: Resources.verticalDims.$28),
               Center(
-                child: BlocBuilder<ProfileCompletionCubit, ProfileCompletionState>(
-                  buildWhen: (p, c) => p.avatarPath != c.avatarPath,
-                  builder: (context, state) {
-                    return EditProfilePhotoSection(
-                      avatarPath: state.avatarPath,
-                      onChangePhoto: () => _onChangePhoto(context),
-                    );
-                  },
-                ),
+                child:
+                    BlocBuilder<ProfileCompletionCubit, ProfileCompletionState>(
+                      buildWhen: (p, c) => p.avatarPath != c.avatarPath,
+                      builder: (context, state) {
+                        return EditProfilePhotoSection(
+                          avatarPath: state.avatarPath,
+                          onChangePhoto: () => _onChangePhoto(context),
+                        );
+                      },
+                    ),
               ),
               SizedBox(height: Resources.verticalDims.$32),
               AppGhostField(
@@ -276,20 +277,6 @@ class _ProfileSetupViewState extends State<_ProfileSetupView> {
                   if (_nationalIdError != null) {
                     setState(() => _nationalIdError = null);
                   }
-                },
-              ),
-              SizedBox(height: Resources.verticalDims.$24),
-              ProfileFieldLabel(label: l10n.profileSetupLanguageLabel),
-              SizedBox(height: Resources.verticalDims.$12),
-              BlocBuilder<ProfileCompletionCubit, ProfileCompletionState>(
-                buildWhen: (p, c) => p.language != c.language,
-                builder: (context, state) {
-                  return LanguageSelector(
-                    selected: state.language,
-                    onChanged: (lang) => context
-                        .read<ProfileCompletionCubit>()
-                        .updateLanguage(lang),
-                  );
                 },
               ),
               SizedBox(height: Resources.verticalDims.$32),

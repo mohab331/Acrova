@@ -4,7 +4,6 @@ import 'package:acrova/data/models/response/profile/user_profile_response_model.
 import 'package:acrova/domain/repository/auth/base_auth_repo.dart';
 import 'package:acrova/utils/enums/cubit_status.dart';
 import 'package:acrova/utils/logging/app_logger.dart';
-import 'package:acrova/utils/validation/app_validators.dart';
 import 'package:bloc/bloc.dart';
 
 import 'edit_profile_state.dart';
@@ -26,6 +25,8 @@ class EditProfileCubit extends Cubit<EditProfileState> {
   void updateEmail(String value) => emit(state.copyWith(email: value));
 
   void updateMobile(String value) => emit(state.copyWith(mobileNumber: value));
+  void updateNationalID(String value) =>
+      emit(state.copyWith(nationalId: value));
 
   /// Pick a new avatar from the gallery.
   Future<void> pickAvatarFromGallery() async {
@@ -53,20 +54,8 @@ class EditProfileCubit extends Cubit<EditProfileState> {
 
   void removeAvatar() => emit(state.copyWith(avatarPath: ''));
 
-  bool validate() {
-    final name = state.name.trim();
-    final email = state.email.trim();
-    final mobile = state.mobileNumber.trim();
-
-    final bool isNameValid = AppValidators.name(name) == null;
-    final bool isEmailValid = AppValidators.isValidEmail(email);
-    final bool isMobileValid = AppValidators.isValidSaudiPhone(mobile);
-    return isNameValid && isEmailValid && isMobileValid;
-  }
-
   Future<void> submit() async {
     emit(state.copyWith(cubitStatus: CubitStatus.loading));
-
     final result = await _authRepo.updateUserProfile(
       UpdateProfileRequestModel(
         name: state.name.trim(),

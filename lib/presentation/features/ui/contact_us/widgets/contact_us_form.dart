@@ -4,6 +4,7 @@ import 'package:acrova/presentation/features/common_widgets/inputs/app_filled_fi
 import 'package:acrova/presentation/features/ui/contact_us/cubit/contact_us_cubit.dart';
 import 'package:acrova/presentation/features/ui/contact_us/cubit/contact_us_state.dart';
 import 'package:acrova/utils/extensions/localization_extension.dart';
+import 'package:acrova/utils/validation/app_validators.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -44,7 +45,7 @@ class ContactUsForm extends StatelessWidget {
               AppFilledField(
                 label: l10n.contactUsEmailLabel,
                 controller: emailController,
-                error: state.emailError,
+                validator: AppValidators.email,
                 keyboardType: TextInputType.emailAddress,
                 onChanged: cubit.updateEmail,
               ),
@@ -54,13 +55,14 @@ class ContactUsForm extends StatelessWidget {
                 controller: mobileController,
                 keyboardType: TextInputType.phone,
                 onChanged: cubit.updateMobile,
+                validator: AppValidators.saudiPhone,
               ),
               SizedBox(height: Resources.verticalDims.$16),
               AppFilledField(
                 label: l10n.contactUsDetailsLabel,
                 controller: detailsController,
                 hint: l10n.contactUsDetailsHint,
-                error: state.detailsError,
+                validator: AppValidators.required,
                 maxLines: 4,
                 keyboardType: TextInputType.multiline,
                 onChanged: cubit.updateDetails,

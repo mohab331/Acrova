@@ -14,7 +14,7 @@ class ProfileHeaderCard extends StatelessWidget {
     super.key,
   });
 
-  final UserProfileModel profile;
+  final UserProfileModel? profile;
   final VoidCallback onEdit;
 
   @override
@@ -37,11 +37,13 @@ class ProfileHeaderCard extends StatelessWidget {
               ),
             ),
             clipBehavior: Clip.antiAlias,
-            child: profile.avatarUrl != null && profile.avatarUrl!.isNotEmpty
+            child:
+                profile?.avatarUrl != null &&
+                    (profile?.avatarUrl?.isNotEmpty ?? false)
                 ? AppCachedNetworkImage(
-                    imageUrl: profile.avatarUrl!,
+                    imageUrl: profile?.avatarUrl ?? '',
                     openInViewerOnTap: true,
-                    viewerTitle: profile.name,
+                    viewerTitle: profile?.name,
                   )
                 : Icon(
                     Icons.person_outline,
@@ -51,30 +53,34 @@ class ProfileHeaderCard extends StatelessWidget {
           ),
           SizedBox(height: Resources.verticalDims.$16),
           Text(
-            profile.name ?? '',
+            profile?.name ?? context.localization.visitorWelcome,
             style: context.textTheme.labelLarge?.copyWith(
               fontSize: Resources.fontSizes.$20,
               fontWeight: Resources.fontWeights.bold,
               color: Resources.colors.luxuryNavy,
             ),
           ),
-          SizedBox(height: Resources.verticalDims.$8),
-          Text(
-            profile.email ?? '',
-            style: context.textTheme.bodyMedium?.copyWith(
-              fontSize: Resources.fontSizes.$14,
-              color: Resources.colors.luxuryBodyMuted,
+          if (profile?.email?.isNotEmpty ?? false) ...[
+            SizedBox(height: Resources.verticalDims.$8),
+            Text(
+              profile?.email ?? '',
+              style: context.textTheme.bodyMedium?.copyWith(
+                fontSize: Resources.fontSizes.$14,
+                color: Resources.colors.luxuryBodyMuted,
+              ),
             ),
-          ),
-          SizedBox(height: Resources.verticalDims.$16),
-          Text(
-            loc.memberSince,
-            style: context.textTheme.bodySmall?.copyWith(
-              fontSize: Resources.fontSizes.$12,
-              color: Resources.colors.luxuryBody,
-              letterSpacing: Resources.letterSpacing.$0_4,
+          ],
+          if (profile?.memberSince != null) ...[
+            SizedBox(height: Resources.verticalDims.$16),
+            Text(
+              loc.memberSince,
+              style: context.textTheme.bodySmall?.copyWith(
+                fontSize: Resources.fontSizes.$12,
+                color: Resources.colors.luxuryBody,
+                letterSpacing: Resources.letterSpacing.$0_4,
+              ),
             ),
-          ),
+          ],
           SizedBox(height: Resources.verticalDims.$20),
           SizedBox(
             width: double.infinity,

@@ -1,4 +1,4 @@
-import 'package:acrova/data/models/response/config/min_app_version_response_model.dart';
+import 'package:acrova/data/models/response/config/app_config_response_model.dart';
 import 'package:equatable/equatable.dart';
 
 import '../../../../../../core/error/app_error_model.dart';

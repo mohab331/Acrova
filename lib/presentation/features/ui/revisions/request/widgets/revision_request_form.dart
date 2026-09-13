@@ -7,6 +7,7 @@ import 'package:acrova/presentation/features/ui/revisions/request/widgets/revisi
 import 'package:acrova/presentation/features/ui/revisions/request/widgets/revision_quota_card.dart';
 import 'package:acrova/utils/extensions/localization_extension.dart';
 import 'package:acrova/utils/extensions/theme_extension.dart';
+import 'package:acrova/utils/validation/app_validators.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -54,7 +55,7 @@ class RevisionRequestForm extends StatelessWidget {
                   label: l10n.revisionDetailsLabel,
                   controller: detailsController,
                   hint: l10n.revisionDetailsHint,
-                  error: state.detailsError,
+                  validator: AppValidators.required,
                   maxLines: 5,
                   keyboardType: TextInputType.multiline,
                   onChanged: cubit.updateDetails,

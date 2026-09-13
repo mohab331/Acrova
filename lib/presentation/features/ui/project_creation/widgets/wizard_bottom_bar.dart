@@ -38,8 +38,8 @@ class WizardBottomBar extends StatelessWidget {
                         ? () async {
                             final ok =
                                 await ProfileCompletionGuard.ensureComplete(
-                              context,
-                            );
+                                  context,
+                                );
                             if (!ok || !context.mounted) return;
                             await cubit.submit();
                           }

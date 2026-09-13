@@ -3,7 +3,6 @@ import 'package:acrova/presentation/app/resources/resources.dart';
 import 'package:acrova/presentation/features/common_widgets/feedback/app_error_state.dart';
 import 'package:acrova/presentation/features/common_widgets/feedback/skeleton_box.dart';
 import 'package:acrova/presentation/features/common_widgets/layout/app_section_header.dart';
-import 'package:acrova/presentation/features/cubit/auth/auth_cubit.dart';
 import 'package:acrova/presentation/features/ui/dashboard/widgets/dashboard_project_card_item.dart';
 import 'package:acrova/presentation/features/ui/projects/cubit/projects_cubit.dart';
 import 'package:acrova/utils/extensions/localization_extension.dart';
@@ -16,11 +15,6 @@ class RecentProjectsSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isVisitor = context.watch<AuthCubit>().state.isVisitor;
-    if (isVisitor) {
-      return const SizedBox.shrink();
-    }
-
     final loc = context.localization;
     final projectsCubit = context.read<ProjectsCubit>();
     final projectsState = context.watch<ProjectsCubit>().state;

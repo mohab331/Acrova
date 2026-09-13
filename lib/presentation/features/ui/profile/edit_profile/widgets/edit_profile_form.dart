@@ -12,12 +12,14 @@ class EditProfileForm extends StatelessWidget {
     required this.nameController,
     required this.emailController,
     required this.mobileController,
+    required this.nationalIDController,
     super.key,
   });
 
   final TextEditingController nameController;
   final TextEditingController emailController;
   final TextEditingController mobileController;
+  final TextEditingController nationalIDController;
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +33,7 @@ class EditProfileForm extends StatelessWidget {
             AppFilledField(
               controller: nameController,
               label: l10n.editProfileNameLabel,
-              error: AppValidators.name(state.name),
+              validator: AppValidators.name,
               keyboardType: TextInputType.name,
               onChanged: cubit.updateName,
             ),
@@ -40,7 +42,7 @@ class EditProfileForm extends StatelessWidget {
               controller: mobileController,
               label: l10n.editProfileMobileLabel,
               hint: l10n.editProfileMobileHint,
-              error: AppValidators.saudiPhone(state.mobileNumber),
+              validator: AppValidators.saudiPhone,
               keyboardType: TextInputType.phone,
               onChanged: cubit.updateMobile,
             ),
@@ -48,9 +50,17 @@ class EditProfileForm extends StatelessWidget {
             AppFilledField(
               controller: emailController,
               label: l10n.editProfileEmailLabel,
-              error: AppValidators.email(state.email),
+              validator: AppValidators.email,
               keyboardType: TextInputType.emailAddress,
               onChanged: cubit.updateEmail,
+            ),
+            SizedBox(height: Resources.verticalDims.$24),
+            AppFilledField(
+              controller: nationalIDController,
+              label: l10n.profileSetupNationalIdLabel,
+              validator: AppValidators.saudiNationalId,
+              keyboardType: TextInputType.number,
+              onChanged: cubit.updateNationalID,
             ),
           ],
         );

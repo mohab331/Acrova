@@ -25,7 +25,7 @@ abstract final class ProfileCompletionGuard {
     String? returnRoute,
   }) async {
     final authState = context.read<AuthCubit>().state;
-    if (authState.isFullyAuthenticated) {
+    if (authState.isProfileCompleted) {
       return true;
     }
 

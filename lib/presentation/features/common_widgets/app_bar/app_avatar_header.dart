@@ -7,7 +7,6 @@ import 'package:acrova/presentation/features/ui/notifications/cubit/notification
 import 'package:acrova/utils/enums/cubit_status.dart';
 import 'package:acrova/utils/extensions/localization_extension.dart';
 import 'package:acrova/utils/extensions/theme_extension.dart';
-import 'package:acrova/utils/guards/profile_completion_guard.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -45,16 +44,11 @@ class _AvatarHeaderState extends State<AvatarHeader> {
               if (authState.getUserCubitStatus == CubitStatus.loading)
                 const AppAvatarHeaderLoading()
               else ...[
-                GestureDetector(
-                  onTap: authState.isVisitor
-                      ? () => ProfileCompletionGuard.ensureComplete(context)
-                      : null,
-                  child: AvatarWidget(
-                    avatarUrl: user?.avatarUrl,
-                    userName: user?.name,
-                    isError: authState.getUserCubitStatus == CubitStatus.error,
-                    onRetry: authCubit.getUser,
-                  ),
+                AvatarWidget(
+                  avatarUrl: user?.avatarUrl,
+                  userName: user?.name,
+                  isError: authState.getUserCubitStatus == CubitStatus.error,
+                  onRetry: authCubit.getUser,
                 ),
                 SizedBox(width: Resources.horizontalDims.$12),
                 Column(
@@ -73,15 +67,6 @@ class _AvatarHeaderState extends State<AvatarHeader> {
                         user?.name ?? '',
                         style: context.textTheme.labelLarge?.copyWith(
                           color: Resources.colors.luxuryInk,
-                          fontWeight: Resources.fontWeights.semiBold,
-                          letterSpacing: Resources.letterSpacing.$0_14,
-                        ),
-                      )
-                    else if (authState.isVisitor)
-                      Text(
-                        loc.visitorWelcome,
-                        style: context.textTheme.labelLarge?.copyWith(
-                          color: Resources.colors.luxuryGold,
                           fontWeight: Resources.fontWeights.semiBold,
                           letterSpacing: Resources.letterSpacing.$0_14,
                         ),

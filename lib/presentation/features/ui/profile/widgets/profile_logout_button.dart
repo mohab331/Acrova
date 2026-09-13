@@ -43,9 +43,9 @@ class ProfileLogoutButton extends StatelessWidget {
   }
 
   Future<void> _logout(BuildContext context) async {
-    await context.read<AuthCubit>().clearAuthData();
-    if (!context.mounted) return;
+    context.goTo(AppRouteEnum.welcomePage.name);
     context.read<AuthCubit>().resetToInitial();
-    context.goTo(AppRouteEnum.welcomePage.path);
+    context.read<AuthCubit>().clearAuthData();
+    if (!context.mounted) return;
   }
 }
