@@ -9,7 +9,6 @@ import 'package:acrova/presentation/features/ui/profile/widgets/profile_content.
 import 'package:acrova/presentation/features/ui/profile/widgets/profile_skeleton.dart';
 import 'package:acrova/utils/enums/cubit_status.dart';
 import 'package:acrova/utils/extensions/localization_extension.dart';
-import 'package:acrova/utils/guards/profile_completion_guard.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -52,15 +51,6 @@ class _ProfilePageState extends State<ProfilePage> {
               return VisitorEmptyState(
                 icon: Icons.person_outline,
                 title: context.localization.profileCompletionTitle,
-                subtitle: context.localization.profileCompletionSubtitle,
-                ctaLabel: context.localization.completeProfile,
-                onCtaTap: () async {
-                  final completed =
-                      await ProfileCompletionGuard.ensureComplete(context);
-                  if (completed && context.mounted) {
-                    await context.read<AuthCubit>().getUser();
-                  }
-                },
               );
             }
 

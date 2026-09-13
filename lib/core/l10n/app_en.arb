@@ -633,5 +633,7 @@
   "resend_otp_success": "A new verification code has been sent.",
   "resend_otp_limit": "You’ve reached the resend limit. Please try again shortly.",
   "login_visitor" : "Log in to unlock your personalized experience.",
-  "login" : "Log in"
+  "login" : "Log in",
+  "continueAsGuest": "Continue as a guest?",
+  "submit": "Submit"
 }

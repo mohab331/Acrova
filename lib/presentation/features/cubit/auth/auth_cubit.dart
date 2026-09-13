@@ -4,6 +4,7 @@ import 'package:acrova/data/models/request/auth/send_otp_request_model.dart';
 import 'package:acrova/domain/repository/auth/base_auth_repo.dart';
 import 'package:acrova/domain/repository/notifications/base_fcm_token_repo.dart';
 import 'package:acrova/utils/enums/cubit_status.dart';
+import 'package:acrova/utils/enums/user_status.dart';
 import 'package:acrova/utils/extensions/non_null_extension.dart';
 import 'package:bloc/bloc.dart';
 
@@ -41,6 +42,19 @@ class AuthCubit extends Cubit<AuthCubitState> {
     );
   }
 
+  void loginAsGuest() {
+    setUserStatus(UserStatus.visitor);
+  }
+
+  void setUserStatus(UserStatus userStatus) {
+    emit(
+      state.copyWith(
+        userStatus: userStatus,
+        clearUserModel: userStatus != UserStatus.authenticated,
+      ),
+    );
+  }
+
   Future<void> resendOTP() async {
     emit(state.copyWith(resendOTPCubitStatus: CubitStatus.loading));
     final result = await _baseAuthRepo.login(
@@ -59,6 +73,7 @@ class AuthCubit extends Cubit<AuthCubitState> {
   }
 
   Future<void> getUser() async {
+    if (state.isVisitor) return;
     emit(state.copyWith(getUserCubitStatus: CubitStatus.loading));
     final response = await _baseAuthRepo.getUserProfile();
     response.when(
@@ -100,7 +115,12 @@ class AuthCubit extends Cubit<AuthCubitState> {
     );
     otpResult.when(
       success: (verifyOTPResponseModel) async {
-        emit(state.copyWith(verifyOTPCubitStatus: CubitStatus.success));
+        emit(
+          state.copyWith(
+            verifyOTPCubitStatus: CubitStatus.success,
+            userStatus: UserStatus.authenticated,
+          ),
+        );
       },
       failure: (error) => emit(
         state.copyWith(
