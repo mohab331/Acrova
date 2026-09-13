@@ -5,6 +5,7 @@ import 'package:acrova/presentation/app/resources/resources.dart';
 import 'package:acrova/presentation/features/cubit/auth/auth_cubit.dart';
 import 'package:acrova/presentation/features/cubit/localization/localization_cubit.dart';
 import 'package:acrova/presentation/features/ui/profile/widgets/change_language_sheet.dart';
+import 'package:acrova/presentation/features/ui/profile/widgets/legal_documents_sheet.dart';
 import 'package:acrova/presentation/features/ui/profile/widgets/profile_header_card.dart';
 import 'package:acrova/presentation/features/ui/profile/widgets/profile_logout_button.dart';
 import 'package:acrova/presentation/features/ui/profile/widgets/profile_menu_item.dart';
@@ -100,7 +101,7 @@ class _ProfileContentState extends State<ProfileContent> {
                 ProfileMenuItem(
                   icon: Icons.description_outlined,
                   label: loc.termsAndPrivacy,
-                  onTap: () {},
+                  onTap: () => LegalDocumentsSheet.show(context),
                 ),
               ],
             ),
@@ -110,8 +111,9 @@ class _ProfileContentState extends State<ProfileContent> {
           ],
         ),
       ),
-    );
-  }
+    ),
+  );
+}
 
   void _openEdit(BuildContext context, UserProfileModel profile) {
     context.push(

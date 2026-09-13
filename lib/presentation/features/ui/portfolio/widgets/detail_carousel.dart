@@ -6,12 +6,14 @@ class DetailCarousel extends StatelessWidget {
     required this.imageUrls,
     required this.controller,
     required this.onPageChanged,
+    this.title,
     super.key,
   });
 
   final List<String> imageUrls;
   final PageController controller;
   final void Function(int) onPageChanged;
+  final String? title;
 
   @override
   Widget build(BuildContext context) {
@@ -19,8 +21,12 @@ class DetailCarousel extends StatelessWidget {
       controller: controller,
       onPageChanged: onPageChanged,
       itemCount: imageUrls.length,
-      itemBuilder: (_, index) =>
-          AppCachedNetworkImage(imageUrl: imageUrls[index], radius: 0),
+      itemBuilder: (_, index) => AppCachedNetworkImage(
+        imageUrl: imageUrls[index],
+        radius: 0,
+        openInViewerOnTap: true,
+        viewerTitle: title,
+      ),
     );
   }
 }

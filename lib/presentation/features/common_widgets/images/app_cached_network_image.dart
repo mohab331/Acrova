@@ -1,5 +1,6 @@
 import 'package:acrova/presentation/app/resources/resources.dart';
 import 'package:acrova/presentation/features/common_widgets/feedback/app_skeleton_loader.dart';
+import 'package:acrova/utils/helpers/app_viewer_helper.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
@@ -9,6 +10,7 @@ import 'package:flutter/material.dart';
 /// - Shimmer placeholder using existing [AppSkeletonLoader]
 /// - Premium error states using luxuryNavy/luxuryGold colors
 /// - Custom cached network image
+/// - Optional tap-to-view interaction routing to [ImageViewerPage]
 class AppCachedNetworkImage extends StatelessWidget {
   const AppCachedNetworkImage({
     required this.imageUrl,
@@ -16,6 +18,9 @@ class AppCachedNetworkImage extends StatelessWidget {
     this.width,
     this.fit = BoxFit.cover,
     this.radius,
+    this.openInViewerOnTap = false,
+    this.viewerTitle,
+    this.onTap,
     super.key,
   });
 
@@ -24,12 +29,15 @@ class AppCachedNetworkImage extends StatelessWidget {
   final double? width;
   final BoxFit fit;
   final double? radius;
+  final bool openInViewerOnTap;
+  final String? viewerTitle;
+  final VoidCallback? onTap;
 
   @override
   Widget build(BuildContext context) {
     final defaultRadius = radius ?? Resources.radius.$r8;
 
-    return ClipRRect(
+    final imageWidget = ClipRRect(
       borderRadius: BorderRadius.circular(defaultRadius),
       child: CachedNetworkImage(
         imageUrl: imageUrl,
@@ -63,5 +71,24 @@ class AppCachedNetworkImage extends StatelessWidget {
         ),
       ),
     );
+
+    if (openInViewerOnTap || onTap != null) {
+      return GestureDetector(
+        onTap: () {
+          if (onTap != null) {
+            onTap!();
+          } else if (openInViewerOnTap && imageUrl.trim().isNotEmpty) {
+            AppViewerHelper.openImage(
+              context,
+              urlOrAsset: imageUrl,
+              title: viewerTitle,
+            );
+          }
+        },
+        child: imageWidget,
+      );
+    }
+
+    return imageWidget;
   }
 }

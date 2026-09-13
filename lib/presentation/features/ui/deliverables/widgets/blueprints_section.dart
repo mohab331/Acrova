@@ -1,12 +1,10 @@
-import 'package:acrova/presentation/app/navigation/app_route_enum.dart';
 import 'package:acrova/presentation/app/resources/resources.dart';
-import 'package:acrova/presentation/features/ui/common/viewers/pdf_viewer_page.dart';
 import 'package:acrova/presentation/features/ui/deliverables/cubit/deliverables_state.dart';
 import 'package:acrova/utils/extensions/localization_extension.dart';
 import 'package:acrova/utils/extensions/theme_extension.dart';
+import 'package:acrova/utils/helpers/app_viewer_helper.dart';
 import 'package:acrova/utils/helpers/download_helper.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 
 class BlueprintsSection extends StatelessWidget {
   const BlueprintsSection({required this.blueprints, super.key});
@@ -88,12 +86,10 @@ class BlueprintsSection extends StatelessWidget {
                   children: [
                     IconButton(
                       onPressed: () {
-                        context.push(
-                          AppRouteEnum.pdfViewerPage.path,
-                          extra: PdfViewerArgs(
-                            title: blueprint.title ?? '',
-                            urlOrAsset: blueprint.urlOrAsset ?? '',
-                          ),
+                        AppViewerHelper.openPdf(
+                          context,
+                          urlOrAsset: blueprint.urlOrAsset ?? '',
+                          title: blueprint.title,
                         );
                       },
                       icon: Icon(

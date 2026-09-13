@@ -24,11 +24,11 @@ class SplashCubit extends Cubit<SplashState> {
     required BaseNotificationProviderRepo notificationProviderRepo,
     required BaseFCMTokenRepo fcmTokenRepo,
   }) : _authRepo = authRepo,
-       _localizationRepository = localizationRepository,
-       _appConfigRepo = appConfigRepo,
-       _notificationProviderRepo = notificationProviderRepo,
-       _fcmTokenRepo = fcmTokenRepo,
-       super(const SplashState.initial());
+        _localizationRepository = localizationRepository,
+        _appConfigRepo = appConfigRepo,
+        _notificationProviderRepo = notificationProviderRepo,
+        _fcmTokenRepo = fcmTokenRepo,
+        super(const SplashState.initial());
 
   final BaseAuthRepo _authRepo;
   final BaseLocalizationRepo _localizationRepository;
@@ -48,7 +48,7 @@ class SplashCubit extends Cubit<SplashState> {
     ]);
     final tokenResult = results[0] as Result<String?>;
     final minAppVersionResult =
-        results[3] as Result<NetworkResponse<MinAppVersionResponseModel>>;
+    results[3] as Result<NetworkResponse<MinAppVersionResponseModel>>;
     final localeResult = _localizationRepository.getSavedLocale();
     String? token;
     String languageCode = defaultLocale.languageCode;
@@ -72,7 +72,7 @@ class SplashCubit extends Cubit<SplashState> {
     /// 3) Getting locale
     localeResult.when(
       success: (loc) =>
-          languageCode = (loc?.languageCode ?? defaultLocale.languageCode),
+      languageCode = (loc?.languageCode ?? defaultLocale.languageCode),
       failure: (e) => failure = e,
     );
 

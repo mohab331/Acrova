@@ -967,20 +967,40 @@ class MockContactUsRepo extends _MockBase implements BaseContactUsRepo {
 }
 
 class MockAppConfigRepo extends _MockBase implements BaseAppConfigRepo {
+  AppConfigResponseModel? _cachedConfig = const AppConfigResponseModel(
+    minAppVersion: 1,
+    termsAndConditionsUrl: 'https://example.com/terms.pdf',
+    privacyPolicyUrl: 'https://example.com/privacy',
+    cookiePolicyUrl: 'https://example.com/cookies',
+  );
+
   @override
-  Future<Result<NetworkResponse<MinAppVersionResponseModel>>>
-  getMinAppVersion() async {
+  AppConfigResponseModel? get cachedConfig => _cachedConfig;
+
+  @override
+  Future<Result<NetworkResponse<AppConfigResponseModel>>> getAppConfig() async {
     if (shouldThrow(MockRepositoryKey.appConfig)) return mockError();
 
     await simulateDelay();
 
+    _cachedConfig = const AppConfigResponseModel(
+      minAppVersion: 1,
+      termsAndConditionsUrl: 'https://example.com/terms.pdf',
+      privacyPolicyUrl: 'https://example.com/privacy',
+      cookiePolicyUrl: 'https://example.com/cookies',
+    );
+
     return Success(
       NetworkResponse(
         isSuccess: true,
-        data: const MinAppVersionResponseModel(minAppVersion: 1),
+        data: _cachedConfig,
       ),
     );
   }
+
+  @override
+  Future<Result<NetworkResponse<AppConfigResponseModel>>>
+  getMinAppVersion() => getAppConfig();
 }
 
 class MockLocalizationRepo extends _MockBase implements BaseLocalizationRepo {

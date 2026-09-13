@@ -3,6 +3,7 @@ import 'package:acrova/data/models/billing/payment_model.dart';
 import 'package:acrova/presentation/app/navigation/app_route_enum.dart';
 import 'package:acrova/presentation/app/navigation/args/navigation_args.dart';
 import 'package:acrova/presentation/app/resources/resources.dart';
+import 'package:acrova/presentation/features/common_widgets/images/app_cached_network_image.dart';
 import 'package:acrova/presentation/features/ui/billing/payment_details/widgets/payment_grid_item.dart';
 import 'package:acrova/utils/extensions/localization_extension.dart';
 import 'package:acrova/utils/extensions/navigation_extension.dart';
@@ -10,11 +11,10 @@ import 'package:acrova/utils/extensions/theme_extension.dart';
 import 'package:acrova/utils/formatters/app_formatter.dart';
 import 'package:acrova/utils/helpers/download_helper.dart';
 import 'package:acrova/utils/helpers/ui_helper.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
 class PaymentDetailsCard extends StatelessWidget {
-  const PaymentDetailsCard({required this.payment});
+  const PaymentDetailsCard({required this.payment, super.key});
 
   final PaymentModel payment;
 
@@ -242,25 +242,13 @@ class PaymentDetailsCard extends StatelessWidget {
                               ),
                             ],
                           ),
-                          ClipRRect(
-                            borderRadius: BorderRadius.circular(
-                              Resources.radius.$r8,
-                            ),
-                            child: CachedNetworkImage(
-                              imageUrl: payment.receiptUrl!,
-                              width: Resources.squareDims.$80,
-                              height: Resources.squareDims.$80,
-                              fit: BoxFit.cover,
-                              placeholder: (context, url) => Container(
-                                width: Resources.squareDims.$80,
-                                height: Resources.squareDims.$80,
-                                color: Resources.colors.luxuryBorder.withValues(
-                                  alpha: 0.2,
-                                ),
-                              ),
-                              errorWidget: (context, url, error) =>
-                                  const Icon(Icons.error),
-                            ),
+                          AppCachedNetworkImage(
+                            imageUrl: payment.receiptUrl!,
+                            width: Resources.squareDims.$80,
+                            height: Resources.squareDims.$80,
+                            radius: Resources.radius.$r8,
+                            openInViewerOnTap: true,
+                            viewerTitle: loc.paymentDetailsTransferReceipt,
                           ),
                         ],
                       ),
@@ -317,7 +305,7 @@ class PaymentDetailsCard extends StatelessWidget {
     bool isSuccess,
   ) async {
     if (isPending) {
-      context.push(
+      await context.push(
         AppRouteEnum.makePaymentPage.name,
         extra: MakePaymentArgs(projectId: payment.projectId ?? payment.id),
       );
@@ -331,12 +319,15 @@ class PaymentDetailsCard extends StatelessWidget {
           '${payment.id}',
         );
       } catch (e, s) {
-        CustomToastification.error(
+        if (!context.mounted) return;
+        await CustomToastification.error(
           context: context,
           errorModel: AppErrorModel.fromException(e, stackTrace: s),
         ).showToast();
+
       }
       return;
     }
+
   }
 }

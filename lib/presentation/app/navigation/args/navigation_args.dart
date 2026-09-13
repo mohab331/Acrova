@@ -135,3 +135,14 @@ class ImageViewerArgs extends Equatable {
   @override
   List<Object?> get props => [title, urlOrAsset];
 }
+
+/// Navigation arguments for Web View Page.
+class WebViewArgs extends Equatable {
+  const WebViewArgs({required this.title, required this.url});
+
+  final String title;
+  final String url;
+
+  @override
+  List<Object?> get props => [title, url];
+}

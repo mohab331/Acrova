@@ -137,7 +137,7 @@ class DownloadHelper {
         stackTrace: s,
       );
 
-      CustomToastification.error(
+      await CustomToastification.error(
         context: context,
         errorModel: AppErrorModel.fromException(e, stackTrace: s),
       ).showToast();

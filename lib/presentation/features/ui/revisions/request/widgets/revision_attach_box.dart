@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:acrova/presentation/app/resources/resources.dart';
 import 'package:acrova/utils/extensions/localization_extension.dart';
 import 'package:acrova/utils/extensions/theme_extension.dart';
+import 'package:acrova/utils/helpers/app_viewer_helper.dart';
 import 'package:flutter/material.dart';
 
 class RevisionAttachBox extends StatelessWidget {
@@ -82,13 +83,20 @@ class _Thumb extends StatelessWidget {
     return Stack(
       clipBehavior: Clip.none,
       children: [
-        ClipRRect(
-          borderRadius: BorderRadius.circular(Resources.radius.$r4),
-          child: Image.file(
-            File(path),
-            width: Resources.squareDims.$64,
-            height: Resources.squareDims.$64,
-            fit: BoxFit.cover,
+        GestureDetector(
+          onTap: () => AppViewerHelper.openImage(
+            context,
+            urlOrAsset: path,
+            title: path.split('/').last,
+          ),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(Resources.radius.$r4),
+            child: Image.file(
+              File(path),
+              width: Resources.squareDims.$64,
+              height: Resources.squareDims.$64,
+              fit: BoxFit.cover,
+            ),
           ),
         ),
         Positioned(

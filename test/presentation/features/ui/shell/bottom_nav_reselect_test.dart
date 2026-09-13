@@ -172,7 +172,9 @@ void main() {
       expect(refreshCount, 0);
 
       // Wait for window to expire
-      await Future<void>.delayed(const Duration(milliseconds: 70));
+      await tester.runAsync(() async {
+        await Future<void>.delayed(const Duration(milliseconds: 70));
+      });
 
       // This tap is treated as a new 1st tap, not a 2nd tap
       handler.handleReselect();
@@ -212,7 +214,10 @@ void main() {
       // 3rd tap while still refreshing should be ignored
       handler.handleReselect();
       expect(refreshCalls, 1);
+
+      await tester.pump(const Duration(milliseconds: 100));
     });
+
   });
 
   group('BottomNavScrollAndRefreshListener widget tests', () {

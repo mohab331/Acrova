@@ -1,3 +1,4 @@
+import 'package:acrova/data/models/response/config/app_config_response_model.dart';
 import 'package:equatable/equatable.dart';
 
 import '../../../../../../core/error/app_error_model.dart';
@@ -10,6 +11,7 @@ class SplashState extends Equatable {
     required this.language,
     required this.error,
     required this.forceUpdateRequired,
+    this.appConfig,
   });
 
   const SplashState.initial({
@@ -18,12 +20,15 @@ class SplashState extends Equatable {
     this.language,
     this.error,
     this.forceUpdateRequired = false,
+    this.appConfig,
   });
+
   final CubitStatus splashStatus;
   final String? userToken;
   final String? language;
   final AppErrorModel? error;
   final bool forceUpdateRequired;
+  final AppConfigResponseModel? appConfig;
 
   SplashState copyWith({
     CubitStatus? splashStatus,
@@ -31,6 +36,7 @@ class SplashState extends Equatable {
     String? language,
     AppErrorModel? error,
     bool? forceUpdateRequired,
+    AppConfigResponseModel? appConfig,
   }) {
     return SplashState(
       splashStatus: splashStatus ?? this.splashStatus,
@@ -38,6 +44,7 @@ class SplashState extends Equatable {
       language: language ?? this.language,
       error: error,
       forceUpdateRequired: forceUpdateRequired ?? this.forceUpdateRequired,
+      appConfig: appConfig ?? this.appConfig,
     );
   }
 
@@ -45,11 +52,13 @@ class SplashState extends Equatable {
   bool get isLoading =>
       (splashStatus == CubitStatus.loading ||
       splashStatus == CubitStatus.initial);
+
   @override
   List<Object?> get props => [
     splashStatus,
     userToken,
     language,
     forceUpdateRequired,
+    appConfig,
   ];
 }
