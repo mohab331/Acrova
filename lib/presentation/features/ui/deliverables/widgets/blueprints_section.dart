@@ -31,7 +31,7 @@ class BlueprintsSection extends StatelessWidget {
         SizedBox(height: Resources.verticalDims.$8),
         ...blueprints.map(
           (blueprint) => Container(
-            margin: EdgeInsets.only(top: Resources.verticalDims.$8),
+            margin: EdgeInsetsDirectional.only(top: Resources.verticalDims.$8),
             padding: EdgeInsets.all(Resources.squareDims.$16),
             decoration: BoxDecoration(
               color: Resources.colors.luxurySurface,

@@ -50,8 +50,8 @@ class _LuxuryPhoneInputState extends State<LuxuryPhoneInput> {
                   // onTap: () => _openCountryPicker(context, cubit),
                   behavior: HitTestBehavior.opaque,
                   child: Padding(
-                    padding: EdgeInsets.only(
-                      right: Resources.horizontalDims.$12,
+                    padding: EdgeInsetsDirectional.only(
+                      end: Resources.horizontalDims.$12,
                       bottom: Resources.verticalDims.$8,
                     ),
                     child: Row(
@@ -102,7 +102,7 @@ class _LuxuryPhoneInputState extends State<LuxuryPhoneInput> {
                       border: InputBorder.none,
                       enabledBorder: InputBorder.none,
                       focusedBorder: InputBorder.none,
-                      contentPadding: EdgeInsets.only(
+                      contentPadding: EdgeInsetsDirectional.only(
                         bottom: Resources.verticalDims.$8,
                       ),
                       hintStyle: context.textTheme.bodyMedium?.copyWith(

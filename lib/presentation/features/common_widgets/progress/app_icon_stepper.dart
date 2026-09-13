@@ -118,7 +118,7 @@ class AppIconStepper extends StatelessWidget {
                   dot = Container(
                     width: Resources.squareDims.$16,
                     height: Resources.squareDims.$16,
-                    margin: EdgeInsets.only(
+                    margin: EdgeInsetsDirectional.only(
                       top: Resources.squareDims.$2,
                     ), // Centers the 16px dot within the 20px row
                     decoration: BoxDecoration(

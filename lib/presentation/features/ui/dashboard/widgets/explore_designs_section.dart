@@ -60,7 +60,7 @@ class ExploreDesignsSection extends StatelessWidget {
         ] else if (portfolioState.isError)
           Center(
             child: AppErrorState(
-              onRetry: () => portfolioCubit.fetchPortfolio(),
+              onRetry: portfolioCubit.fetchPortfolio,
               errorModel: portfolioState.error,
             ),
           )

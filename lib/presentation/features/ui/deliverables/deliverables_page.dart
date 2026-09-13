@@ -44,10 +44,10 @@ class _DeliverablesView extends StatelessWidget {
           bottomNavigationBar: state.isError || state.isLoading
               ? null
               : Container(
-                  padding: EdgeInsets.only(
+                  padding: EdgeInsetsDirectional.only(
                     top: Resources.verticalDims.$16,
-                    left: Resources.horizontalDims.$24,
-                    right: Resources.horizontalDims.$24,
+                    start: Resources.horizontalDims.$24,
+                    end: Resources.horizontalDims.$24,
                     bottom: Resources.verticalDims.$32,
                   ),
                   decoration: BoxDecoration(

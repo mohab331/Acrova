@@ -67,7 +67,9 @@ class _CountryPickerSheetState extends State<CountryPickerSheet> {
           children: [
             // Drag handle
             Padding(
-              padding: EdgeInsets.only(top: Resources.verticalDims.$12),
+              padding: EdgeInsetsDirectional.only(
+                top: Resources.verticalDims.$12,
+              ),
               child: Container(
                 width: Resources.horizontalDims.$40,
                 height: Resources.verticalDims.$4,
