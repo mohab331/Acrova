@@ -10,10 +10,10 @@ import 'package:acrova/presentation/features/ui/auth/identity_verification/ident
 import 'package:acrova/presentation/features/ui/auth/phone_input/phone_input_page.dart';
 import 'package:acrova/presentation/features/ui/auth/profile_setup/profile_setup_page.dart';
 import 'package:acrova/presentation/features/ui/auth/welcome/welcome_page.dart';
-import 'package:acrova/presentation/features/ui/billing/make_payment_view.dart';
-import 'package:acrova/presentation/features/ui/billing/payment_details_view.dart';
-import 'package:acrova/presentation/features/ui/billing/payment_history_view.dart';
-import 'package:acrova/presentation/features/ui/billing/payment_success_view.dart';
+import 'package:acrova/presentation/features/ui/billing/make_payment/make_payment_view.dart';
+import 'package:acrova/presentation/features/ui/billing/make_payment/payment_success_view.dart';
+import 'package:acrova/presentation/features/ui/billing/payment_details/payment_details_view.dart';
+import 'package:acrova/presentation/features/ui/billing/payment_history/payment_history_view.dart';
 import 'package:acrova/presentation/features/ui/common/viewers/image_viewer_page.dart';
 import 'package:acrova/presentation/features/ui/common/viewers/pdf_viewer_page.dart';
 import 'package:acrova/presentation/features/ui/contact_us/contact_us_page.dart';
@@ -244,9 +244,7 @@ class AppRouter {
         name: AppRouteEnum.paymentDetailsPage.name,
         builder: (_, state) {
           final extra = state.extra;
-          final paymentId = extra is PaymentDetailsArgs
-              ? extra.paymentId
-              : (extra as String? ?? '');
+          final paymentId = (extra as PaymentDetailsArgs?)?.paymentId;
           return PaymentDetailsView(paymentId: paymentId);
         },
       ),

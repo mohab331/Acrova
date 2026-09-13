@@ -26,7 +26,7 @@ class InteriorDesignArgs extends Equatable {
 class PaymentDetailsArgs extends Equatable {
   const PaymentDetailsArgs({required this.paymentId});
 
-  final String paymentId;
+  final String? paymentId;
 
   @override
   List<Object?> get props => [paymentId];

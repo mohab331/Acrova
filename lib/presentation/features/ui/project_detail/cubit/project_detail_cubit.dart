@@ -1,5 +1,5 @@
 import 'package:acrova/domain/repository/project/base_project_repo.dart';
-import 'package:acrova/presentation/features/cubit/project_detail/project_detail_state.dart';
+import 'package:acrova/presentation/features/ui/project_detail/cubit/project_detail_state.dart';
 import 'package:acrova/utils/enums/cubit_status.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

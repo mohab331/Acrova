@@ -1,5 +1,5 @@
 import 'package:acrova/domain/repository/billing/base_billing_repo.dart';
-import 'package:acrova/presentation/features/cubit/billing/payment_details_state.dart';
+import 'package:acrova/presentation/features/ui/billing/payment_details/cubit/payment_details_state.dart';
 import 'package:acrova/utils/enums/cubit_status.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

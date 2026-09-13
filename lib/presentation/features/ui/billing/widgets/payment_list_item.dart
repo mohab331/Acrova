@@ -14,7 +14,7 @@ class PaymentListItem extends StatelessWidget {
   final PaymentModel payment;
   final VoidCallback onTap;
 
-  IconData _getIcon() {
+  IconData? _getIcon() {
     switch (payment.status) {
       case PaymentStatus.success:
         return Icons.check_circle_outline;
@@ -22,10 +22,12 @@ class PaymentListItem extends StatelessWidget {
         return Icons.error_outline;
       case PaymentStatus.pending:
         return Icons.schedule;
+      default:
+        return null;
     }
   }
 
-  Color _getIconColor() {
+  Color? _getIconColor() {
     switch (payment.status) {
       case PaymentStatus.success:
         return Resources.colors.luxurySuccess;
@@ -33,11 +35,13 @@ class PaymentListItem extends StatelessWidget {
         return Resources.colors.luxuryError;
       case PaymentStatus.pending:
         return Resources.colors.luxuryWarning;
+      default:
+        return null;
     }
   }
 
   Color _getIconBgColor() {
-    return _getIconColor().withValues(alpha: 0.1);
+    return _getIconColor()?.withValues(alpha: 0.1) ?? Colors.transparent;
   }
 
   @override
@@ -78,7 +82,7 @@ class PaymentListItem extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    payment.projectName,
+                    payment.projectName ?? '',
                     style: context.textTheme.bodyMedium?.copyWith(
                       fontWeight: Resources.fontWeights.semiBold,
                       color: Resources.colors.luxuryNavy,
@@ -108,7 +112,7 @@ class PaymentListItem extends StatelessWidget {
                 ),
                 SizedBox(height: Resources.verticalDims.$4),
                 Text(
-                  payment.status.localizedName(context),
+                  payment.status?.localizedName(context) ?? '',
                   style: context.textTheme.labelSmall?.copyWith(
                     color: _getIconColor(),
                     fontWeight: Resources.fontWeights.semiBold,

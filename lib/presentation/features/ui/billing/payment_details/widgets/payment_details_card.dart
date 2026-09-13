@@ -1,84 +1,26 @@
-import 'package:acrova/core/di/dependency_injector.dart';
+import 'package:acrova/core/error/app_error_model.dart';
 import 'package:acrova/data/models/billing/payment_model.dart';
 import 'package:acrova/presentation/app/navigation/app_route_enum.dart';
 import 'package:acrova/presentation/app/resources/resources.dart';
-import 'package:acrova/presentation/features/common_widgets/app_bar/app_auth_brand_header.dart';
-import 'package:acrova/presentation/features/common_widgets/common_screen/common_screen.dart';
-import 'package:acrova/presentation/features/common_widgets/feedback/common_error_widget.dart';
-import 'package:acrova/presentation/features/common_widgets/feedback/common_shimmer_loading.dart';
-import 'package:acrova/presentation/features/cubit/billing/payment_details_cubit.dart';
-import 'package:acrova/presentation/features/cubit/billing/payment_details_state.dart';
+import 'package:acrova/presentation/features/ui/billing/payment_details/widgets/payment_grid_item.dart';
 import 'package:acrova/utils/extensions/localization_extension.dart';
+import 'package:acrova/utils/extensions/navigation_extension.dart';
 import 'package:acrova/utils/extensions/theme_extension.dart';
 import 'package:acrova/utils/formatters/app_formatter.dart';
+import 'package:acrova/utils/helpers/download_helper.dart';
+import 'package:acrova/utils/helpers/ui_helper.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:go_router/go_router.dart';
 
-class PaymentDetailsView extends StatelessWidget {
-  const PaymentDetailsView({required this.paymentId, super.key});
-
-  final String paymentId;
-
-  @override
-  Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (_) =>
-          serviceLocatorInstance<PaymentDetailsCubit>()
-            ..fetchPaymentDetails(paymentId),
-      child: _PaymentDetailsContent(paymentId: paymentId),
-    );
-  }
-}
-
-class _PaymentDetailsContent extends StatelessWidget {
-  const _PaymentDetailsContent({required this.paymentId});
-
-  final String paymentId;
-
-  @override
-  Widget build(BuildContext context) {
-    final loc = context.localization;
-
-    return CommonScreen(
-      appBar: AppAuthBrandHeader(
-        label: loc.paymentDetailsTitle,
-        showBack: true,
-      ),
-      padding: EdgeInsets.zero,
-      child: BlocBuilder<PaymentDetailsCubit, PaymentDetailsState>(
-        builder: (context, state) {
-          if (state.isLoading) {
-            return const CommonShimmerLoading(isDetail: true);
-          }
-          if (state.isError) {
-            return CommonErrorWidget(
-              error: state.error,
-              onRetry: () => context
-                  .read<PaymentDetailsCubit>()
-                  .fetchPaymentDetails(paymentId),
-            );
-          }
-          if (state.payment == null) {
-            return const SizedBox();
-          }
-          return _PaymentDetailsCard(payment: state.payment!);
-        },
-      ),
-    );
-  }
-}
-
-class _PaymentDetailsCard extends StatelessWidget {
-  const _PaymentDetailsCard({required this.payment});
+class PaymentDetailsCard extends StatelessWidget {
+  const PaymentDetailsCard({required this.payment});
 
   final PaymentModel payment;
 
   @override
   Widget build(BuildContext context) {
     final loc = context.localization;
-    final statusColor = payment.status.color;
+    final statusColor = payment.status?.color;
     final isSuccess = payment.status == PaymentStatus.success;
     final isRejected = payment.status == PaymentStatus.rejected;
     final isPending = payment.status == PaymentStatus.pending;
@@ -114,7 +56,7 @@ class _PaymentDetailsCard extends StatelessWidget {
             Container(
               height: Resources.verticalDims.$4,
               width: double.infinity,
-              color: statusColor.withValues(alpha: 0.8),
+              color: statusColor?.withValues(alpha: 0.8),
             ),
             Padding(
               padding: EdgeInsets.all(Resources.horizontalDims.$24),
@@ -125,14 +67,14 @@ class _PaymentDetailsCard extends StatelessWidget {
                   Column(
                     children: [
                       Icon(
-                        payment.status.icon,
+                        payment.status?.icon,
                         color: statusColor,
                         size: Resources.iconSizes.$48,
                       ),
                       SizedBox(height: Resources.verticalDims.$8),
                       Text(
                         loc.paymentDetailsPaymentStatus(
-                          payment.status.localizedName(context),
+                          payment.status?.localizedName(context) ?? '',
                         ),
                         style: context.textTheme.labelMedium?.copyWith(
                           color: isRejected
@@ -172,7 +114,7 @@ class _PaymentDetailsCard extends StatelessWidget {
                       ),
                       SizedBox(height: Resources.verticalDims.$4),
                       Text(
-                        payment.projectName,
+                        payment.projectName ?? '',
                         style: context.textTheme.bodyMedium?.copyWith(
                           fontWeight: Resources.fontWeights.semiBold,
                           color: Resources.colors.luxuryNavy,
@@ -180,7 +122,7 @@ class _PaymentDetailsCard extends StatelessWidget {
                       ),
                       SizedBox(height: Resources.verticalDims.$4),
                       Text(
-                        loc.paymentDetailsId(payment.projectId),
+                        loc.paymentDetailsId(payment.projectId ?? ''),
                         style: context.textTheme.labelMedium?.copyWith(
                           color: Resources.colors.luxuryBody,
                         ),
@@ -197,18 +139,18 @@ class _PaymentDetailsCard extends StatelessWidget {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            _PaymentGridItem(
+                            PaymentGridItem(
                               label: loc.paymentDetailsTransactionId,
-                              value: payment.transactionId,
+                              value: payment.transactionId ?? '',
                             ),
                             SizedBox(height: Resources.verticalDims.$16),
-                            _PaymentGridItem(
+                            PaymentGridItem(
                               label: loc.paymentDetailsBank,
-                              value: payment.bankName,
+                              value: payment.bankName ?? '',
                             ),
                             if (isSuccess) ...[
                               SizedBox(height: Resources.verticalDims.$16),
-                              _PaymentGridItem(
+                              PaymentGridItem(
                                 label: loc.paymentDetailsAccountName,
                                 value: payment.accountName,
                               ),
@@ -220,12 +162,12 @@ class _PaymentDetailsCard extends StatelessWidget {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            _PaymentGridItem(
+                            PaymentGridItem(
                               label: loc.paymentDetailsDate,
                               value: formattedDate ?? '',
                             ),
                             SizedBox(height: Resources.verticalDims.$16),
-                            _PaymentGridItem(
+                            PaymentGridItem(
                               label: loc.paymentDetailsIban,
                               value: payment.iban,
                             ),
@@ -330,12 +272,8 @@ class _PaymentDetailsCard extends StatelessWidget {
                       width: double.infinity,
                       height: Resources.verticalDims.$48,
                       child: ElevatedButton.icon(
-                        onPressed: () {
-                          if (isPending) {
-                            context.pushNamed(
-                              AppRouteEnum.makePaymentPage.name,
-                            );
-                          }
+                        onPressed: () async {
+                          await _onCTATapped(isPending, context, isSuccess);
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Resources.colors.luxuryNavy,
@@ -371,36 +309,29 @@ class _PaymentDetailsCard extends StatelessWidget {
       ),
     );
   }
-}
 
-class _PaymentGridItem extends StatelessWidget {
-  const _PaymentGridItem({required this.label, required this.value});
-
-  final String label;
-  final String value;
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          label,
-          style: context.textTheme.labelSmall?.copyWith(
-            color: Resources.colors.luxuryBody,
-            letterSpacing: 1.5,
-            fontWeight: Resources.fontWeights.semiBold,
-          ),
-        ),
-        SizedBox(height: Resources.verticalDims.$4),
-        Text(
-          value,
-          style: context.textTheme.bodyMedium?.copyWith(
-            fontWeight: Resources.fontWeights.semiBold,
-            color: Resources.colors.luxuryNavy,
-          ),
-        ),
-      ],
-    );
+  Future<void> _onCTATapped(
+    bool isPending,
+    BuildContext context,
+    bool isSuccess,
+  ) async {
+    if (isPending) {
+      context.push(AppRouteEnum.makePaymentPage.name);
+      return;
+    }
+    if (isSuccess && (payment.receiptUrl?.isNotEmpty ?? false)) {
+      try {
+        await DownloadHelper.downloadAndShare(
+          payment.receiptUrl ?? '',
+          '${payment.id}',
+        );
+      } catch (e, s) {
+        CustomToastification.error(
+          context: context,
+          errorModel: AppErrorModel.fromException(e, stackTrace: s),
+        ).showToast();
+      }
+      return;
+    }
   }
 }

@@ -5,8 +5,8 @@ import 'package:acrova/presentation/features/common_widgets/common_screen/common
 import 'package:acrova/presentation/features/common_widgets/feedback/common_error_widget.dart';
 import 'package:acrova/presentation/features/common_widgets/feedback/common_shimmer_loading.dart';
 import 'package:acrova/presentation/features/common_widgets/images/app_cached_network_image.dart';
-import 'package:acrova/presentation/features/cubit/project_detail/project_detail_cubit.dart';
-import 'package:acrova/presentation/features/cubit/project_detail/project_detail_state.dart';
+import 'package:acrova/presentation/features/ui/project_detail/cubit/project_detail_cubit.dart';
+import 'package:acrova/presentation/features/ui/project_detail/cubit/project_detail_state.dart';
 import 'package:acrova/presentation/features/ui/project_detail/widgets/project_bottom_cta.dart';
 import 'package:acrova/presentation/features/ui/project_detail/widgets/project_content_sheet.dart';
 import 'package:flutter/material.dart';

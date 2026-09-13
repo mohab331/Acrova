@@ -69,7 +69,7 @@ class _EditProfileViewState extends State<_EditProfileView> {
 
   Future<void> _onChangePhoto(BuildContext context) async {
     final cubit = context.read<EditProfileCubit>();
-    final action = await ChangePhotoSheet.show(context);
+    final action = await PickFromSheet.show(context);
     switch (action) {
       case ChangePhotoAction.camera:
         await cubit.pickAvatarFromCamera();
