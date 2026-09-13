@@ -322,6 +322,7 @@ class PaymentDetailsCard extends StatelessWidget {
     if (isSuccess && (payment.receiptUrl?.isNotEmpty ?? false)) {
       try {
         await DownloadHelper.downloadAndShare(
+          context,
           payment.receiptUrl ?? '',
           '${payment.id}',
         );

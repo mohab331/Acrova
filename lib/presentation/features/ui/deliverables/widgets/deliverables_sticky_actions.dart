@@ -36,7 +36,11 @@ class DeliverablesStickyActions extends StatelessWidget {
               onPressed: () {
                 final url = allFilesZipUrl;
                 if (url != null && url.isNotEmpty) {
-                  DownloadHelper.downloadAndShare(url, 'All_Project_Files.zip');
+                  DownloadHelper.downloadAndShare(
+                    context,
+                    url,
+                    'All_Project_Files',
+                  );
                 }
               },
             ),

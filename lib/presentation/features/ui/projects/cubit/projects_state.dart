@@ -24,9 +24,6 @@ class ProjectsCubitState extends Equatable {
     CubitStatus? cubitStatus,
     List<ProjectResponseModel>? projects,
     AppErrorModel? appErrorModel,
-    String? userName,
-    int? notificationCount,
-    String? avatarUrl,
   }) => ProjectsCubitState(
     cubitStatus: cubitStatus ?? this.cubitStatus,
     projects: projects ?? this.projects,

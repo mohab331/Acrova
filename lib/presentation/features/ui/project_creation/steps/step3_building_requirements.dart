@@ -24,10 +24,6 @@ class Step3BuildingRequirements extends StatelessWidget {
         final isCommercial = state.selectedType == ProjectType.commercial;
 
         return SingleChildScrollView(
-          padding: EdgeInsets.symmetric(
-            horizontal: Resources.horizontalDims.$20,
-            vertical: Resources.verticalDims.$24,
-          ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [

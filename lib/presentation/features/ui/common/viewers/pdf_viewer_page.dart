@@ -43,8 +43,9 @@ class PdfViewerPage extends StatelessWidget {
             ),
             onPressed: () {
               DownloadHelper.downloadAndShare(
+                context,
                 args.urlOrAsset,
-                '${args.title}.pdf',
+                '${args.title}',
               );
             },
           ),
