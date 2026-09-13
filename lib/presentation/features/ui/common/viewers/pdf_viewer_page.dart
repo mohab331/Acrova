@@ -43,11 +43,7 @@ class PdfViewerPage extends StatelessWidget {
             ),
             onPressed: () {
               if (urlOrAsset.isNotEmpty) {
-                DownloadHelper.downloadAndShare(
-                  context,
-                  urlOrAsset,
-                  '$title',
-                );
+                DownloadHelper.downloadAndShare(context, urlOrAsset, '$title');
               }
             },
           ),
@@ -56,8 +52,8 @@ class PdfViewerPage extends StatelessWidget {
       body: urlOrAsset.isEmpty
           ? const SizedBox.shrink()
           : (urlOrAsset.startsWith('assets/')
-              ? SfPdfViewer.asset(urlOrAsset)
-              : SfPdfViewer.network(urlOrAsset)),
+                ? SfPdfViewer.asset(urlOrAsset)
+                : SfPdfViewer.network(urlOrAsset)),
     );
   }
 }
