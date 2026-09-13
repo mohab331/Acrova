@@ -13,7 +13,6 @@ import 'package:acrova/data/models/portfolio/portfolio_item.dart';
 import 'package:acrova/data/models/profile/user_profile_model.dart';
 import 'package:acrova/data/models/project/create_project_request.dart';
 import 'package:acrova/data/models/project/deliverable_model.dart';
-import 'package:acrova/data/models/project/engineer_model.dart';
 import 'package:acrova/data/models/project/interior_design_request.dart';
 import 'package:acrova/data/models/project/project_model.dart';
 import 'package:acrova/data/models/request/profile/update_profile_request.dart';
@@ -202,7 +201,7 @@ class MockProjectRepo extends _MockBase implements BaseProjectRepo {
           'An exceptional contemporary residence blending minimalist lines with premium materials. Designed to maximize natural light while maintaining absolute privacy.',
       engineer: const EngineerModel(
         name: 'Eng. Abdullah Al-Rashid',
-        role: 'Lead Structural Engineer',
+        specialization: 'Lead Structural Engineer',
         avatarUrl:
             'https://png.pngtree.com/png-vector/20231019/ourmid/pngtree-user-profile-avatar-png-image_10211467.png',
       ),

@@ -1,4 +1,4 @@
-import 'package:acrova/data/models/project/engineer_model.dart';
+import 'package:acrova/data/models/project/project_model.dart';
 import 'package:acrova/presentation/app/resources/resources.dart';
 import 'package:acrova/presentation/features/common_widgets/images/app_cached_network_image.dart';
 import 'package:acrova/utils/extensions/theme_extension.dart';
@@ -14,7 +14,7 @@ class ProjectEngineerCard extends StatelessWidget {
     final eng = engineer;
     if (eng == null) return const SizedBox.shrink();
     final name = eng.name;
-    final role = eng.role;
+    final role = eng.specialization;
     final avatarUrl = eng.avatarUrl;
 
     return Container(
@@ -54,7 +54,7 @@ class ProjectEngineerCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  name,
+                  name ?? '',
                   style: context.textTheme.titleMedium?.copyWith(
                     color: Resources.colors.luxuryNavy,
                     fontWeight: Resources.fontWeights.bold,
@@ -62,7 +62,7 @@ class ProjectEngineerCard extends StatelessWidget {
                 ),
                 SizedBox(height: Resources.verticalDims.$4),
                 Text(
-                  role,
+                  role ?? '',
                   style: context.textTheme.bodyMedium?.copyWith(
                     color: Resources.colors.luxuryBodyMuted,
                   ),

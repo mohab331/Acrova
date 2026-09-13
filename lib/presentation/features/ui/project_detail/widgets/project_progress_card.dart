@@ -15,7 +15,9 @@ class ProjectProgressCard extends StatelessWidget {
   Widget build(BuildContext context) {
     // Determine current step index based on status.
     // Acrova ProjectStatus has 8 stages.
-    final int currentStep = ProjectStatus.values.indexOf(project.status);
+    final currentStep = ProjectStatus.values.indexWhere(
+      (element) => element == project.status,
+    );
     final int totalSteps = ProjectStatus.values.length;
 
     // Use icons for the stepper

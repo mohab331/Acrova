@@ -36,7 +36,7 @@ class StandardProjectCard extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      project.id,
+                      project.id ?? '',
                       style: context.textTheme.labelSmall?.copyWith(
                         fontSize: Resources.fontSizes.$10,
                         fontWeight: Resources.fontWeights.medium,
@@ -48,7 +48,7 @@ class StandardProjectCard extends StatelessWidget {
                 ),
                 SizedBox(height: Resources.verticalDims.$6),
                 Text(
-                  project.name,
+                  project.name ?? '',
                   style: context.textTheme.titleMedium?.copyWith(
                     fontSize: Resources.fontSizes.$16,
                     fontWeight: Resources.fontWeights.bold,
@@ -57,7 +57,7 @@ class StandardProjectCard extends StatelessWidget {
                 ),
                 SizedBox(height: Resources.verticalDims.$4),
                 Text(
-                  project.type.localizedLabel(context),
+                  project.type?.localizedLabel(context) ?? '',
                   style: context.textTheme.bodySmall?.copyWith(
                     fontSize: Resources.fontSizes.$12,
                     color: Resources.colors.luxuryBody,

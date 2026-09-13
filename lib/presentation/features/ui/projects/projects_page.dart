@@ -32,8 +32,10 @@ class _ProjectsPageState extends State<ProjectsPage> {
   List<ProjectModel> _applyFilter(List<ProjectModel> all) {
     return switch (_filter) {
       ProjectFilter.all => all,
-      ProjectFilter.active => all.where((p) => !p.status.isTerminal).toList(),
-      ProjectFilter.completed => all.where((p) => p.status.isTerminal).toList(),
+      ProjectFilter.active =>
+        all.where((p) => !(p.status?.isTerminal ?? false)).toList(),
+      ProjectFilter.completed =>
+        all.where((p) => (p.status?.isTerminal ?? false)).toList(),
     };
   }
 
@@ -111,7 +113,7 @@ class _ProjectsPageState extends State<ProjectsPage> {
                                       context.pushNamed(
                                         AppRouteEnum.projectDetailPage.name,
                                         extra: ProjectDetailArgs(
-                                          id: p.id,
+                                          id: p.id ?? '',
                                           title: p.name,
                                         ),
                                       );
@@ -139,7 +141,7 @@ class _ProjectsPageState extends State<ProjectsPage> {
                                       context.pushNamed(
                                         AppRouteEnum.projectDetailPage.name,
                                         extra: ProjectDetailArgs(
-                                          id: p.id,
+                                          id: p.id ?? '',
                                           title: p.name,
                                         ),
                                       );

@@ -21,7 +21,7 @@ class DashboardProjectCardItem extends StatelessWidget {
         if (project?.id == null) return;
         context.push(
           AppRouteEnum.projectDetailPage.name,
-          extra: ProjectDetailArgs(id: project!.id, title: project?.name),
+          extra: ProjectDetailArgs(id: project!.id ?? '', title: project?.name),
         );
       },
       child: Row(

@@ -14,10 +14,12 @@ class ProjectTimeline extends StatelessWidget {
   Widget build(BuildContext context) {
     final loc = context.localization;
     final locale = Localizations.localeOf(context).languageCode;
-    final submittedDate = DateFormat.yMMMd(locale).format(project.createdAt);
+    final submittedDate = DateFormat.yMMMd(
+      locale,
+    ).format(project.createdAt ?? DateTime.now());
     final paymentDate = DateFormat.yMMMd(
       locale,
-    ).format(project.createdAt.add(const Duration(days: 3)));
+    ).format(project.createdAt?.add(const Duration(days: 3)) ?? DateTime.now());
 
     final events = [
       _TimelineEvent(

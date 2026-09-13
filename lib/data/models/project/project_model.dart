@@ -1,5 +1,4 @@
 import 'package:acrova/data/models/project/deliverable_model.dart';
-import 'package:acrova/data/models/project/engineer_model.dart';
 import 'package:acrova/utils/enums/project_status_enum.dart';
 import 'package:acrova/utils/enums/project_type_enum.dart';
 import 'package:equatable/equatable.dart';
@@ -9,11 +8,11 @@ import 'package:equatable/equatable.dart';
 /// ID format: ARC-YYYY-XXXXX (SRS business rule).
 class ProjectModel extends Equatable {
   const ProjectModel({
-    required this.id,
-    required this.name,
-    required this.status,
-    required this.type,
-    required this.createdAt,
+    this.id,
+    this.name,
+    this.status,
+    this.type,
+    this.createdAt,
     this.location,
     this.landAreaSqm,
     this.landWidthM,
@@ -31,24 +30,28 @@ class ProjectModel extends Equatable {
     this.smartHomeLevel,
     this.architecturalStyle,
     this.thumbnailUrl,
-    this.deliverables = const [],
+    this.deliverables,
     this.description,
     this.engineer,
-    this.provisions = const [],
+    this.provisions,
     this.estimatedTimeline,
   });
 
-  final String id; // "ARC-2024-00018"
-  final String name;
-  final ProjectStatus status;
-  final ProjectType type;
-  final DateTime createdAt;
+  final String? id;
+  final String? name;
+  final ProjectStatus? status;
+  final ProjectType? type;
+  final DateTime? createdAt;
+
+  // Land details
   final String? location;
   final double? landAreaSqm;
   final double? landWidthM;
   final double? landLengthM;
   final int? floors;
   final int? employeeCount;
+
+  // Building requirements
   final int? bedrooms;
   final int? bathrooms;
   final bool? hasMajlis;
@@ -58,75 +61,127 @@ class ProjectModel extends Equatable {
   final bool? hasPool;
   final bool? hasRooftop;
   final String? smartHomeLevel;
+  // Design preferences
   final String? architecturalStyle;
+  // Media
   final String? thumbnailUrl;
-  final List<DeliverableModel> deliverables;
+  // Project details
+  final List<DeliverableModel>? deliverables;
   final String? description;
   final EngineerModel? engineer;
-  final List<String> provisions;
+  final List<String>? provisions;
   final String? estimatedTimeline;
 
-  /// Progress ratio [0.0 – 1.0] derived from current [status].
-  double get progressRatio => status.progressRatio;
+  double get progressRatio => status?.progressRatio ?? 0.0;
 
-  /// Human-readable progress percentage string, e.g. "33%".
   String get progressLabel => '${(progressRatio * 100).round()}%';
 
-  factory ProjectModel.fromJson(Map<String, dynamic> json) => ProjectModel(
-    id: json['id'] as String,
-    name: json['name'] as String,
-    status: ProjectStatusX.fromJson(json['status'] as String),
-    type: ProjectType.fromJson(json['type'] as String? ?? ''),
-    createdAt: DateTime.parse(json['created_at'] as String),
-    location: json['location'] as String?,
-    landAreaSqm: (json['land_area'] as num?)?.toDouble(),
-    landWidthM: (json['land_width'] as num?)?.toDouble(),
-    landLengthM: (json['land_length'] as num?)?.toDouble(),
-    floors: json['floors'] as int?,
-    employeeCount: json['employee_count'] as int?,
-    bedrooms: json['bedrooms'] as int?,
-    bathrooms: json['bathrooms'] as int?,
-    hasMajlis: json['has_majlis'] as bool?,
-    hasMaidRoom: json['has_maid_room'] as bool?,
-    hasDriverRoom: json['has_driver_room'] as bool?,
-    hasBasement: json['has_basement'] as bool?,
-    hasPool: json['has_pool'] as bool?,
-    hasRooftop: json['has_rooftop'] as bool?,
-    smartHomeLevel: json['smart_home_level'] as String?,
-    architecturalStyle: json['architectural_style'] as String?,
-    thumbnailUrl: json['thumbnail_url'] as String?,
-    deliverables:
-        (json['deliverables'] as List<dynamic>?)
-            ?.map((e) => DeliverableModel.fromJson(e as Map<String, dynamic>))
-            .toList() ??
-        const [],
-  );
+  factory ProjectModel.fromJson(Map<String, dynamic> json) {
+    return ProjectModel(
+      id: json['id']?.toString(),
+      name: json['name']?.toString(),
 
-  Map<String, dynamic> toJson() => {
-    'id': id,
-    'name': name,
-    'status': status.jsonKey,
-    'type': type.jsonKey,
-    'created_at': createdAt.toIso8601String(),
-    'location': location,
-    'land_area': landAreaSqm,
-    'land_width': landWidthM,
-    'land_length': landLengthM,
-    'floors': floors,
-    'employee_count': employeeCount,
-    'bedrooms': bedrooms,
-    'bathrooms': bathrooms,
-    'has_majlis': hasMajlis,
-    'has_maid_room': hasMaidRoom,
-    'has_driver_room': hasDriverRoom,
-    'has_basement': hasBasement,
-    'has_pool': hasPool,
-    'has_rooftop': hasRooftop,
-    'smart_home_level': smartHomeLevel,
-    'architectural_style': architecturalStyle,
-    'thumbnail_url': thumbnailUrl,
-    'deliverables': deliverables.map((e) => e.toJson()).toList(),
-  };
+      status: json['status'] != null
+          ? ProjectStatusX.fromJson(json['status'].toString())
+          : null,
+
+      type: json['type'] != null
+          ? ProjectType.fromJson(json['type'].toString())
+          : null,
+
+      createdAt: _parseDateTime(json['created_at']),
+
+      location: json['location']?.toString(),
+
+      landAreaSqm: _parseDouble(json['land_area_sqm'] ?? json['land_area']),
+
+      landWidthM: _parseDouble(json['land_width_m'] ?? json['land_width']),
+
+      landLengthM: _parseDouble(json['land_length_m'] ?? json['land_length']),
+
+      floors: _parseInt(json['floors']),
+
+      employeeCount: _parseInt(json['employee_count']),
+
+      bedrooms: _parseInt(json['bedrooms']),
+
+      bathrooms: _parseInt(json['bathrooms']),
+
+      hasMajlis: _parseBool(json['has_majlis']),
+
+      hasMaidRoom: _parseBool(json['has_maid_room']),
+
+      hasDriverRoom: _parseBool(json['has_driver_room']),
+
+      hasBasement: _parseBool(json['has_basement']),
+
+      hasPool: _parseBool(json['has_pool']),
+
+      hasRooftop: _parseBool(json['has_rooftop']),
+
+      smartHomeLevel: json['smart_home_level']?.toString(),
+
+      architecturalStyle: json['architectural_style']?.toString(),
+
+      thumbnailUrl: json['thumbnail_url']?.toString(),
+
+      deliverables: _parseList(
+        json['deliverables'],
+        (item) => DeliverableModel.fromJson(item),
+      ),
+
+      description: json['description']?.toString(),
+
+      engineer: json['engineer'] is Map
+          ? EngineerModel.fromJson(Map<String, dynamic>.from(json['engineer']))
+          : null,
+
+      provisions: _parseStringList(json['provisions']),
+
+      estimatedTimeline: json['estimated_timeline']?.toString(),
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'name': name,
+      'status': status?.jsonKey,
+      'type': type?.jsonKey,
+      'created_at': createdAt?.toIso8601String(),
+
+      'location': location,
+      'land_area_sqm': landAreaSqm,
+      'land_width_m': landWidthM,
+      'land_length_m': landLengthM,
+      'floors': floors,
+      'employee_count': employeeCount,
+
+      'bedrooms': bedrooms,
+      'bathrooms': bathrooms,
+      'has_majlis': hasMajlis,
+      'has_maid_room': hasMaidRoom,
+      'has_driver_room': hasDriverRoom,
+      'has_basement': hasBasement,
+      'has_pool': hasPool,
+      'has_rooftop': hasRooftop,
+      'smart_home_level': smartHomeLevel,
+
+      'architectural_style': architecturalStyle,
+
+      'thumbnail_url': thumbnailUrl,
+
+      'deliverables': deliverables?.map((e) => e.toJson()).toList(),
+
+      'description': description,
+
+      'engineer': engineer?.toJson(),
+
+      'provisions': provisions,
+
+      'estimated_timeline': estimatedTimeline,
+    };
+  }
 
   @override
   List<Object?> get props => [
@@ -157,5 +212,127 @@ class ProjectModel extends Equatable {
     engineer,
     provisions,
     estimatedTimeline,
+  ];
+
+  static double? _parseDouble(dynamic value) {
+    if (value == null) return null;
+
+    if (value is num) {
+      return value.toDouble();
+    }
+
+    return double.tryParse(value.toString());
+  }
+
+  static int? _parseInt(dynamic value) {
+    if (value == null) return null;
+
+    if (value is num) {
+      return value.toInt();
+    }
+
+    return int.tryParse(value.toString());
+  }
+
+  static bool? _parseBool(dynamic value) {
+    if (value == null) return null;
+
+    if (value is bool) {
+      return value;
+    }
+
+    if (value is num) {
+      return value != 0;
+    }
+
+    final stringValue = value.toString().toLowerCase();
+
+    if (stringValue == 'true' || stringValue == '1') {
+      return true;
+    }
+
+    if (stringValue == 'false' || stringValue == '0') {
+      return false;
+    }
+
+    return null;
+  }
+
+  static DateTime? _parseDateTime(dynamic value) {
+    if (value == null) return null;
+
+    return DateTime.tryParse(value.toString());
+  }
+
+  static List<T>? _parseList<T>(
+    dynamic value,
+    T Function(Map<String, dynamic>) mapper,
+  ) {
+    if (value is! List) {
+      return null;
+    }
+
+    return value
+        .whereType<Map>()
+        .map((item) => mapper(Map<String, dynamic>.from(item)))
+        .toList();
+  }
+
+  static List<String>? _parseStringList(dynamic value) {
+    if (value is! List) {
+      return null;
+    }
+
+    return value.map((item) => item.toString()).toList();
+  }
+}
+
+class EngineerModel extends Equatable {
+  const EngineerModel({
+    this.id,
+    this.name,
+    this.email,
+    this.phone,
+    this.avatarUrl,
+    this.specialization,
+  });
+
+  final String? id;
+  final String? name;
+  final String? email;
+  final String? phone;
+  final String? avatarUrl;
+  final String? specialization;
+
+  factory EngineerModel.fromJson(Map<String, dynamic> json) {
+    return EngineerModel(
+      id: json['id']?.toString(),
+      name: json['name']?.toString(),
+      email: json['email']?.toString(),
+      phone: json['phone']?.toString(),
+      avatarUrl: json['avatar_url']?.toString(),
+      specialization: json['specialization']?.toString(),
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'name': name,
+      'email': email,
+      'phone': phone,
+      'avatar_url': avatarUrl,
+      'specialization': specialization,
+    };
+  }
+
+  @override
+  List<Object?> get props => [
+    id,
+    name,
+    email,
+    phone,
+    avatarUrl,
+    specialization,
   ];
 }

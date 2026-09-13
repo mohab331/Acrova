@@ -52,7 +52,7 @@ class ProjectSpecsGrid extends StatelessWidget {
         value: DateFormat(
           'dd MMM yyyy',
           Localizations.localeOf(context).languageCode,
-        ).format(project.createdAt),
+        ).format(project.createdAt ?? DateTime.now()),
         icon: Icons.calendar_today_outlined,
       ),
     ];
