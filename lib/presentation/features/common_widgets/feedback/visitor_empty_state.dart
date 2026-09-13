@@ -1,31 +1,27 @@
+import 'package:acrova/presentation/app/navigation/app_route_enum.dart';
 import 'package:acrova/presentation/app/resources/resources.dart';
 import 'package:acrova/presentation/features/common_widgets/buttons/app_primary_button.dart';
 import 'package:acrova/utils/extensions/localization_extension.dart';
-import 'package:acrova/utils/guards/profile_completion_guard.dart';
+import 'package:acrova/utils/extensions/navigation_extension.dart';
 import 'package:flutter/material.dart';
 
 class VisitorEmptyState extends StatelessWidget {
   const VisitorEmptyState({
     required this.icon,
     required this.title,
-    required this.subtitle,
-    this.ctaLabel,
-    this.onCtaTap,
     this.returnRoute,
     super.key,
   });
 
   final IconData icon;
   final String title;
-  final String subtitle;
-  final String? ctaLabel;
-  final VoidCallback? onCtaTap;
   final String? returnRoute;
 
   @override
   Widget build(BuildContext context) {
-    final effectiveCtaLabel =
-        ctaLabel ?? context.localization.completeProfile;
+    final subtitle = context.localization.login_visitor;
+    final ctaLabel = context.localization.login;
+    final effectiveCtaLabel = ctaLabel;
 
     return Center(
       child: Padding(
@@ -82,11 +78,9 @@ class VisitorEmptyState extends StatelessWidget {
               width: double.infinity,
               child: AppPrimaryButton(
                 label: effectiveCtaLabel,
-                onPressed: onCtaTap ??
-                    () => ProfileCompletionGuard.ensureComplete(
-                          context,
-                          returnRoute: returnRoute,
-                        ),
+                onPressed: () {
+                  context.push(AppRouteEnum.phonePage.name);
+                },
               ),
             ),
           ],
