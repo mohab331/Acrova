@@ -457,9 +457,7 @@ class MockBillingRepo extends _MockBase implements BaseBillingRepo {
   }
 
   @override
-  Future<Result<void>> submitPayment(
-    SubmitPaymentRequestModel request,
-  ) async {
+  Future<Result<void>> submitPayment(SubmitPaymentRequestModel request) async {
     if (shouldThrow(MockRepositoryKey.billing)) return mockError();
 
     await simulateDelay();
@@ -897,9 +895,9 @@ class MockDeliverablesRepo extends _MockBase implements BaseDeliverablesRepo {
       DeliverablesResponseModel(
         projectName: 'AL-RIYADH ESTATE',
         projectThumbnailUrl:
-          'https://api.alhilwa.com.iq/uploads/projects/1774287086738-7ff23182f9452cf20ab58038546a.jpg',
+            'https://api.alhilwa.com.iq/uploads/projects/1774287086738-7ff23182f9452cf20ab58038546a.jpg',
         allFilesZipUrl:
-          'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf',
+            'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf',
         blueprints: const [
           BlueprintResponseModel(
             title: 'Ground Floor Architectural Plan',
@@ -990,17 +988,12 @@ class MockAppConfigRepo extends _MockBase implements BaseAppConfigRepo {
       cookiePolicyUrl: 'https://example.com/cookies',
     );
 
-    return Success(
-      NetworkResponse(
-        isSuccess: true,
-        data: _cachedConfig,
-      ),
-    );
+    return Success(NetworkResponse(isSuccess: true, data: _cachedConfig));
   }
 
   @override
-  Future<Result<NetworkResponse<AppConfigResponseModel>>>
-  getMinAppVersion() => getAppConfig();
+  Future<Result<NetworkResponse<AppConfigResponseModel>>> getMinAppVersion() =>
+      getAppConfig();
 }
 
 class MockLocalizationRepo extends _MockBase implements BaseLocalizationRepo {
