@@ -155,6 +155,7 @@ class WalkthroughsSection extends StatelessWidget {
                         IconButton(
                           onPressed: () {
                             DownloadHelper.downloadAndShare(
+                              context,
                               walkthrough.videoUrl ?? '',
                               '${walkthrough.title}',
                             );

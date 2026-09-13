@@ -54,8 +54,9 @@ class WalkthroughScreen extends StatelessWidget {
             onPressed: () {
               if (activeVideoUrl?.isNotEmpty ?? false) {
                 DownloadHelper.downloadAndShare(
+                  context,
                   activeVideoUrl ?? '',
-                  '$title.${walkthrough?.format}',
+                  '$title',
                 );
               }
             },

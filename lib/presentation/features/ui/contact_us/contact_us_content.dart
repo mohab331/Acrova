@@ -100,14 +100,16 @@ class _ContactUsViewState extends State<ContactUsContent> {
                 icon: Icons.call_outlined,
                 title: l10n.contactUsCallTitle,
                 subtitle: l10n.contactUsCallNumber,
-                onTap: () => _launcher.callNumber(l10n.contactUsCallNumber),
+                onTap: () =>
+                    _launcher.callNumber(context, l10n.contactUsCallNumber),
               ),
               SizedBox(height: Resources.verticalDims.$12),
               ContactChannelCard(
                 icon: Icons.mail_outline,
                 title: l10n.contactUsEmailTitle,
                 subtitle: l10n.contactUsEmailAddress,
-                onTap: () => _launcher.sendEmail(l10n.contactUsEmailAddress),
+                onTap: () =>
+                    _launcher.sendEmail(context, l10n.contactUsEmailAddress),
               ),
               SizedBox(height: Resources.verticalDims.$32),
             ],

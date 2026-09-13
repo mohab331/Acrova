@@ -41,10 +41,7 @@ class ImageViewerPage extends StatelessWidget {
             icon: const Icon(Icons.download_rounded, color: Colors.white),
             onPressed: () {
               if (urlOrAsset.isNotEmpty) {
-                DownloadHelper.downloadAndShare(
-                  urlOrAsset,
-                  '$title.jpg',
-                );
+                DownloadHelper.downloadAndShare(context, urlOrAsset, '$title');
               }
             },
           ),

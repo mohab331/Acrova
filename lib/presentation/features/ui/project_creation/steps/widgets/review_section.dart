@@ -69,25 +69,25 @@ class ReviewSection extends StatelessWidget {
             (r) => Padding(
               padding: EdgeInsets.only(bottom: Resources.verticalDims.$8),
               child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  SizedBox(
-                    width: Resources.horizontalDims.$100,
-                    child: Text(
-                      r.label,
-                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                        fontSize: Resources.fontSizes.$12,
-                        color: Resources.colors.luxuryBodyMuted,
-                      ),
+                  Text(
+                    r.label,
+                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                      fontSize: Resources.fontSizes.$12,
+                      color: Resources.colors.luxuryBodyMuted,
                     ),
                   ),
                   const Spacer(),
-                  Text(
-                    r.value,
-                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                      fontSize: Resources.fontSizes.$12,
-                      fontWeight: Resources.fontWeights.semiBold,
-                      color: Resources.colors.luxuryInk,
+                  Flexible(
+                    child: Text(
+                      r.value,
+                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                        fontSize: Resources.fontSizes.$11,
+                        fontWeight: Resources.fontWeights.semiBold,
+                        color: Resources.colors.luxuryInk,
+                      ),
+                      textAlign: TextAlign.end,
                     ),
                   ),
                 ],

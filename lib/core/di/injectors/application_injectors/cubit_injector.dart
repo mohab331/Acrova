@@ -26,6 +26,7 @@ import 'package:acrova/presentation/features/ui/notifications/cubit/notification
 import 'package:acrova/presentation/features/ui/portfolio/cubit/portflio_details/portfolio_details_cubit.dart';
 import 'package:acrova/presentation/features/ui/portfolio/cubit/portfolio_cubit.dart';
 import 'package:acrova/presentation/features/ui/profile/cubit/profile_cubit.dart';
+import 'package:acrova/presentation/features/ui/project_creation/cubit/project_creation_cubit.dart';
 import 'package:acrova/presentation/features/ui/project_detail/cubit/project_detail_cubit.dart';
 import 'package:acrova/presentation/features/ui/projects/cubit/projects_cubit.dart';
 import 'package:acrova/presentation/features/ui/revisions/cubit/revisions/revisions_cubit.dart';
@@ -84,6 +85,13 @@ class CubitsInjector implements BaseInjector {
     ),
     () => serviceLocatorInstance.registerFactory<InteriorDesignCubit>(
       () => InteriorDesignCubit(
+        projectRepo: serviceLocatorInstance<BaseProjectRepo>(),
+        imagePicker: serviceLocatorInstance<BaseImagePickerService>(),
+      ),
+    ),
+
+    () => serviceLocatorInstance.registerFactory<ProjectCreationCubit>(
+      () => ProjectCreationCubit(
         projectRepo: serviceLocatorInstance<BaseProjectRepo>(),
         imagePicker: serviceLocatorInstance<BaseImagePickerService>(),
       ),

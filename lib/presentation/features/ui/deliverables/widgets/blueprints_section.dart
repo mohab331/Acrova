@@ -114,8 +114,9 @@ class BlueprintsSection extends StatelessWidget {
                     IconButton(
                       onPressed: () {
                         DownloadHelper.downloadAndShare(
+                          context,
                           blueprint.urlOrAsset ?? '',
-                          '${blueprint.title ?? ''}.pdf',
+                          '${blueprint.title}',
                         );
                       },
                       icon: Icon(
