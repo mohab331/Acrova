@@ -1,6 +1,7 @@
 import 'package:acrova/presentation/app/resources/resources.dart';
 import 'package:acrova/presentation/features/ui/project_creation/cubit/project_creation_cubit.dart';
 import 'package:acrova/utils/extensions/localization_extension.dart';
+import 'package:acrova/utils/helpers/app_viewer_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -28,42 +29,56 @@ class MediaItem extends StatelessWidget {
       ),
       child: Row(
         children: [
-          Container(
-            width: Resources.squareDims.$40,
-            height: Resources.squareDims.$40,
-            decoration: BoxDecoration(
-              color: Resources.colors.luxuryNavy.withValues(alpha: 0.08),
-              borderRadius: BorderRadius.circular(Resources.radius.$r4),
+          GestureDetector(
+            onTap: () => AppViewerHelper.openImage(
+              context,
+              urlOrAsset: path,
+              title: filename,
             ),
-            child: Icon(
-              Icons.image_outlined,
-              size: Resources.iconSizes.$20,
-              color: Resources.colors.luxuryNavy,
+            child: Container(
+              width: Resources.squareDims.$40,
+              height: Resources.squareDims.$40,
+              decoration: BoxDecoration(
+                color: Resources.colors.luxuryNavy.withValues(alpha: 0.08),
+                borderRadius: BorderRadius.circular(Resources.radius.$r4),
+              ),
+              child: Icon(
+                Icons.image_outlined,
+                size: Resources.iconSizes.$20,
+                color: Resources.colors.luxuryNavy,
+              ),
             ),
           ),
           SizedBox(width: Resources.horizontalDims.$12),
           Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  filename,
-                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                    fontSize: Resources.fontSizes.$12,
-                    fontWeight: Resources.fontWeights.semiBold,
-                    color: Resources.colors.luxuryInk,
+            child: GestureDetector(
+              onTap: () => AppViewerHelper.openImage(
+                context,
+                urlOrAsset: path,
+                title: filename,
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    filename,
+                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                      fontSize: Resources.fontSizes.$12,
+                      fontWeight: Resources.fontWeights.semiBold,
+                      color: Resources.colors.luxuryInk,
+                    ),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
                   ),
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                ),
-                Text(
-                  '${l10n.mediaUploadPhotoLabel} ${index + 1}',
-                  style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                    fontSize: Resources.fontSizes.$10,
-                    color: Resources.colors.luxuryBodyMuted,
+                  Text(
+                    '${l10n.mediaUploadPhotoLabel} ${index + 1}',
+                    style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                      fontSize: Resources.fontSizes.$10,
+                      color: Resources.colors.luxuryBodyMuted,
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
           GestureDetector(

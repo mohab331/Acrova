@@ -109,6 +109,7 @@ class _PortfolioDetailSuccessWidgetState
                       DetailCarousel(
                         imageUrls: widget.item?.imageUrls ?? [],
                         controller: _pageController,
+                        title: widget.item?.title,
                         onPageChanged: (i) => setState(() => _currentPage = i),
                       ),
                       const Positioned(

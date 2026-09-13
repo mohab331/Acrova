@@ -87,31 +87,56 @@ class _DeliverablesView extends StatelessWidget {
             showBack: true,
             label: loc.deliverablesTitle,
           ),
-          child: _buildBody(context, state),
+          child: _DeliverablesBody(state: state),
         );
       },
     );
   }
+}
 
-  Widget _buildBody(BuildContext context, DeliverablesState state) {
+class _DeliverablesBody extends StatelessWidget {
+  const _DeliverablesBody({required this.state});
+
+  final DeliverablesState state;
+
+  @override
+  Widget build(BuildContext context) {
     if (state.isLoading) {
       return const DeliverablesLoadingSkeleton();
     }
+
     if (state.isError) {
       return CommonErrorWidget(
         error: state.error,
-        onRetry: () => context.read<DeliverablesCubit>().fetchDeliverables(),
+        onRetry: () {
+          context.read<DeliverablesCubit>().fetchDeliverables();
+        },
       );
     }
+
+    final hasDeliverables =
+        state.blueprints.isNotEmpty ||
+        state.renders.isNotEmpty ||
+        state.walkthroughs.isNotEmpty;
+
+    if (!hasDeliverables) {
+      return const SizedBox.shrink();
+    }
+
     return CustomScrollView(
       slivers: [
         SliverList(
           delegate: SliverChildListDelegate([
-            BlueprintsSection(blueprints: state.blueprints),
-            SizedBox(height: Resources.verticalDims.$32),
-            RendersSection(renders: state.renders),
-            SizedBox(height: Resources.verticalDims.$32),
-            WalkthroughsSection(walkthroughs: state.walkthroughs),
+            if (state.blueprints.isNotEmpty) ...[
+              BlueprintsSection(blueprints: state.blueprints),
+              SizedBox(height: Resources.verticalDims.$32),
+            ],
+            if (state.renders.isNotEmpty) ...[
+              RendersSection(renders: state.renders),
+              SizedBox(height: Resources.verticalDims.$32),
+            ],
+            if (state.walkthroughs.isNotEmpty)
+              WalkthroughsSection(walkthroughs: state.walkthroughs),
           ]),
         ),
       ],

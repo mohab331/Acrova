@@ -1,25 +1,24 @@
-import 'package:equatable/equatable.dart';
+import 'app_config_response_model.dart';
 
-class MinAppVersionResponseModel extends Equatable {
-  const MinAppVersionResponseModel({required this.minAppVersion});
+export 'app_config_response_model.dart';
 
-  final int? minAppVersion;
+class MinAppVersionResponseModel extends AppConfigResponseModel {
+  const MinAppVersionResponseModel({
+    super.minAppVersion,
+    super.termsAndConditionsUrl,
+    super.privacyPolicyUrl,
+    super.cookiePolicyUrl,
+    super.aboutUsUrl,
+  });
 
   factory MinAppVersionResponseModel.fromJson(Map<String, dynamic> json) {
+    final model = AppConfigResponseModel.fromJson(json);
     return MinAppVersionResponseModel(
-      minAppVersion: int.tryParse(json['content'].toString()),
+      minAppVersion: model.minAppVersion,
+      termsAndConditionsUrl: model.termsAndConditionsUrl,
+      privacyPolicyUrl: model.privacyPolicyUrl,
+      cookiePolicyUrl: model.cookiePolicyUrl,
+      aboutUsUrl: model.aboutUsUrl,
     );
-  }
-
-  Map<String, dynamic> toJson() => {
-    'content': minAppVersion,
-  };
-
-  @override
-  List<Object?> get props => [minAppVersion];
-
-  @override
-  String toString() {
-    return 'MinAppVersionResponseModel(minAppVersion: $minAppVersion)';
   }
 }

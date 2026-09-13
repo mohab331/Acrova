@@ -38,7 +38,11 @@ class ProfileHeaderCard extends StatelessWidget {
             ),
             clipBehavior: Clip.antiAlias,
             child: profile.avatarUrl != null && profile.avatarUrl!.isNotEmpty
-                ? AppCachedNetworkImage(imageUrl: profile.avatarUrl!)
+                ? AppCachedNetworkImage(
+                    imageUrl: profile.avatarUrl!,
+                    openInViewerOnTap: true,
+                    viewerTitle: profile.name,
+                  )
                 : Icon(
                     Icons.person_outline,
                     size: Resources.iconSizes.$40,

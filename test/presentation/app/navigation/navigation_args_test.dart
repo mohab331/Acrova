@@ -118,5 +118,16 @@ void main() {
       expect(args1 == args3, isFalse);
       expect(args1.props, ['Render 1', 'assets/render.png']);
     });
+
+    test('WebViewArgs value equality and props', () {
+      const args1 = WebViewArgs(title: 'Terms', url: 'https://example.com/terms');
+      const args2 = WebViewArgs(title: 'Terms', url: 'https://example.com/terms');
+      const args3 = WebViewArgs(title: 'Privacy', url: 'https://example.com/terms');
+
+      expect(args1, equals(args2));
+      expect(args1 == args3, isFalse);
+      expect(args1.props, ['Terms', 'https://example.com/terms']);
+    });
   });
 }
+

@@ -61,7 +61,8 @@ enum AppRouteEnum {
 
   // ── Viewers (full-screen, above shell) ──────────────────────────────────────
   pdfViewerPage(name: 'pdf_viewer_page', path: '/pdfViewer'),
-  imageViewerPage(name: 'image_viewer_page', path: '/imageViewer');
+  imageViewerPage(name: 'image_viewer_page', path: '/imageViewer'),
+  webViewPage(name: 'web_view_page', path: '/webView');
 
   const AppRouteEnum({required this.path, required this.name});
 

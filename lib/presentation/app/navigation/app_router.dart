@@ -13,6 +13,7 @@ import 'package:acrova/presentation/features/ui/billing/payment_details/payment_
 import 'package:acrova/presentation/features/ui/billing/payment_history/payment_history_view.dart';
 import 'package:acrova/presentation/features/ui/common/viewers/image_viewer_page.dart';
 import 'package:acrova/presentation/features/ui/common/viewers/pdf_viewer_page.dart';
+import 'package:acrova/presentation/features/ui/common/viewers/web_view_page.dart';
 import 'package:acrova/presentation/features/ui/contact_us/contact_us_page.dart';
 import 'package:acrova/presentation/features/ui/dashboard/dashboard_page.dart';
 import 'package:acrova/presentation/features/ui/deliverables/deliverables_page.dart';
@@ -255,6 +256,15 @@ class AppRouter {
         builder: (_, state) {
           final extra = state.extra as ImageViewerArgs?;
           return ImageViewerPage(args: extra);
+        },
+      ),
+      GoRoute(
+        parentNavigatorKey: rootNavigatorKey,
+        path: AppRouteEnum.webViewPage.path,
+        name: AppRouteEnum.webViewPage.name,
+        builder: (_, state) {
+          final extra = state.extra as WebViewArgs?;
+          return WebViewPage(args: extra);
         },
       ),
 

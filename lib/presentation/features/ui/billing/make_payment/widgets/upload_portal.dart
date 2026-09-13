@@ -6,12 +6,13 @@ import 'package:acrova/presentation/features/ui/billing/make_payment/cubit/make_
 import 'package:acrova/presentation/features/ui/profile/edit_profile/widgets/change_photo_sheet.dart';
 import 'package:acrova/utils/extensions/localization_extension.dart';
 import 'package:acrova/utils/extensions/theme_extension.dart';
+import 'package:acrova/utils/helpers/app_viewer_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 
 class UploadPortal extends StatelessWidget {
-  const UploadPortal({req, required this.state});
+  const UploadPortal({required this.state, super.key});
 
   final MakePaymentState state;
 
@@ -39,13 +40,20 @@ class UploadPortal extends StatelessWidget {
         padding: EdgeInsets.all(Resources.horizontalDims.$16),
         child: Row(
           children: [
-            ClipRRect(
-              borderRadius: BorderRadius.circular(Resources.radius.$r4),
-              child: Image.file(
-                File(state.receiptImage!.path),
-                width: Resources.squareDims.$80,
-                height: Resources.squareDims.$80,
-                fit: BoxFit.cover,
+            GestureDetector(
+              onTap: () => AppViewerHelper.openImage(
+                context,
+                urlOrAsset: state.receiptImage!.path,
+                title: state.receiptImage!.name,
+              ),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(Resources.radius.$r4),
+                child: Image.file(
+                  File(state.receiptImage!.path),
+                  width: Resources.squareDims.$80,
+                  height: Resources.squareDims.$80,
+                  fit: BoxFit.cover,
+                ),
               ),
             ),
             SizedBox(width: Resources.horizontalDims.$16),
@@ -98,7 +106,8 @@ class UploadPortal extends StatelessWidget {
     return GestureDetector(
       onTap: () async {
         final result = await PickFromSheet.show(context, showRemove: false);
-        _pickImage(
+        if (!context.mounted) return;
+        await _pickImage(
           context,
           source: result == ChangePhotoAction.camera
               ? ImageSource.camera

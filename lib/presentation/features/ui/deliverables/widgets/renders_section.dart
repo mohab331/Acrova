@@ -1,11 +1,9 @@
-import 'package:acrova/presentation/app/navigation/app_route_enum.dart';
 import 'package:acrova/presentation/app/resources/resources.dart';
-import 'package:acrova/presentation/features/ui/common/viewers/image_viewer_page.dart';
 import 'package:acrova/presentation/features/ui/deliverables/cubit/deliverables_state.dart';
 import 'package:acrova/utils/extensions/localization_extension.dart';
 import 'package:acrova/utils/extensions/theme_extension.dart';
+import 'package:acrova/utils/helpers/app_viewer_helper.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 
 class RendersSection extends StatelessWidget {
   const RendersSection({required this.renders, super.key});
@@ -79,12 +77,10 @@ class _RenderCard extends StatelessWidget {
           1, // square items in the small column, the main column will stretch based on flex but for now aspect ratio 1 is a good base
       child: GestureDetector(
         onTap: () {
-          context.push(
-            AppRouteEnum.imageViewerPage.path,
-            extra: ImageViewerArgs(
-              title: context.localization.deliverables3dRender,
-              urlOrAsset: render.imageAsset ?? '',
-            ),
+          AppViewerHelper.openImage(
+            context,
+            urlOrAsset: render.imageAsset ?? '',
+            title: context.localization.deliverables3dRender,
           );
         },
         child: ClipRRect(

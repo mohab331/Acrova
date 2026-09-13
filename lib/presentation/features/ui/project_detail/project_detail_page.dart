@@ -77,6 +77,8 @@ class _ProjectDetailView extends StatelessWidget {
                           imageUrl: project.thumbnailUrl ?? '',
                           width: double.infinity,
                           radius: 0,
+                          openInViewerOnTap: true,
+                          viewerTitle: project.name,
                         ),
                       ),
                       Transform.translate(
