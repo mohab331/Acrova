@@ -89,7 +89,10 @@ class AppRouter {
       GoRoute(
         path: AppRouteEnum.profileSetupPage.path,
         name: AppRouteEnum.profileSetupPage.name,
-        builder: (_, __) => const ProfileSetupPage(),
+        builder: (_, state) {
+          final extra = state.extra as ProfileCompletionArgs?;
+          return ProfileSetupPage(args: extra);
+        },
       ),
 
       // ── Project Creation Wizard (full-screen, above shell) ───────────────

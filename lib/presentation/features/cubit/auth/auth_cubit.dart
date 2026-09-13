@@ -67,6 +67,7 @@ class AuthCubit extends Cubit<AuthCubitState> {
           state.copyWith(
             getUserCubitStatus: CubitStatus.success,
             userModel: data,
+            clearUserModel: data == null,
           ),
         );
       },

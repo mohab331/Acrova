@@ -52,8 +52,8 @@ void main() {
       expect(model.minAppVersion, isNull);
       expect(model.termsAndConditionsUrl, isNull);
       expect(model.privacyPolicyUrl, isNull);
-      expect(model.termsAndConditionsUrl?.isNotEmpty, isTrue);
-      expect(model.privacyPolicyUrl?.isNotEmpty, isTrue);
+      expect(model.hasTermsAndConditions, isFalse);
+      expect(model.hasPrivacyPolicy, isFalse);
     });
 
     test('toJson produces expected structure', () {
@@ -64,7 +64,7 @@ void main() {
       );
 
       final json = model.toJson();
-      expect(json['content'], 1);
+      expect(json['minAppVersion'], 1);
       expect(json['termsAndConditionsUrl'], 'https://test.com/terms');
       expect(json['privacyPolicyUrl'], 'https://test.com/privacy');
     });

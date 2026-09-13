@@ -23,6 +23,13 @@ class UserProfileResponseModel extends Equatable {
   final int? completedCount;
   final String? avatarUrl;
 
+  /// Whether all mandatory profile fields are filled.
+  bool get isProfileComplete =>
+      (name?.trim().isNotEmpty ?? false) &&
+      (email?.trim().isNotEmpty ?? false) &&
+      (mobileNumber?.trim().isNotEmpty ?? false) &&
+      (nationalId?.trim().isNotEmpty ?? false);
+
   UserProfileResponseModel copyWith({
     String? name,
     String? email,
@@ -106,3 +113,7 @@ class UserProfileResponseModel extends Equatable {
         ')';
   }
 }
+
+///project
+///language
+///interior design

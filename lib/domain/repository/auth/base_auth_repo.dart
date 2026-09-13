@@ -17,7 +17,7 @@ abstract class BaseAuthRepo {
   Future<Result<void>> saveProfile(SaveProfileRequestModel request);
 
   /// Fetch the signed-in user's profile.
-  Future<Result<UserProfileResponseModel>> getUserProfile();
+  Future<Result<UserProfileResponseModel?>> getUserProfile();
 
   /// Update editable profile fields; returns the updated profile.
   Future<Result<UserProfileResponseModel>> updateUserProfile(

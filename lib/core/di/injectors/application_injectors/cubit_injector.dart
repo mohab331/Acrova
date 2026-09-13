@@ -15,6 +15,7 @@ import 'package:acrova/domain/repository/project/base_project_repo.dart';
 import 'package:acrova/domain/repository/revisions/base_revisions_repo.dart';
 import 'package:acrova/presentation/features/cubit/auth/auth_cubit.dart';
 import 'package:acrova/presentation/features/cubit/localization/localization_cubit.dart';
+import 'package:acrova/presentation/features/ui/auth/profile_setup/cubit/profile_completion_cubit.dart';
 import 'package:acrova/presentation/features/ui/billing/make_payment/cubit/make_payment_cubit.dart';
 import 'package:acrova/presentation/features/ui/billing/payment_details/cubit/payment_details_cubit.dart';
 import 'package:acrova/presentation/features/ui/billing/payment_history/cubit/payment_history_cubit.dart';
@@ -76,6 +77,12 @@ class CubitsInjector implements BaseInjector {
 
     () => serviceLocatorInstance.registerFactory<ProfileCubit>(
       () => ProfileCubit(authRepo: serviceLocatorInstance<BaseAuthRepo>()),
+    ),
+    () => serviceLocatorInstance.registerFactory<ProfileCompletionCubit>(
+      () => ProfileCompletionCubit(
+        authRepo: serviceLocatorInstance<BaseAuthRepo>(),
+        imagePicker: serviceLocatorInstance<BaseImagePickerService>(),
+      ),
     ),
 
     () => serviceLocatorInstance.registerFactory<NotificationsCubit>(

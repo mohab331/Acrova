@@ -77,6 +77,33 @@ class _MockBase {
 }
 
 class MockAuthRepo extends _MockBase implements BaseAuthRepo {
+  MockAuthRepo({bool isVisitorMode = false}) : _isVisitorMode = isVisitorMode;
+
+  bool _isVisitorMode;
+  UserProfileResponseModel? _currentProfile;
+
+  void setVisitorMode(bool isVisitor) {
+    _isVisitorMode = isVisitor;
+    if (isVisitor) {
+      _currentProfile = null;
+    } else {
+      _currentProfile ??= _defaultProfile;
+    }
+  }
+
+  static final _defaultProfile = UserProfileResponseModel(
+    name: 'Mohab Osama',
+    email: 'mohab@acrova.sa',
+    mobileNumber: '+966500000000',
+    nationalId: '1000000000',
+    language: 'ar',
+    memberSince: DateTime(2023, 1, 1),
+    projectsCount: 3,
+    completedCount: 1,
+    avatarUrl:
+        'https://png.pngtree.com/png-vector/20231019/ourmid/pngtree-user-profile-avatar-png-image_10211467.png',
+  );
+
   @override
   Future<Result<void>> login(SendOTPRequestModel request) async {
     if (shouldThrow(MockRepositoryKey.auth)) return mockError();
@@ -108,29 +135,33 @@ class MockAuthRepo extends _MockBase implements BaseAuthRepo {
 
     await simulateDelay();
 
+    _isVisitorMode = false;
+    _currentProfile = UserProfileResponseModel(
+      name: request.name,
+      email: request.email,
+      mobileNumber: request.mobileNumber ?? '+966500000000',
+      nationalId: request.nationalId,
+      language: request.language,
+      memberSince: DateTime.now(),
+      projectsCount: 0,
+      completedCount: 0,
+      avatarUrl: request.avatarPath,
+    );
+
     return const Success(null);
   }
 
   @override
-  Future<Result<UserProfileResponseModel>> getUserProfile() async {
+  Future<Result<UserProfileResponseModel?>> getUserProfile() async {
     if (shouldThrow(MockRepositoryKey.auth)) return mockError();
 
     await simulateDelay();
 
-    return Success(
-      UserProfileResponseModel(
-        name: 'Mohab Osama',
-        email: 'mohab@acrova.sa',
-        mobileNumber: '+966500000000',
-        nationalId: '1000000000',
-        language: 'ar',
-        memberSince: DateTime(2023, 1, 1),
-        projectsCount: 3,
-        completedCount: 1,
-        avatarUrl:
-            'https://png.pngtree.com/png-vector/20231019/ourmid/pngtree-user-profile-avatar-png-image_10211467.png',
-      ),
-    );
+    if (_isVisitorMode) {
+      return const Success(null);
+    }
+
+    return Success(_currentProfile ?? _defaultProfile);
   }
 
   @override
@@ -141,21 +172,23 @@ class MockAuthRepo extends _MockBase implements BaseAuthRepo {
 
     await simulateDelay();
 
-    return Success(
-      UserProfileResponseModel(
-        name: request.name,
-        email: request.email,
-        mobileNumber: request.mobileNumber,
-        nationalId: '1000000000',
-        language: 'ar',
-        memberSince: DateTime(2023, 1, 1),
-        projectsCount: 3,
-        completedCount: 1,
-        avatarUrl:
-            request.avatarPath ??
-            'https://png.pngtree.com/png-vector/20231019/ourmid/pngtree-user-profile-avatar-png-image_10211467.png',
-      ),
+    _isVisitorMode = false;
+    _currentProfile = UserProfileResponseModel(
+      name: request.name,
+      email: request.email,
+      mobileNumber: request.mobileNumber,
+      nationalId: _currentProfile?.nationalId ?? '1000000000',
+      language: _currentProfile?.language ?? 'ar',
+      memberSince: _currentProfile?.memberSince ?? DateTime(2023, 1, 1),
+      projectsCount: _currentProfile?.projectsCount ?? 3,
+      completedCount: _currentProfile?.completedCount ?? 1,
+      avatarUrl:
+          request.avatarPath ??
+          _currentProfile?.avatarUrl ??
+          'https://png.pngtree.com/png-vector/20231019/ourmid/pngtree-user-profile-avatar-png-image_10211467.png',
     );
+
+    return Success(_currentProfile!);
   }
 
   @override
@@ -179,6 +212,8 @@ class MockAuthRepo extends _MockBase implements BaseAuthRepo {
   @override
   Future<Result<void>> clearUserData() async {
     await simulateDelay();
+    _currentProfile = null;
+    _isVisitorMode = true;
     return const Success(null);
   }
 }

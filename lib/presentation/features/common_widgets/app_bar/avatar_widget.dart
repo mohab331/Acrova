@@ -14,7 +14,7 @@ class AvatarWidget extends StatelessWidget {
   final String? avatarUrl;
   final String? userName;
 
-  final Function onRetry;
+  final VoidCallback onRetry;
 
   final bool isError;
 
@@ -22,7 +22,7 @@ class AvatarWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final displayName = userName?.trim() ?? '';
     return GestureDetector(
-      onTap: isError ? () => onRetry.call() : () {},
+      onTap: isError ? onRetry : null,
       child: Container(
         width: Resources.squareDims.$42,
         height: Resources.squareDims.$42,
@@ -39,17 +39,21 @@ class AvatarWidget extends StatelessWidget {
             : (avatarUrl != null
                   ? ClipOval(child: AppCachedNetworkImage(imageUrl: avatarUrl!))
                   : Center(
-                      child: Text(
-                        displayName.isEmpty
-                            ? displayName
-                            : displayName[0].toUpperCase(),
-                        style: TextStyle(
-                          fontFamily: Resources.fonts.manrope,
-                          fontSize: Resources.fontSizes.$16,
-                          fontWeight: Resources.fontWeights.bold,
-                          color: Resources.colors.luxuryGoldLight,
-                        ),
-                      ),
+                      child: displayName.isEmpty
+                          ? Icon(
+                              Icons.person_outline,
+                              color: Resources.colors.luxuryGoldLight,
+                              size: Resources.iconSizes.$20,
+                            )
+                          : Text(
+                              displayName[0].toUpperCase(),
+                              style: TextStyle(
+                                fontFamily: Resources.fonts.manrope,
+                                fontSize: Resources.fontSizes.$16,
+                                fontWeight: Resources.fontWeights.bold,
+                                color: Resources.colors.luxuryGoldLight,
+                              ),
+                            ),
                     )),
       ),
     );

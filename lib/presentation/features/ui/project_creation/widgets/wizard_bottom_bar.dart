@@ -3,6 +3,7 @@ import 'package:acrova/presentation/features/common_widgets/buttons/app_primary_
 import 'package:acrova/presentation/features/ui/project_creation/cubit/project_creation_cubit.dart';
 import 'package:acrova/presentation/features/ui/project_creation/cubit/project_creation_state.dart';
 import 'package:acrova/utils/extensions/localization_extension.dart';
+import 'package:acrova/utils/guards/profile_completion_guard.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -34,7 +35,14 @@ class WizardBottomBar extends StatelessWidget {
                 ? AppPrimaryButton(
                     label: context.localization.projectCreationSubmit,
                     onPressed: canProceed && !state.isSubmitting
-                        ? cubit.submit
+                        ? () async {
+                            final ok =
+                                await ProfileCompletionGuard.ensureComplete(
+                              context,
+                            );
+                            if (!ok || !context.mounted) return;
+                            await cubit.submit();
+                          }
                         : null,
                     isLoading: state.isSubmitting,
                   )

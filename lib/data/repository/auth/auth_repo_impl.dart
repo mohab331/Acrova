@@ -64,7 +64,7 @@ class AuthRepoImpl implements BaseAuthRepo {
       safeAsyncCall(() => _authDataSource.saveUserProfile(request));
 
   @override
-  Future<Result<UserProfileResponseModel>> getUserProfile() =>
+  Future<Result<UserProfileResponseModel?>> getUserProfile() =>
       safeAsyncCall(_authDataSource.getUserProfile);
 
   @override

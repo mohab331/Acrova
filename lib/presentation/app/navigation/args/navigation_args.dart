@@ -49,6 +49,16 @@ class EditProfileArgs extends Equatable {
   List<Object?> get props => [profile];
 }
 
+/// Navigation arguments for Profile Setup / Completion Page.
+class ProfileCompletionArgs extends Equatable {
+  const ProfileCompletionArgs({this.returnRoute});
+
+  final String? returnRoute;
+
+  @override
+  List<Object?> get props => [returnRoute];
+}
+
 /// Navigation arguments for Contact Us Page.
 class ContactUsArgs extends Equatable {
   const ContactUsArgs({this.email, this.mobileNumber});

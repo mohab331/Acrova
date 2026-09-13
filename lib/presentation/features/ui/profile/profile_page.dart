@@ -1,12 +1,15 @@
 import 'package:acrova/core/di/dependency_injector.dart';
 import 'package:acrova/presentation/features/common_widgets/common_screen/common_screen.dart';
 import 'package:acrova/presentation/features/common_widgets/feedback/common_error_widget.dart';
+import 'package:acrova/presentation/features/common_widgets/feedback/visitor_empty_state.dart';
 import 'package:acrova/presentation/features/cubit/auth/auth_cubit.dart';
 import 'package:acrova/presentation/features/ui/profile/cubit/profile_cubit.dart';
 import 'package:acrova/presentation/features/ui/profile/cubit/profile_state.dart';
 import 'package:acrova/presentation/features/ui/profile/widgets/profile_content.dart';
 import 'package:acrova/presentation/features/ui/profile/widgets/profile_skeleton.dart';
 import 'package:acrova/utils/enums/cubit_status.dart';
+import 'package:acrova/utils/extensions/localization_extension.dart';
+import 'package:acrova/utils/guards/profile_completion_guard.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -45,7 +48,21 @@ class _ProfilePageState extends State<ProfilePage> {
               );
             }
             final profile = authState.userModel;
-            if (profile == null) return const SizedBox.shrink();
+            if (profile == null || authState.isVisitor) {
+              return VisitorEmptyState(
+                icon: Icons.person_outline,
+                title: context.localization.profileCompletionTitle,
+                subtitle: context.localization.profileCompletionSubtitle,
+                ctaLabel: context.localization.completeProfile,
+                onCtaTap: () async {
+                  final completed =
+                      await ProfileCompletionGuard.ensureComplete(context);
+                  if (completed && context.mounted) {
+                    await context.read<AuthCubit>().getUser();
+                  }
+                },
+              );
+            }
 
             return ProfileContent(profile: profile);
           },

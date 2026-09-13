@@ -14,7 +14,7 @@ abstract class BaseAuthDataSource {
   Future<void> saveUserProfile(SaveProfileRequestModel request);
 
   /// Fetch the signed-in user's profile.
-  Future<UserProfileResponseModel> getUserProfile();
+  Future<UserProfileResponseModel?> getUserProfile();
 
   /// Update editable profile fields and return the updated profile.
   Future<UserProfileResponseModel> updateUserProfile(

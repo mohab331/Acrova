@@ -6,6 +6,8 @@ import 'package:acrova/presentation/app/resources/resources.dart';
 import 'package:acrova/presentation/features/common_widgets/common_screen/common_screen.dart';
 import 'package:acrova/presentation/features/common_widgets/feedback/app_empty_state.dart';
 import 'package:acrova/presentation/features/common_widgets/feedback/common_error_widget.dart';
+import 'package:acrova/presentation/features/common_widgets/feedback/visitor_empty_state.dart';
+import 'package:acrova/presentation/features/cubit/auth/auth_cubit.dart';
 import 'package:acrova/presentation/features/ui/projects/cubit/projects_cubit.dart';
 import 'package:acrova/presentation/features/ui/projects/cubit/projects_state.dart';
 import 'package:acrova/presentation/features/ui/projects/widgets/featured_project_card.dart';
@@ -16,6 +18,7 @@ import 'package:acrova/presentation/features/ui/shell/widgets/bottom_nav_reselec
 import 'package:acrova/utils/enums/cubit_status.dart';
 import 'package:acrova/utils/enums/project_status_enum.dart';
 import 'package:acrova/utils/extensions/localization_extension.dart';
+import 'package:acrova/utils/guards/profile_completion_guard.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -51,6 +54,27 @@ class _ProjectsPageState extends State<ProjectsPage> {
 
   @override
   Widget build(BuildContext context) {
+    final isVisitor = context.watch<AuthCubit>().state.isVisitor;
+
+    if (isVisitor) {
+      return CommonScreen(
+        bottomPadding: 0,
+        child: VisitorEmptyState(
+          icon: Icons.folder_outlined,
+          title: context.localization.visitorProjectsTitle,
+          subtitle: context.localization.visitorProjectsSubtitle,
+          ctaLabel: context.localization.completeProfile,
+          onCtaTap: () async {
+            final completed =
+                await ProfileCompletionGuard.ensureComplete(context);
+            if (completed && context.mounted) {
+              await context.read<AuthCubit>().getUser();
+            }
+          },
+        ),
+      );
+    }
+
     return BlocProvider<ProjectsCubit>(
       create: (context) =>
           serviceLocatorInstance<ProjectsCubit>()..fetchProjects(),
