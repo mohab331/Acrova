@@ -147,8 +147,7 @@ class _PortfolioPageViewState extends State<_PortfolioPageView> {
                 ),
               ),
             ),
-          ),
-        );
+          );
       },
     ),
   );

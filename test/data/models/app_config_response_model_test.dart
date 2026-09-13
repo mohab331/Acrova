@@ -1,4 +1,4 @@
-import 'package:acrova/data/models/response/config/app_config_response_model.dart';
+import 'package:acrova/data/models/response/config/min_app_version_response_model.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
@@ -31,7 +31,7 @@ void main() {
           'privacy_policy_url': 'https://acrova.com/privacy.pdf',
           'cookie_policy_url': 'https://acrova.com/cookies',
           'about_us_url': 'https://acrova.com/about',
-        }
+        },
       };
 
       final model = AppConfigResponseModel.fromJson(json);

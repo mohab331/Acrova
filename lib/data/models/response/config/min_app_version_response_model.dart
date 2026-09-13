@@ -1,24 +1,56 @@
-import 'app_config_response_model.dart';
+import 'package:equatable/equatable.dart';
 
 export 'app_config_response_model.dart';
 
-class MinAppVersionResponseModel extends AppConfigResponseModel {
-  const MinAppVersionResponseModel({
-    super.minAppVersion,
-    super.termsAndConditionsUrl,
-    super.privacyPolicyUrl,
-    super.cookiePolicyUrl,
-    super.aboutUsUrl,
+class AppConfigResponseModel extends Equatable {
+  const AppConfigResponseModel({
+    this.minAppVersion,
+    this.termsAndConditionsUrl,
+    this.privacyPolicyUrl,
+    this.cookiePolicyUrl,
+    this.aboutUsUrl,
   });
 
-  factory MinAppVersionResponseModel.fromJson(Map<String, dynamic> json) {
-    final model = AppConfigResponseModel.fromJson(json);
-    return MinAppVersionResponseModel(
-      minAppVersion: model.minAppVersion,
-      termsAndConditionsUrl: model.termsAndConditionsUrl,
-      privacyPolicyUrl: model.privacyPolicyUrl,
-      cookiePolicyUrl: model.cookiePolicyUrl,
-      aboutUsUrl: model.aboutUsUrl,
+  final int? minAppVersion;
+  final String? termsAndConditionsUrl;
+  final String? privacyPolicyUrl;
+  final String? cookiePolicyUrl;
+  final String? aboutUsUrl;
+
+  factory AppConfigResponseModel.fromJson(Map<String, dynamic> json) {
+    return AppConfigResponseModel(
+      minAppVersion: int.tryParse(json['minAppVersion']?.toString() ?? ''),
+      termsAndConditionsUrl: json['termsAndConditionsUrl']?.toString(),
+      privacyPolicyUrl: json['privacyPolicyUrl']?.toString(),
+      cookiePolicyUrl: json['cookiePolicyUrl']?.toString(),
+      aboutUsUrl: json['aboutUsUrl']?.toString(),
     );
+  }
+
+  Map<String, dynamic> toJson() => {
+    'minAppVersion': minAppVersion,
+    'termsAndConditionsUrl': termsAndConditionsUrl,
+    'privacyPolicyUrl': privacyPolicyUrl,
+    'cookiePolicyUrl': cookiePolicyUrl,
+    'aboutUsUrl': aboutUsUrl,
+  };
+
+  @override
+  List<Object?> get props => [
+    minAppVersion,
+    termsAndConditionsUrl,
+    privacyPolicyUrl,
+    cookiePolicyUrl,
+    aboutUsUrl,
+  ];
+
+  @override
+  String toString() {
+    return 'AppConfigResponseModel('
+        'minAppVersion: $minAppVersion, '
+        'termsAndConditionsUrl: $termsAndConditionsUrl, '
+        'privacyPolicyUrl: $privacyPolicyUrl, '
+        'cookiePolicyUrl: $cookiePolicyUrl, '
+        'aboutUsUrl: $aboutUsUrl)';
   }
 }
