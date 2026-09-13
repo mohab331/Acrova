@@ -1,4 +1,5 @@
 import 'package:acrova/data/models/portfolio/portfolio_item.dart';
+import 'package:acrova/presentation/app/navigation/args/navigation_args.dart';
 import 'package:acrova/presentation/app/resources/resources.dart';
 import 'package:acrova/presentation/features/common_widgets/app_bar/app_auth_brand_header.dart';
 import 'package:acrova/presentation/features/common_widgets/buttons/app_primary_button.dart';
@@ -11,9 +12,11 @@ import 'package:flutter/material.dart';
 import 'widgets/walkthrough_video_player.dart';
 
 class WalkthroughScreen extends StatelessWidget {
-  const WalkthroughScreen({super.key, required this.walkthrough});
+  const WalkthroughScreen({this.args, super.key});
 
-  final WalkthroughModel? walkthrough;
+  final WalkthroughArgs? args;
+
+  WalkthroughModel? get walkthrough => args?.walkthrough;
 
   @override
   Widget build(BuildContext context) {

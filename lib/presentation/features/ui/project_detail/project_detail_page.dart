@@ -1,4 +1,5 @@
 import 'package:acrova/core/di/dependency_injector.dart';
+import 'package:acrova/presentation/app/navigation/args/navigation_args.dart';
 import 'package:acrova/presentation/app/resources/resources.dart';
 import 'package:acrova/presentation/features/common_widgets/app_bar/app_auth_brand_header.dart';
 import 'package:acrova/presentation/features/common_widgets/common_screen/common_screen.dart';
@@ -14,22 +15,23 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ProjectDetailPage extends StatelessWidget {
   const ProjectDetailPage({
-    required this.projectId,
-    required this.projectTitle,
+    this.args,
     super.key,
   });
 
-  final String projectId;
-  final String? projectTitle;
+  final ProjectDetailArgs? args;
 
   @override
   Widget build(BuildContext context) {
+    final id = args?.id ?? args?.project?.id;
+    final title = args?.title ?? args?.project?.name ?? '';
+
     return BlocProvider(
       create: (context) =>
-          serviceLocatorInstance<ProjectDetailCubit>()..fetchProject(projectId),
+          serviceLocatorInstance<ProjectDetailCubit>()..fetchProject(id),
       child: CommonScreen(
         padding: EdgeInsets.zero,
-        appBar: AppAuthBrandHeader(label: projectTitle ?? '', showBack: true),
+        appBar: AppAuthBrandHeader(label: title, showBack: true),
         backGroundColor: Resources.colors.white,
         child: const _ProjectDetailView(),
       ),

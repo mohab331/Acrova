@@ -1,6 +1,7 @@
 import 'package:acrova/core/di/dependency_injector.dart';
 import 'package:acrova/data/models/revision/revision_model.dart';
 import 'package:acrova/domain/repository/revisions/base_revisions_repo.dart';
+import 'package:acrova/presentation/app/navigation/args/navigation_args.dart';
 import 'package:acrova/presentation/app/resources/resources.dart';
 import 'package:acrova/presentation/features/common_widgets/app_bar/app_auth_brand_header.dart';
 import 'package:acrova/presentation/features/common_widgets/common_screen/common_screen.dart';
@@ -18,14 +19,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class RevisionDetailPage extends StatelessWidget {
-  const RevisionDetailPage({this.revision, this.revisionId, super.key})
-    : assert(
-        revision != null || revisionId != null,
-        'Provide either revision or revisionId',
-      );
+  const RevisionDetailPage({this.args, super.key});
 
-  final RevisionModel? revision;
-  final String? revisionId;
+  final RevisionDetailArgs? args;
+
+  RevisionModel? get revision => args?.revision;
+  String? get revisionId => args?.revisionId ?? args?.revision?.id;
 
   @override
   Widget build(BuildContext context) {
@@ -34,6 +33,7 @@ class RevisionDetailPage extends StatelessWidget {
         final cubit = RevisionDetailCubit(
           revisionsRepo: serviceLocatorInstance<BaseRevisionsRepo>(),
           initialRevision: revision,
+          revisionId: revisionId,
         );
         final id = revisionId;
         if (revision == null && id != null) {

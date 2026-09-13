@@ -1,5 +1,6 @@
 import 'package:acrova/data/models/revision/revision_model.dart';
 import 'package:acrova/presentation/app/navigation/app_route_enum.dart';
+import 'package:acrova/presentation/app/navigation/args/navigation_args.dart';
 import 'package:acrova/presentation/app/resources/resources.dart';
 import 'package:acrova/presentation/features/common_widgets/feedback/app_empty_state.dart';
 import 'package:acrova/presentation/features/common_widgets/feedback/app_error_state.dart';
@@ -76,6 +77,9 @@ class RevisionHistoryContent extends StatelessWidget {
   }
 
   void _openDetail(BuildContext context, {required RevisionModel? revision}) {
-    context.push(AppRouteEnum.revisionDetailPage.name, extra: revision);
+    context.push(
+      AppRouteEnum.revisionDetailPage.name,
+      extra: RevisionDetailArgs(revision: revision),
+    );
   }
 }

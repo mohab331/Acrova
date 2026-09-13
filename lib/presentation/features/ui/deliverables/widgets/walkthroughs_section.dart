@@ -1,5 +1,6 @@
 import 'package:acrova/data/models/portfolio/portfolio_item.dart';
 import 'package:acrova/presentation/app/navigation/app_route_enum.dart';
+import 'package:acrova/presentation/app/navigation/args/navigation_args.dart';
 import 'package:acrova/presentation/app/resources/resources.dart';
 import 'package:acrova/utils/extensions/localization_extension.dart';
 import 'package:acrova/utils/extensions/theme_extension.dart';
@@ -69,7 +70,9 @@ class WalkthroughsSection extends StatelessWidget {
                               onTap: () {
                                 context.push(
                                   AppRouteEnum.walkthroughPage.path,
-                                  extra: walkthrough,
+                                  extra: WalkthroughArgs(
+                                    walkthrough: walkthrough,
+                                  ),
                                 );
                               },
                               child: Container(

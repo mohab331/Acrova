@@ -7,12 +7,28 @@ import 'package:acrova/presentation/features/ui/dashboard/widgets/quick_actions_
 import 'package:acrova/presentation/features/ui/dashboard/widgets/recent_projects_section.dart';
 import 'package:acrova/presentation/features/ui/portfolio/cubit/portfolio_cubit.dart';
 import 'package:acrova/presentation/features/ui/projects/cubit/projects_cubit.dart';
+import 'package:acrova/presentation/features/ui/shell/widgets/bottom_nav_reselect_scope.dart';
 import 'package:acrova/utils/enums/cubit_status.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class DashboardContent extends StatelessWidget {
+class DashboardContent extends StatefulWidget {
   const DashboardContent({super.key});
+
+  @override
+  State<DashboardContent> createState() => _DashboardContentState();
+}
+
+class _DashboardContentState extends State<DashboardContent> {
+  final ScrollController _scrollController = ScrollController();
+  final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
+      GlobalKey<RefreshIndicatorState>();
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -38,37 +54,45 @@ class DashboardContent extends StatelessWidget {
       );
     }
 
-    return RefreshIndicator(
-      color: Resources.colors.luxuryGoldLight,
+    return BottomNavScrollAndRefreshListener(
+      tabIndex: 0,
+      scrollController: _scrollController,
+      refreshIndicatorKey: _refreshIndicatorKey,
       onRefresh: () => _onPullToRefresh(context),
-      child: Column(
-        children: [
-          Expanded(
-            child: SingleChildScrollView(
-              physics: const AlwaysScrollableScrollPhysics(),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const DashboardHeroBanner(),
-                  SizedBox(height: Resources.verticalDims.$32),
+      child: RefreshIndicator(
+        key: _refreshIndicatorKey,
+        color: Resources.colors.luxuryGoldLight,
+        onRefresh: () => _onPullToRefresh(context),
+        child: Column(
+          children: [
+            Expanded(
+              child: SingleChildScrollView(
+                controller: _scrollController,
+                physics: const AlwaysScrollableScrollPhysics(),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const DashboardHeroBanner(),
+                    SizedBox(height: Resources.verticalDims.$32),
 
-                  /// Recent Projects Section ------------------------
-                  const RecentProjectsSection(),
-                  SizedBox(height: Resources.verticalDims.$20),
+                    /// Recent Projects Section ------------------------
+                    const RecentProjectsSection(),
+                    SizedBox(height: Resources.verticalDims.$20),
 
-                  /// Quick Actions Grid ------------------------
-                  const QuickActionsSection(),
-                  SizedBox(height: Resources.verticalDims.$32),
+                    /// Quick Actions Grid ------------------------
+                    const QuickActionsSection(),
+                    SizedBox(height: Resources.verticalDims.$32),
 
-                  /// Explore Designs Section ------------------------
-                  const ExploreDesignsSection(),
-                  SizedBox(height: Resources.verticalDims.$32),
-                ],
+                    /// Explore Designs Section ------------------------
+                    const ExploreDesignsSection(),
+                    SizedBox(height: Resources.verticalDims.$32),
+                  ],
+                ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

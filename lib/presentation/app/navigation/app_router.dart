@@ -1,8 +1,6 @@
 import 'dart:async';
 
 import 'package:acrova/core/di/dependency_injector.dart';
-import 'package:acrova/data/models/profile/user_profile_model.dart';
-import 'package:acrova/data/models/revision/revision_model.dart';
 import 'package:acrova/presentation/app/navigation/args/navigation_args.dart';
 import 'package:acrova/presentation/features/cubit/auth/auth_cubit.dart';
 import 'package:acrova/presentation/features/ui/auth/identity_verification/identity_verification_page.dart';
@@ -22,7 +20,6 @@ import 'package:acrova/presentation/features/ui/interior_design/interior_design_
 import 'package:acrova/presentation/features/ui/notifications/cubit/notifications_cubit.dart';
 import 'package:acrova/presentation/features/ui/notifications/notifications_page.dart';
 import 'package:acrova/presentation/features/ui/portfolio/portfolio_detail_page.dart';
-import 'package:acrova/presentation/features/ui/portfolio/portfolio_item.dart';
 import 'package:acrova/presentation/features/ui/portfolio/portfolio_page.dart';
 import 'package:acrova/presentation/features/ui/profile/edit_profile/edit_profile_page.dart';
 import 'package:acrova/presentation/features/ui/profile/profile_page.dart';
@@ -107,14 +104,8 @@ class AppRouter {
         path: AppRouteEnum.interiorDesignPhaseOnePage.path,
         name: AppRouteEnum.interiorDesignPhaseOnePage.name,
         builder: (_, state) {
-          final extra = state.extra;
-          final String projectId = switch (extra) {
-            InteriorDesignArgs args => args.projectId,
-            Map<String, dynamic> map => map['id'] as String? ?? '',
-            String str => str,
-            _ => '',
-          };
-          return InteriorDesignPage(projectId: projectId);
+          final extra = state.extra as InteriorDesignArgs?;
+          return InteriorDesignPage(args: extra);
         },
       ),
 
@@ -124,17 +115,8 @@ class AppRouter {
         path: AppRouteEnum.projectDetailPage.path,
         name: AppRouteEnum.projectDetailPage.name,
         builder: (_, state) {
-          final extra = state.extra;
-          final (id, title) = switch (extra) {
-            ProjectDetailArgs args => (args.id, args.title),
-            Map<String, dynamic> map => (
-              map['id'] as String? ?? '',
-              map['title'] as String?,
-            ),
-            String strId => (strId, null),
-            _ => ('', null),
-          };
-          return ProjectDetailPage(projectId: id, projectTitle: title);
+          final extra = state.extra as ProjectDetailArgs?;
+          return ProjectDetailPage(args: extra);
         },
       ),
 
@@ -144,8 +126,8 @@ class AppRouter {
         path: AppRouteEnum.portfolioDetailPage.path,
         name: AppRouteEnum.portfolioDetailPage.name,
         builder: (_, state) {
-          final item = state.extra as PortfolioItem?;
-          return PortfolioDetailPage(portfolioItem: item);
+          final extra = state.extra as PortfolioDetailArgs?;
+          return PortfolioDetailPage(args: extra);
         },
       ),
 
@@ -155,8 +137,8 @@ class AppRouter {
         path: AppRouteEnum.editProfilePage.path,
         name: AppRouteEnum.editProfilePage.name,
         builder: (_, state) {
-          final profile = state.extra as UserProfileModel;
-          return EditProfilePage(profile: profile);
+          final extra = state.extra as EditProfileArgs?;
+          return EditProfilePage(args: extra);
         },
       ),
 
@@ -166,7 +148,7 @@ class AppRouter {
         path: AppRouteEnum.contactUsPage.path,
         name: AppRouteEnum.contactUsPage.name,
         builder: (context, state) {
-          final extra = state.extra as ContactUsArgs;
+          final extra = state.extra as ContactUsArgs?;
           return ContactUsPage(args: extra);
         },
       ),
@@ -197,17 +179,8 @@ class AppRouter {
         path: AppRouteEnum.revisionDetailPage.path,
         name: AppRouteEnum.revisionDetailPage.name,
         builder: (_, state) {
-          final extra = state.extra;
-          if (extra is RevisionDetailArgs) {
-            return RevisionDetailPage(
-              revision: extra.revision,
-              revisionId: extra.revisionId,
-            );
-          }
-          if (extra is RevisionModel) {
-            return RevisionDetailPage(revision: extra);
-          }
-          return RevisionDetailPage(revisionId: extra as String?);
+          final extra = state.extra as RevisionDetailArgs?;
+          return RevisionDetailPage(args: extra);
         },
       ),
 
@@ -217,8 +190,8 @@ class AppRouter {
         path: AppRouteEnum.walkthroughPage.path,
         name: AppRouteEnum.walkthroughPage.name,
         builder: (_, state) {
-          final walkthrough = state.extra as WalkthroughModel?;
-          return WalkthroughScreen(walkthrough: walkthrough);
+          final extra = state.extra as WalkthroughArgs?;
+          return WalkthroughScreen(args: extra);
         },
       ),
 
@@ -242,35 +215,26 @@ class AppRouter {
         path: AppRouteEnum.paymentDetailsPage.path,
         name: AppRouteEnum.paymentDetailsPage.name,
         builder: (_, state) {
-          final extra = state.extra;
-          final paymentId = (extra as PaymentDetailsArgs?)?.paymentId;
-          return PaymentDetailsView(paymentId: paymentId);
+          final extra = state.extra as PaymentDetailsArgs?;
+          return PaymentDetailsView(args: extra);
         },
       ),
       GoRoute(
         parentNavigatorKey: rootNavigatorKey,
         path: AppRouteEnum.makePaymentPage.path,
         name: AppRouteEnum.makePaymentPage.name,
-        builder: (_, __) => const MakePaymentView(),
+        builder: (_, state) {
+          final extra = state.extra as MakePaymentArgs?;
+          return MakePaymentView(args: extra);
+        },
       ),
       GoRoute(
         parentNavigatorKey: rootNavigatorKey,
         path: AppRouteEnum.paymentSuccessPage.path,
         name: AppRouteEnum.paymentSuccessPage.name,
         builder: (_, state) {
-          final extra = state.extra;
-          final (amount, referenceNumber) = switch (extra) {
-            PaymentSuccessArgs args => (args.amount, args.referenceNumber),
-            Map<String, dynamic> map => (
-              map['amount'] as String? ?? '',
-              map['referenceNumber'] as String?,
-            ),
-            _ => ('', null),
-          };
-          return PaymentSuccessView(
-            amount: amount,
-            referenceNumber: referenceNumber,
-          );
+          final extra = state.extra as PaymentSuccessArgs?;
+          return PaymentSuccessView(args: extra);
         },
       ),
 
@@ -280,8 +244,8 @@ class AppRouter {
         path: AppRouteEnum.pdfViewerPage.path,
         name: AppRouteEnum.pdfViewerPage.name,
         builder: (_, state) {
-          final args = state.extra as PdfViewerArgs;
-          return PdfViewerPage(args: args);
+          final extra = state.extra as PdfViewerArgs?;
+          return PdfViewerPage(args: extra);
         },
       ),
       GoRoute(
@@ -289,8 +253,8 @@ class AppRouter {
         path: AppRouteEnum.imageViewerPage.path,
         name: AppRouteEnum.imageViewerPage.name,
         builder: (_, state) {
-          final args = state.extra as ImageViewerArgs;
-          return ImageViewerPage(args: args);
+          final extra = state.extra as ImageViewerArgs?;
+          return ImageViewerPage(args: extra);
         },
       ),
 

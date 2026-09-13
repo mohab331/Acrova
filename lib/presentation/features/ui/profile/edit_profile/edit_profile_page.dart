@@ -2,6 +2,7 @@ import 'package:acrova/core/di/dependency_injector.dart';
 import 'package:acrova/data/data_source/local/services/image_picker/base_image_picker_service.dart';
 import 'package:acrova/data/models/profile/user_profile_model.dart';
 import 'package:acrova/domain/repository/auth/base_auth_repo.dart';
+import 'package:acrova/presentation/app/navigation/args/navigation_args.dart';
 import 'package:acrova/presentation/app/resources/resources.dart';
 import 'package:acrova/presentation/features/common_widgets/app_bar/app_auth_brand_header.dart';
 import 'package:acrova/presentation/features/common_widgets/common_screen/common_screen.dart';
@@ -20,9 +21,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class EditProfilePage extends StatelessWidget {
-  const EditProfilePage({required this.profile, super.key});
+  const EditProfilePage({this.args, super.key});
 
-  final UserProfileModel profile;
+  final EditProfileArgs? args;
+
+  UserProfileModel get profile =>
+      args?.profile ?? const UserProfileResponseModel();
 
   @override
   Widget build(BuildContext context) {

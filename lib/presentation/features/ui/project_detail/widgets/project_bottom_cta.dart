@@ -1,5 +1,6 @@
 import 'package:acrova/data/models/project/project_model.dart';
 import 'package:acrova/presentation/app/navigation/app_route_enum.dart';
+import 'package:acrova/presentation/app/navigation/args/navigation_args.dart';
 import 'package:acrova/presentation/app/resources/resources.dart';
 import 'package:acrova/presentation/features/common_widgets/buttons/app_primary_button.dart';
 import 'package:acrova/utils/enums/project_status_enum.dart';
@@ -54,7 +55,10 @@ class _CTA extends StatelessWidget {
       return AppPrimaryButton(
         label: loc.projectDetailUploadReceipt,
         onPressed: () {
-          context.pushNamed(AppRouteEnum.makePaymentPage.name);
+          context.pushNamed(
+            AppRouteEnum.makePaymentPage.name,
+            extra: MakePaymentArgs(projectId: project.id),
+          );
         },
       );
     } else if (project.status == ProjectStatus.deliverablesReady) {
@@ -73,7 +77,10 @@ class _CTA extends StatelessWidget {
       return AppPrimaryButton(
         label: loc.projectDetailPhaseIIInteriorDesign,
         onPressed: () {
-          context.push(AppRouteEnum.interiorDesignPhaseOnePage.path);
+          context.push(
+            AppRouteEnum.interiorDesignPhaseOnePage.path,
+            extra: InteriorDesignArgs(projectId: project.id),
+          );
         },
       );
     } else {

@@ -1,5 +1,6 @@
 import 'package:acrova/data/models/portfolio/portfolio_item.dart';
 import 'package:acrova/presentation/app/navigation/app_route_enum.dart';
+import 'package:acrova/presentation/app/navigation/args/navigation_args.dart';
 import 'package:acrova/presentation/app/resources/resources.dart';
 import 'package:acrova/presentation/features/common_widgets/images/app_cached_network_image.dart';
 import 'package:acrova/utils/extensions/navigation_extension.dart';
@@ -23,7 +24,7 @@ class DashboardDesignCard extends StatelessWidget {
       onTap: () {
         context.push(
           AppRouteEnum.portfolioDetailPage.name,
-          extra: portfolioItem,
+          extra: PortfolioDetailArgs(portfolioItem: portfolioItem),
         );
       },
       child: ClipRRect(
