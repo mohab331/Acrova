@@ -72,6 +72,7 @@ class ProjectResponseModel extends Equatable {
   final String? thumbnailUrl;
 
   // Project details
+
   final List<DeliverableResponseModel>? deliverables;
   final String? additionalNotes;
   final EngineerResponseModel? engineer;

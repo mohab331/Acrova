@@ -207,7 +207,7 @@ class MockProjectRepo extends _MockBase implements BaseProjectRepo {
       id: 'proj_001',
       name: 'Villa Al-Nakheel',
       type: ProjectType.villa,
-      status: ProjectStatus.completed,
+      status: ProjectStatus.deliverablesReady,
       location: 'Riyadh, Al-Malqa',
       thumbnailUrl:
           'https://api.alhilwa.com.iq/uploads/projects/1774287086738-7ff23182f9452cf20ab58038546a.jpg',

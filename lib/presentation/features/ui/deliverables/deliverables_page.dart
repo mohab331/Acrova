@@ -67,6 +67,7 @@ class _DeliverablesView extends StatelessWidget {
                     children: [
                       AppPrimaryButton(
                         onPressed: () {
+                          /// TODO need to call API
                           context.go(AppRouteEnum.homePage.path);
                         },
                         label: loc.deliverablesApprove,

@@ -41,46 +41,50 @@ class BlueprintsSection extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Row(
-                  children: [
-                    Container(
-                      width: Resources.squareDims.$40,
-                      height: Resources.squareDims.$40,
-                      decoration: BoxDecoration(
-                        color: Resources.colors.luxuryError.withValues(
-                          alpha: 0.1,
-                        ),
-                        borderRadius: BorderRadius.circular(
-                          Resources.radius.$r4,
-                        ),
-                      ),
-                      child: Center(
-                        child: Icon(
-                          Icons.picture_as_pdf,
-                          color: Resources.colors.luxuryError,
-                        ),
-                      ),
-                    ),
-                    SizedBox(width: Resources.horizontalDims.$16),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          blueprint.title ?? '',
-                          style: context.textTheme.titleSmall?.copyWith(
-                            color: Resources.colors.luxuryNavy,
-                            fontWeight: Resources.fontWeights.semiBold,
+                Flexible(
+                  child: Row(
+                    children: [
+                      Container(
+                        width: Resources.squareDims.$40,
+                        height: Resources.squareDims.$40,
+                        decoration: BoxDecoration(
+                          color: Resources.colors.luxuryError.withValues(
+                            alpha: 0.1,
+                          ),
+                          borderRadius: BorderRadius.circular(
+                            Resources.radius.$r4,
                           ),
                         ),
-                        Text(
-                          '${blueprint.size ?? ''} • ${blueprint.format ?? ''}',
-                          style: context.textTheme.labelMedium?.copyWith(
-                            color: Resources.colors.luxuryBodyMuted,
+                        child: Center(
+                          child: Icon(
+                            Icons.picture_as_pdf,
+                            color: Resources.colors.luxuryError,
                           ),
                         ),
-                      ],
-                    ),
-                  ],
+                      ),
+                      SizedBox(width: Resources.horizontalDims.$16),
+                      Flexible(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              blueprint.title ?? '',
+                              style: context.textTheme.titleSmall?.copyWith(
+                                color: Resources.colors.luxuryNavy,
+                                fontWeight: Resources.fontWeights.semiBold,
+                              ),
+                            ),
+                            Text(
+                              '${blueprint.size ?? ''} • ${blueprint.format ?? ''}',
+                              style: context.textTheme.labelMedium?.copyWith(
+                                color: Resources.colors.luxuryBodyMuted,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
                 Row(
                   children: [
