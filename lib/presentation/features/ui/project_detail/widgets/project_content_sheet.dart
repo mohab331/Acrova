@@ -6,6 +6,7 @@ import 'package:acrova/presentation/features/ui/project_detail/widgets/project_h
 import 'package:acrova/presentation/features/ui/project_detail/widgets/project_progress_card.dart';
 import 'package:acrova/presentation/features/ui/project_detail/widgets/project_provisions_list.dart';
 import 'package:acrova/presentation/features/ui/project_detail/widgets/project_specs_grid.dart';
+import 'package:acrova/presentation/features/ui/project_detail/widgets/related_interior_design_card.dart';
 import 'package:acrova/utils/enums/project_status_enum.dart';
 import 'package:acrova/utils/extensions/localization_extension.dart';
 import 'package:acrova/utils/extensions/theme_extension.dart';
@@ -142,6 +143,19 @@ class ProjectContentSheet extends StatelessWidget {
             ),
             child: ProjectProvisionsList(projectResponseModel: project),
           ),
+          if (project.interiorDesignId != null &&
+              project.interiorDesignId!.isNotEmpty) ...[
+            SizedBox(height: Resources.verticalDims.$32),
+            Padding(
+              padding: EdgeInsetsGeometry.directional(
+                start: Resources.horizontalDims.$24,
+                end: Resources.horizontalDims.$24,
+              ),
+              child: RelatedInteriorDesignCard(
+                interiorDesignId: project.interiorDesignId!,
+              ),
+            ),
+          ],
         ],
       ),
     );

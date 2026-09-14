@@ -38,9 +38,11 @@ class ProjectResponseModel extends Equatable {
     this.additionalNotes,
     this.engineer,
     this.estimatedTimeline,
+    this.interiorDesignId,
   });
 
   final String? id;
+  final String? interiorDesignId;
   final String? name;
   final ProjectStatus? status;
   final ProjectType? type;
@@ -117,12 +119,15 @@ class ProjectResponseModel extends Equatable {
             )
           : null,
       estimatedTimeline: json['estimated_timeline']?.toString(),
+      interiorDesignId: json['interior_design_id'] as String? ??
+          json['interiorDesignId'] as String?,
     );
   }
 
   Map<String, dynamic> toJson() {
     return {
       'id': id,
+      'interior_design_id': interiorDesignId,
       'name': name,
       'status_id': status?.id,
       'status': status?.id,
@@ -182,6 +187,7 @@ class ProjectResponseModel extends Equatable {
     String? additionalNotes,
     EngineerResponseModel? engineer,
     String? estimatedTimeline,
+    String? interiorDesignId,
   }) {
     return ProjectResponseModel(
       id: id ?? this.id,
@@ -210,12 +216,14 @@ class ProjectResponseModel extends Equatable {
       additionalNotes: additionalNotes ?? this.additionalNotes,
       engineer: engineer ?? this.engineer,
       estimatedTimeline: estimatedTimeline ?? this.estimatedTimeline,
+      interiorDesignId: interiorDesignId ?? this.interiorDesignId,
     );
   }
 
   @override
   List<Object?> get props => [
     id,
+    interiorDesignId,
     name,
     status,
     type,

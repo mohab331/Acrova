@@ -76,6 +76,18 @@ class _CTA extends StatelessWidget {
         onPressed: () {},
       );
     } else if (project.status == ProjectStatus.completed) {
+      if (project.interiorDesignId != null &&
+          project.interiorDesignId!.isNotEmpty) {
+        return AppPrimaryButton(
+          label: loc.viewInteriorDesign,
+          onPressed: () {
+            context.push(
+              AppRouteEnum.interiorDesignDetailPage.path,
+              extra: InteriorDesignDetailArgs(id: project.interiorDesignId),
+            );
+          },
+        );
+      }
       return AppPrimaryButton(
         label: loc.projectDetailPhaseIIInteriorDesign,
         onPressed: () {

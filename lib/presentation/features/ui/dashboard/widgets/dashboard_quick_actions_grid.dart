@@ -42,6 +42,11 @@ class DashboardQuickActionsGrid extends StatelessWidget {
         onTap: () => context.push(AppRouteEnum.paymentHistoryPage.path),
       ),
       DashboardQuickAction(
+        icon: Icons.chair_outlined,
+        label: loc.interiorDesignTitle,
+        onTap: () => context.push(AppRouteEnum.interiorDesignListPage.path),
+      ),
+      DashboardQuickAction(
         icon: Icons.edit_document,
         label: loc.dashboardActionRevision,
         onTap: () => context.push(AppRouteEnum.revisionHistoryPage.path),

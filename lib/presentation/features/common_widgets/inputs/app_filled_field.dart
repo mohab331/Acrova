@@ -12,10 +12,11 @@ class AppFilledField extends StatelessWidget {
     required this.controller,
     required this.onChanged,
     this.hint,
-    required this.validator,
+    this.validator,
     this.keyboardType,
     this.maxLines = 1,
     this.inputFormatters,
+    this.errorText,
     super.key,
   });
 
@@ -27,6 +28,7 @@ class AppFilledField extends StatelessWidget {
   final TextInputType? keyboardType;
   final int maxLines;
   final List<TextInputFormatter>? inputFormatters;
+  final String? errorText;
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -44,7 +46,7 @@ class AppFilledField extends StatelessWidget {
         ),
         SizedBox(height: Resources.verticalDims.$4),
         TextFormField(
-          inputFormatters: [],
+          inputFormatters: inputFormatters,
           validator: validator,
           autovalidateMode: AutovalidateMode.onUserInteraction,
           errorBuilder: (context, errorText) => Text(
@@ -67,6 +69,7 @@ class AppFilledField extends StatelessWidget {
             color: Resources.colors.luxuryInk,
           ),
           decoration: InputDecoration(
+            errorText: errorText,
             isDense: true,
             isCollapsed: true,
             filled: true,

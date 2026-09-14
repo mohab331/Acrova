@@ -2,7 +2,9 @@ import 'package:acrova/core/di/dependency_injector.dart';
 import 'package:acrova/core/di/injectors/base_injector.dart';
 import 'package:acrova/data/data_source/base/base_auth_data_source.dart';
 import 'package:acrova/data/data_source/base/base_billing_data_source.dart';
+import 'package:acrova/data/data_source/base/base_contact_us_data_source.dart';
 import 'package:acrova/data/data_source/base/base_dashboard_data_source.dart';
+import 'package:acrova/data/data_source/base/base_interior_design_data_source.dart';
 import 'package:acrova/data/data_source/base/base_notifications_data_source.dart';
 import 'package:acrova/data/data_source/base/base_project_data_source.dart';
 import 'package:acrova/data/data_source/base/base_revisions_data_source.dart';
@@ -16,7 +18,9 @@ import 'package:acrova/data/data_source/remote/network/api_client.dart';
 import 'package:acrova/data/data_source/remote/services/auth/remote_auth_data_source.dart';
 import 'package:acrova/data/data_source/remote/services/billing/remote_billing_data_source.dart';
 import 'package:acrova/data/data_source/remote/services/config/app_config_service.dart';
+import 'package:acrova/data/data_source/remote/services/contact_us/remote_contact_us_data_source.dart';
 import 'package:acrova/data/data_source/remote/services/dashboard/remote_dashboard_data_source.dart';
+import 'package:acrova/data/data_source/remote/services/interior_design/remote_interior_design_data_source.dart';
 import 'package:acrova/data/data_source/remote/services/notifications/remote_notifications_data_source.dart';
 import 'package:acrova/data/data_source/remote/services/project/remote_project_data_source.dart';
 import 'package:acrova/data/data_source/remote/services/revisions/remote_revisions_data_source.dart';
@@ -80,6 +84,19 @@ class DataSourcesInjector implements BaseInjector {
 
     () => serviceLocatorInstance.registerLazySingleton<BaseBillingDataSource>(
       () => RemoteBillingDataSource(
+        apiClient: serviceLocatorInstance<ApiClient>(),
+      ),
+    ),
+
+    () => serviceLocatorInstance
+        .registerLazySingleton<BaseInteriorDesignDataSource>(
+          () => RemoteInteriorDesignDataSource(
+            apiClient: serviceLocatorInstance<ApiClient>(),
+          ),
+        ),
+
+    () => serviceLocatorInstance.registerLazySingleton<BaseContactUsDataSource>(
+      () => RemoteContactUsDataSource(
         apiClient: serviceLocatorInstance<ApiClient>(),
       ),
     ),

@@ -1,4 +1,5 @@
 import 'package:acrova/data/models/response/billing/payment_response_model.dart';
+import 'package:acrova/data/models/response/interior_design/interior_design_response_model.dart';
 import 'package:acrova/data/models/response/portfolio/portfolio_item_response_model.dart';
 import 'package:acrova/data/models/response/portfolio/walkthrough_response_model.dart';
 import 'package:acrova/data/models/response/profile/user_profile_response_model.dart';
@@ -26,6 +27,17 @@ class InteriorDesignArgs extends Equatable {
 
   @override
   List<Object?> get props => [projectId];
+}
+
+/// Navigation arguments for Interior Design Detail Page.
+class InteriorDesignDetailArgs extends Equatable {
+  const InteriorDesignDetailArgs({this.id, this.interiorDesign});
+
+  final String? id;
+  final InteriorDesignResponseModel? interiorDesign;
+
+  @override
+  List<Object?> get props => [id, interiorDesign];
 }
 
 /// Navigation arguments for Portfolio Detail Page.

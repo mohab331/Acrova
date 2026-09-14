@@ -17,6 +17,8 @@ import 'package:acrova/presentation/features/ui/contact_us/contact_us_page.dart'
 import 'package:acrova/presentation/features/ui/dashboard/dashboard_page.dart';
 import 'package:acrova/presentation/features/ui/deliverables/deliverables_page.dart';
 import 'package:acrova/presentation/features/ui/interior_design/interior_design_page.dart';
+import 'package:acrova/presentation/features/ui/interior_design_detail/interior_design_detail_page.dart';
+import 'package:acrova/presentation/features/ui/interior_design_list/interior_design_list_page.dart';
 import 'package:acrova/presentation/features/ui/notifications/notifications_page.dart';
 import 'package:acrova/presentation/features/ui/portfolio/portfolio_detail_page.dart';
 import 'package:acrova/presentation/features/ui/portfolio/portfolio_page.dart';
@@ -99,6 +101,23 @@ class AppRouter {
         builder: (_, state) {
           final extra = state.extra as InteriorDesignArgs?;
           return InteriorDesignPage(args: extra);
+        },
+      ),
+
+      GoRoute(
+        parentNavigatorKey: rootNavigatorKey,
+        path: AppRouteEnum.interiorDesignListPage.path,
+        name: AppRouteEnum.interiorDesignListPage.name,
+        builder: (_, __) => const InteriorDesignListPage(),
+      ),
+
+      GoRoute(
+        parentNavigatorKey: rootNavigatorKey,
+        path: AppRouteEnum.interiorDesignDetailPage.path,
+        name: AppRouteEnum.interiorDesignDetailPage.name,
+        builder: (_, state) {
+          final extra = state.extra as InteriorDesignDetailArgs?;
+          return InteriorDesignDetailPage(args: extra);
         },
       ),
 

@@ -19,6 +19,7 @@ enum MockRepositoryKey {
   revisions,
   contactUs,
   appConfig,
+  interiorDesign,
 }
 
 class MockConfig {
