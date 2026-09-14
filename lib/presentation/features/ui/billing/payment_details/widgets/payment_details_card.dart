@@ -1,4 +1,3 @@
-import 'package:acrova/core/error/app_error_model.dart';
 import 'package:acrova/data/models/billing/payment_model.dart';
 import 'package:acrova/presentation/app/navigation/app_route_enum.dart';
 import 'package:acrova/presentation/app/navigation/args/navigation_args.dart';
@@ -9,8 +8,6 @@ import 'package:acrova/utils/extensions/localization_extension.dart';
 import 'package:acrova/utils/extensions/navigation_extension.dart';
 import 'package:acrova/utils/extensions/theme_extension.dart';
 import 'package:acrova/utils/formatters/app_formatter.dart';
-import 'package:acrova/utils/helpers/download_helper.dart';
-import 'package:acrova/utils/helpers/ui_helper.dart';
 import 'package:flutter/material.dart';
 
 class PaymentDetailsCard extends StatelessWidget {
@@ -255,14 +252,14 @@ class PaymentDetailsCard extends StatelessWidget {
                     ),
                   ],
 
-                  if (isSuccess || isPending) ...[
+                  if (isPending) ...[
                     SizedBox(height: Resources.verticalDims.$24),
                     SizedBox(
                       width: double.infinity,
                       height: Resources.verticalDims.$48,
                       child: ElevatedButton.icon(
                         onPressed: () async {
-                          await _onCTATapped(isPending, context, isSuccess);
+                          await _onCTATapped(true, context);
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Resources.colors.luxuryNavy,
@@ -279,9 +276,7 @@ class PaymentDetailsCard extends StatelessWidget {
                           size: Resources.iconSizes.$20,
                         ),
                         label: Text(
-                          isPending
-                              ? loc.paymentDetailsPay
-                              : loc.paymentDetailsDownloadPdf,
+                          loc.paymentDetailsPay,
                           style: context.textTheme.labelLarge?.copyWith(
                             fontWeight: Resources.fontWeights.medium,
                             color: Resources.colors.white,
@@ -299,11 +294,7 @@ class PaymentDetailsCard extends StatelessWidget {
     );
   }
 
-  Future<void> _onCTATapped(
-    bool isPending,
-    BuildContext context,
-    bool isSuccess,
-  ) async {
+  Future<void> _onCTATapped(bool isPending, BuildContext context) async {
     if (isPending) {
       await context.push(
         AppRouteEnum.makePaymentPage.name,
@@ -311,23 +302,5 @@ class PaymentDetailsCard extends StatelessWidget {
       );
       return;
     }
-    if (isSuccess && (payment.receiptUrl?.isNotEmpty ?? false)) {
-      try {
-        await DownloadHelper.downloadAndShare(
-          context,
-          payment.receiptUrl ?? '',
-          '${payment.id}',
-        );
-      } catch (e, s) {
-        if (!context.mounted) return;
-        await CustomToastification.error(
-          context: context,
-          errorModel: AppErrorModel.fromException(e, stackTrace: s),
-        ).showToast();
-
-      }
-      return;
-    }
-
   }
 }
