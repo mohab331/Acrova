@@ -45,8 +45,6 @@ class PaymentHistoryCubit extends Cubit<PaymentHistoryState> {
     PaymentFilter filter,
   ) {
     if (filter == PaymentFilter.all) return payments;
-    return payments
-        .where((p) => p.status?.name.toLowerCase() == filter.name.toLowerCase())
-        .toList();
+    return payments.where((p) => p.status?.id == filter.id).toList();
   }
 }

@@ -44,7 +44,7 @@ enum DeliverableType {
 extension DeliverableTypeX on DeliverableType {
   String get jsonKey => value;
 
-  static DeliverableType fromJson(String key) {
-    return DeliverableType.fromValue(key) ?? DeliverableType.other;
+  static DeliverableType? fromJson(dynamic key) {
+    return DeliverableType.fromValue(key);
   }
 }

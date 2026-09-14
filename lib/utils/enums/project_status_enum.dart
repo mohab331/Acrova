@@ -17,13 +17,17 @@ enum ProjectStatus {
   const ProjectStatus(this.stepId);
 
   final int stepId;
+  int get id => stepId;
 
-  static ProjectStatus fromStepId(int? stepId) {
-    return ProjectStatus.values.firstWhere(
-      (status) => status.stepId == stepId,
-      orElse: () => ProjectStatus.awaitingPricing,
-    );
+  static ProjectStatus? fromId(int? id) {
+    if (id == null) return null;
+    for (final status in ProjectStatus.values) {
+      if (status.stepId == id) return status;
+    }
+    return null;
   }
+
+  static ProjectStatus? fromStepId(int? stepId) => fromId(stepId);
 }
 
 extension ProjectStatusX on ProjectStatus {
@@ -150,5 +154,5 @@ extension ProjectStatusX on ProjectStatus {
 
   String get jsonKey => _jsonMap.entries.firstWhere((e) => e.value == this).key;
 
-  static ProjectStatus fromJson(int? value) => ProjectStatus.fromStepId(value);
+  static ProjectStatus? fromJson(int? value) => ProjectStatus.fromId(value);
 }

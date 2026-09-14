@@ -81,18 +81,16 @@ class ProjectResponseModel extends Equatable {
 
   String get progressLabel => '${(progressRatio * 100).round()}%';
 
-  factory ProjectResponseModel.fromJson(Map<String, dynamic> json) {
+    factory ProjectResponseModel.fromJson(Map<String, dynamic> json) {
     return ProjectResponseModel(
       id: json['id']?.toString(),
       name: json['name']?.toString(),
-      status: json['status'] != null
-          ? ProjectStatusX.fromJson(
-              int.tryParse(json['status']?.toString() ?? ''),
-            )
-          : null,
-      type: json['type'] != null
-          ? ProjectType.fromJson(json['type'].toString())
-          : null,
+      status: ProjectStatus.fromId(
+        _parseInt(json['status_id'] ?? json['status']),
+      ),
+      type: ProjectType.fromId(
+        _parseInt(json['type_id'] ?? json['project_type_id'] ?? json['type']),
+      ),
       createdAt: _parseDateTime(json['created_at']),
       location: json['location']?.toString(),
       landAreaSqm: _parseDouble(json['land_area_sqm'] ?? json['land_area']),
@@ -108,16 +106,20 @@ class ProjectResponseModel extends Equatable {
       hasBasement: _parseBool(json['has_basement']),
       hasPool: _parseBool(json['has_pool']),
       hasRooftop: _parseBool(json['has_rooftop']),
-      smartHomeLevel: SmartHomeLevel.fromValue(
-        int.tryParse(json['smart_home_level'].toString()) ?? 0,
+      smartHomeLevel: SmartHomeLevel.fromId(
+        _parseInt(json['smart_home_level_id'] ?? json['smart_home_level']),
       ),
-      architecturalStyle: DesignStyle.fromValue(
-        int.tryParse(json['architectural_style']?.toString() ?? ''),
+      architecturalStyle: DesignStyle.fromId(
+        _parseInt(
+          json['architectural_style_id'] ??
+              json['style_id'] ??
+              json['architectural_style'],
+        ),
       ),
       thumbnailUrl: json['thumbnail_url']?.toString(),
       deliverables: _parseList(
         json['deliverables'],
-        (item) => DeliverableResponseModel.fromJson(item),
+        DeliverableResponseModel.fromJson,
       ),
       additionalNotes: json['additionalNotes']?.toString(),
       engineer: json['engineer'] is Map
@@ -133,8 +135,10 @@ class ProjectResponseModel extends Equatable {
     return {
       'id': id,
       'name': name,
-      'status': status?.jsonKey,
-      'type': type?.jsonKey,
+      'status_id': status?.id,
+      'status': status?.id,
+      'type_id': type?.id,
+      'type': type?.id,
       'created_at': createdAt?.toIso8601String(),
       'location': location,
       'land_area_sqm': landAreaSqm,
@@ -150,7 +154,9 @@ class ProjectResponseModel extends Equatable {
       'has_basement': hasBasement,
       'has_pool': hasPool,
       'has_rooftop': hasRooftop,
-      'smart_home_level': smartHomeLevel,
+      'smart_home_level_id': smartHomeLevel?.id,
+      'smart_home_level': smartHomeLevel?.id,
+      'architectural_style_id': architecturalStyle?.id,
       'architectural_style': architecturalStyle?.id,
       'thumbnail_url': thumbnailUrl,
       'deliverables': deliverables?.map((e) => e.toJson()).toList(),

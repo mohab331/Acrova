@@ -53,7 +53,6 @@ import 'package:acrova/presentation/app/resources/resources.dart';
 import 'package:acrova/utils/enums/design_style_enum.dart';
 import 'package:acrova/utils/enums/project_status_enum.dart';
 import 'package:acrova/utils/enums/project_type_enum.dart';
-import 'package:acrova/utils/enums/revision_status_enum.dart';
 import 'package:acrova/utils/enums/smart_home_level_enum.dart';
 import 'package:acrova/utils/helpers/result.dart';
 
@@ -100,7 +99,7 @@ class MockAuthRepo extends _MockBase implements BaseAuthRepo {
     email: 'mohab@acrova.sa',
     mobileNumber: '+966500000000',
     nationalId: '1000000000',
-    language: 'ar',
+    language: LanguageCodes.arabic,
     memberSince: DateTime(2023, 1, 1),
     projectsCount: 3,
     completedCount: 1,
@@ -160,7 +159,7 @@ class MockAuthRepo extends _MockBase implements BaseAuthRepo {
       email: request.email,
       mobileNumber: request.mobileNumber,
       nationalId: _currentProfile?.nationalId ?? '1000000000',
-      language: _currentProfile?.language ?? 'ar',
+      language: _currentProfile?.language ?? LanguageCodes.arabic,
       memberSince: _currentProfile?.memberSince ?? DateTime(2023, 1, 1),
       projectsCount: _currentProfile?.projectsCount ?? 3,
       completedCount: _currentProfile?.completedCount ?? 1,
@@ -748,7 +747,7 @@ class MockPortfolioRepo extends _MockBase implements BasePortfolioRepo {
   static const List<PortfolioItemResponseModel> _mockItems = [
     PortfolioItemResponseModel(
       id: 'grand_residence',
-      style: 'Neoclassicism',
+      style: DesignStyle.neoClassical,
       category: 'exterior',
       title: 'The Grand Residence',
       location: 'Jeddah',
@@ -792,7 +791,7 @@ class MockPortfolioRepo extends _MockBase implements BasePortfolioRepo {
         duration: '3:38 m',
       ),
       id: 'alrashidi',
-      style: 'Contemporary Arabic',
+      style: DesignStyle.contemporary,
       category: 'exterior',
       title: 'The Al-Rashidi Residence',
       location: 'Riyadh',
@@ -815,7 +814,7 @@ class MockPortfolioRepo extends _MockBase implements BasePortfolioRepo {
     ),
     PortfolioItemResponseModel(
       id: 'glass_villa',
-      style: 'Modernism',
+      style: DesignStyle.modern,
       category: 'modern',
       title: 'Glass Villa',
       location: 'Khobar',
@@ -835,7 +834,7 @@ class MockPortfolioRepo extends _MockBase implements BasePortfolioRepo {
     ),
     PortfolioItemResponseModel(
       id: 'al_omran',
-      style: 'Traditional',
+      style: DesignStyle.classic,
       category: 'traditional',
       title: 'Al-Omran',
       location: 'Diriyah',
@@ -855,7 +854,7 @@ class MockPortfolioRepo extends _MockBase implements BasePortfolioRepo {
     ),
     PortfolioItemResponseModel(
       id: 'the_majlis',
-      style: 'Interior',
+      style: DesignStyle.minimalist,
       category: 'interior',
       title: 'The Majlis',
       location: 'Riyadh',
@@ -875,7 +874,7 @@ class MockPortfolioRepo extends _MockBase implements BasePortfolioRepo {
     ),
     PortfolioItemResponseModel(
       id: 'desert_pavilion',
-      style: 'Exterior',
+      style: DesignStyle.contemporary,
       category: 'exterior',
       title: 'Desert Pavilion',
       location: 'AlUla',

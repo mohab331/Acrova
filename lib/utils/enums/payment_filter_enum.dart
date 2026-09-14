@@ -3,13 +3,14 @@ import 'package:flutter/widgets.dart';
 
 /// Filter options for payment history list.
 enum PaymentFilter {
-  all('All'),
-  success('Success'),
-  pending('Pending'),
-  rejected('Rejected');
+  all(0, 'All'),
+  success(1, 'Success'),
+  pending(2, 'Pending'),
+  rejected(3, 'Rejected');
 
+  final int id;
   final String value;
-  const PaymentFilter(this.value);
+  const PaymentFilter(this.id, this.value);
 
   String localizedLabel(BuildContext context) {
     final loc = context.localization;
@@ -21,11 +22,24 @@ enum PaymentFilter {
     };
   }
 
-  static PaymentFilter? fromValue(String? value) {
-    if (value == null) return null;
+  static PaymentFilter? fromId(int? id) {
+    if (id == null) return null;
     for (final item in PaymentFilter.values) {
-      if (item.value.toLowerCase() == value.toLowerCase() ||
-          item.name.toLowerCase() == value.toLowerCase()) {
+      if (item.id == id) {
+        return item;
+      }
+    }
+    return null;
+  }
+
+  static PaymentFilter? fromValue(dynamic value) {
+    if (value == null) return null;
+    if (value is int) return fromId(value);
+    final parsed = int.tryParse(value.toString());
+    if (parsed != null) return fromId(parsed);
+    for (final item in PaymentFilter.values) {
+      if (item.value.toLowerCase() == value.toString().toLowerCase() ||
+          item.name.toLowerCase() == value.toString().toLowerCase()) {
         return item;
       }
     }

@@ -41,10 +41,24 @@ enum DesignStyle {
     };
   }
 
-  static DesignStyle? fromValue(int? id) {
+  static DesignStyle? fromId(int? id) {
     if (id == null) return null;
     for (final item in DesignStyle.values) {
       if (item.id == id) {
+        return item;
+      }
+    }
+    return null;
+  }
+
+  static DesignStyle? fromValue(dynamic value) {
+    if (value == null) return null;
+    if (value is int) return fromId(value);
+    final parsed = int.tryParse(value.toString());
+    if (parsed != null) return fromId(parsed);
+    for (final item in DesignStyle.values) {
+      if (item.value.toLowerCase() == value.toString().toLowerCase() ||
+          item.name.toLowerCase() == value.toString().toLowerCase()) {
         return item;
       }
     }

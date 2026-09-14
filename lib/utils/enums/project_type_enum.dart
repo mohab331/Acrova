@@ -3,12 +3,13 @@ import 'package:flutter/widgets.dart';
 
 /// Type of project the customer is commissioning.
 enum ProjectType {
-  villa('villa'),
-  houseApartment('house_apartment'),
-  commercial('commercial');
+  villa(1, 'villa'),
+  houseApartment(2, 'house_apartment'),
+  commercial(3, 'commercial');
 
+  final int id;
   final String value;
-  const ProjectType(this.value);
+  const ProjectType(this.id, this.value);
 
   String get displayLabel {
     switch (this) {
@@ -43,19 +44,33 @@ enum ProjectType {
 
   String get jsonKey => value;
 
-  static ProjectType? fromValue(String? value) {
-    if (value == null) return null;
+  static ProjectType? fromId(int? id) {
+    if (id == null) return null;
     for (final item in ProjectType.values) {
-      if (item.value == value || item.name == value) {
+      if (item.id == id) return item;
+    }
+    return null;
+  }
+
+  static ProjectType? fromValue(dynamic value) {
+    if (value == null) return null;
+    if (value is int) return fromId(value);
+    final str = value.toString().trim();
+    final parsedInt = int.tryParse(str);
+    if (parsedInt != null) {
+      final match = fromId(parsedInt);
+      if (match != null) return match;
+    }
+    for (final item in ProjectType.values) {
+      if (item.value.toLowerCase() == str.toLowerCase() ||
+          item.name.toLowerCase() == str.toLowerCase()) {
         return item;
       }
     }
     return null;
   }
 
-  static ProjectType fromJson(String value) {
-    return fromValue(value) ?? ProjectType.villa;
-  }
+  static ProjectType? fromJson(dynamic value) => fromValue(value);
 }
 
 extension ProjectTypeX on ProjectType {

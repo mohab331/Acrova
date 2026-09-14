@@ -2,7 +2,6 @@ import 'package:acrova/data/data_source/local/services/image_picker/base_image_p
 import 'package:acrova/data/models/request/revision/create_revision_request_model.dart';
 import 'package:acrova/domain/repository/revisions/base_revisions_repo.dart';
 import 'package:acrova/utils/enums/cubit_status.dart';
-import 'package:acrova/utils/enums/revision_category_enum.dart';
 import 'package:acrova/utils/enums/revision_request_field_error_enum.dart';
 import 'package:acrova/utils/helpers/safe_async_call.dart';
 import 'package:acrova/utils/logging/app_logger.dart';
@@ -111,6 +110,7 @@ class RevisionRequestCubit extends Cubit<RevisionRequestState> {
     final result = await _revisionsRepo.createRevision(
       CreateRevisionRequestModel(
         details: state.details.trim(),
+        category: state.selectedCategory,
         deliverableRef: state.deliverableRef,
         attachmentPaths: state.attachmentPaths,
         isPaid: !(state.quota?.hasFreeRemaining ?? true),

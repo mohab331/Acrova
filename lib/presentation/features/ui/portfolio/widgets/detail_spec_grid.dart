@@ -15,7 +15,10 @@ class DetailSpecGrid extends StatelessWidget {
     final specs = [
       (l10n.specArea, item?.area),
       (l10n.specFloors, item?.floors),
-      (l10n.specStyle, item?.style),
+      (
+        l10n.specStyle,
+        item?.style?.localizedLabel(context) ?? item?.style?.label,
+      ),
       (l10n.specLocation, item?.location),
     ];
 

@@ -24,9 +24,14 @@ class DeliverableResponseModel extends Equatable {
       DeliverableResponseModel(
         id: json['id']?.toString(),
         title: json['title']?.toString(),
-        type: json['type'] != null
-            ? DeliverableTypeX.fromJson(json['type'].toString())
-            : null,
+        type: DeliverableType.fromId(
+          int.tryParse(
+            json['type_id']?.toString() ??
+                json['deliverable_type_id']?.toString() ??
+                json['type']?.toString() ??
+                '',
+          ),
+        ) ?? DeliverableType.fromValue(json['type']),
         url: json['url']?.toString(),
         thumbnailUrl: json['thumbnail_url']?.toString(),
         createdAt: json['created_at'] != null
@@ -37,7 +42,8 @@ class DeliverableResponseModel extends Equatable {
   Map<String, dynamic> toJson() => {
     'id': id,
     'title': title,
-    'type': type?.jsonKey,
+    'type_id': type?.id,
+    'type': type?.id,
     'url': url,
     'thumbnail_url': thumbnailUrl,
     'created_at': createdAt?.toIso8601String(),

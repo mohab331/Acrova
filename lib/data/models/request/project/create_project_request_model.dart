@@ -71,7 +71,8 @@ class CreateProjectRequestModel extends BaseRequestModel {
 
   @override
   Map<String, dynamic> toJson() => {
-    'project_type': projectType.jsonKey,
+    'project_type_id': projectType.id,
+    'project_type': projectType.id,
     'location': location,
     'land_area_sqm': landAreaSqm,
     'land_width_m': landWidthM,
@@ -86,8 +87,10 @@ class CreateProjectRequestModel extends BaseRequestModel {
     'has_basement': hasBasement,
     'has_pool': hasPool,
     'has_rooftop': hasRooftop,
-    'smart_home_level': smartHomeLevel,
-    'architectural_style': architecturalStyle,
+    'smart_home_level_id': smartHomeLevel.id,
+    'smart_home_level': smartHomeLevel.id,
+    'architectural_style_id': architecturalStyle?.id,
+    'architectural_style': architecturalStyle?.id,
     'additional_notes': additionalNotes,
     'media_count': mediaPaths.length,
   };

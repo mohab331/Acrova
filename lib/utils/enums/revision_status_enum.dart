@@ -3,11 +3,12 @@ import 'package:flutter/widgets.dart';
 
 /// Lifecycle status of a customer revision request.
 enum RevisionStatus {
-  inProgress('in_progress'),
-  completed('completed');
+  inProgress(1, 'in_progress'),
+  completed(2, 'completed');
 
+  final int id;
   final String value;
-  const RevisionStatus(this.value);
+  const RevisionStatus(this.id, this.value);
 
   String get displayLabel {
     switch (this) {
@@ -34,17 +35,29 @@ enum RevisionStatus {
 
   bool get isInProgress => this == RevisionStatus.inProgress;
 
-  static RevisionStatus? fromValue(String? value) {
-    if (value == null) return null;
+  static RevisionStatus? fromId(int? id) {
+    if (id == null) return null;
     for (final item in RevisionStatus.values) {
-      if (item.value == value || item.name == value) {
+      if (item.id == id) {
         return item;
       }
     }
     return null;
   }
 
-  static RevisionStatus fromJson(String value) {
-    return fromValue(value) ?? RevisionStatus.inProgress;
+  static RevisionStatus? fromValue(dynamic value) {
+    if (value == null) return null;
+    if (value is int) return fromId(value);
+    final parsed = int.tryParse(value.toString());
+    if (parsed != null) return fromId(parsed);
+    for (final item in RevisionStatus.values) {
+      if (item.value.toLowerCase() == value.toString().toLowerCase() ||
+          item.name.toLowerCase() == value.toString().toLowerCase()) {
+        return item;
+      }
+    }
+    return null;
   }
+
+  static RevisionStatus? fromJson(dynamic value) => fromValue(value);
 }

@@ -20,11 +20,24 @@ enum SmartHomeLevel {
     };
   }
 
-  static SmartHomeLevel? fromValue(int? value) {
-    if (value == null) return null;
-
+  static SmartHomeLevel? fromId(int? id) {
+    if (id == null) return null;
     for (final item in SmartHomeLevel.values) {
-      if (item.id == value) {
+      if (item.id == id) {
+        return item;
+      }
+    }
+    return null;
+  }
+
+  static SmartHomeLevel? fromValue(dynamic value) {
+    if (value == null) return null;
+    if (value is int) return fromId(value);
+    final parsed = int.tryParse(value.toString());
+    if (parsed != null) return fromId(parsed);
+    for (final item in SmartHomeLevel.values) {
+      if (item.value.toLowerCase() == value.toString().toLowerCase() ||
+          item.name.toLowerCase() == value.toString().toLowerCase()) {
         return item;
       }
     }

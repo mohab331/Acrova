@@ -1,3 +1,4 @@
+import 'package:acrova/utils/enums/design_style_enum.dart';
 import 'package:equatable/equatable.dart';
 
 import 'walkthrough_response_model.dart';
@@ -18,7 +19,7 @@ class PortfolioItemResponseModel extends Equatable {
   });
 
   final String? id;
-  final String? style;
+  final DesignStyle? style;
   final String? category;
   final String? title;
   final String? location;
@@ -29,10 +30,14 @@ class PortfolioItemResponseModel extends Equatable {
   final List<String>? features;
   final WalkthroughResponseModel? walkthroughModel;
 
+  String? get styleLabel => style?.label;
+
   factory PortfolioItemResponseModel.fromJson(Map<String, dynamic> json) =>
       PortfolioItemResponseModel(
         id: json['id']?.toString(),
-        style: json['style']?.toString(),
+        style: DesignStyle.fromId(
+          _parseInt(json['style_id'] ?? json['style']),
+        ),
         category: json['category']?.toString(),
         title: json['title']?.toString(),
         location: json['location']?.toString(),
@@ -54,7 +59,8 @@ class PortfolioItemResponseModel extends Equatable {
 
   Map<String, dynamic> toJson() => {
     'id': id,
-    'style': style,
+    'style_id': style?.id,
+    'style': style?.id,
     'category': category,
     'title': title,
     'location': location,
@@ -65,6 +71,12 @@ class PortfolioItemResponseModel extends Equatable {
     'features': features,
     'walkthroughModel': walkthroughModel?.toJson(),
   };
+
+  static int? _parseInt(dynamic value) {
+    if (value == null) return null;
+    if (value is num) return value.toInt();
+    return int.tryParse(value.toString());
+  }
 
   @override
   List<Object?> get props => [
