@@ -2,6 +2,7 @@ import 'package:acrova/presentation/app/navigation/app_router.dart';
 import 'package:acrova/presentation/app/resources/resources.dart';
 import 'package:acrova/presentation/features/cubit/auth/auth_cubit.dart';
 import 'package:acrova/presentation/features/cubit/localization/localization_cubit.dart';
+import 'package:acrova/presentation/features/ui/notifications/cubit/notifications_cubit.dart';
 import 'package:acrova/presentation/features/ui/splash/splash/cubit/splash_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -26,6 +27,9 @@ class AcrovaApp extends StatelessWidget {
           create: (context) =>
               serviceLocatorInstance<SplashCubit>()
                 ..init(defaultLocale: LocalizationCubit.initialLocale),
+        ),
+        BlocProvider(
+          create: (_) => serviceLocatorInstance<NotificationsCubit>(),
         ),
       ],
       child: ScreenUtilInit(

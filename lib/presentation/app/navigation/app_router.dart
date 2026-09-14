@@ -17,7 +17,6 @@ import 'package:acrova/presentation/features/ui/contact_us/contact_us_page.dart'
 import 'package:acrova/presentation/features/ui/dashboard/dashboard_page.dart';
 import 'package:acrova/presentation/features/ui/deliverables/deliverables_page.dart';
 import 'package:acrova/presentation/features/ui/interior_design/interior_design_page.dart';
-import 'package:acrova/presentation/features/ui/notifications/cubit/notifications_cubit.dart';
 import 'package:acrova/presentation/features/ui/notifications/notifications_page.dart';
 import 'package:acrova/presentation/features/ui/portfolio/portfolio_detail_page.dart';
 import 'package:acrova/presentation/features/ui/portfolio/portfolio_page.dart';
@@ -33,7 +32,6 @@ import 'package:acrova/presentation/features/ui/revisions/request/revision_reque
 import 'package:acrova/presentation/features/ui/shell/shell_scaffold.dart';
 import 'package:acrova/presentation/features/ui/splash/splash/splash_page.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
 import 'app_route_enum.dart';
@@ -264,16 +262,8 @@ class AppRouter {
 
       // ── Main Shell (bottom nav) ──────────────────────────────────────────
       StatefulShellRoute.indexedStack(
-        builder: (_, __, navigationShell) => MultiBlocProvider(
-          providers: [
-            BlocProvider(
-              create: (_) =>
-                  serviceLocatorInstance<NotificationsCubit>()
-                    ..fetchNotifications(),
-            ),
-          ],
-          child: ShellScaffold(navigationShell: navigationShell),
-        ),
+        builder: (_, __, navigationShell) =>
+            ShellScaffold(navigationShell: navigationShell),
         branches: [
           // HOME tab
           StatefulShellBranch(
