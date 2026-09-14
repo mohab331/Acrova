@@ -4,6 +4,7 @@ import 'package:acrova/presentation/features/ui/dashboard/cubit/dashboard_cubit.
 import 'package:acrova/presentation/features/ui/dashboard/widgets/dashboard_content.dart';
 import 'package:acrova/presentation/features/ui/portfolio/cubit/portfolio_cubit.dart';
 import 'package:acrova/presentation/features/ui/projects/cubit/projects_cubit.dart';
+import 'package:acrova/presentation/features/cubit/auth/auth_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -18,8 +19,13 @@ class DashboardPage extends StatelessWidget {
           create: (context) => serviceLocatorInstance<DashboardCubit>(),
         ),
         BlocProvider(
-          create: (context) =>
-              serviceLocatorInstance<ProjectsCubit>()..fetchProjects(),
+          create: (context) {
+            final cubit = serviceLocatorInstance<ProjectsCubit>();
+            if (!context.read<AuthCubit>().state.isGuest) {
+              cubit.fetchProjects();
+            }
+            return cubit;
+          },
         ),
         BlocProvider(
           create: (context) =>

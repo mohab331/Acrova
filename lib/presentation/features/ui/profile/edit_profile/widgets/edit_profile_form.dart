@@ -13,6 +13,7 @@ class EditProfileForm extends StatelessWidget {
     required this.emailController,
     required this.mobileController,
     required this.nationalIDController,
+    required this.isMobileReadOnly,
     super.key,
   });
 
@@ -20,6 +21,7 @@ class EditProfileForm extends StatelessWidget {
   final TextEditingController emailController;
   final TextEditingController mobileController;
   final TextEditingController nationalIDController;
+  final bool isMobileReadOnly;
 
   @override
   Widget build(BuildContext context) {
@@ -42,9 +44,10 @@ class EditProfileForm extends StatelessWidget {
               controller: mobileController,
               label: l10n.editProfileMobileLabel,
               hint: l10n.editProfileMobileHint,
-              validator: AppValidators.saudiPhone,
+              readOnly: isMobileReadOnly,
+              validator: isMobileReadOnly ? null : AppValidators.saudiPhone,
               keyboardType: TextInputType.phone,
-              onChanged: cubit.updateMobile,
+              onChanged: isMobileReadOnly ? null : cubit.updateMobile,
             ),
             SizedBox(height: Resources.verticalDims.$24),
             AppFilledField(

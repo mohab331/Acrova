@@ -6,6 +6,8 @@ import 'package:acrova/presentation/features/common_widgets/app_bar/app_app_bar.
 import 'package:acrova/presentation/features/common_widgets/common_screen/common_screen.dart';
 import 'package:acrova/presentation/features/common_widgets/feedback/app_empty_state.dart';
 import 'package:acrova/presentation/features/common_widgets/feedback/common_error_widget.dart';
+import 'package:acrova/presentation/features/common_widgets/feedback/visitor_empty_state.dart';
+import 'package:acrova/presentation/features/cubit/auth/auth_cubit.dart';
 import 'package:acrova/presentation/features/ui/interior_design_list/cubit/interior_design_list_cubit.dart';
 import 'package:acrova/presentation/features/ui/interior_design_list/cubit/interior_design_list_state.dart';
 import 'package:acrova/presentation/features/ui/interior_design_list/widgets/interior_design_card.dart';
@@ -23,9 +25,13 @@ class InteriorDesignListPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) =>
-          serviceLocatorInstance<InteriorDesignListCubit>()
-            ..fetchInteriorDesigns(),
+      create: (context) {
+        final cubit = serviceLocatorInstance<InteriorDesignListCubit>();
+        if (!context.read<AuthCubit>().state.isGuest) {
+          cubit.fetchInteriorDesigns();
+        }
+        return cubit;
+      },
       child: const _InteriorDesignListView(),
     );
   }
@@ -37,6 +43,7 @@ class _InteriorDesignListView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final loc = context.localization;
+    final isGuest = context.watch<AuthCubit>().state.isGuest;
 
     return CommonScreen(
       bottomPadding: 0,
@@ -45,6 +52,12 @@ class _InteriorDesignListView extends StatelessWidget {
       ),
       child: BlocBuilder<InteriorDesignListCubit, InteriorDesignListState>(
         builder: (context, state) {
+          if (isGuest) {
+            return VisitorEmptyState(
+              icon: Icons.chair_outlined,
+              title: loc.visitorInteriorDesignsTitle,
+            );
+          }
           if (state.isLoading || state.cubitStatus == CubitStatus.initial) {
             return const InteriorDesignListSkeleton();
           }

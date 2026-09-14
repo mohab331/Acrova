@@ -31,7 +31,6 @@ class UserProfileResponseModel extends Equatable {
   /// Whether all mandatory profile fields are filled.
   bool get isProfileComplete {
     return (name?.trim().isNotEmpty ?? false) &&
-        (email?.trim().isNotEmpty ?? false) &&
         (mobileNumber?.trim().isNotEmpty ?? false) &&
         (nationalId?.trim().isNotEmpty ?? false);
   }

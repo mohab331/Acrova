@@ -632,8 +632,8 @@
   "bankAccountNameDefault": "Arcova Real Estate",
   "resend_otp_success": "A new verification code has been sent.",
   "resend_otp_limit": "You’ve reached the resend limit. Please try again shortly.",
-  "login_visitor" : "Log in to unlock your personalized experience.",
-  "login" : "Log in",
+  "login_visitor": "Log in to unlock your personalized experience.",
+  "login": "Log in",
   "continueAsGuest": "Continue as a guest?",
   "submit": "Submit",
   "updatedSuccessfully": "Updated successfully",
@@ -665,5 +665,10 @@
   "interiorDesignActionRequestRevision": "Request Revision",
   "included": "Included",
   "notIncluded": "Not Included",
-  "sar": "SAR"
+  "sar": "SAR",
+  "visitorProfileTitle": "Your Profile",
+  "visitorPaymentHistoryTitle": "Payment History",
+  "visitorDeliverablesTitle": "Deliverables",
+  "visitorRevisionsTitle": "Revisions",
+  "visitorInteriorDesignsTitle": "Interior Designs"
 }
