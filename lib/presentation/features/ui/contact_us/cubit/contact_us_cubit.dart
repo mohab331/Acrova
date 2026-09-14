@@ -33,7 +33,7 @@ class ContactUsCubit extends Cubit<ContactUsState> {
     final email = state.email.trim();
     final details = state.details.trim();
 
-    final emailInvalid = email.isNotEmpty && !AppValidators.isValidEmail(email);
+    final emailInvalid = email.isEmpty || !AppValidators.isValidEmail(email);
     final detailsMissing = details.isEmpty;
 
     if (emailInvalid || detailsMissing) {

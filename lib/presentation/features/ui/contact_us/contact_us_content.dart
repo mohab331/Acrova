@@ -9,6 +9,7 @@ import 'package:acrova/utils/enums/cubit_status.dart';
 import 'package:acrova/utils/extensions/localization_extension.dart';
 import 'package:acrova/utils/extensions/theme_extension.dart';
 import 'package:acrova/utils/helpers/launcher_service.dart';
+import 'package:acrova/utils/helpers/ui_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -48,10 +49,19 @@ class _ContactUsViewState extends State<ContactUsContent> {
 
     return BlocListener<ContactUsCubit, ContactUsState>(
       listenWhen: (p, c) => p.cubitStatus != c.cubitStatus,
-      listener: (context, state) {
+      listener: (BuildContext context, ContactUsState state) {
         if (state.cubitStatus == CubitStatus.success) {
           _detailsController.clear();
           context.read<ContactUsCubit>().updateDetails('');
+          CustomToastification.success(
+            context: context,
+            message: l10n.contactUsSuccess,
+          ).showToast();
+        } else if (state.cubitStatus == CubitStatus.error) {
+          CustomToastification.error(
+            context: context,
+            errorModel: state.appErrorModel,
+          ).showToast();
         }
       },
       child: CommonScreen(

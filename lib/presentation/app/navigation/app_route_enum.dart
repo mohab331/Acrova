@@ -22,6 +22,14 @@ enum AppRouteEnum {
     name: 'interior_design_phase_one_page',
     path: '/interior-design-phase-one',
   ),
+  interiorDesignListPage(
+    name: 'interior_design_list_page',
+    path: '/interior-designs',
+  ),
+  interiorDesignDetailPage(
+    name: 'interior_design_detail_page',
+    path: '/interior-design-detail',
+  ),
 
   // ── Project detail (full-screen, above shell) ─────────────────────────────────
   projectDetailPage(name: 'project_detail_page', path: '/project_detail'),

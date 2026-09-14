@@ -51,6 +51,11 @@ class AuthCubit extends Cubit<AuthCubitState> {
     );
   }
 
+  /// Prevents later profile refreshes from retriggering OTP completion routing.
+  void markPostLoginRoutingHandled() {
+    emit(state.copyWith(verifyOTPCubitStatus: CubitStatus.initial));
+  }
+
   Future<void> resendOTP() async {
     emit(state.copyWith(resendOTPCubitStatus: CubitStatus.loading));
     final result = await _baseAuthRepo.login(
@@ -69,7 +74,12 @@ class AuthCubit extends Cubit<AuthCubitState> {
   }
 
   Future<void> getUser() async {
-    emit(state.copyWith(getUserCubitStatus: CubitStatus.loading));
+    emit(
+      state.copyWith(
+        getUserCubitStatus: CubitStatus.loading,
+        clearUserModel: true,
+      ),
+    );
     final response = await _baseAuthRepo.getUserProfile();
     response.when(
       success: (data) {

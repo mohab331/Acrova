@@ -6,6 +6,8 @@ import 'package:acrova/presentation/features/common_widgets/app_bar/app_auth_bra
 import 'package:acrova/presentation/features/common_widgets/common_screen/common_screen.dart';
 import 'package:acrova/presentation/features/common_widgets/feedback/common_error_widget.dart';
 import 'package:acrova/presentation/features/common_widgets/feedback/common_shimmer_loading.dart';
+import 'package:acrova/presentation/features/common_widgets/feedback/visitor_empty_state.dart';
+import 'package:acrova/presentation/features/cubit/auth/auth_cubit.dart';
 import 'package:acrova/presentation/features/ui/billing/payment_history/cubit/payment_history_cubit.dart';
 import 'package:acrova/presentation/features/ui/billing/payment_history/cubit/payment_history_state.dart';
 import 'package:acrova/presentation/features/ui/billing/payment_history/widgets/payment_filter.dart';
@@ -23,8 +25,11 @@ class PaymentHistoryView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) =>
-          serviceLocatorInstance<PaymentHistoryCubit>()..fetchPayments(),
+      create: (context) {
+        final cubit = serviceLocatorInstance<PaymentHistoryCubit>();
+        if (!context.read<AuthCubit>().state.isGuest) cubit.fetchPayments();
+        return cubit;
+      },
       child: const _PaymentHistoryContent(),
     );
   }
@@ -36,11 +41,21 @@ class _PaymentHistoryContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final loc = context.localization;
+    if (context.watch<AuthCubit>().state.isGuest) {
+      return CommonScreen(
+        appBar: AppAuthBrandHeader(label: loc.billingTitle, showBack: true),
+        child: VisitorEmptyState(
+          icon: Icons.receipt_long_outlined,
+          title: loc.visitorPaymentHistoryTitle,
+        ),
+      );
+    }
 
     return CommonScreen(
       appBar: AppAuthBrandHeader(label: loc.billingTitle, showBack: true),
       padding: EdgeInsets.zero,
       child: RefreshIndicator(
+        color: Resources.colors.luxuryGoldLight,
         onRefresh: () => context.read<PaymentHistoryCubit>().fetchPayments(),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,

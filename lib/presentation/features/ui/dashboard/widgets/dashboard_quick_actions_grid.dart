@@ -37,12 +37,17 @@ class DashboardQuickActionsGrid extends StatelessWidget {
         },
       ),
       DashboardQuickAction(
-        icon: Icons.account_balance_outlined,
+        icon: Icons.receipt_long_outlined,
         label: loc.paymentHistoryTitle,
         onTap: () => context.push(AppRouteEnum.paymentHistoryPage.path),
       ),
       DashboardQuickAction(
-        icon: Icons.edit_document,
+        icon: Icons.chair_outlined,
+        label: loc.interiorDesignTitle,
+        onTap: () => context.push(AppRouteEnum.interiorDesignListPage.path),
+      ),
+      DashboardQuickAction(
+        icon: Icons.history_edu_outlined,
         label: loc.dashboardActionRevision,
         onTap: () => context.push(AppRouteEnum.revisionHistoryPage.path),
       ),

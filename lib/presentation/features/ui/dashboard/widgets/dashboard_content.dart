@@ -40,14 +40,18 @@ class _DashboardContentState extends State<DashboardContent> {
     final projectsState = context.watch<ProjectsCubit>().state;
     final authState = context.watch<AuthCubit>().state;
 
-    final isDashboardError = (portfolioState.isError && projectsState.isError);
+    final isDashboardError = portfolioState.isError &&
+        (!authState.isGuest && projectsState.isError);
 
     if (isDashboardError) {
       return AppErrorState(
         onRetry: () {
           if (portfolioState.isError) portfolioCubit.fetchPortfolio();
-          if (projectsState.isError) projectsCubit.fetchProjects();
-          if (authState.getUserCubitStatus == CubitStatus.error) {
+          if (!authState.isGuest && projectsState.isError) {
+            projectsCubit.fetchProjects();
+          }
+          if (!authState.isGuest &&
+              authState.getUserCubitStatus == CubitStatus.error) {
             authCubit.getUser();
           }
         },
@@ -77,8 +81,10 @@ class _DashboardContentState extends State<DashboardContent> {
                     SizedBox(height: Resources.verticalDims.$32),
 
                     /// Recent Projects Section ------------------------
-                    const RecentProjectsSection(),
-                    SizedBox(height: Resources.verticalDims.$20),
+                    if (!authState.isGuest) ...[
+                      const RecentProjectsSection(),
+                      SizedBox(height: Resources.verticalDims.$20),
+                    ],
 
                     /// Quick Actions Grid ------------------------
                     const QuickActionsSection(),
@@ -104,8 +110,10 @@ class _DashboardContentState extends State<DashboardContent> {
 
     return Future.wait([
       portfolioCubit.fetchPortfolio(),
-      projectsCubit.fetchProjects(),
-      authCubit.getUser(),
+      if (!authCubit.state.isGuest) ...[
+        projectsCubit.fetchProjects(),
+        authCubit.getUser(),
+      ],
     ]);
   }
 }

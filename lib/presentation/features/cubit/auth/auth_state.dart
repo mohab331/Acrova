@@ -51,6 +51,11 @@ class AuthCubitState extends Equatable {
   }
 
   bool get isFullyAuthenticated => userStatus == UserStatus.authenticated;
+  bool get isVisitor => userStatus == UserStatus.visitor;
+  bool get isGuest =>
+      userStatus == null ||
+      isVisitor ||
+      userStatus == UserStatus.unauthenticated;
 
   AuthCubitState copyWith({
     CubitStatus? sendOTPCubitStatus,

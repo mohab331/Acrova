@@ -25,7 +25,7 @@ class AppAuthBrandHeader extends StatelessWidget
   final double? fontSize;
   @override
   Size get preferredSize =>
-      Size.fromHeight(kToolbarHeight + Resources.verticalDims.$20);
+      Size.fromHeight(kToolbarHeight + Resources.verticalDims.$28);
 
   @override
   Widget build(BuildContext context) {
@@ -51,7 +51,7 @@ class AppAuthBrandHeader extends StatelessWidget
         centerTitle: centerTitle,
         title: Text(label),
         leading: showBack ? CustomBackButton(onBack: onBack) : null,
-        leadingWidth: Resources.horizontalDims.$40,
+        leadingWidth: Resources.horizontalDims.$50,
       ),
     );
   }

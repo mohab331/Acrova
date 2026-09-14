@@ -30,13 +30,13 @@ class AppStatusChip extends StatelessWidget {
       ),
       decoration: BoxDecoration(
         color: status?.chipBackground,
-        borderRadius: BorderRadius.circular(Resources.radius.$r4),
+        borderRadius: BorderRadius.circular(Resources.radius.$r2),
       ),
       child: Text(
-        label?.toUpperCase() ?? '',
+        label ?? '',
         style: context.textTheme.labelSmall?.copyWith(
-          fontSize: Resources.fontSizes.$8,
-          fontWeight: Resources.fontWeights.extraBold,
+          fontSize: Resources.fontSizes.$10,
+          fontWeight: Resources.fontWeights.semiBold,
           color: status?.chipForeground,
         ),
       ),

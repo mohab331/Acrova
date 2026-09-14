@@ -21,7 +21,7 @@ class ProjectHeader extends StatelessWidget {
             Text(
               project.type?.name.toUpperCase() ?? '',
               style: context.textTheme.labelSmall?.copyWith(
-                fontSize: Resources.fontSizes.$10,
+                fontSize: Resources.fontSizes.$12,
                 fontWeight: Resources.fontWeights.extraBold,
                 color: Resources.colors.luxuryGoldLight,
                 letterSpacing: Resources.letterSpacing.$1_2,

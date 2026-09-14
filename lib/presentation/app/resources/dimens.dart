@@ -37,12 +37,16 @@ class _HorizontalDimens {
   double get $50 => 50.w;
   double get $56 => 56.w;
   double get $60 => 60.w;
+  double get $64 => 64.w;
   double get $65 => 65.w;
+  double get $68 => 68.w;
   double get $70 => 70.w;
   double get $75 => 75.w;
   double get $80 => 80.w;
+  double get $92 => 92.w;
   double get $100 => 100.w;
   double get $104 => 104.w;
+  double get $110 => 110.w;
   double get $120 => 120.w;
   double get $122 => 122.w;
   double get $125 => 125.w;
@@ -51,6 +55,7 @@ class _HorizontalDimens {
   double get $140 => 140.w;
   double get $145 => 145.w;
   double get $150 => 150.w;
+  double get $160 => 160.w;
   double get $206 => 206.w;
   double get $139 => 139.w;
   double get $13 => 13.w;
@@ -102,6 +107,7 @@ class _VerticalDimens {
   double get $52 => 52.h;
   double get $55 => 55.h;
   double get $60 => 60.h;
+  double get $64 => 64.h;
   double get $65 => 65.h;
   double get $70 => 70.h;
   double get $72 => 72.h;

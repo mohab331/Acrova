@@ -3,6 +3,7 @@ import 'package:acrova/presentation/features/common_widgets/inputs/app_filled_fi
 import 'package:acrova/presentation/features/ui/profile/edit_profile/cubit/edit_profile_cubit.dart';
 import 'package:acrova/presentation/features/ui/profile/edit_profile/cubit/edit_profile_state.dart';
 import 'package:acrova/utils/extensions/localization_extension.dart';
+import 'package:acrova/utils/formatters/app_formatter.dart';
 import 'package:acrova/utils/validation/app_validators.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -13,6 +14,7 @@ class EditProfileForm extends StatelessWidget {
     required this.emailController,
     required this.mobileController,
     required this.nationalIDController,
+    required this.isMobileReadOnly,
     super.key,
   });
 
@@ -20,6 +22,7 @@ class EditProfileForm extends StatelessWidget {
   final TextEditingController emailController;
   final TextEditingController mobileController;
   final TextEditingController nationalIDController;
+  final bool isMobileReadOnly;
 
   @override
   Widget build(BuildContext context) {
@@ -42,9 +45,11 @@ class EditProfileForm extends StatelessWidget {
               controller: mobileController,
               label: l10n.editProfileMobileLabel,
               hint: l10n.editProfileMobileHint,
-              validator: AppValidators.saudiPhone,
+              readOnly: isMobileReadOnly,
+              inputFormatters: [SaudiPhoneFormatter()],
+              validator: isMobileReadOnly ? null : AppValidators.saudiPhone,
               keyboardType: TextInputType.phone,
-              onChanged: cubit.updateMobile,
+              onChanged: isMobileReadOnly ? null : cubit.updateMobile,
             ),
             SizedBox(height: Resources.verticalDims.$24),
             AppFilledField(
@@ -57,6 +62,7 @@ class EditProfileForm extends StatelessWidget {
             SizedBox(height: Resources.verticalDims.$24),
             AppFilledField(
               controller: nationalIDController,
+              inputFormatters: [NationalIdFormatter()],
               label: l10n.profileSetupNationalIdLabel,
               validator: AppValidators.saudiNationalId,
               keyboardType: TextInputType.number,

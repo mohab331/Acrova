@@ -10,23 +10,27 @@ class AppFilledField extends StatelessWidget {
   const AppFilledField({
     required this.label,
     required this.controller,
-    required this.onChanged,
+    this.onChanged,
+    this.readOnly = false,
     this.hint,
-    required this.validator,
+    this.validator,
     this.keyboardType,
     this.maxLines = 1,
     this.inputFormatters,
+    this.errorText,
     super.key,
   });
 
   final String label;
   final TextEditingController controller;
-  final ValueChanged<String> onChanged;
+  final ValueChanged<String>? onChanged;
+  final bool readOnly;
   final String? hint;
   final String? Function(String?)? validator;
   final TextInputType? keyboardType;
   final int maxLines;
   final List<TextInputFormatter>? inputFormatters;
+  final String? errorText;
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -44,7 +48,9 @@ class AppFilledField extends StatelessWidget {
         ),
         SizedBox(height: Resources.verticalDims.$4),
         TextFormField(
-          inputFormatters: [],
+          readOnly: readOnly,
+          enabled: !readOnly,
+          inputFormatters: inputFormatters,
           validator: validator,
           autovalidateMode: AutovalidateMode.onUserInteraction,
           errorBuilder: (context, errorText) => Text(
@@ -58,7 +64,7 @@ class AppFilledField extends StatelessWidget {
             ),
           ),
           controller: controller,
-          onChanged: onChanged,
+          onChanged: readOnly ? null : onChanged,
           keyboardType: keyboardType,
           maxLines: maxLines,
           style: TextStyle(
@@ -67,6 +73,7 @@ class AppFilledField extends StatelessWidget {
             color: Resources.colors.luxuryInk,
           ),
           decoration: InputDecoration(
+            errorText: errorText,
             isDense: true,
             isCollapsed: true,
             filled: true,
@@ -84,6 +91,9 @@ class AppFilledField extends StatelessWidget {
             ),
             border: _border(Resources.colors.luxuryBorder),
             enabledBorder: _border(Resources.colors.luxuryBorder),
+            disabledBorder: _border(
+              Resources.colors.luxuryBorder.withValues(alpha: 0.5),
+            ),
             focusedBorder: _border(Resources.colors.luxuryGoldLight),
             errorBorder: _border(Resources.colors.luxuryError),
           ),

@@ -6,6 +6,7 @@ import 'package:acrova/domain/repository/billing/base_billing_repo.dart';
 import 'package:acrova/domain/repository/config/base_app_config_repo.dart';
 import 'package:acrova/domain/repository/contact_us/base_contact_us_repo.dart';
 import 'package:acrova/domain/repository/deliverables/base_deliverables_repo.dart';
+import 'package:acrova/domain/repository/interior_design/base_interior_design_repo.dart';
 import 'package:acrova/domain/repository/localization/base_localization_repo.dart';
 import 'package:acrova/domain/repository/notifications/base_fcm_token_repo.dart';
 import 'package:acrova/domain/repository/notifications/base_notification_provider_repo.dart';
@@ -22,6 +23,8 @@ import 'package:acrova/presentation/features/ui/contact_us/cubit/contact_us_cubi
 import 'package:acrova/presentation/features/ui/dashboard/cubit/dashboard_cubit.dart';
 import 'package:acrova/presentation/features/ui/deliverables/cubit/deliverables_cubit.dart';
 import 'package:acrova/presentation/features/ui/interior_design/cubit/interior_design_cubit.dart';
+import 'package:acrova/presentation/features/ui/interior_design_detail/cubit/interior_design_detail_cubit.dart';
+import 'package:acrova/presentation/features/ui/interior_design_list/cubit/interior_design_list_cubit.dart';
 import 'package:acrova/presentation/features/ui/notifications/cubit/notifications_cubit.dart';
 import 'package:acrova/presentation/features/ui/portfolio/cubit/portflio_details/portfolio_details_cubit.dart';
 import 'package:acrova/presentation/features/ui/portfolio/cubit/portfolio_cubit.dart';
@@ -87,6 +90,18 @@ class CubitsInjector implements BaseInjector {
       () => InteriorDesignCubit(
         projectRepo: serviceLocatorInstance<BaseProjectRepo>(),
         imagePicker: serviceLocatorInstance<BaseImagePickerService>(),
+      ),
+    ),
+
+    () => serviceLocatorInstance.registerFactory<InteriorDesignListCubit>(
+      () => InteriorDesignListCubit(
+        interiorDesignRepo: serviceLocatorInstance<BaseInteriorDesignRepo>(),
+      ),
+    ),
+
+    () => serviceLocatorInstance.registerFactory<InteriorDesignDetailCubit>(
+      () => InteriorDesignDetailCubit(
+        interiorDesignRepo: serviceLocatorInstance<BaseInteriorDesignRepo>(),
       ),
     ),
 

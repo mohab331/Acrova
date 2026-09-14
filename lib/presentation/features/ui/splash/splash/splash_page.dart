@@ -1,8 +1,10 @@
 import 'package:acrova/presentation/app/navigation/app_route_enum.dart';
+import 'package:acrova/presentation/app/navigation/args/navigation_args.dart';
 import 'package:acrova/presentation/app/resources/resources.dart';
 import 'package:acrova/presentation/features/cubit/auth/auth_cubit.dart';
 import 'package:acrova/utils/enums/user_status.dart';
 import 'package:acrova/utils/extensions/navigation_extension.dart';
+import 'package:acrova/utils/extensions/localization_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -46,7 +48,20 @@ class SplashPage extends StatelessWidget {
     var authCubit = context.read<AuthCubit>();
     if ((state.userToken?.isNotEmpty ?? false)) {
       authCubit.setUserStatus(UserStatus.authenticated);
-      context.goTo(AppRouteEnum.homePage.name);
+      await authCubit.getUser();
+      if (!context.mounted) return;
+      if (authCubit.state.isProfileCompleted) {
+        context.goTo(AppRouteEnum.homePage.name);
+      } else {
+        context.goTo(
+          AppRouteEnum.editProfilePage.name,
+          extra: EditProfileArgs(
+            title: context.localization.completeProfile,
+            profile: authCubit.state.userModel,
+            completionRouteName: AppRouteEnum.homePage.name,
+          ),
+        );
+      }
     } else {
       authCubit.setUserStatus(UserStatus.unauthenticated);
       context.goTo(AppRouteEnum.welcomePage.name);

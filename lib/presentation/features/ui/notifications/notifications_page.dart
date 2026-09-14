@@ -1,5 +1,7 @@
 import 'package:acrova/presentation/features/common_widgets/app_bar/app_auth_brand_header.dart';
 import 'package:acrova/presentation/features/common_widgets/common_screen/common_screen.dart';
+import 'package:acrova/presentation/features/common_widgets/feedback/visitor_empty_state.dart';
+import 'package:acrova/presentation/features/cubit/auth/auth_cubit.dart';
 import 'package:acrova/presentation/features/ui/notifications/cubit/notifications_cubit.dart';
 import 'package:acrova/presentation/features/ui/notifications/notification_content.dart';
 import 'package:acrova/utils/extensions/localization_extension.dart';
@@ -17,7 +19,9 @@ class _NotificationsPageState extends State<NotificationsPage> {
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      context.read<NotificationsCubit>().fetchNotifications();
+      if (!context.read<AuthCubit>().state.isGuest) {
+        context.read<NotificationsCubit>().fetchNotifications();
+      }
     });
     super.initState();
   }
@@ -30,7 +34,12 @@ class _NotificationsPageState extends State<NotificationsPage> {
         showBack: true,
         label: context.localization.notificationsTitle,
       ),
-      child: const NotificationContent(),
+      child: context.watch<AuthCubit>().state.isGuest
+          ? VisitorEmptyState(
+              icon: Icons.notifications_none_outlined,
+              title: context.localization.visitorNotificationsTitle,
+            )
+          : const NotificationContent(),
     );
   }
 }

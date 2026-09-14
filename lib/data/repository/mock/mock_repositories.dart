@@ -13,6 +13,7 @@ import 'package:acrova/data/models/request/billing/get_payment_details_request_m
 import 'package:acrova/data/models/request/billing/get_payment_quote_request_model.dart';
 import 'package:acrova/data/models/request/billing/submit_payment_request_model.dart';
 import 'package:acrova/data/models/request/contact_us/submit_inquiry_request_model.dart';
+import 'package:acrova/data/models/request/interior_design/get_interior_design_request_model.dart';
 import 'package:acrova/data/models/request/portfolio/get_portfolio_item_request_model.dart';
 import 'package:acrova/data/models/request/profile/update_profile_request_model.dart';
 import 'package:acrova/data/models/request/project/create_project_request_model.dart';
@@ -28,6 +29,7 @@ import 'package:acrova/data/models/response/dashboard/dashboard_response_model.d
 import 'package:acrova/data/models/response/deliverables/blueprint_response_model.dart';
 import 'package:acrova/data/models/response/deliverables/deliverables_response_model.dart';
 import 'package:acrova/data/models/response/deliverables/render_response_model.dart';
+import 'package:acrova/data/models/response/interior_design/interior_design_response_model.dart';
 import 'package:acrova/data/models/response/notification/app_notification_response_model.dart';
 import 'package:acrova/data/models/response/portfolio/portfolio_item_response_model.dart';
 import 'package:acrova/data/models/response/portfolio/walkthrough_response_model.dart';
@@ -44,6 +46,7 @@ import 'package:acrova/domain/repository/config/base_app_config_repo.dart';
 import 'package:acrova/domain/repository/contact_us/base_contact_us_repo.dart';
 import 'package:acrova/domain/repository/dashboard/base_dashboard_repo.dart';
 import 'package:acrova/domain/repository/deliverables/base_deliverables_repo.dart';
+import 'package:acrova/domain/repository/interior_design/base_interior_design_repo.dart';
 import 'package:acrova/domain/repository/localization/base_localization_repo.dart';
 import 'package:acrova/domain/repository/notifications/base_notifications_repo.dart';
 import 'package:acrova/domain/repository/portfolio/base_portfolio_repo.dart';
@@ -51,6 +54,7 @@ import 'package:acrova/domain/repository/project/base_project_repo.dart';
 import 'package:acrova/domain/repository/revisions/base_revisions_repo.dart';
 import 'package:acrova/presentation/app/resources/resources.dart';
 import 'package:acrova/utils/enums/design_style_enum.dart';
+import 'package:acrova/utils/enums/interior_design_status_enum.dart';
 import 'package:acrova/utils/enums/project_status_enum.dart';
 import 'package:acrova/utils/enums/project_type_enum.dart';
 import 'package:acrova/utils/enums/smart_home_level_enum.dart';
@@ -205,9 +209,10 @@ class MockProjectRepo extends _MockBase implements BaseProjectRepo {
   static final List<ProjectResponseModel> _mockProjects = [
     ProjectResponseModel(
       id: 'proj_001',
+      interiorDesignId: 'int_001',
       name: 'Villa Al-Nakheel',
       type: ProjectType.villa,
-      status: ProjectStatus.deliverablesReady,
+      status: ProjectStatus.completed,
       location: 'Riyadh, Al-Malqa',
       thumbnailUrl:
           'https://api.alhilwa.com.iq/uploads/projects/1774287086738-7ff23182f9452cf20ab58038546a.jpg',
@@ -244,6 +249,7 @@ class MockProjectRepo extends _MockBase implements BaseProjectRepo {
         ),
       ],
       createdAt: DateTime(2024, 1, 15),
+      revisionID: '10',
     ),
     ProjectResponseModel(
       id: 'proj_002',
@@ -260,6 +266,7 @@ class MockProjectRepo extends _MockBase implements BaseProjectRepo {
           'A flagship retail and commercial hub featuring expansive storefronts, underground parking, and flexible office layouts tailored for high-profile tenants.',
       estimatedTimeline: '٢٤ يوماً',
       createdAt: DateTime(2024, 2, 1),
+      revisionID: '12',
     ),
   ];
 
@@ -1068,5 +1075,116 @@ class MockLocalizationRepo extends _MockBase implements BaseLocalizationRepo {
     if (shouldThrow(MockRepositoryKey.localization)) return mockError();
     await simulateDelay();
     return const Success(null);
+  }
+}
+
+class MockInteriorDesignRepo extends _MockBase
+    implements BaseInteriorDesignRepo {
+  static final List<InteriorDesignResponseModel> _mockInteriorDesigns = [
+    InteriorDesignResponseModel(
+      id: 'int_001',
+      referenceNumber: 'INT-2024-001',
+      projectId: 'proj_001',
+      projectName: 'Villa Al-Nakheel',
+      projectThumbnailUrl:
+          'https://api.alhilwa.com.iq/uploads/projects/1774287086738-7ff23182f9452cf20ab58038546a.jpg',
+      title: 'Interior Design - Villa Al-Nakheel',
+      status: InteriorDesignStatus.inProgress,
+      scope: InteriorDesignScope.all,
+      budgetTier: BudgetTier.ultraLuxury,
+      timeline: ProjectTimeline.threeToSixMonths,
+      customScopeNotes:
+          'Focus on expansive double-height majlis with custom Italian marble and integrated acoustic walnut panels.',
+      spacePlanningRequired: true,
+      moodboards: const ['Modern Luxury', 'Minimalist Warmth'],
+      colorPalette: const ['Warm Neutrals', 'Desert Sun'],
+      extraNotes:
+          'Ensure full integration with existing smart home lighting zones and motorized shading systems.',
+      thumbnailUrl:
+          'https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&w=1000&q=80',
+      amountDue: 45000.0,
+      inspirationLinks: ['1231231'],
+      inspirationMediaUrls: ['ghhewr'],
+      updatedAt: DateTime.now().add(Duration(days: 3)),
+      designer: const EngineerResponseModel(
+        name: 'Eng. Sarah Al-Otaibi',
+        specialization: 'Senior Interior Architect',
+        avatarUrl:
+            'https://png.pngtree.com/png-vector/20231019/ourmid/pngtree-user-profile-avatar-png-image_10211467.png',
+      ),
+      createdAt: DateTime(2024, 2, 10),
+    ),
+    InteriorDesignResponseModel(
+      id: 'int_002',
+      referenceNumber: 'INT-2024-002',
+      projectId: 'proj_002',
+      projectName: 'Commercial Complex Al-Malqa',
+      projectThumbnailUrl:
+          'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1000&q=80',
+      title: 'Interior Design - Al-Malqa Retail Hub',
+      status: InteriorDesignStatus.awaitingPayment,
+      scope: InteriorDesignScope.specific,
+      budgetTier: BudgetTier.premium,
+      timeline: ProjectTimeline.asap,
+      customScopeNotes:
+          'Contemporary commercial finishing with durable high-traffic finishes and architectural brass accents.',
+      spacePlanningRequired: true,
+      moodboards: const ['Contemporary Commercial', 'Biophilic Elegance'],
+      colorPalette: const ['Cool Elegance', 'Monochrome'],
+      extraNotes:
+          'Deliverables must include full 3D renders and detailed bill of quantities (BOQ).',
+      thumbnailUrl:
+          'https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=1000&q=80',
+      amountDue: 28000.0,
+      createdAt: DateTime(2024, 2, 18),
+    ),
+    InteriorDesignResponseModel(
+      id: 'int_003',
+      referenceNumber: 'INT-2024-003',
+      projectId: 'proj_001',
+      projectName: 'Villa Al-Nakheel',
+      projectThumbnailUrl:
+          'https://api.alhilwa.com.iq/uploads/projects/1774287086738-7ff23182f9452cf20ab58038546a.jpg',
+      title: 'Guest House & Pavilion',
+      status: InteriorDesignStatus.completed,
+      scope: InteriorDesignScope.all,
+      budgetTier: BudgetTier.standard,
+      timeline: ProjectTimeline.flexible,
+      moodboards: const ['Earthy Comfort'],
+      colorPalette: const ['Earthy Tones'],
+      thumbnailUrl:
+          'https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?auto=format&fit=crop&w=1000&q=80',
+      amountDue: 18500.0,
+      createdAt: DateTime(2024, 1, 5),
+    ),
+  ];
+
+  @override
+  Future<Result<List<InteriorDesignResponseModel>>> getInteriorDesigns() async {
+    if (shouldThrow(MockRepositoryKey.interiorDesign)) return mockError();
+
+    await simulateDelay();
+
+    if (isEmpty(MockRepositoryKey.interiorDesign)) {
+      return const Success([]);
+    }
+
+    return Success(_mockInteriorDesigns);
+  }
+
+  @override
+  Future<Result<InteriorDesignResponseModel>> getInteriorDesign(
+    GetInteriorDesignRequestModel request,
+  ) async {
+    if (shouldThrow(MockRepositoryKey.interiorDesign)) return mockError();
+
+    await simulateDelay();
+
+    final item = _mockInteriorDesigns.firstWhere(
+      (d) => d.id == request.id,
+      orElse: () => _mockInteriorDesigns.first,
+    );
+
+    return Success(item);
   }
 }

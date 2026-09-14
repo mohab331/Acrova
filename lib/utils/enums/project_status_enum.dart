@@ -87,11 +87,11 @@ extension ProjectStatusX on ProjectStatus {
       case ProjectStatus.awaitingEngineering:
         return const Color(0xFFCCE5FF); // blue-light
       case ProjectStatus.deliverablesReady:
-        return const Color(0xFFD4EDDA); // green-light
+        return const Color(0xFFE2E3E5); // platinum-light
       case ProjectStatus.revisionInProgress:
         return const Color(0xFFF8D7DA); // red-light
       case ProjectStatus.completed:
-        return const Color(0xFFD6D6D6); // grey-light
+        return const Color(0xFFD4EDDA); // green-light
     }
   }
 
@@ -107,11 +107,11 @@ extension ProjectStatusX on ProjectStatus {
       case ProjectStatus.awaitingEngineering:
         return const Color(0xFF004085); // blue-dark
       case ProjectStatus.deliverablesReady:
-        return const Color(0xFF155724); // green-dark
+        return const Color(0xFF383D41); // dark grey
       case ProjectStatus.revisionInProgress:
         return const Color(0xFF721C24); // red-dark
       case ProjectStatus.completed:
-        return const Color(0xFF383838); // grey-dark
+        return const Color(0xFF155724); // green-dark
     }
   }
 

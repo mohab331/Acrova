@@ -3,7 +3,9 @@ import 'package:acrova/core/di/dependency_injector.dart';
 import 'package:acrova/core/di/injectors/base_injector.dart';
 import 'package:acrova/data/data_source/base/base_auth_data_source.dart';
 import 'package:acrova/data/data_source/base/base_billing_data_source.dart';
+import 'package:acrova/data/data_source/base/base_contact_us_data_source.dart';
 import 'package:acrova/data/data_source/base/base_dashboard_data_source.dart';
+import 'package:acrova/data/data_source/base/base_interior_design_data_source.dart';
 import 'package:acrova/data/data_source/base/base_notifications_data_source.dart';
 import 'package:acrova/data/data_source/base/base_project_data_source.dart';
 import 'package:acrova/data/data_source/base/base_revisions_data_source.dart';
@@ -16,6 +18,7 @@ import 'package:acrova/data/repository/config/app_config_repo_impl.dart';
 import 'package:acrova/data/repository/contact_us/contact_us_repo_impl.dart';
 import 'package:acrova/data/repository/dashboard/dashboard_repo.dart';
 import 'package:acrova/data/repository/deliverables/deliverables_repo_impl.dart';
+import 'package:acrova/data/repository/interior_design/interior_design_repo_impl.dart';
 import 'package:acrova/data/repository/localization/localization_repo_impl.dart';
 import 'package:acrova/data/repository/mock/mock_repositories.dart';
 import 'package:acrova/data/repository/notifications/fcm_token_repo_impl.dart';
@@ -30,6 +33,7 @@ import 'package:acrova/domain/repository/config/base_app_config_repo.dart';
 import 'package:acrova/domain/repository/contact_us/base_contact_us_repo.dart';
 import 'package:acrova/domain/repository/dashboard/base_dashboard_repo.dart';
 import 'package:acrova/domain/repository/deliverables/base_deliverables_repo.dart';
+import 'package:acrova/domain/repository/interior_design/base_interior_design_repo.dart';
 import 'package:acrova/domain/repository/localization/base_localization_repo.dart';
 import 'package:acrova/domain/repository/notifications/base_fcm_token_repo.dart';
 import 'package:acrova/domain/repository/notifications/base_notification_provider_repo.dart';
@@ -133,7 +137,18 @@ class ReposInjector implements BaseInjector {
     () => serviceLocatorInstance.registerLazySingleton<BaseContactUsRepo>(
       () => MockConfig.useMock(MockRepositoryKey.contactUs)
           ? MockContactUsRepo()
-          : const ContactUsRepoImpl(),
+          : ContactUsRepoImpl(
+              dataSource: serviceLocatorInstance<BaseContactUsDataSource>(),
+            ),
+    ),
+
+    () => serviceLocatorInstance.registerLazySingleton<BaseInteriorDesignRepo>(
+      () => MockConfig.useMock(MockRepositoryKey.interiorDesign)
+          ? MockInteriorDesignRepo()
+          : InteriorDesignRepoImpl(
+              dataSource:
+                  serviceLocatorInstance<BaseInteriorDesignDataSource>(),
+            ),
     ),
   ];
 
