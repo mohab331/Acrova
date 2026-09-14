@@ -5,6 +5,7 @@ import 'package:acrova/presentation/features/ui/project_creation/steps/widgets/r
 import 'package:acrova/presentation/features/ui/project_creation/steps/widgets/review_section.dart';
 import 'package:acrova/presentation/features/ui/project_creation/steps/widgets/sbc_summary_warning.dart';
 import 'package:acrova/utils/enums/project_type_enum.dart';
+import 'package:acrova/utils/enums/smart_home_level_enum.dart';
 import 'package:acrova/utils/extensions/localization_extension.dart';
 import 'package:acrova/utils/extensions/theme_extension.dart';
 import 'package:flutter/material.dart';
@@ -119,8 +120,10 @@ class Step6ReviewSubmit extends StatelessWidget {
                   ReviewRow(
                     label: l10n.reviewLabelSmartHome,
                     value:
-                        state.smartHomeLevelEnum?.localizedLabel(context) ??
-                        state.smartHomeLevel,
+                        SmartHomeLevel.fromValue(
+                          state.smartHomeLevel,
+                        )?.localizedLabel(context) ??
+                        '',
                   ),
                 ],
               ),
@@ -133,9 +136,7 @@ class Step6ReviewSubmit extends StatelessWidget {
                     label: l10n.reviewLabelStyle,
                     value:
                         state.architecturalStyleEnum?.localizedLabel(context) ??
-                        (state.architecturalStyle.isEmpty
-                            ? '—'
-                            : state.architecturalStyle),
+                        '—',
                   ),
                   if (state.additionalNotes.isNotEmpty)
                     ReviewRow(

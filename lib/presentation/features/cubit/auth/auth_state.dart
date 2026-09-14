@@ -1,6 +1,7 @@
 import 'package:acrova/core/error/app_error_model.dart';
 import 'package:acrova/data/models/response/profile/user_profile_response_model.dart';
 import 'package:acrova/utils/enums/cubit_status.dart';
+import 'package:acrova/utils/enums/user_status.dart';
 import 'package:equatable/equatable.dart';
 
 class AuthCubitState extends Equatable {
@@ -15,6 +16,7 @@ class AuthCubitState extends Equatable {
     required this.resendOTPAppErrorModel,
     required this.resendOTPCubitStatus,
     required this.phoneNumber,
+    required this.userStatus,
   });
 
   const AuthCubitState.initial()
@@ -29,6 +31,7 @@ class AuthCubitState extends Equatable {
         getUserErrorModel: null,
         resendOTPAppErrorModel: null,
         phoneNumber: null,
+        userStatus: null,
       );
 
   final CubitStatus sendOTPCubitStatus;
@@ -36,13 +39,18 @@ class AuthCubitState extends Equatable {
   final CubitStatus getUserCubitStatus;
   final CubitStatus resendOTPCubitStatus;
 
+  final UserStatus? userStatus;
   final AppErrorModel? resendOTPAppErrorModel;
   final UserProfileResponseModel? userModel;
   final AppErrorModel? sendOTPAppErrorModel;
   final AppErrorModel? verifyOtpAppErrorModel;
   final AppErrorModel? getUserErrorModel;
   final String? phoneNumber;
-  bool get isAuthorized => verifyOTPCubitStatus == CubitStatus.success;
+  bool get isProfileCompleted {
+    return isFullyAuthenticated && (userModel?.isProfileComplete ?? false);
+  }
+
+  bool get isFullyAuthenticated => userStatus == UserStatus.authenticated;
 
   AuthCubitState copyWith({
     CubitStatus? sendOTPCubitStatus,
@@ -50,16 +58,18 @@ class AuthCubitState extends Equatable {
     CubitStatus? getUserCubitStatus,
     CubitStatus? resendOTPCubitStatus,
     UserProfileResponseModel? userModel,
+    bool clearUserModel = false,
     AppErrorModel? sendOTPAppErrorModel,
     AppErrorModel? verifyOtpAppErrorModel,
     AppErrorModel? getUserErrorModel,
     AppErrorModel? resendOTPAppErrorModel,
     String? phoneNumber,
+    UserStatus? userStatus,
   }) => AuthCubitState(
     sendOTPCubitStatus: sendOTPCubitStatus ?? this.sendOTPCubitStatus,
     verifyOTPCubitStatus: verifyOTPCubitStatus ?? this.verifyOTPCubitStatus,
     getUserCubitStatus: getUserCubitStatus ?? this.getUserCubitStatus,
-    userModel: userModel ?? this.userModel,
+    userModel: clearUserModel ? null : (userModel ?? this.userModel),
     sendOTPAppErrorModel: sendOTPAppErrorModel ?? this.sendOTPAppErrorModel,
     verifyOtpAppErrorModel:
         verifyOtpAppErrorModel ?? this.verifyOtpAppErrorModel,
@@ -68,6 +78,7 @@ class AuthCubitState extends Equatable {
         resendOTPAppErrorModel ?? this.resendOTPAppErrorModel,
     resendOTPCubitStatus: resendOTPCubitStatus ?? this.resendOTPCubitStatus,
     phoneNumber: phoneNumber ?? this.phoneNumber,
+    userStatus: userStatus ?? this.userStatus,
   );
 
   @override
@@ -82,5 +93,6 @@ class AuthCubitState extends Equatable {
     resendOTPCubitStatus,
     resendOTPAppErrorModel,
     phoneNumber,
+    userStatus,
   ];
 }

@@ -14,11 +14,12 @@ import 'package:acrova/presentation/features/ui/projects/widgets/projects_skelet
 import 'package:acrova/presentation/features/ui/projects/widgets/standard_project_card.dart';
 import 'package:acrova/presentation/features/ui/shell/widgets/bottom_nav_reselect_scope.dart';
 import 'package:acrova/utils/enums/cubit_status.dart';
+import 'package:acrova/utils/enums/project_filter_enum.dart';
 import 'package:acrova/utils/enums/project_status_enum.dart';
 import 'package:acrova/utils/extensions/localization_extension.dart';
+import 'package:acrova/utils/extensions/navigation_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:go_router/go_router.dart';
 
 class ProjectsPage extends StatefulWidget {
   const ProjectsPage({super.key});
@@ -128,7 +129,7 @@ class _ProjectsPageState extends State<ProjectsPage> {
                                       onTap: () {
                                         final p = filtered.firstOrNull;
                                         if (p == null) return;
-                                        context.pushNamed(
+                                        context.push(
                                           AppRouteEnum.projectDetailPage.name,
                                           extra: ProjectDetailArgs(
                                             id: p.id ?? '',
@@ -147,33 +148,33 @@ class _ProjectsPageState extends State<ProjectsPage> {
                                     ),
                                   ),
                                 ],
-                              if (filtered.length > 1)
-                                SliverList.separated(
-                                  itemCount: filtered.length - 1,
-                                  separatorBuilder: (_, __) => SizedBox(
-                                    height: Resources.verticalDims.$16,
-                                  ),
-                                  itemBuilder: (_, i) => GestureDetector(
-                                    onTap: () {
-                                      final p = filtered[i + 1];
-                                      context.pushNamed(
-                                        AppRouteEnum.projectDetailPage.name,
-                                        extra: ProjectDetailArgs(
-                                          id: p.id ?? '',
-                                          title: p.name,
-                                        ),
-                                      );
-                                    },
-                                    child: StandardProjectCard(
-                                      project: filtered[i + 1],
+                                if (filtered.length > 1)
+                                  SliverList.separated(
+                                    itemCount: filtered.length - 1,
+                                    separatorBuilder: (_, __) => SizedBox(
+                                      height: Resources.verticalDims.$16,
+                                    ),
+                                    itemBuilder: (_, i) => GestureDetector(
+                                      onTap: () {
+                                        final p = filtered[i + 1];
+                                        context.push(
+                                          AppRouteEnum.projectDetailPage.name,
+                                          extra: ProjectDetailArgs(
+                                            id: p.id ?? '',
+                                            title: p.name,
+                                          ),
+                                        );
+                                      },
+                                      child: StandardProjectCard(
+                                        project: filtered[i + 1],
+                                      ),
                                     ),
                                   ),
+                                SliverToBoxAdapter(
+                                  child: SizedBox(
+                                    height: Resources.verticalDims.$32,
+                                  ),
                                 ),
-                              SliverToBoxAdapter(
-                                child: SizedBox(
-                                  height: Resources.verticalDims.$32,
-                                ),
-                              ),
                               ],
                             ],
                           ),

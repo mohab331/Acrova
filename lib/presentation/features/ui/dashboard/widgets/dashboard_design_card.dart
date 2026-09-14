@@ -59,7 +59,10 @@ class DashboardDesignCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    portfolioItem?.style?.toUpperCase() ?? '',
+                    (portfolioItem?.style?.localizedLabel(context) ??
+                            portfolioItem?.style?.label ??
+                            '')
+                        .toUpperCase(),
                     style: context.textTheme.labelSmall?.copyWith(
                       fontSize: Resources.fontSizes.$8,
                       fontWeight: Resources.fontWeights.extraBold,

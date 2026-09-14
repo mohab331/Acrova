@@ -142,7 +142,7 @@ class InteriorDesignHeader extends StatelessWidget {
             _SummaryRow(
               icon: Icons.architecture_outlined,
               label: l10n.specArchitecturalStyle,
-              value: project.architecturalStyle!,
+              value: project.architecturalStyle?.localizedLabel(context) ?? '',
             ),
             SizedBox(height: Resources.verticalDims.$12),
           ],
@@ -151,7 +151,7 @@ class InteriorDesignHeader extends StatelessWidget {
             _SummaryRow(
               icon: Icons.smart_toy_outlined,
               label: l10n.specSmartHome,
-              value: project.smartHomeLevel!,
+              value: project.smartHomeLevel?.localizedLabel(context) ?? '',
             ),
             SizedBox(height: Resources.verticalDims.$12),
           ],

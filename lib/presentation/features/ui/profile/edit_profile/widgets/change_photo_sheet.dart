@@ -1,9 +1,10 @@
 import 'package:acrova/presentation/app/resources/resources.dart';
 import 'package:acrova/presentation/features/common_widgets/sheets/app_sheet_handle.dart';
+import 'package:acrova/utils/enums/change_photo_action_enum.dart';
 import 'package:acrova/utils/extensions/localization_extension.dart';
 import 'package:flutter/material.dart';
 
-enum ChangePhotoAction { camera, library, remove }
+export 'package:acrova/utils/enums/change_photo_action_enum.dart';
 
 /// Bottom sheet for choosing a profile-photo source.
 class PickFromSheet extends StatelessWidget {

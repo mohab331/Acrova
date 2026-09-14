@@ -1,38 +1,7 @@
+import 'package:acrova/utils/enums/deliverable_type_enum.dart';
 import 'package:equatable/equatable.dart';
 
-enum DeliverableType { image, video, pdf, document, other }
-
-extension DeliverableTypeX on DeliverableType {
-  String get jsonKey {
-    switch (this) {
-      case DeliverableType.image:
-        return 'image';
-      case DeliverableType.video:
-        return 'video';
-      case DeliverableType.pdf:
-        return 'pdf';
-      case DeliverableType.document:
-        return 'document';
-      case DeliverableType.other:
-        return 'other';
-    }
-  }
-
-  static DeliverableType fromJson(String key) {
-    switch (key) {
-      case 'image':
-        return DeliverableType.image;
-      case 'video':
-        return DeliverableType.video;
-      case 'pdf':
-        return DeliverableType.pdf;
-      case 'document':
-        return DeliverableType.document;
-      default:
-        return DeliverableType.other;
-    }
-  }
-}
+export 'package:acrova/utils/enums/deliverable_type_enum.dart';
 
 class DeliverableResponseModel extends Equatable {
   const DeliverableResponseModel({
@@ -55,9 +24,7 @@ class DeliverableResponseModel extends Equatable {
       DeliverableResponseModel(
         id: json['id']?.toString(),
         title: json['title']?.toString(),
-        type: json['type'] != null
-            ? DeliverableTypeX.fromJson(json['type'].toString())
-            : null,
+        type: DeliverableType.fromValue(json['type']),
         url: json['url']?.toString(),
         thumbnailUrl: json['thumbnail_url']?.toString(),
         createdAt: json['created_at'] != null
@@ -68,7 +35,8 @@ class DeliverableResponseModel extends Equatable {
   Map<String, dynamic> toJson() => {
     'id': id,
     'title': title,
-    'type': type?.jsonKey,
+    'type_id': type?.id,
+    'type': type?.id,
     'url': url,
     'thumbnail_url': thumbnailUrl,
     'created_at': createdAt?.toIso8601String(),

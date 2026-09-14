@@ -5,37 +5,24 @@ import 'package:flutter/material.dart';
 /// Matches the SRS stage-gate model — do NOT reorder; ordinal is used for
 /// progress calculation.
 enum ProjectStatus {
-  /// Accountant reviewing complexity and setting price
-  awaitingPricing,
+  awaitingPricing(1),
+  awaitingPayment(2),
+  paymentUnderReview(3),
+  awaitingEngineeringAssignment(4),
+  awaitingEngineering(5),
+  deliverablesReady(6),
+  revisionInProgress(7),
+  completed(8);
 
-  /// Customer sees price; awaiting bank-transfer payment
-  awaitingPayment,
+  const ProjectStatus(this.stepId);
 
-  /// Customer uploaded receipt; accountant verifying
-  paymentUnderReview,
+  final int stepId;
+  int get id => stepId;
 
-  /// Ops assigning engineer to the project
-  awaitingEngineeringAssignment,
-
-  /// Assigned engineer is actively working
-  awaitingEngineering,
-
-  /// Deliverables ready — customer can view / download
-  deliverablesReady,
-
-  /// Customer-requested revision in progress
-  revisionInProgress,
-
-  /// Project fully completed
-  completed;
-
-  static ProjectStatus? fromValue(String? value) {
-    if (value == null) return null;
-    if (ProjectStatusX._jsonMap.containsKey(value)) {
-      return ProjectStatusX._jsonMap[value];
-    }
-    for (final item in ProjectStatus.values) {
-      if (item.name == value) return item;
+  static ProjectStatus? fromId(int? id) {
+    if (id == null) return null;
+    for (final status in ProjectStatus.values) {
+      if (status.stepId == id) return status;
     }
     return null;
   }
@@ -165,6 +152,5 @@ extension ProjectStatusX on ProjectStatus {
 
   String get jsonKey => _jsonMap.entries.firstWhere((e) => e.value == this).key;
 
-  static ProjectStatus fromJson(String value) =>
-      ProjectStatus.fromValue(value) ?? ProjectStatus.awaitingPricing;
+  static ProjectStatus? fromJson(int? value) => ProjectStatus.fromId(value);
 }

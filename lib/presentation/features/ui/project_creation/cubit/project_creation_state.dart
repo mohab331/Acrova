@@ -34,9 +34,9 @@ class ProjectCreationState extends Equatable {
     this.hasBasement = false,
     this.hasPool = false,
     this.hasRooftop = false,
-    this.smartHomeLevel = 'basic',
+    this.smartHomeLevel = 0,
     // Step 4
-    this.architecturalStyle = '',
+    this.architecturalStyle,
     this.additionalNotes = '',
     // Step 5
     this.mediaPaths = const [],
@@ -67,10 +67,10 @@ class ProjectCreationState extends Equatable {
   final bool hasBasement;
   final bool hasPool;
   final bool hasRooftop;
-  final String smartHomeLevel;
+  final int smartHomeLevel;
 
   // Step 4
-  final String architecturalStyle;
+  final int? architecturalStyle;
   final String additionalNotes;
 
   // Step 5
@@ -114,7 +114,7 @@ class ProjectCreationState extends Equatable {
     return bedrooms >= 1 && bathrooms >= 1;
   }
 
-  bool get step4Valid => architecturalStyle.isNotEmpty;
+  bool get step4Valid => architecturalStyle != null;
 
   // Step 5 (media) is optional — always valid
   bool get step5Valid => true;
@@ -166,8 +166,9 @@ class ProjectCreationState extends Equatable {
     hasBasement: hasBasement,
     hasPool: hasPool,
     hasRooftop: hasRooftop,
-    smartHomeLevel: smartHomeLevel,
-    architecturalStyle: architecturalStyle,
+    smartHomeLevel:
+        SmartHomeLevel.fromValue(smartHomeLevel) ?? SmartHomeLevel.basic,
+    architecturalStyle: DesignStyle.fromValue(architecturalStyle),
     additionalNotes: additionalNotes,
     mediaPaths: mediaPaths,
   );
@@ -192,8 +193,8 @@ class ProjectCreationState extends Equatable {
     bool? hasBasement,
     bool? hasPool,
     bool? hasRooftop,
-    String? smartHomeLevel,
-    String? architecturalStyle,
+    int? smartHomeLevel,
+    int? architecturalStyle,
     String? additionalNotes,
     List<String>? mediaPaths,
   }) => ProjectCreationState(

@@ -67,7 +67,9 @@ class ReviewSection extends StatelessWidget {
           SizedBox(height: Resources.verticalDims.$12),
           ...rows.map(
             (r) => Padding(
-              padding: EdgeInsets.only(bottom: Resources.verticalDims.$8),
+              padding: EdgeInsetsDirectional.only(
+                bottom: Resources.verticalDims.$8,
+              ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [

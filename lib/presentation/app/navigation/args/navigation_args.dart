@@ -41,12 +41,23 @@ class PortfolioDetailArgs extends Equatable {
 
 /// Navigation arguments for Edit Profile Page.
 class EditProfileArgs extends Equatable {
-  const EditProfileArgs({this.profile});
+  const EditProfileArgs({required this.title, this.profile});
 
   final UserProfileResponseModel? profile;
+  final String title;
 
   @override
   List<Object?> get props => [profile];
+}
+
+/// Navigation arguments for Profile Setup / Completion Page.
+class ProfileCompletionArgs extends Equatable {
+  const ProfileCompletionArgs({this.returnRoute});
+
+  final String? returnRoute;
+
+  @override
+  List<Object?> get props => [returnRoute];
 }
 
 /// Navigation arguments for Contact Us Page.

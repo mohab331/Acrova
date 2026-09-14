@@ -9,7 +9,7 @@ class RevisionMonthHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.only(
+      padding: EdgeInsetsDirectional.only(
         bottom: Resources.verticalDims.$12,
         top: Resources.verticalDims.$8,
       ),

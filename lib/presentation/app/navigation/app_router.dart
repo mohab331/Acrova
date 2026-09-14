@@ -5,7 +5,6 @@ import 'package:acrova/presentation/app/navigation/args/navigation_args.dart';
 import 'package:acrova/presentation/features/cubit/auth/auth_cubit.dart';
 import 'package:acrova/presentation/features/ui/auth/identity_verification/identity_verification_page.dart';
 import 'package:acrova/presentation/features/ui/auth/phone_input/phone_input_page.dart';
-import 'package:acrova/presentation/features/ui/auth/profile_setup/profile_setup_page.dart';
 import 'package:acrova/presentation/features/ui/auth/welcome/welcome_page.dart';
 import 'package:acrova/presentation/features/ui/billing/make_payment/make_payment_view.dart';
 import 'package:acrova/presentation/features/ui/billing/make_payment/payment_success_view.dart';
@@ -18,7 +17,6 @@ import 'package:acrova/presentation/features/ui/contact_us/contact_us_page.dart'
 import 'package:acrova/presentation/features/ui/dashboard/dashboard_page.dart';
 import 'package:acrova/presentation/features/ui/deliverables/deliverables_page.dart';
 import 'package:acrova/presentation/features/ui/interior_design/interior_design_page.dart';
-import 'package:acrova/presentation/features/ui/notifications/cubit/notifications_cubit.dart';
 import 'package:acrova/presentation/features/ui/notifications/notifications_page.dart';
 import 'package:acrova/presentation/features/ui/portfolio/portfolio_detail_page.dart';
 import 'package:acrova/presentation/features/ui/portfolio/portfolio_page.dart';
@@ -34,7 +32,6 @@ import 'package:acrova/presentation/features/ui/revisions/request/revision_reque
 import 'package:acrova/presentation/features/ui/shell/shell_scaffold.dart';
 import 'package:acrova/presentation/features/ui/splash/splash/splash_page.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
 import 'app_route_enum.dart';
@@ -85,11 +82,6 @@ class AppRouter {
         builder: (_, state) {
           return const IdentityVerificationPage();
         },
-      ),
-      GoRoute(
-        path: AppRouteEnum.profileSetupPage.path,
-        name: AppRouteEnum.profileSetupPage.name,
-        builder: (_, __) => const ProfileSetupPage(),
       ),
 
       // ── Project Creation Wizard (full-screen, above shell) ───────────────
@@ -270,16 +262,8 @@ class AppRouter {
 
       // ── Main Shell (bottom nav) ──────────────────────────────────────────
       StatefulShellRoute.indexedStack(
-        builder: (_, __, navigationShell) => MultiBlocProvider(
-          providers: [
-            BlocProvider(
-              create: (_) =>
-                  serviceLocatorInstance<NotificationsCubit>()
-                    ..fetchNotifications(),
-            ),
-          ],
-          child: ShellScaffold(navigationShell: navigationShell),
-        ),
+        builder: (_, __, navigationShell) =>
+            ShellScaffold(navigationShell: navigationShell),
         branches: [
           // HOME tab
           StatefulShellBranch(

@@ -10,10 +10,29 @@ enum LanguageCodes {
 
   const LanguageCodes(this.serverValue, this.locale);
 
-  static LanguageCodes fromCode(String code) {
-    return LanguageCodes.values.firstWhere(
-      (e) => e.locale.languageCode == code,
-      orElse: () => LanguageCodes.english,
-    );
+  int get id => serverValue;
+
+  static LanguageCodes? fromId(int? id) {
+    if (id == null) return null;
+    for (final e in LanguageCodes.values) {
+      if (e.serverValue == id) return e;
+    }
+    return null;
+  }
+
+  static LanguageCodes? fromCode(String? code) {
+    if (code == null) return null;
+    for (final e in LanguageCodes.values) {
+      if (e.locale.languageCode == code || e.name == code) return e;
+    }
+    return null;
+  }
+
+  static LanguageCodes? fromValue(dynamic value) {
+    if (value == null) return null;
+    if (value is int) return fromId(value);
+    final parsed = int.tryParse(value.toString());
+    if (parsed != null) return fromId(parsed);
+    return fromCode(value.toString().trim());
   }
 }

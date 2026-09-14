@@ -1,4 +1,7 @@
+import 'package:acrova/utils/enums/language_codes.dart';
 import 'package:equatable/equatable.dart';
+
+export 'package:acrova/utils/enums/language_codes.dart';
 
 class UserProfileResponseModel extends Equatable {
   const UserProfileResponseModel({
@@ -17,18 +20,28 @@ class UserProfileResponseModel extends Equatable {
   final String? email;
   final String? mobileNumber;
   final String? nationalId;
-  final String? language;
+  final LanguageCodes? language;
   final DateTime? memberSince;
   final int? projectsCount;
   final int? completedCount;
   final String? avatarUrl;
+
+  String? get languageCode => language?.locale.languageCode;
+
+  /// Whether all mandatory profile fields are filled.
+  bool get isProfileComplete {
+    return (name?.trim().isNotEmpty ?? false) &&
+        (email?.trim().isNotEmpty ?? false) &&
+        (mobileNumber?.trim().isNotEmpty ?? false) &&
+        (nationalId?.trim().isNotEmpty ?? false);
+  }
 
   UserProfileResponseModel copyWith({
     String? name,
     String? email,
     String? mobileNumber,
     String? nationalId,
-    String? language,
+    LanguageCodes? language,
     DateTime? memberSince,
     int? projectsCount,
     int? completedCount,
@@ -51,12 +64,12 @@ class UserProfileResponseModel extends Equatable {
         email: json['email']?.toString(),
         mobileNumber: json['mobile_number']?.toString(),
         nationalId: json['national_id']?.toString(),
-        language: json['language']?.toString(),
+        language: LanguageCodes.fromValue(json['language']),
         memberSince: json['member_since'] != null
             ? DateTime.tryParse(json['member_since'].toString())
             : null,
-        projectsCount: _parseInt(json['projects_count']),
-        completedCount: _parseInt(json['completed_count']),
+        projectsCount: int.tryParse(json['projects_count'].toString()),
+        completedCount: int.tryParse(json['completed_count'].toString()),
         avatarUrl: json['avatar_url']?.toString(),
       );
 
@@ -65,18 +78,13 @@ class UserProfileResponseModel extends Equatable {
     'email': email,
     'mobile_number': mobileNumber,
     'national_id': nationalId,
-    'language': language,
+    'language_id': language?.serverValue,
+    'language': language?.serverValue,
     'member_since': memberSince?.toIso8601String(),
     'projects_count': projectsCount,
     'completed_count': completedCount,
     'avatar_url': avatarUrl,
   };
-
-  static int? _parseInt(dynamic value) {
-    if (value == null) return null;
-    if (value is num) return value.toInt();
-    return int.tryParse(value.toString());
-  }
 
   @override
   List<Object?> get props => [
@@ -106,3 +114,7 @@ class UserProfileResponseModel extends Equatable {
         ')';
   }
 }
+
+///project
+///language
+///interior design

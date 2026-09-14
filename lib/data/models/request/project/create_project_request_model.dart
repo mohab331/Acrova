@@ -1,4 +1,6 @@
+import 'package:acrova/utils/enums/design_style_enum.dart';
 import 'package:acrova/utils/enums/project_type_enum.dart';
+import 'package:acrova/utils/enums/smart_home_level_enum.dart';
 
 import '../base_request_model.dart';
 
@@ -23,7 +25,7 @@ class CreateProjectRequestModel extends BaseRequestModel {
     this.hasBasement = false,
     this.hasPool = false,
     this.hasRooftop = false,
-    this.smartHomeLevel = 'basic', // basic, intermediate, advanced
+    this.smartHomeLevel = SmartHomeLevel.basic,
     // Step 4
     required this.architecturalStyle,
     this.additionalNotes = '',
@@ -51,10 +53,10 @@ class CreateProjectRequestModel extends BaseRequestModel {
   final bool hasBasement;
   final bool hasPool;
   final bool hasRooftop;
-  final String smartHomeLevel;
+  final SmartHomeLevel smartHomeLevel;
 
   // ── Step 4: Design preferences ────────────────────────────────────────────
-  final String architecturalStyle;
+  final DesignStyle? architecturalStyle;
   final String additionalNotes;
 
   // ── Step 5: Media uploads ─────────────────────────────────────────────────
@@ -69,7 +71,8 @@ class CreateProjectRequestModel extends BaseRequestModel {
 
   @override
   Map<String, dynamic> toJson() => {
-    'project_type': projectType.jsonKey,
+    'project_type_id': projectType.id,
+    'project_type': projectType.id,
     'location': location,
     'land_area_sqm': landAreaSqm,
     'land_width_m': landWidthM,
@@ -84,8 +87,10 @@ class CreateProjectRequestModel extends BaseRequestModel {
     'has_basement': hasBasement,
     'has_pool': hasPool,
     'has_rooftop': hasRooftop,
-    'smart_home_level': smartHomeLevel,
-    'architectural_style': architecturalStyle,
+    'smart_home_level_id': smartHomeLevel.id,
+    'smart_home_level': smartHomeLevel.id,
+    'architectural_style_id': architecturalStyle?.id,
+    'architectural_style': architecturalStyle?.id,
     'additional_notes': additionalNotes,
     'media_count': mediaPaths.length,
   };
@@ -129,8 +134,8 @@ class CreateProjectRequestModel extends BaseRequestModel {
     bool? hasBasement,
     bool? hasPool,
     bool? hasRooftop,
-    String? smartHomeLevel,
-    String? architecturalStyle,
+    SmartHomeLevel? smartHomeLevel,
+    DesignStyle? architecturalStyle,
     String? additionalNotes,
     List<String>? mediaPaths,
   }) {

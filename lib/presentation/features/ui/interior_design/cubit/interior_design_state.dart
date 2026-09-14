@@ -2,7 +2,6 @@ import 'package:acrova/core/error/app_error_model.dart';
 import 'package:acrova/data/models/request/project/interior_design_request_model.dart';
 import 'package:acrova/data/models/response/project/moodboard_response_model.dart';
 import 'package:acrova/utils/enums/cubit_status.dart';
-import 'package:acrova/utils/enums/interior_design_enums.dart';
 import 'package:equatable/equatable.dart';
 
 class InteriorDesignState extends Equatable {
@@ -62,15 +61,15 @@ class InteriorDesignState extends Equatable {
   InteriorDesignRequestModel toRequest({required String projectId}) {
     return InteriorDesignRequestModel(
       projectId: projectId,
-      scope: scope.value,
+      scope: scope,
       specificRooms: specificRooms,
       customScopeNotes: customScopeNotes,
       spacePlanningRequired: spacePlanningRequired,
       moodboards: moodboards,
       colorPalette: colorPalette,
       atmosphereTags: atmosphereTags,
-      budgetTier: budgetTier?.value ?? '',
-      timeline: timeline?.value ?? '',
+      budgetTier: budgetTier,
+      timeline: timeline,
       extraNotes: extraNotes,
       inspirationMediaPaths: inspirationMediaPaths,
       inspirationLinks: inspirationLinks,

@@ -21,7 +21,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 class ProfileContent extends StatefulWidget {
   const ProfileContent({required this.profile, super.key});
 
-  final UserProfileModel profile;
+  final UserProfileModel? profile;
 
   @override
   State<ProfileContent> createState() => _ProfileContentState();
@@ -32,7 +32,7 @@ class _ProfileContentState extends State<ProfileContent> {
   final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
       GlobalKey<RefreshIndicatorState>();
 
-  UserProfileModel get profile => widget.profile;
+  UserProfileModel? get profile => widget.profile;
 
   @override
   void dispose() {
@@ -62,63 +62,68 @@ class _ProfileContentState extends State<ProfileContent> {
                 profile: widget.profile,
                 onEdit: () => _openEdit(context, widget.profile),
               ),
-            SizedBox(height: Resources.verticalDims.$24),
-            ProfileStatsRow(
-              projectsCount: profile.projectsCount ?? 0,
-              completedCount: profile.completedCount ?? 0,
-            ),
-            SizedBox(height: Resources.verticalDims.$24),
-            ProfileSection(
-              title: loc.preferences,
-              items: [
-                ProfileMenuItem(
-                  icon: Icons.language_outlined,
-                  label: loc.language,
-                  trailing: Text(
-                    context.locale.languageCode,
-                    style: context.textTheme.bodySmall?.copyWith(
-                      fontSize: Resources.fontSizes.$12,
-                      color: Resources.colors.luxuryBodyMuted,
+              SizedBox(height: Resources.verticalDims.$24),
+              ProfileStatsRow(
+                projectsCount: profile?.projectsCount ?? 0,
+                completedCount: profile?.completedCount ?? 0,
+              ),
+              SizedBox(height: Resources.verticalDims.$24),
+              ProfileSection(
+                title: loc.preferences,
+                items: [
+                  ProfileMenuItem(
+                    icon: Icons.language_outlined,
+                    label: loc.language,
+                    trailing: Text(
+                      context.isRtl
+                          ? 'ع'
+                          : context.locale.languageCode.toUpperCase(),
+                      style: context.textTheme.bodySmall?.copyWith(
+                        fontSize: Resources.fontSizes.$12,
+                        color: Resources.colors.luxuryBodyMuted,
+                      ),
+                    ),
+                    onTap: () => _openLanguageSheet(context),
+                  ),
+                ],
+              ),
+              SizedBox(height: Resources.verticalDims.$20),
+              ProfileSection(
+                title: loc.helpAndSupport,
+                items: [
+                  ProfileMenuItem(
+                    icon: Icons.contact_support_outlined,
+                    label: loc.contactSupport,
+                    onTap: () => _openContact(
+                      context,
+                      email: profile?.email,
+                      mobileNumber: profile?.mobileNumber,
                     ),
                   ),
-                  onTap: () => _openLanguageSheet(context),
-                ),
-              ],
-            ),
-            SizedBox(height: Resources.verticalDims.$20),
-            ProfileSection(
-              title: loc.helpAndSupport,
-              items: [
-                ProfileMenuItem(
-                  icon: Icons.contact_support_outlined,
-                  label: loc.contactSupport,
-                  onTap: () => _openContact(
-                    context,
-                    email: profile.email,
-                    mobileNumber: profile.mobileNumber,
+                  ProfileMenuItem(
+                    icon: Icons.description_outlined,
+                    label: loc.termsAndPrivacy,
+                    onTap: () => LegalDocumentsSheet.show(context),
                   ),
-                ),
-                ProfileMenuItem(
-                  icon: Icons.description_outlined,
-                  label: loc.termsAndPrivacy,
-                  onTap: () => LegalDocumentsSheet.show(context),
-                ),
-              ],
-            ),
-            SizedBox(height: Resources.verticalDims.$24),
-            const ProfileLogoutButton(),
-            SizedBox(height: Resources.verticalDims.$32),
-          ],
+                ],
+              ),
+              SizedBox(height: Resources.verticalDims.$24),
+              const ProfileLogoutButton(),
+              SizedBox(height: Resources.verticalDims.$32),
+            ],
+          ),
         ),
       ),
-    ),
-  );
-}
+    );
+  }
 
-  void _openEdit(BuildContext context, UserProfileModel profile) {
+  void _openEdit(BuildContext context, UserProfileModel? profile) {
     context.push(
       AppRouteEnum.editProfilePage.name,
-      extra: EditProfileArgs(profile: profile),
+      extra: EditProfileArgs(
+        title: context.localization.editProfile,
+        profile: profile,
+      ),
     );
   }
 

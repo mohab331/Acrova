@@ -1,79 +1,7 @@
-import 'package:acrova/presentation/app/resources/resources.dart';
-import 'package:acrova/utils/extensions/localization_extension.dart';
+import 'package:acrova/utils/enums/payment_status_enum.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flutter/material.dart';
 
-enum PaymentStatus {
-  success('success'),
-  pending('pending'),
-  rejected('rejected');
-
-  final String value;
-  const PaymentStatus(this.value);
-
-  static PaymentStatus? fromValue(String? value) {
-    if (value == null) return null;
-    for (final item in PaymentStatus.values) {
-      if (item.value.toLowerCase() == value.toLowerCase() ||
-          item.name.toLowerCase() == value.toLowerCase()) {
-        return item;
-      }
-    }
-    return null;
-  }
-}
-
-extension PaymentStatusX on PaymentStatus {
-  String get displayName {
-    switch (this) {
-      case PaymentStatus.success:
-        return 'Success';
-      case PaymentStatus.pending:
-        return 'Pending';
-      case PaymentStatus.rejected:
-        return 'Rejected';
-    }
-  }
-
-  String localizedName(BuildContext context) {
-    switch (this) {
-      case PaymentStatus.success:
-        return context.localization.paymentStatusSuccess;
-      case PaymentStatus.pending:
-        return context.localization.paymentStatusPending;
-      case PaymentStatus.rejected:
-        return context.localization.paymentStatusRejected;
-    }
-  }
-
-  Color get color {
-    switch (this) {
-      case PaymentStatus.success:
-        return Resources.colors.luxurySuccess;
-      case PaymentStatus.rejected:
-        return Resources.colors.luxuryError;
-      case PaymentStatus.pending:
-        return Resources.colors.luxuryWarning;
-    }
-  }
-
-  IconData get icon {
-    switch (this) {
-      case PaymentStatus.success:
-        return Icons.check_circle;
-      case PaymentStatus.rejected:
-        return Icons.error;
-      case PaymentStatus.pending:
-        return Icons.schedule;
-    }
-  }
-
-  Color get backgroundColor => color.withValues(alpha: 0.1);
-
-  static PaymentStatus? fromString(String? status) {
-    return PaymentStatus.fromValue(status);
-  }
-}
+export 'package:acrova/utils/enums/payment_status_enum.dart';
 
 class PaymentResponseModel extends Equatable {
   const PaymentResponseModel({
@@ -113,7 +41,7 @@ class PaymentResponseModel extends Equatable {
         projectName: json['projectName']?.toString(),
         amount: (json['amount'] as num?)?.toDouble(),
         currency: json['currency']?.toString(),
-        status: PaymentStatusX.fromString(json['status']?.toString()),
+        status: PaymentStatus.fromValue(json['status']),
         date: json['date'] != null
             ? DateTime.tryParse(json['date'].toString())
             : null,
@@ -131,7 +59,8 @@ class PaymentResponseModel extends Equatable {
     'projectName': projectName,
     'amount': amount,
     'currency': currency,
-    'status': status?.displayName.toLowerCase(),
+    'status_id': status?.id,
+    'status': status?.id,
     'date': date?.toIso8601String(),
     'transactionId': transactionId,
     'bankName': bankName,

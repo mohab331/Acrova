@@ -134,23 +134,25 @@ class WalkthroughsSection extends StatelessWidget {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              walkthrough.title ?? '',
-                              style: context.textTheme.titleMedium?.copyWith(
-                                color: Resources.colors.luxuryNavy,
-                                fontWeight: Resources.fontWeights.bold,
+                        Flexible(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                walkthrough.title ?? '',
+                                style: context.textTheme.titleMedium?.copyWith(
+                                  color: Resources.colors.luxuryNavy,
+                                  fontWeight: Resources.fontWeights.bold,
+                                ),
                               ),
-                            ),
-                            Text(
-                              '${walkthrough.size} • ${walkthrough.format}',
-                              style: context.textTheme.labelMedium?.copyWith(
-                                color: Resources.colors.luxuryBodyMuted,
+                              Text(
+                                '${walkthrough.size} • ${walkthrough.format}',
+                                style: context.textTheme.labelMedium?.copyWith(
+                                  color: Resources.colors.luxuryBodyMuted,
+                                ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
                         IconButton(
                           onPressed: () {
@@ -182,6 +184,7 @@ class WalkthroughsSection extends StatelessWidget {
             ),
           ),
         ),
+        SizedBox(height: Resources.verticalDims.$32),
       ],
     );
   }

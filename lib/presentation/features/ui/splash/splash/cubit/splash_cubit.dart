@@ -1,12 +1,12 @@
 import 'dart:ui';
 
+import 'package:acrova/data/models/response/config/app_config_response_model.dart';
 import 'package:acrova/domain/repository/notifications/base_notification_provider_repo.dart';
 import 'package:bloc/bloc.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 import '../../../../../../core/error/app_error_model.dart';
 import '../../../../../../data/data_source/remote/network/models/network_response.dart';
-import '../../../../../../data/models/response/config/min_app_version_response_model.dart';
 import '../../../../../../domain/repository/auth/base_auth_repo.dart';
 import '../../../../../../domain/repository/config/base_app_config_repo.dart';
 import '../../../../../../domain/repository/localization/base_localization_repo.dart';

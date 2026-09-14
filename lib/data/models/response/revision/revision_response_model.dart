@@ -1,11 +1,16 @@
+import 'package:acrova/utils/enums/revision_category_enum.dart';
 import 'package:acrova/utils/enums/revision_status_enum.dart';
 import 'package:equatable/equatable.dart';
+
+export 'package:acrova/utils/enums/revision_category_enum.dart';
+export 'package:acrova/utils/enums/revision_status_enum.dart';
 
 /// A customer revision response model (history item + detail).
 class RevisionResponseModel extends Equatable {
   const RevisionResponseModel({
     this.id,
     this.status,
+    this.category,
     this.createdAt,
     this.description,
     this.collaborators,
@@ -17,6 +22,7 @@ class RevisionResponseModel extends Equatable {
 
   final String? id;
   final RevisionStatus? status;
+  final RevisionCategory? category;
   final DateTime? createdAt;
   final String? description;
 
@@ -31,9 +37,8 @@ class RevisionResponseModel extends Equatable {
   factory RevisionResponseModel.fromJson(Map<String, dynamic> json) =>
       RevisionResponseModel(
         id: json['id']?.toString(),
-        status: json['status'] != null
-            ? RevisionStatus.fromJson(json['status'].toString())
-            : null,
+        status: RevisionStatus.fromJson(json['status']),
+        category: RevisionCategory.fromValue(json['category_id']?.toString()),
         createdAt: json['created_at'] != null
             ? DateTime.tryParse(json['created_at'].toString())
             : null,
@@ -49,7 +54,12 @@ class RevisionResponseModel extends Equatable {
 
   Map<String, dynamic> toJson() => {
     'id': id,
-    'status': status?.jsonKey,
+    'status_id': status?.id,
+    'status': status?.id,
+    if (category != null) ...{
+      'category_id': category?.id,
+      'category': category?.id,
+    },
     'created_at': createdAt?.toIso8601String(),
     'description': description,
     'collaborators': collaborators,
@@ -62,6 +72,7 @@ class RevisionResponseModel extends Equatable {
   RevisionResponseModel copyWith({
     String? id,
     RevisionStatus? status,
+    RevisionCategory? category,
     DateTime? createdAt,
     String? description,
     List<String>? collaborators,
@@ -72,6 +83,7 @@ class RevisionResponseModel extends Equatable {
   }) => RevisionResponseModel(
     id: id ?? this.id,
     status: status ?? this.status,
+    category: category ?? this.category,
     createdAt: createdAt ?? this.createdAt,
     description: description ?? this.description,
     collaborators: collaborators ?? this.collaborators,
@@ -85,6 +97,7 @@ class RevisionResponseModel extends Equatable {
   List<Object?> get props => [
     id,
     status,
+    category,
     createdAt,
     description,
     collaborators,

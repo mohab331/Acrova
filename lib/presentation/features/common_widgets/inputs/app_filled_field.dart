@@ -1,5 +1,6 @@
 import 'package:acrova/presentation/app/resources/resources.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 /// Labeled filled input with a 2px bottom border (gold on focus) and 2px radius.
 ///
@@ -11,9 +12,10 @@ class AppFilledField extends StatelessWidget {
     required this.controller,
     required this.onChanged,
     this.hint,
-    this.error,
+    required this.validator,
     this.keyboardType,
     this.maxLines = 1,
+    this.inputFormatters,
     super.key,
   });
 
@@ -21,17 +23,12 @@ class AppFilledField extends StatelessWidget {
   final TextEditingController controller;
   final ValueChanged<String> onChanged;
   final String? hint;
-  final String? error;
+  final String? Function(String?)? validator;
   final TextInputType? keyboardType;
   final int maxLines;
-
+  final List<TextInputFormatter>? inputFormatters;
   @override
   Widget build(BuildContext context) {
-    final hasError = error != null;
-    final borderColor = hasError
-        ? Resources.colors.luxuryError
-        : Resources.colors.luxuryBorder;
-
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -46,7 +43,20 @@ class AppFilledField extends StatelessWidget {
           ),
         ),
         SizedBox(height: Resources.verticalDims.$4),
-        TextField(
+        TextFormField(
+          inputFormatters: [],
+          validator: validator,
+          autovalidateMode: AutovalidateMode.onUserInteraction,
+          errorBuilder: (context, errorText) => Text(
+            errorText,
+            style: TextStyle(
+              fontFamily: Resources.fonts.manrope,
+              fontSize: Resources.fontSizes.$10,
+              fontWeight: Resources.fontWeights.bold,
+              letterSpacing: Resources.letterSpacing.$0_8,
+              color: Resources.colors.luxuryError,
+            ),
+          ),
           controller: controller,
           onChanged: onChanged,
           keyboardType: keyboardType,
@@ -58,6 +68,7 @@ class AppFilledField extends StatelessWidget {
           ),
           decoration: InputDecoration(
             isDense: true,
+            isCollapsed: true,
             filled: true,
             fillColor: Resources.colors.luxuryInputBg,
             hintText: hint,
@@ -66,32 +77,17 @@ class AppFilledField extends StatelessWidget {
               fontSize: Resources.fontSizes.$16,
               color: Resources.colors.luxuryPlaceholder,
             ),
+
             contentPadding: EdgeInsets.symmetric(
               horizontal: Resources.horizontalDims.$8,
               vertical: Resources.verticalDims.$18,
             ),
-            border: _border(borderColor),
-            enabledBorder: _border(borderColor),
-            focusedBorder: _border(
-              hasError
-                  ? Resources.colors.luxuryError
-                  : Resources.colors.luxuryGoldLight,
-            ),
+            border: _border(Resources.colors.luxuryBorder),
+            enabledBorder: _border(Resources.colors.luxuryBorder),
+            focusedBorder: _border(Resources.colors.luxuryGoldLight),
+            errorBorder: _border(Resources.colors.luxuryError),
           ),
         ),
-        if (hasError) ...[
-          SizedBox(height: Resources.verticalDims.$4),
-          Text(
-            error!,
-            style: TextStyle(
-              fontFamily: Resources.fonts.manrope,
-              fontSize: Resources.fontSizes.$10,
-              fontWeight: Resources.fontWeights.bold,
-              letterSpacing: Resources.letterSpacing.$0_8,
-              color: Resources.colors.luxuryError,
-            ),
-          ),
-        ],
       ],
     );
   }

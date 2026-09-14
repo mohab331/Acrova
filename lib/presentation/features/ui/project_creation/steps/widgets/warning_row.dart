@@ -9,7 +9,7 @@ class WarningRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.only(bottom: Resources.verticalDims.$4),
+      padding: EdgeInsetsDirectional.only(bottom: Resources.verticalDims.$4),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

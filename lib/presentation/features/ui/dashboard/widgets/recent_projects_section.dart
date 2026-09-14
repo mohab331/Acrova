@@ -48,6 +48,7 @@ class RecentProjectsSection extends StatelessWidget {
         else
           ListView.separated(
             shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
             itemBuilder: (context, index) {
               final project = projects?[index];
               return DashboardProjectCardItem(project: project);

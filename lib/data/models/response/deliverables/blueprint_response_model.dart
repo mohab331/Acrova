@@ -18,7 +18,7 @@ class BlueprintResponseModel extends Equatable {
         title: json['title']?.toString(),
         size: json['size']?.toString(),
         format: json['format']?.toString(),
-        urlOrAsset: json['urlOrAsset']?.toString() ?? json['url']?.toString(),
+        urlOrAsset: json['urlOrAsset']?.toString(),
       );
 
   Map<String, dynamic> toJson() => {

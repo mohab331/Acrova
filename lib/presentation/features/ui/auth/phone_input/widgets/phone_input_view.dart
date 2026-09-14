@@ -72,12 +72,15 @@ class PhoneInputView extends StatelessWidget {
             // Align(
             //   alignment: AlignmentDirectional.centerEnd,
             //   child: TextButton(
-            //     onPressed: () {},
+            //     onPressed: () {
+            //       context.read<AuthCubit>().loginAsGuest();
+            //       context.goTo(AppRouteEnum.homePage.name);
+            //     },
             //     style: TextButton.styleFrom(
             //       foregroundColor: Resources.colors.luxuryBody,
             //     ),
             //     child: Text(
-            //       l10n.identityVerificationIssue,
+            //       context.localization.continueAsGuest,
             //       style: context.textTheme.bodySmall?.copyWith(
             //         color: Resources.colors.luxuryBody,
             //       ),

@@ -48,7 +48,7 @@ class _AvatarHeaderState extends State<AvatarHeader> {
                   avatarUrl: user?.avatarUrl,
                   userName: user?.name,
                   isError: authState.getUserCubitStatus == CubitStatus.error,
-                  onRetry: () => authCubit.getUser(),
+                  onRetry: authCubit.getUser,
                 ),
                 SizedBox(width: Resources.horizontalDims.$12),
                 Column(

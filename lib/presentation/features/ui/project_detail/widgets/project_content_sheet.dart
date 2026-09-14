@@ -51,36 +51,38 @@ class ProjectContentSheet extends StatelessWidget {
           ),
           SizedBox(height: Resources.verticalDims.$32),
           // Overview Section
-          Padding(
-            padding: EdgeInsetsGeometry.directional(
-              start: Resources.horizontalDims.$24,
-              end: Resources.horizontalDims.$24,
-            ),
-            child: Text(
-              context.localization.projectDetailOverview,
-              style: context.textTheme.labelLarge?.copyWith(
-                fontSize: Resources.fontSizes.$18,
-                fontWeight: Resources.fontWeights.semiBold,
-                color: Resources.colors.luxuryNavy,
+          if (project.additionalNotes?.isNotEmpty ?? false) ...[
+            Padding(
+              padding: EdgeInsetsGeometry.directional(
+                start: Resources.horizontalDims.$24,
+                end: Resources.horizontalDims.$24,
+              ),
+              child: Text(
+                context.localization.designPreferencesLabelNotes,
+                style: context.textTheme.labelLarge?.copyWith(
+                  fontSize: Resources.fontSizes.$18,
+                  fontWeight: Resources.fontWeights.semiBold,
+                  color: Resources.colors.luxuryNavy,
+                ),
               ),
             ),
-          ),
-          SizedBox(height: Resources.verticalDims.$12),
-          Padding(
-            padding: EdgeInsetsGeometry.directional(
-              start: Resources.horizontalDims.$24,
-              end: Resources.horizontalDims.$24,
-            ),
-            child: Text(
-              project.description ??
-                  context.localization.projectOverviewDefault,
-              style: context.textTheme.bodyMedium?.copyWith(
-                fontSize: Resources.fontSizes.$14,
-                color: Resources.colors.luxuryBody,
-                height: Resources.lineHeights.$1_6,
+            SizedBox(height: Resources.verticalDims.$12),
+            Padding(
+              padding: EdgeInsetsGeometry.directional(
+                start: Resources.horizontalDims.$24,
+                end: Resources.horizontalDims.$24,
+              ),
+              child: Text(
+                project.additionalNotes ??
+                    context.localization.projectOverviewDefault,
+                style: context.textTheme.bodyMedium?.copyWith(
+                  fontSize: Resources.fontSizes.$14,
+                  color: Resources.colors.luxuryBody,
+                  height: Resources.lineHeights.$1_6,
+                ),
               ),
             ),
-          ),
+          ],
           SizedBox(height: Resources.verticalDims.$32),
           Padding(
             padding: EdgeInsetsGeometry.directional(
@@ -138,7 +140,7 @@ class ProjectContentSheet extends StatelessWidget {
               start: Resources.horizontalDims.$24,
               end: Resources.horizontalDims.$24,
             ),
-            child: ProjectProvisionsList(provisions: project.provisions),
+            child: ProjectProvisionsList(projectResponseModel: project),
           ),
         ],
       ),

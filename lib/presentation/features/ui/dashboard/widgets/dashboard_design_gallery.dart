@@ -24,11 +24,13 @@ class DashboardDesignGallery extends StatelessWidget {
                 .map(
                   (d) => Expanded(
                     child: Padding(
-                      padding: EdgeInsets.only(
-                        right: d == rest.first && rest.length > 1
+                      padding: EdgeInsetsDirectional.only(
+                        end: d == rest.first && rest.length > 1
                             ? Resources.horizontalDims.$6
                             : 0,
-                        left: d != rest.first ? Resources.horizontalDims.$6 : 0,
+                        start: d != rest.first
+                            ? Resources.horizontalDims.$6
+                            : 0,
                       ),
                       child: DashboardDesignCard(portfolioItem: d, height: 140),
                     ),

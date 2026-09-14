@@ -50,7 +50,10 @@ class DetailContentPanel extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  item?.style?.toUpperCase() ?? '',
+                  (item?.style?.localizedLabel(context) ??
+                          item?.style?.label ??
+                          '')
+                      .toUpperCase(),
                   style: context.textTheme.labelSmall?.copyWith(
                     fontSize: Resources.fontSizes.$10,
                     fontWeight: Resources.fontWeights.extraBold,

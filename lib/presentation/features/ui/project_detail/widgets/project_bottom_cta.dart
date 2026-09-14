@@ -14,19 +14,21 @@ class ProjectBottomCta extends StatelessWidget {
   final ProjectModel project;
   @override
   Widget build(BuildContext context) {
-    final bool hideCTA =
-        (project.status != ProjectStatus.awaitingPayment ||
-        project.status != ProjectStatus.deliverablesReady ||
-        project.status == ProjectStatus.revisionInProgress ||
-        project.status == ProjectStatus.completed);
-    if (hideCTA) {
+    final bool showCTA = {
+      ProjectStatus.awaitingPayment,
+      ProjectStatus.deliverablesReady,
+      ProjectStatus.revisionInProgress,
+      ProjectStatus.completed,
+    }.contains(project.status);
+
+    if (!showCTA) {
       return const SizedBox.shrink();
     }
     return Container(
-      padding: EdgeInsets.only(
+      padding: EdgeInsetsDirectional.only(
         top: Resources.verticalDims.$16,
-        left: Resources.horizontalDims.$24,
-        right: Resources.horizontalDims.$24,
+        start: Resources.horizontalDims.$24,
+        end: Resources.horizontalDims.$24,
         bottom: Resources.verticalDims.$32,
       ),
       decoration: BoxDecoration(

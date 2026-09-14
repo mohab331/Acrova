@@ -36,14 +36,14 @@ class EditProfilePage extends StatelessWidget {
         imagePicker: serviceLocatorInstance<BaseImagePickerService>(),
         initialProfile: profile,
       ),
-      child: _EditProfileView(profile: profile),
+      child: _EditProfileView(args: args),
     );
   }
 }
 
 class _EditProfileView extends StatefulWidget {
-  const _EditProfileView({required this.profile});
-  final UserProfileModel profile;
+  const _EditProfileView({required this.args});
+  final EditProfileArgs? args;
 
   @override
   State<_EditProfileView> createState() => _EditProfileViewState();
@@ -53,6 +53,7 @@ class _EditProfileViewState extends State<_EditProfileView> {
   late final TextEditingController _nameController;
   late final TextEditingController _emailController;
   late final TextEditingController _mobileController;
+  late final TextEditingController _nationalIdController;
 
   @override
   void initState() {
@@ -61,6 +62,7 @@ class _EditProfileViewState extends State<_EditProfileView> {
     _nameController = TextEditingController(text: s.name);
     _emailController = TextEditingController(text: s.email);
     _mobileController = TextEditingController(text: s.mobileNumber);
+    _nationalIdController = TextEditingController(text: s.nationalID);
   }
 
   @override
@@ -68,6 +70,7 @@ class _EditProfileViewState extends State<_EditProfileView> {
     _nameController.dispose();
     _emailController.dispose();
     _mobileController.dispose();
+    _nationalIdController.dispose();
     super.dispose();
   }
 
@@ -91,45 +94,44 @@ class _EditProfileViewState extends State<_EditProfileView> {
     return BlocListener<EditProfileCubit, EditProfileState>(
       listener: _handleEditProfileListener,
       child: CommonScreen(
-        resizeToAvoidBottomInset: false,
+        bottomNavigationBar: const EditProfileSubmitButton(),
+        resizeToAvoidBottomInset: true,
         padding: EdgeInsets.zero,
         appBar: AppAuthBrandHeader(
           showBack: true,
-          label: context.localization.editProfile,
+          label: widget.args?.title ?? '',
         ),
-        child: Column(
-          children: [
-            Expanded(
-              child: SingleChildScrollView(
-                padding: EdgeInsets.only(
-                  left: Resources.horizontalDims.$20,
-                  right: Resources.horizontalDims.$20,
-                  top: Resources.verticalDims.$16,
-                ),
-                child: Column(
-                  children: [
-                    BlocBuilder<EditProfileCubit, EditProfileState>(
-                      buildWhen: (p, c) => p.avatarPath != c.avatarPath,
-                      builder: (context, state) {
-                        return EditProfilePhotoSection(
-                          avatarUrl: widget.profile.avatarUrl,
-                          avatarPath: state.avatarPath,
-                          onChangePhoto: () => _onChangePhoto(context),
-                        );
-                      },
-                    ),
-                    SizedBox(height: Resources.verticalDims.$40),
-                    EditProfileForm(
-                      nameController: _nameController,
-                      emailController: _emailController,
-                      mobileController: _mobileController,
-                    ),
-                  ],
-                ),
-              ),
+        child: Expanded(
+          child: SingleChildScrollView(
+            physics: const AlwaysScrollableScrollPhysics(),
+            padding: EdgeInsets.only(
+              left: Resources.horizontalDims.$20,
+              right: Resources.horizontalDims.$20,
+              top: Resources.verticalDims.$16,
+              bottom: Resources.verticalDims.$32,
             ),
-            const EditProfileSubmitButton(),
-          ],
+            child: Column(
+              children: [
+                BlocBuilder<EditProfileCubit, EditProfileState>(
+                  buildWhen: (p, c) => p.avatarPath != c.avatarPath,
+                  builder: (context, state) {
+                    return EditProfilePhotoSection(
+                      avatarUrl: widget.args?.profile?.avatarUrl,
+                      avatarPath: state.avatarPath,
+                      onChangePhoto: () => _onChangePhoto(context),
+                    );
+                  },
+                ),
+                SizedBox(height: Resources.verticalDims.$40),
+                EditProfileForm(
+                  nameController: _nameController,
+                  emailController: _emailController,
+                  mobileController: _mobileController,
+                  nationalIDController: _nationalIdController,
+                ),
+              ],
+            ),
+          ),
         ),
       ),
     );
@@ -142,9 +144,9 @@ class _EditProfileViewState extends State<_EditProfileView> {
     if (state.cubitStatus == CubitStatus.success) {
       CustomToastification.success(
         context: context,
-        message: 'Updated Successfully',
+        message: context.localization.updatedSuccessfully,
       ).showToast();
-      context.pop();
+      context.pop(true);
       context.read<AuthCubit>().getUser();
     }
     if (state.cubitStatus == CubitStatus.error) {

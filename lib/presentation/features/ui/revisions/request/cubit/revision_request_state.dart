@@ -10,6 +10,7 @@ class RevisionRequestState extends Equatable {
     required this.cubitStatus,
     this.quota,
     this.deliverables = const [],
+    this.selectedCategory,
     this.deliverableRef,
     this.details = '',
     this.attachmentPaths = const [],
@@ -26,6 +27,7 @@ class RevisionRequestState extends Equatable {
   final CubitStatus cubitStatus;
   final RevisionQuotaResponseModel? quota;
   final List<String> deliverables;
+  final RevisionCategory? selectedCategory;
 
   final String? deliverableRef;
   final String details;
@@ -59,6 +61,9 @@ class RevisionRequestState extends Equatable {
     cubitStatus: cubitStatus ?? this.cubitStatus,
     quota: quota ?? this.quota,
     deliverables: deliverables ?? this.deliverables,
+    selectedCategory: selectedCategory != null
+        ? selectedCategory()
+        : this.selectedCategory,
     deliverableRef: deliverableRef != null
         ? deliverableRef()
         : this.deliverableRef,
@@ -76,6 +81,7 @@ class RevisionRequestState extends Equatable {
     cubitStatus,
     quota,
     deliverables,
+    selectedCategory,
     deliverableRef,
     details,
     attachmentPaths,

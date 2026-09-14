@@ -53,7 +53,6 @@ class ProjectCreationView extends StatelessWidget {
 
   void _handleListener(BuildContext context, ProjectCreationState state) {
     if (state.isSubmitSuccess && state.createdProject != null) {
-      // serviceLocatorInstance<ProjectsCubit>().fetchProjects();
       showDialog<void>(
         context: context,
         barrierDismissible: false,

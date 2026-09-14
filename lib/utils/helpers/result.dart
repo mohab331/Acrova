@@ -6,6 +6,12 @@ sealed class Result<T> {
     required final R Function(T data) success,
     required final R Function(AppErrorModel error) failure,
   });
+
+  bool get isSuccess => this is Success<T>;
+  bool get isFailure => this is Failure<T>;
+  T? get dataOrNull => this is Success<T> ? (this as Success<T>).data : null;
+  AppErrorModel? get errorOrNull =>
+      this is Failure<T> ? (this as Failure<T>).error : null;
 }
 
 class Success<T> extends Result<T> {

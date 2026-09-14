@@ -33,6 +33,7 @@ class _ProfilePageState extends State<ProfilePage> {
       create: (context) => serviceLocatorInstance<ProfileCubit>(),
       child: CommonScreen(
         bottomPadding: 0,
+        resizeToAvoidBottomInset: true,
         child: BlocBuilder<ProfileCubit, ProfileCubitState>(
           builder: (context, state) {
             if (authState.getUserCubitStatus == CubitStatus.loading) {
@@ -45,7 +46,12 @@ class _ProfilePageState extends State<ProfilePage> {
               );
             }
             final profile = authState.userModel;
-            if (profile == null) return const SizedBox.shrink();
+            // if (profile == null || authState.isVisitor) {
+            //   return VisitorEmptyState(
+            //     icon: Icons.person_outline,
+            //     title: context.localization.profileCompletionTitle,
+            //   );
+            // }
 
             return ProfileContent(profile: profile);
           },

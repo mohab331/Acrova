@@ -1,31 +1,39 @@
+import 'package:acrova/utils/enums/budget_tier_enum.dart';
+import 'package:acrova/utils/enums/interior_design_scope_enum.dart';
+import 'package:acrova/utils/enums/project_timeline_enum.dart';
+
 import '../base_request_model.dart';
+
+export 'package:acrova/utils/enums/budget_tier_enum.dart';
+export 'package:acrova/utils/enums/interior_design_scope_enum.dart';
+export 'package:acrova/utils/enums/project_timeline_enum.dart';
 
 class InteriorDesignRequestModel extends BaseRequestModel {
   final String projectId;
-  final String scope; // 'all' or 'specific'
+  final InteriorDesignScope scope;
   final List<String> specificRooms;
   final String customScopeNotes;
   final bool spacePlanningRequired;
   final List<String> moodboards;
   final List<String> colorPalette;
   final List<String> atmosphereTags;
-  final String budgetTier;
-  final String timeline;
+  final BudgetTier? budgetTier;
+  final ProjectTimeline? timeline;
   final String extraNotes;
   final List<String> inspirationMediaPaths;
   final List<String> inspirationLinks;
 
   const InteriorDesignRequestModel({
     required this.projectId,
-    required this.scope,
+    this.scope = InteriorDesignScope.all,
     this.specificRooms = const [],
     this.customScopeNotes = '',
     this.spacePlanningRequired = false,
     this.moodboards = const [],
     this.colorPalette = const [],
     this.atmosphereTags = const [],
-    required this.budgetTier,
-    required this.timeline,
+    this.budgetTier,
+    this.timeline,
     this.extraNotes = '',
     this.inspirationMediaPaths = const [],
     this.inspirationLinks = const [],
@@ -35,15 +43,18 @@ class InteriorDesignRequestModel extends BaseRequestModel {
   Map<String, dynamic> toJson() {
     return {
       'projectId': projectId,
-      'scope': scope,
+      'scope_id': scope.id,
+      'scope': scope.id,
       'specificRooms': specificRooms,
       'customScopeNotes': customScopeNotes,
       'spacePlanningRequired': spacePlanningRequired,
       'moodboards': moodboards,
       'colorPalette': colorPalette,
       'atmosphereTags': atmosphereTags,
-      'budgetTier': budgetTier,
-      'timeline': timeline,
+      'budget_tier_id': budgetTier?.id,
+      'budget_tier': budgetTier?.id,
+      'timeline_id': timeline?.id,
+      'timeline': timeline?.id,
       'extraNotes': extraNotes,
       'inspirationMediaPaths': inspirationMediaPaths,
       'inspirationLinks': inspirationLinks,
@@ -53,7 +64,9 @@ class InteriorDesignRequestModel extends BaseRequestModel {
   factory InteriorDesignRequestModel.fromJson(Map<String, dynamic> json) {
     return InteriorDesignRequestModel(
       projectId: json['projectId'] as String? ?? '',
-      scope: json['scope'] as String? ?? 'all',
+      scope:
+          InteriorDesignScope.fromValue(json['scope_id']) ??
+          InteriorDesignScope.all,
       specificRooms:
           (json['specificRooms'] as List<dynamic>?)
               ?.map((e) => e.toString())
@@ -76,8 +89,8 @@ class InteriorDesignRequestModel extends BaseRequestModel {
               ?.map((e) => e.toString())
               .toList() ??
           const [],
-      budgetTier: json['budgetTier'] as String? ?? '',
-      timeline: json['timeline'] as String? ?? '',
+      budgetTier: BudgetTier.fromValue(json['budget_tier']),
+      timeline: ProjectTimeline.fromValue(json['timeline_id']),
       extraNotes: json['extraNotes'] as String? ?? '',
       inspirationMediaPaths:
           (json['inspirationMediaPaths'] as List<dynamic>?)
@@ -92,17 +105,19 @@ class InteriorDesignRequestModel extends BaseRequestModel {
     );
   }
 
+
+
   InteriorDesignRequestModel copyWith({
     String? projectId,
-    String? scope,
+    InteriorDesignScope? scope,
     List<String>? specificRooms,
     String? customScopeNotes,
     bool? spacePlanningRequired,
     List<String>? moodboards,
     List<String>? colorPalette,
     List<String>? atmosphereTags,
-    String? budgetTier,
-    String? timeline,
+    BudgetTier? budgetTier,
+    ProjectTimeline? timeline,
     String? extraNotes,
     List<String>? inspirationMediaPaths,
     List<String>? inspirationLinks,

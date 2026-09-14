@@ -158,15 +158,15 @@ class AuthenticationInterceptor extends Interceptor {
     // Check if the router is currently on the login screen.
     final goRouterState = GoRouter.of(rootNavigatorKey.currentContext!).state;
     final isCurrentlyOnLoginPage =
-        goRouterState.matchedLocation == AppRouteEnum.authPage.path;
+        goRouterState.matchedLocation == AppRouteEnum.welcomePage.path;
 
     // Only navigate if we're not already on the login page.
     if (!isCurrentlyOnLoginPage) {
-      // Navigate to the login page and remove all other routes.
+      // Navigate to the welcome page and remove all other routes.
       // Use goNamed() for named routes.
       GoRouter.of(
         rootNavigatorKey.currentContext!,
-      ).goNamed(AppRouteEnum.authPage.name);
+      ).goNamed(AppRouteEnum.welcomePage.name);
     }
   }
 

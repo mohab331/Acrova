@@ -40,12 +40,12 @@ class _DashboardContentState extends State<DashboardContent> {
     final projectsState = context.watch<ProjectsCubit>().state;
     final authState = context.watch<AuthCubit>().state;
 
-    final isDashboardError = portfolioState.isError && projectsState.isError;
+    final isDashboardError = (portfolioState.isError && projectsState.isError);
 
     if (isDashboardError) {
       return AppErrorState(
         onRetry: () {
-          if (projectsState.isError) portfolioCubit.fetchPortfolio();
+          if (portfolioState.isError) portfolioCubit.fetchPortfolio();
           if (projectsState.isError) projectsCubit.fetchProjects();
           if (authState.getUserCubitStatus == CubitStatus.error) {
             authCubit.getUser();

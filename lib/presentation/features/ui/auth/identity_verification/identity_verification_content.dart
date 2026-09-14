@@ -142,6 +142,7 @@ class IdentityVerificationContent extends StatelessWidget {
     AuthCubitState state,
   ) {
     if (state.verifyOTPCubitStatus == CubitStatus.success) {
+      context.read<AuthCubit>().getUser();
       context.goTo(AppRouteEnum.homePage.name);
     }
   }

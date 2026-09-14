@@ -35,7 +35,7 @@ class RemoteAuthDataSource implements BaseAuthDataSource {
   }
 
   @override
-  Future<UserProfileResponseModel> getUserProfile() async {
+  Future<UserProfileResponseModel?> getUserProfile() async {
     // GET /users/me
     throw UnimplementedError('Remote getUserProfile not implemented yet');
   }

@@ -1,3 +1,4 @@
+import 'package:acrova/utils/enums/design_style_enum.dart';
 import 'package:equatable/equatable.dart';
 
 import 'walkthrough_response_model.dart';
@@ -18,7 +19,7 @@ class PortfolioItemResponseModel extends Equatable {
   });
 
   final String? id;
-  final String? style;
+  final DesignStyle? style;
   final String? category;
   final String? title;
   final String? location;
@@ -29,32 +30,32 @@ class PortfolioItemResponseModel extends Equatable {
   final List<String>? features;
   final WalkthroughResponseModel? walkthroughModel;
 
-  factory PortfolioItemResponseModel.fromJson(Map<String, dynamic> json) =>
-      PortfolioItemResponseModel(
-        id: json['id']?.toString(),
-        style: json['style']?.toString(),
-        category: json['category']?.toString(),
-        title: json['title']?.toString(),
-        location: json['location']?.toString(),
-        area: json['area']?.toString(),
-        floors: json['floors']?.toString(),
-        narrative: json['narrative']?.toString(),
-        imageUrls: (json['imageUrls'] as List?)
-            ?.map((e) => e.toString())
-            .toList(),
-        features: (json['features'] as List?)
-            ?.map((e) => e.toString())
-            .toList(),
-        walkthroughModel: json['walkthroughModel'] is Map
-            ? WalkthroughResponseModel.fromJson(
-                Map<String, dynamic>.from(json['walkthroughModel'] as Map),
-              )
-            : null,
-      );
+  String? get styleLabel => style?.label;
+
+  factory PortfolioItemResponseModel.fromJson(
+    Map<String, dynamic> json,
+  ) => PortfolioItemResponseModel(
+    id: json['id']?.toString(),
+    style: DesignStyle.fromValue(json['style_id']),
+    category: json['category']?.toString(),
+    title: json['title']?.toString(),
+    location: json['location']?.toString(),
+    area: json['area']?.toString(),
+    floors: json['floors']?.toString(),
+    narrative: json['narrative']?.toString(),
+    imageUrls: (json['imageUrls'] as List?)?.map((e) => e.toString()).toList(),
+    features: (json['features'] as List?)?.map((e) => e.toString()).toList(),
+    walkthroughModel: json['walkthroughModel'] is Map
+        ? WalkthroughResponseModel.fromJson(
+            Map<String, dynamic>.from(json['walkthroughModel'] as Map),
+          )
+        : null,
+  );
 
   Map<String, dynamic> toJson() => {
     'id': id,
-    'style': style,
+    'style_id': style?.id,
+    'style': style?.id,
     'category': category,
     'title': title,
     'location': location,
@@ -65,6 +66,8 @@ class PortfolioItemResponseModel extends Equatable {
     'features': features,
     'walkthroughModel': walkthroughModel?.toJson(),
   };
+
+
 
   @override
   List<Object?> get props => [

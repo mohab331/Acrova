@@ -29,7 +29,7 @@ class WizardAppBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       color: Resources.colors.luxuryBackground,
-      padding: EdgeInsets.only(bottom: Resources.verticalDims.$20),
+      padding: EdgeInsetsDirectional.only(bottom: Resources.verticalDims.$20),
       child: Column(
         children: [
           Row(

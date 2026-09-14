@@ -1,5 +1,7 @@
+import 'package:acrova/utils/enums/design_style_enum.dart';
 import 'package:acrova/utils/enums/project_status_enum.dart';
 import 'package:acrova/utils/enums/project_type_enum.dart';
+import 'package:acrova/utils/enums/smart_home_level_enum.dart';
 import 'package:equatable/equatable.dart';
 
 import 'deliverable_response_model.dart';
@@ -33,9 +35,8 @@ class ProjectResponseModel extends Equatable {
     this.architecturalStyle,
     this.thumbnailUrl,
     this.deliverables,
-    this.description,
+    this.additionalNotes,
     this.engineer,
-    this.provisions,
     this.estimatedTimeline,
   });
 
@@ -62,19 +63,19 @@ class ProjectResponseModel extends Equatable {
   final bool? hasBasement;
   final bool? hasPool;
   final bool? hasRooftop;
-  final String? smartHomeLevel;
+  final SmartHomeLevel? smartHomeLevel;
 
   // Design preferences
-  final String? architecturalStyle;
+  final DesignStyle? architecturalStyle;
 
   // Media
   final String? thumbnailUrl;
 
   // Project details
+
   final List<DeliverableResponseModel>? deliverables;
-  final String? description;
+  final String? additionalNotes;
   final EngineerResponseModel? engineer;
-  final List<String>? provisions;
   final String? estimatedTimeline;
 
   double get progressRatio => status?.progressRatio ?? 0.0;
@@ -85,41 +86,36 @@ class ProjectResponseModel extends Equatable {
     return ProjectResponseModel(
       id: json['id']?.toString(),
       name: json['name']?.toString(),
-      status: json['status'] != null
-          ? ProjectStatusX.fromJson(json['status'].toString())
-          : null,
-      type: json['type'] != null
-          ? ProjectType.fromJson(json['type'].toString())
-          : null,
-      createdAt: _parseDateTime(json['created_at']),
+      status: ProjectStatus.fromId(int.tryParse(json['status_id'].toString())),
+      type: ProjectType.fromJson(json['type_id']),
+      createdAt: DateTime.tryParse(json['created_at'].toString()),
       location: json['location']?.toString(),
-      landAreaSqm: _parseDouble(json['land_area_sqm'] ?? json['land_area']),
-      landWidthM: _parseDouble(json['land_width_m'] ?? json['land_width']),
-      landLengthM: _parseDouble(json['land_length_m'] ?? json['land_length']),
-      floors: _parseInt(json['floors']),
-      employeeCount: _parseInt(json['employee_count']),
-      bedrooms: _parseInt(json['bedrooms']),
-      bathrooms: _parseInt(json['bathrooms']),
-      hasMajlis: _parseBool(json['has_majlis']),
-      hasMaidRoom: _parseBool(json['has_maid_room']),
-      hasDriverRoom: _parseBool(json['has_driver_room']),
-      hasBasement: _parseBool(json['has_basement']),
-      hasPool: _parseBool(json['has_pool']),
-      hasRooftop: _parseBool(json['has_rooftop']),
-      smartHomeLevel: json['smart_home_level']?.toString(),
-      architecturalStyle: json['architectural_style']?.toString(),
+      landAreaSqm: double.tryParse(json['land_area_sqm'].toString()),
+      landWidthM: double.tryParse(json['land_width_m'].toString()),
+      landLengthM: double.tryParse(json['land_length_m'].toString()),
+      floors: int.tryParse(json['floors'].toString()),
+      employeeCount: int.tryParse(json['employee_count'].toString()),
+      bedrooms: int.tryParse(json['bedrooms'].toString()),
+      bathrooms: int.tryParse(json['bathrooms'].toString()),
+      hasMajlis: bool.tryParse(json['has_majlis'].toString()),
+      hasMaidRoom: bool.tryParse(json['has_maid_room'].toString()),
+      hasDriverRoom: bool.tryParse(json['has_driver_room'].toString()),
+      hasBasement: bool.tryParse(json['has_basement'].toString()),
+      hasPool: bool.tryParse(json['has_pool'].toString()),
+      hasRooftop: bool.tryParse(json['has_rooftop'].toString()),
+      smartHomeLevel: SmartHomeLevel.fromValue(json['smart_home_level_id']),
+      architecturalStyle: DesignStyle.fromValue(json['architectural_style_id']),
       thumbnailUrl: json['thumbnail_url']?.toString(),
       deliverables: _parseList(
         json['deliverables'],
-        (item) => DeliverableResponseModel.fromJson(item),
+        DeliverableResponseModel.fromJson,
       ),
-      description: json['description']?.toString(),
+      additionalNotes: json['additionalNotes']?.toString(),
       engineer: json['engineer'] is Map
           ? EngineerResponseModel.fromJson(
               Map<String, dynamic>.from(json['engineer'] as Map),
             )
           : null,
-      provisions: _parseStringList(json['provisions']),
       estimatedTimeline: json['estimated_timeline']?.toString(),
     );
   }
@@ -128,8 +124,10 @@ class ProjectResponseModel extends Equatable {
     return {
       'id': id,
       'name': name,
-      'status': status?.jsonKey,
-      'type': type?.jsonKey,
+      'status_id': status?.id,
+      'status': status?.id,
+      'type_id': type?.id,
+      'type': type?.id,
       'created_at': createdAt?.toIso8601String(),
       'location': location,
       'land_area_sqm': landAreaSqm,
@@ -145,13 +143,14 @@ class ProjectResponseModel extends Equatable {
       'has_basement': hasBasement,
       'has_pool': hasPool,
       'has_rooftop': hasRooftop,
-      'smart_home_level': smartHomeLevel,
-      'architectural_style': architecturalStyle,
+      'smart_home_level_id': smartHomeLevel?.id,
+      'smart_home_level': smartHomeLevel?.id,
+      'architectural_style_id': architecturalStyle?.id,
+      'architectural_style': architecturalStyle?.id,
       'thumbnail_url': thumbnailUrl,
       'deliverables': deliverables?.map((e) => e.toJson()).toList(),
-      'description': description,
+      'additionalNotes': additionalNotes,
       'engineer': engineer?.toJson(),
-      'provisions': provisions,
       'estimated_timeline': estimatedTimeline,
     };
   }
@@ -176,13 +175,12 @@ class ProjectResponseModel extends Equatable {
     bool? hasBasement,
     bool? hasPool,
     bool? hasRooftop,
-    String? smartHomeLevel,
-    String? architecturalStyle,
+    SmartHomeLevel? smartHomeLevel,
+    DesignStyle? architecturalStyle,
     String? thumbnailUrl,
     List<DeliverableResponseModel>? deliverables,
-    String? description,
+    String? additionalNotes,
     EngineerResponseModel? engineer,
-    List<String>? provisions,
     String? estimatedTimeline,
   }) {
     return ProjectResponseModel(
@@ -209,9 +207,8 @@ class ProjectResponseModel extends Equatable {
       architecturalStyle: architecturalStyle ?? this.architecturalStyle,
       thumbnailUrl: thumbnailUrl ?? this.thumbnailUrl,
       deliverables: deliverables ?? this.deliverables,
-      description: description ?? this.description,
+      additionalNotes: additionalNotes ?? this.additionalNotes,
       engineer: engineer ?? this.engineer,
-      provisions: provisions ?? this.provisions,
       estimatedTimeline: estimatedTimeline ?? this.estimatedTimeline,
     );
   }
@@ -241,38 +238,10 @@ class ProjectResponseModel extends Equatable {
     architecturalStyle,
     thumbnailUrl,
     deliverables,
-    description,
+    additionalNotes,
     engineer,
-    provisions,
     estimatedTimeline,
   ];
-
-  static double? _parseDouble(dynamic value) {
-    if (value == null) return null;
-    if (value is num) return value.toDouble();
-    return double.tryParse(value.toString());
-  }
-
-  static int? _parseInt(dynamic value) {
-    if (value == null) return null;
-    if (value is num) return value.toInt();
-    return int.tryParse(value.toString());
-  }
-
-  static bool? _parseBool(dynamic value) {
-    if (value == null) return null;
-    if (value is bool) return value;
-    if (value is num) return value != 0;
-    final stringValue = value.toString().toLowerCase();
-    if (stringValue == 'true' || stringValue == '1') return true;
-    if (stringValue == 'false' || stringValue == '0') return false;
-    return null;
-  }
-
-  static DateTime? _parseDateTime(dynamic value) {
-    if (value == null) return null;
-    return DateTime.tryParse(value.toString());
-  }
 
   static List<T>? _parseList<T>(
     dynamic value,
@@ -283,11 +252,6 @@ class ProjectResponseModel extends Equatable {
         .whereType<Map>()
         .map((item) => mapper(Map<String, dynamic>.from(item)))
         .toList();
-  }
-
-  static List<String>? _parseStringList(dynamic value) {
-    if (value is! List) return null;
-    return value.map((item) => item.toString()).toList();
   }
 
   @override

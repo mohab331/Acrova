@@ -3,12 +3,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/widgets.dart';
 
 class MoodboardResponseModel extends Equatable {
-  const MoodboardResponseModel({
-    this.id,
-    this.url,
-    this.label,
-    this.labelAr,
-  });
+  const MoodboardResponseModel({this.id, this.url, this.label, this.labelAr});
 
   final String? id;
   final String? url;
@@ -26,7 +21,7 @@ class MoodboardResponseModel extends Equatable {
         id: json['id']?.toString(),
         url: json['url']?.toString(),
         label: json['label']?.toString(),
-        labelAr: json['labelAr']?.toString() ?? json['label_ar']?.toString(),
+        labelAr: json['labelAr']?.toString(),
       );
 
   Map<String, dynamic> toJson() => {

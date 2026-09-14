@@ -78,7 +78,7 @@ class AppGhostField extends StatelessWidget {
                 ),
                 decoration: InputDecoration(
                   isDense: true,
-                  contentPadding: EdgeInsets.only(
+                  contentPadding: EdgeInsetsDirectional.only(
                     top: Resources.verticalDims.$4,
                   ),
                   border: InputBorder.none,
