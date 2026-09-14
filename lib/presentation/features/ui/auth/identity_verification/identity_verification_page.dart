@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class IdentityVerificationPage extends StatefulWidget {
-  const IdentityVerificationPage({this.args, super.key});
+  const IdentityVerificationPage({required this.args, super.key});
 
   final AuthFlowArgs? args;
 

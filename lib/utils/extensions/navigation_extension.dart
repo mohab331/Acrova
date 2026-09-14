@@ -26,5 +26,9 @@ extension NavigatorExtension on BuildContext {
     ).pushNamedAndRemoveUntil(name, (route) => false, arguments: extra);
   }
 
+  bool canPop() {
+    return GoRouter.of(this).canPop();
+  }
+
   String get currentLocation => GoRouterState.of(this).matchedLocation;
 }

@@ -39,6 +39,7 @@ class ProjectResponseModel extends Equatable {
     this.engineer,
     this.estimatedTimeline,
     this.interiorDesignId,
+    this.revisionID,
   });
 
   final String? id;
@@ -80,6 +81,8 @@ class ProjectResponseModel extends Equatable {
   final EngineerResponseModel? engineer;
   final String? estimatedTimeline;
 
+  final String? revisionID;
+
   double get progressRatio => status?.progressRatio ?? 0.0;
 
   String get progressLabel => '${(progressRatio * 100).round()}%';
@@ -119,8 +122,10 @@ class ProjectResponseModel extends Equatable {
             )
           : null,
       estimatedTimeline: json['estimated_timeline']?.toString(),
-      interiorDesignId: json['interior_design_id'] as String? ??
+      interiorDesignId:
+          json['interior_design_id'] as String? ??
           json['interiorDesignId'] as String?,
+      revisionID: json['revisionId'],
     );
   }
 
@@ -157,6 +162,7 @@ class ProjectResponseModel extends Equatable {
       'additionalNotes': additionalNotes,
       'engineer': engineer?.toJson(),
       'estimated_timeline': estimatedTimeline,
+      'revisionId': revisionID,
     };
   }
 
@@ -188,6 +194,7 @@ class ProjectResponseModel extends Equatable {
     EngineerResponseModel? engineer,
     String? estimatedTimeline,
     String? interiorDesignId,
+    String? revisionID,
   }) {
     return ProjectResponseModel(
       id: id ?? this.id,
@@ -217,6 +224,7 @@ class ProjectResponseModel extends Equatable {
       engineer: engineer ?? this.engineer,
       estimatedTimeline: estimatedTimeline ?? this.estimatedTimeline,
       interiorDesignId: interiorDesignId ?? this.interiorDesignId,
+      revisionID: revisionID ?? this.revisionID,
     );
   }
 
@@ -249,6 +257,7 @@ class ProjectResponseModel extends Equatable {
     additionalNotes,
     engineer,
     estimatedTimeline,
+    revisionID,
   ];
 
   static List<T>? _parseList<T>(

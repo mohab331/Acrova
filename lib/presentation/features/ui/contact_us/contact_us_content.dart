@@ -6,7 +6,6 @@ import 'package:acrova/presentation/features/ui/contact_us/cubit/contact_us_stat
 import 'package:acrova/presentation/features/ui/contact_us/widgets/contact_channel_card.dart';
 import 'package:acrova/presentation/features/ui/contact_us/widgets/contact_us_form.dart';
 import 'package:acrova/utils/enums/cubit_status.dart';
-import 'package:acrova/utils/extensions/api_error_l10n_x.dart';
 import 'package:acrova/utils/extensions/localization_extension.dart';
 import 'package:acrova/utils/extensions/theme_extension.dart';
 import 'package:acrova/utils/helpers/launcher_service.dart';
@@ -54,9 +53,15 @@ class _ContactUsViewState extends State<ContactUsContent> {
         if (state.cubitStatus == CubitStatus.success) {
           _detailsController.clear();
           context.read<ContactUsCubit>().updateDetails('');
-          CustomToastification.success(context: context, message: l10n.contactUsSuccess).showToast();
+          CustomToastification.success(
+            context: context,
+            message: l10n.contactUsSuccess,
+          ).showToast();
         } else if (state.cubitStatus == CubitStatus.error) {
-          CustomToastification.error(context: context, errorModel: state.appErrorModel).showToast();
+          CustomToastification.error(
+            context: context,
+            errorModel: state.appErrorModel,
+          ).showToast();
         }
       },
       child: CommonScreen(

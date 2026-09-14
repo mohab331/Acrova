@@ -50,6 +50,7 @@ class _ProfileContentState extends State<ProfileContent> {
       refreshIndicatorKey: _refreshIndicatorKey,
       onRefresh: () => context.read<AuthCubit>().getUser(),
       child: RefreshIndicator(
+        color: Resources.colors.luxuryGoldLight,
         key: _refreshIndicatorKey,
         onRefresh: () => context.read<AuthCubit>().getUser(),
         child: SingleChildScrollView(
@@ -117,14 +118,15 @@ class _ProfileContentState extends State<ProfileContent> {
     );
   }
 
-  void _openEdit(BuildContext context, UserProfileModel? profile) {
-    context.push(
+  void _openEdit(BuildContext context, UserProfileModel? profile) async {
+    final result = await context.push<bool?>(
       AppRouteEnum.editProfilePage.name,
       extra: EditProfileArgs(
         title: context.localization.editProfile,
         profile: profile,
       ),
     );
+    if (result ?? false) context.read<AuthCubit>().getUser();
   }
 
   Future<void> _openLanguageSheet(BuildContext context) async {

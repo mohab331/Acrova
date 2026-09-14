@@ -10,11 +10,12 @@ class CustomBackButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Material(
-      color: Resources.colors.luxuryBackground,
-      shape: RoundedRectangleBorder(
+    return Container(
+      margin: EdgeInsetsDirectional.only(end: Resources.horizontalDims.$10),
+      decoration: BoxDecoration(
+        color: Resources.colors.luxuryBackground,
         borderRadius: BorderRadius.circular(Resources.radius.$r8),
-        side: BorderSide(color: Resources.colors.luxuryBorder),
+        border: Border.all(color: Resources.colors.luxuryBorder),
       ),
       child: InkWell(
         borderRadius: BorderRadius.circular(Resources.radius.$r8),

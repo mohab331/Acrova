@@ -1,5 +1,6 @@
 import 'package:acrova/data/models/project/project_model.dart';
 import 'package:acrova/presentation/app/resources/resources.dart';
+import 'package:acrova/presentation/features/ui/interior_design_detail/widgets/interior_design_content_sheet.dart';
 import 'package:acrova/presentation/features/ui/project_detail/widgets/project_action_card.dart';
 import 'package:acrova/presentation/features/ui/project_detail/widgets/project_engineer_card.dart';
 import 'package:acrova/presentation/features/ui/project_detail/widgets/project_header.dart';
@@ -21,7 +22,6 @@ class ProjectContentSheet extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
-
       decoration: BoxDecoration(
         color: Resources.colors.luxurySurface,
         borderRadius: BorderRadius.vertical(
@@ -32,16 +32,7 @@ class ProjectContentSheet extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           SizedBox(height: Resources.verticalDims.$12),
-          Center(
-            child: Container(
-              width: Resources.horizontalDims.$50,
-              height: Resources.verticalDims.$4,
-              decoration: BoxDecoration(
-                color: Resources.colors.luxuryInputBorder,
-                borderRadius: BorderRadius.circular(Resources.radius.$r2),
-              ),
-            ),
-          ),
+          const HandleBar(),
           Padding(
             padding: EdgeInsetsGeometry.directional(
               start: Resources.horizontalDims.$24,
@@ -50,39 +41,10 @@ class ProjectContentSheet extends StatelessWidget {
             ),
             child: ProjectHeader(project: project),
           ),
-          SizedBox(height: Resources.verticalDims.$32),
           // Overview Section
           if (project.additionalNotes?.isNotEmpty ?? false) ...[
-            Padding(
-              padding: EdgeInsetsGeometry.directional(
-                start: Resources.horizontalDims.$24,
-                end: Resources.horizontalDims.$24,
-              ),
-              child: Text(
-                context.localization.designPreferencesLabelNotes,
-                style: context.textTheme.labelLarge?.copyWith(
-                  fontSize: Resources.fontSizes.$18,
-                  fontWeight: Resources.fontWeights.semiBold,
-                  color: Resources.colors.luxuryNavy,
-                ),
-              ),
-            ),
-            SizedBox(height: Resources.verticalDims.$12),
-            Padding(
-              padding: EdgeInsetsGeometry.directional(
-                start: Resources.horizontalDims.$24,
-                end: Resources.horizontalDims.$24,
-              ),
-              child: Text(
-                project.additionalNotes ??
-                    context.localization.projectOverviewDefault,
-                style: context.textTheme.bodyMedium?.copyWith(
-                  fontSize: Resources.fontSizes.$14,
-                  color: Resources.colors.luxuryBody,
-                  height: Resources.lineHeights.$1_6,
-                ),
-              ),
-            ),
+            SizedBox(height: Resources.verticalDims.$32),
+            _AdditionalNotesSection(additionalNotes: project.additionalNotes),
           ],
           SizedBox(height: Resources.verticalDims.$32),
           Padding(
@@ -124,6 +86,7 @@ class ProjectContentSheet extends StatelessWidget {
             ),
             child: ProjectActionCard(project: project),
           ),
+
           if (project.status == ProjectStatus.awaitingEngineering) ...[
             SizedBox(height: Resources.verticalDims.$32),
             Padding(
@@ -155,9 +118,54 @@ class ProjectContentSheet extends StatelessWidget {
                 interiorDesignId: project.interiorDesignId!,
               ),
             ),
+            SizedBox(height: Resources.verticalDims.$32),
           ],
         ],
       ),
+    );
+  }
+}
+
+class _AdditionalNotesSection extends StatelessWidget {
+  const _AdditionalNotesSection({required this.additionalNotes, super.key});
+
+  final String? additionalNotes;
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: EdgeInsetsGeometry.directional(
+            start: Resources.horizontalDims.$24,
+            end: Resources.horizontalDims.$24,
+          ),
+          child: Text(
+            context.localization.designPreferencesLabelNotes,
+            style: context.textTheme.labelLarge?.copyWith(
+              fontSize: Resources.fontSizes.$18,
+              fontWeight: Resources.fontWeights.semiBold,
+              color: Resources.colors.luxuryNavy,
+            ),
+          ),
+        ),
+        SizedBox(height: Resources.verticalDims.$12),
+        Padding(
+          padding: EdgeInsetsGeometry.directional(
+            start: Resources.horizontalDims.$24,
+            end: Resources.horizontalDims.$24,
+          ),
+          child: Text(
+            additionalNotes ?? context.localization.projectOverviewDefault,
+            style: context.textTheme.bodyMedium?.copyWith(
+              fontSize: Resources.fontSizes.$14,
+              color: Resources.colors.luxuryBody,
+              height: Resources.lineHeights.$1_6,
+            ),
+          ),
+        ),
+      ],
     );
   }
 }

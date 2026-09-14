@@ -5,8 +5,8 @@ import 'package:acrova/presentation/app/resources/resources.dart';
 import 'package:acrova/presentation/features/common_widgets/buttons/app_primary_button.dart';
 import 'package:acrova/utils/enums/project_status_enum.dart';
 import 'package:acrova/utils/extensions/localization_extension.dart';
+import 'package:acrova/utils/extensions/navigation_extension.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 
 class ProjectBottomCta extends StatelessWidget {
   const ProjectBottomCta({required this.project, super.key});
@@ -57,7 +57,7 @@ class _CTA extends StatelessWidget {
       return AppPrimaryButton(
         label: loc.projectDetailUploadReceipt,
         onPressed: () {
-          context.pushNamed(
+          context.push(
             AppRouteEnum.makePaymentPage.name,
             extra: MakePaymentArgs(projectId: project.id),
           );
@@ -73,7 +73,12 @@ class _CTA extends StatelessWidget {
     } else if (project.status == ProjectStatus.revisionInProgress) {
       return AppPrimaryButton(
         label: loc.projectDetailViewRevision,
-        onPressed: () {},
+        onPressed: () {
+          context.push(
+            AppRouteEnum.revisionDetailPage.name,
+            extra: RevisionDetailArgs(revisionId: project.revisionID),
+          );
+        },
       );
     } else if (project.status == ProjectStatus.completed) {
       if (project.interiorDesignId != null &&
@@ -82,17 +87,18 @@ class _CTA extends StatelessWidget {
           label: loc.viewInteriorDesign,
           onPressed: () {
             context.push(
-              AppRouteEnum.interiorDesignDetailPage.path,
+              AppRouteEnum.interiorDesignDetailPage.name,
               extra: InteriorDesignDetailArgs(id: project.interiorDesignId),
             );
           },
         );
       }
+
       return AppPrimaryButton(
         label: loc.projectDetailPhaseIIInteriorDesign,
         onPressed: () {
           context.push(
-            AppRouteEnum.interiorDesignPhaseOnePage.path,
+            AppRouteEnum.interiorDesignPhaseOnePage.name,
             extra: InteriorDesignArgs(projectId: project.id),
           );
         },

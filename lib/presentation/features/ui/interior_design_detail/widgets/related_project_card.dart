@@ -15,7 +15,7 @@ class RelatedProjectCard extends StatelessWidget {
     super.key,
   });
 
-  final String projectId;
+  final String? projectId;
   final String? projectName;
   final String? projectThumbnailUrl;
 
@@ -39,10 +39,7 @@ class RelatedProjectCard extends StatelessWidget {
           onTap: () {
             context.push(
               AppRouteEnum.projectDetailPage.path,
-              extra: ProjectDetailArgs(
-                id: projectId,
-                title: projectName,
-              ),
+              extra: ProjectDetailArgs(id: projectId, title: projectName),
             );
           },
           child: Container(
@@ -59,7 +56,7 @@ class RelatedProjectCard extends StatelessWidget {
                 SizedBox(width: Resources.horizontalDims.$12),
                 Expanded(
                   child: _ProjectInfo(
-                    projectName: projectName ?? projectId,
+                    projectName: projectName ?? projectId ?? '',
                     viewLabel: loc.viewProject,
                   ),
                 ),
@@ -101,13 +98,10 @@ class _ProjectThumbnail extends StatelessWidget {
 }
 
 class _ProjectInfo extends StatelessWidget {
-  const _ProjectInfo({
-    required this.projectName,
-    required this.viewLabel,
-  });
+  const _ProjectInfo({required this.projectName, required this.viewLabel});
 
-  final String projectName;
-  final String viewLabel;
+  final String? projectName;
+  final String? viewLabel;
 
   @override
   Widget build(BuildContext context) {
@@ -116,7 +110,7 @@ class _ProjectInfo extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Text(
-          projectName,
+          projectName ?? '',
           style: context.textTheme.titleMedium?.copyWith(
             fontSize: Resources.fontSizes.$14,
             fontWeight: Resources.fontWeights.bold,
@@ -129,7 +123,7 @@ class _ProjectInfo extends StatelessWidget {
         Row(
           children: [
             Text(
-              viewLabel,
+              viewLabel ?? '',
               style: TextStyle(
                 fontSize: Resources.fontSizes.$12,
                 fontWeight: Resources.fontWeights.semiBold,

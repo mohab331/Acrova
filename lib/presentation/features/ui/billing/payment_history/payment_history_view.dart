@@ -55,6 +55,7 @@ class _PaymentHistoryContent extends StatelessWidget {
       appBar: AppAuthBrandHeader(label: loc.billingTitle, showBack: true),
       padding: EdgeInsets.zero,
       child: RefreshIndicator(
+        color: Resources.colors.luxuryGoldLight,
         onRefresh: () => context.read<PaymentHistoryCubit>().fetchPayments(),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,

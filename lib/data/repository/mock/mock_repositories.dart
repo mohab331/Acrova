@@ -212,7 +212,7 @@ class MockProjectRepo extends _MockBase implements BaseProjectRepo {
       interiorDesignId: 'int_001',
       name: 'Villa Al-Nakheel',
       type: ProjectType.villa,
-      status: ProjectStatus.deliverablesReady,
+      status: ProjectStatus.completed,
       location: 'Riyadh, Al-Malqa',
       thumbnailUrl:
           'https://api.alhilwa.com.iq/uploads/projects/1774287086738-7ff23182f9452cf20ab58038546a.jpg',
@@ -249,6 +249,7 @@ class MockProjectRepo extends _MockBase implements BaseProjectRepo {
         ),
       ],
       createdAt: DateTime(2024, 1, 15),
+      revisionID: '10',
     ),
     ProjectResponseModel(
       id: 'proj_002',
@@ -265,6 +266,7 @@ class MockProjectRepo extends _MockBase implements BaseProjectRepo {
           'A flagship retail and commercial hub featuring expansive storefronts, underground parking, and flexible office layouts tailored for high-profile tenants.',
       estimatedTimeline: '٢٤ يوماً',
       createdAt: DateTime(2024, 2, 1),
+      revisionID: '12',
     ),
   ];
 
@@ -1091,23 +1093,19 @@ class MockInteriorDesignRepo extends _MockBase
       scope: InteriorDesignScope.all,
       budgetTier: BudgetTier.ultraLuxury,
       timeline: ProjectTimeline.threeToSixMonths,
-      specificRooms: const [
-        'Master Bedroom Suite',
-        'Majlis',
-        'Dining & Family Living',
-        'Private Office',
-      ],
       customScopeNotes:
           'Focus on expansive double-height majlis with custom Italian marble and integrated acoustic walnut panels.',
       spacePlanningRequired: true,
       moodboards: const ['Modern Luxury', 'Minimalist Warmth'],
       colorPalette: const ['Warm Neutrals', 'Desert Sun'],
-      atmosphereTags: const ['Luxurious', 'Serene', 'Cozy'],
       extraNotes:
           'Ensure full integration with existing smart home lighting zones and motorized shading systems.',
       thumbnailUrl:
           'https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&w=1000&q=80',
       amountDue: 45000.0,
+      inspirationLinks: ['1231231'],
+      inspirationMediaUrls: ['ghhewr'],
+      updatedAt: DateTime.now().add(Duration(days: 3)),
       designer: const EngineerResponseModel(
         name: 'Eng. Sarah Al-Otaibi',
         specialization: 'Senior Interior Architect',
@@ -1128,17 +1126,11 @@ class MockInteriorDesignRepo extends _MockBase
       scope: InteriorDesignScope.specific,
       budgetTier: BudgetTier.premium,
       timeline: ProjectTimeline.asap,
-      specificRooms: const [
-        'Main Atrium Reception',
-        'VIP Lounge',
-        'Executive Boardroom',
-      ],
       customScopeNotes:
           'Contemporary commercial finishing with durable high-traffic finishes and architectural brass accents.',
       spacePlanningRequired: true,
       moodboards: const ['Contemporary Commercial', 'Biophilic Elegance'],
       colorPalette: const ['Cool Elegance', 'Monochrome'],
-      atmosphereTags: const ['Contemporary', 'Biophilic', 'Vibrant'],
       extraNotes:
           'Deliverables must include full 3D renders and detailed bill of quantities (BOQ).',
       thumbnailUrl:
@@ -1158,10 +1150,8 @@ class MockInteriorDesignRepo extends _MockBase
       scope: InteriorDesignScope.all,
       budgetTier: BudgetTier.standard,
       timeline: ProjectTimeline.flexible,
-      specificRooms: const ['Guest Suite', 'Spa & Relaxation Lounge'],
       moodboards: const ['Earthy Comfort'],
       colorPalette: const ['Earthy Tones'],
-      atmosphereTags: const ['Cozy', 'Serene'],
       thumbnailUrl:
           'https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?auto=format&fit=crop&w=1000&q=80',
       amountDue: 18500.0,
@@ -1198,4 +1188,3 @@ class MockInteriorDesignRepo extends _MockBase
     return Success(item);
   }
 }
-

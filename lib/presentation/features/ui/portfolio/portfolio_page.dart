@@ -80,6 +80,7 @@ class _PortfolioPageViewState extends State<_PortfolioPageView> {
             refreshIndicatorKey: _refreshIndicatorKey,
             onRefresh: () => context.read<PortfolioCubit>().fetchPortfolio(),
             child: RefreshIndicator(
+              color: Resources.colors.luxuryGoldLight,
               key: _refreshIndicatorKey,
               onRefresh: () => context.read<PortfolioCubit>().fetchPortfolio(),
               child: SingleChildScrollView(
@@ -148,8 +149,8 @@ class _PortfolioPageViewState extends State<_PortfolioPageView> {
               ),
             ),
           );
-      },
-    ),
-  );
-}
+        },
+      ),
+    );
+  }
 }

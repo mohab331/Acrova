@@ -8,11 +8,11 @@ import 'package:flutter/material.dart';
 class InteriorDesignColorPalettePreview extends StatelessWidget {
   const InteriorDesignColorPalettePreview({required this.item, super.key});
 
-  final InteriorDesignResponseModel item;
+  final InteriorDesignResponseModel? item;
 
   @override
   Widget build(BuildContext context) {
-    if (item.colorPalette.isEmpty) return const SizedBox.shrink();
+    if (item?.colorPalette.isEmpty ?? true) return const SizedBox.shrink();
 
     final loc = context.localization;
 
@@ -31,17 +31,19 @@ class InteriorDesignColorPalettePreview extends StatelessWidget {
         Wrap(
           spacing: Resources.horizontalDims.$12,
           runSpacing: Resources.verticalDims.$12,
-          children: item.colorPalette.map((name) {
-            final palette = InteriorDesignPaletteModel.defaultPalettes
-                .firstWhere(
-                  (p) => p.id.toLowerCase() == name.toLowerCase(),
-                  orElse: () => InteriorDesignPaletteModel(
-                    id: name,
-                    colorValues: const [0xFFE3D9CC, 0xFFC9B6A1, 0xFF54433A],
-                  ),
-                );
-            return _PaletteCard(palette: palette);
-          }).toList(),
+          children:
+              item?.colorPalette.map((name) {
+                final palette = InteriorDesignPaletteModel.defaultPalettes
+                    .firstWhere(
+                      (p) => p.id.toLowerCase() == name.toLowerCase(),
+                      orElse: () => InteriorDesignPaletteModel(
+                        id: name,
+                        colorValues: const [0xFFE3D9CC, 0xFFC9B6A1, 0xFF54433A],
+                      ),
+                    );
+                return _PaletteCard(palette: palette);
+              }).toList() ??
+              [],
         ),
       ],
     );
@@ -102,10 +104,7 @@ class _ColorDot extends StatelessWidget {
       decoration: BoxDecoration(
         color: color,
         shape: BoxShape.circle,
-        border: Border.all(
-          color: Resources.colors.luxuryBorder,
-          width: 0.5,
-        ),
+        border: Border.all(color: Resources.colors.luxuryBorder, width: 0.5),
       ),
     );
   }

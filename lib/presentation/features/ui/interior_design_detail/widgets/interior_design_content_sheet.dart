@@ -14,12 +14,12 @@ import 'package:flutter/material.dart';
 class InteriorDesignContentSheet extends StatelessWidget {
   const InteriorDesignContentSheet({required this.item, super.key});
 
-  final InteriorDesignResponseModel item;
+  final InteriorDesignResponseModel? item;
 
   @override
   Widget build(BuildContext context) {
     final loc = context.localization;
-    final notes = item.customScopeNotes ?? item.extraNotes;
+    final notes = item?.customScopeNotes ?? item?.extraNotes;
 
     return Container(
       width: double.infinity,
@@ -33,7 +33,7 @@ class InteriorDesignContentSheet extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           SizedBox(height: Resources.verticalDims.$12),
-          const _HandleBar(),
+          const HandleBar(),
           Padding(
             padding: EdgeInsetsDirectional.only(
               start: Resources.horizontalDims.$24,
@@ -83,17 +83,8 @@ class InteriorDesignContentSheet extends StatelessWidget {
             ),
             child: InteriorDesignProgressCard(item: item),
           ),
-          if (item.specificRooms.isNotEmpty) ...[
-            SizedBox(height: Resources.verticalDims.$32),
-            Padding(
-              padding: EdgeInsetsDirectional.only(
-                start: Resources.horizontalDims.$24,
-                end: Resources.horizontalDims.$24,
-              ),
-              child: _SpecificRoomsSection(rooms: item.specificRooms),
-            ),
-          ],
-          if (item.moodboards.isNotEmpty || item.atmosphereTags.isNotEmpty) ...[
+
+          if ((item?.moodboards.isNotEmpty ?? false)) ...[
             SizedBox(height: Resources.verticalDims.$32),
             Padding(
               padding: EdgeInsetsDirectional.only(
@@ -103,7 +94,7 @@ class InteriorDesignContentSheet extends StatelessWidget {
               child: InteriorDesignMoodboardPreview(item: item),
             ),
           ],
-          if (item.colorPalette.isNotEmpty) ...[
+          if (item?.colorPalette.isNotEmpty ?? false) ...[
             SizedBox(height: Resources.verticalDims.$32),
             Padding(
               padding: EdgeInsetsDirectional.only(
@@ -113,17 +104,18 @@ class InteriorDesignContentSheet extends StatelessWidget {
               child: InteriorDesignColorPalettePreview(item: item),
             ),
           ],
-          if (item.designer != null) ...[
+          if (item?.designer != null) ...[
             SizedBox(height: Resources.verticalDims.$32),
             Padding(
               padding: EdgeInsetsDirectional.only(
                 start: Resources.horizontalDims.$24,
                 end: Resources.horizontalDims.$24,
               ),
-              child: ProjectEngineerCard(engineer: item.designer),
+              child: ProjectEngineerCard(engineer: item?.designer),
             ),
           ],
-          if (item.projectId != null && item.projectId!.isNotEmpty) ...[
+          if (item?.projectId != null &&
+              (item?.projectId?.isNotEmpty ?? false)) ...[
             SizedBox(height: Resources.verticalDims.$32),
             Padding(
               padding: EdgeInsetsDirectional.only(
@@ -131,9 +123,9 @@ class InteriorDesignContentSheet extends StatelessWidget {
                 end: Resources.horizontalDims.$24,
               ),
               child: RelatedProjectCard(
-                projectId: item.projectId!,
-                projectName: item.projectName,
-                projectThumbnailUrl: item.projectThumbnailUrl,
+                projectId: item?.projectId,
+                projectName: item?.projectName,
+                projectThumbnailUrl: item?.projectThumbnailUrl,
               ),
             ),
           ],
@@ -144,8 +136,8 @@ class InteriorDesignContentSheet extends StatelessWidget {
   }
 }
 
-class _HandleBar extends StatelessWidget {
-  const _HandleBar();
+class HandleBar extends StatelessWidget {
+  const HandleBar();
 
   @override
   Widget build(BuildContext context) {
@@ -192,77 +184,6 @@ class _NotesSection extends StatelessWidget {
           ),
         ),
       ],
-    );
-  }
-}
-
-class _SpecificRoomsSection extends StatelessWidget {
-  const _SpecificRoomsSection({required this.rooms});
-
-  final List<String> rooms;
-
-  @override
-  Widget build(BuildContext context) {
-    final loc = context.localization;
-
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          loc.interiorDesignRooms,
-          style: context.textTheme.labelLarge?.copyWith(
-            fontSize: Resources.fontSizes.$18,
-            fontWeight: Resources.fontWeights.semiBold,
-            color: Resources.colors.luxuryNavy,
-          ),
-        ),
-        SizedBox(height: Resources.verticalDims.$12),
-        Wrap(
-          spacing: Resources.horizontalDims.$8,
-          runSpacing: Resources.verticalDims.$8,
-          children: rooms.map((room) => _RoomChip(room: room)).toList(),
-        ),
-      ],
-    );
-  }
-}
-
-class _RoomChip extends StatelessWidget {
-  const _RoomChip({required this.room});
-
-  final String room;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.symmetric(
-        horizontal: Resources.horizontalDims.$12,
-        vertical: Resources.verticalDims.$8,
-      ),
-      decoration: BoxDecoration(
-        color: Resources.colors.luxuryInputBg,
-        borderRadius: BorderRadius.circular(Resources.radius.$r4),
-        border: Border.all(color: Resources.colors.luxuryBorder),
-      ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Icon(
-            Icons.room_preferences_outlined,
-            size: Resources.fontSizes.$14,
-            color: Resources.colors.luxuryGoldLight,
-          ),
-          SizedBox(width: Resources.horizontalDims.$6),
-          Text(
-            room,
-            style: TextStyle(
-              fontSize: Resources.fontSizes.$12,
-              color: Resources.colors.luxuryBody,
-              fontWeight: Resources.fontWeights.medium,
-            ),
-          ),
-        ],
-      ),
     );
   }
 }

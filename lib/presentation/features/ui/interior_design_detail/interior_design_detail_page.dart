@@ -14,26 +14,22 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class InteriorDesignDetailPage extends StatelessWidget {
-  const InteriorDesignDetailPage({
-    this.args,
-    super.key,
-  });
+  const InteriorDesignDetailPage({this.args, super.key});
 
   final InteriorDesignDetailArgs? args;
 
   @override
   Widget build(BuildContext context) {
     final id = args?.id ?? args?.interiorDesign?.id;
-    final title = args?.interiorDesign?.title ??
+    final title =
+        args?.interiorDesign?.title ??
         args?.interiorDesign?.referenceNumber ??
         '';
 
     return BlocProvider(
-      create: (context) => serviceLocatorInstance<InteriorDesignDetailCubit>()
-        ..fetchInteriorDesign(
-          id: id,
-          initialData: args?.interiorDesign,
-        ),
+      create: (context) =>
+          serviceLocatorInstance<InteriorDesignDetailCubit>()
+            ..fetchInteriorDesign(id: id),
       child: CommonScreen(
         padding: EdgeInsets.zero,
         appBar: AppAuthBrandHeader(label: title, showBack: true),
@@ -54,17 +50,17 @@ class _InteriorDesignDetailView extends StatelessWidget {
 
     return BlocBuilder<InteriorDesignDetailCubit, InteriorDesignDetailState>(
       builder: (context, state) {
-        if (state.isLoading || (state.item == null && !state.isError)) {
+        if (state.isLoading) {
           return const CommonShimmerLoading(isDetail: true);
         }
-        if (state.isError && state.item == null) {
+        if (state.isError) {
           return CommonErrorWidget(
             error: state.appErrorModel,
             onRetry: cubit.fetchInteriorDesign,
           );
         }
 
-        final item = state.item!;
+        final item = state.item;
         return RefreshIndicator(
           color: Resources.colors.luxuryGoldLight,
           onRefresh: cubit.fetchInteriorDesign,
@@ -79,11 +75,11 @@ class _InteriorDesignDetailView extends StatelessWidget {
                       SizedBox(
                         height: heroHeight,
                         child: AppCachedNetworkImage(
-                          imageUrl: item.thumbnailUrl ?? '',
+                          imageUrl: item?.thumbnailUrl ?? '',
                           width: double.infinity,
                           radius: 0,
                           openInViewerOnTap: true,
-                          viewerTitle: item.title,
+                          viewerTitle: item?.title,
                         ),
                       ),
                       Transform.translate(

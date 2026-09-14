@@ -14,10 +14,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ProjectDetailPage extends StatelessWidget {
-  const ProjectDetailPage({
-    this.args,
-    super.key,
-  });
+  const ProjectDetailPage({this.args, super.key});
 
   final ProjectDetailArgs? args;
 
@@ -60,6 +57,7 @@ class _ProjectDetailView extends StatelessWidget {
 
         final project = state.project!;
         return RefreshIndicator(
+          color: Resources.colors.luxuryGoldLight,
           onRefresh: () {
             return projectDetailCubit.fetchProject();
           },

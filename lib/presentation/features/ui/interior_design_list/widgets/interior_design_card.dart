@@ -31,13 +31,13 @@ class InteriorDesignCard extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            _CardThumbnail(thumbnailUrl: item.thumbnailUrl),
+            CardThumbnail(thumbnailUrl: item.thumbnailUrl),
             Padding(
               padding: EdgeInsets.all(Resources.horizontalDims.$16),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  _CardHeader(
+                  CardHeader(
                     referenceNumber: item.referenceNumber ?? item.id ?? '',
                     status: item.status,
                   ),
@@ -62,8 +62,8 @@ class InteriorDesignCard extends StatelessWidget {
   }
 }
 
-class _CardThumbnail extends StatelessWidget {
-  const _CardThumbnail({this.thumbnailUrl});
+class CardThumbnail extends StatelessWidget {
+  const CardThumbnail({this.thumbnailUrl});
 
   final String? thumbnailUrl;
 
@@ -82,8 +82,8 @@ class _CardThumbnail extends StatelessWidget {
   }
 }
 
-class _CardHeader extends StatelessWidget {
-  const _CardHeader({required this.referenceNumber, this.status});
+class CardHeader extends StatelessWidget {
+  const CardHeader({super.key, required this.referenceNumber, this.status});
 
   final String referenceNumber;
   final InteriorDesignStatus? status;
@@ -96,27 +96,27 @@ class _CardHeader extends StatelessWidget {
         Text(
           referenceNumber,
           style: context.textTheme.labelSmall?.copyWith(
-            fontSize: Resources.fontSizes.$10,
-            fontWeight: Resources.fontWeights.medium,
-            color: Resources.colors.luxuryBodyMuted,
+            fontSize: Resources.fontSizes.$12,
+            fontWeight: Resources.fontWeights.semiBold,
+            color: Resources.colors.luxuryGold,
             letterSpacing: Resources.letterSpacing.$1_0,
           ),
         ),
-        if (status != null) _StatusBadge(status: status!),
+        if (status != null) StatusBadge(status: status!),
       ],
     );
   }
 }
 
-class _StatusBadge extends StatelessWidget {
-  const _StatusBadge({required this.status});
+class StatusBadge extends StatelessWidget {
+  const StatusBadge({required this.status});
 
-  final InteriorDesignStatus status;
+  final InteriorDesignStatus? status;
 
   @override
   Widget build(BuildContext context) {
     final isArabic = Directionality.of(context) == TextDirection.rtl;
-    final label = isArabic ? status.displayLabelAr : status.displayLabel;
+    final label = isArabic ? status?.displayLabelAr : status?.displayLabel;
 
     return Container(
       padding: EdgeInsets.symmetric(
@@ -124,15 +124,15 @@ class _StatusBadge extends StatelessWidget {
         vertical: Resources.verticalDims.$4,
       ),
       decoration: BoxDecoration(
-        color: status.chipBackground,
+        color: status?.chipBackground,
         borderRadius: BorderRadius.circular(Resources.radius.$r2),
       ),
       child: Text(
-        label,
+        label ?? '',
         style: TextStyle(
           fontSize: Resources.fontSizes.$10,
           fontWeight: Resources.fontWeights.semiBold,
-          color: status.chipForeground,
+          color: status?.chipForeground,
         ),
       ),
     );

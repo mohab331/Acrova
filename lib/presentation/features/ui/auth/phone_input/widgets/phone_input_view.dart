@@ -27,10 +27,10 @@ class PhoneInputView extends StatelessWidget {
     return BlocListener<AuthCubit, AuthCubitState>(
       listenWhen: (prev, curr) =>
           prev.sendOTPCubitStatus != curr.sendOTPCubitStatus,
-      listener: (context, state) => _handleAuthStateListener(context, state),
+      listener: _handleAuthStateListener,
       child: CommonScreen(
         resizeToAvoidBottomInset: false,
-        appBar: const AppAuthBrandHeader(),
+        appBar: AppAuthBrandHeader(showBack: context.canPop()),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [

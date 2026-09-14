@@ -74,7 +74,12 @@ class AuthCubit extends Cubit<AuthCubitState> {
   }
 
   Future<void> getUser() async {
-    emit(state.copyWith(getUserCubitStatus: CubitStatus.loading));
+    emit(
+      state.copyWith(
+        getUserCubitStatus: CubitStatus.loading,
+        clearUserModel: true,
+      ),
+    );
     final response = await _baseAuthRepo.getUserProfile();
     response.when(
       success: (data) {

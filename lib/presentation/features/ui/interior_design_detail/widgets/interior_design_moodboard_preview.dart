@@ -7,15 +7,14 @@ import 'package:flutter/material.dart';
 class InteriorDesignMoodboardPreview extends StatelessWidget {
   const InteriorDesignMoodboardPreview({required this.item, super.key});
 
-  final InteriorDesignResponseModel item;
+  final InteriorDesignResponseModel? item;
 
   @override
   Widget build(BuildContext context) {
     final loc = context.localization;
-    final hasMoodboards = item.moodboards.isNotEmpty;
-    final hasAtmosphere = item.atmosphereTags.isNotEmpty;
+    final hasMoodboards = item?.moodboards.isNotEmpty ?? false;
 
-    if (!hasMoodboards && !hasAtmosphere) {
+    if (!hasMoodboards) {
       return const SizedBox.shrink();
     }
 
@@ -35,28 +34,11 @@ class InteriorDesignMoodboardPreview extends StatelessWidget {
           Wrap(
             spacing: Resources.horizontalDims.$8,
             runSpacing: Resources.verticalDims.$8,
-            children: item.moodboards
-                .map((m) => _MoodboardTile(label: m))
-                .toList(),
-          ),
-          SizedBox(height: Resources.verticalDims.$24),
-        ],
-        if (hasAtmosphere) ...[
-          Text(
-            loc.interiorDesignAtmosphereSection,
-            style: context.textTheme.labelLarge?.copyWith(
-              fontSize: Resources.fontSizes.$18,
-              fontWeight: Resources.fontWeights.semiBold,
-              color: Resources.colors.luxuryNavy,
-            ),
-          ),
-          SizedBox(height: Resources.verticalDims.$12),
-          Wrap(
-            spacing: Resources.horizontalDims.$8,
-            runSpacing: Resources.verticalDims.$8,
-            children: item.atmosphereTags
-                .map((tag) => _AtmosphereTag(label: tag))
-                .toList(),
+            children:
+                item?.moodboards
+                    .map((m) => _MoodboardTile(label: m))
+                    .toList() ??
+                [],
           ),
         ],
       ],
@@ -99,35 +81,6 @@ class _MoodboardTile extends StatelessWidget {
             ),
           ),
         ],
-      ),
-    );
-  }
-}
-
-class _AtmosphereTag extends StatelessWidget {
-  const _AtmosphereTag({required this.label});
-
-  final String label;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.symmetric(
-        horizontal: Resources.horizontalDims.$12,
-        vertical: Resources.verticalDims.$6,
-      ),
-      decoration: BoxDecoration(
-        color: Resources.colors.luxuryInputBg,
-        borderRadius: BorderRadius.circular(Resources.radius.$r2),
-        border: Border.all(color: Resources.colors.luxuryBorder),
-      ),
-      child: Text(
-        label,
-        style: TextStyle(
-          fontSize: Resources.fontSizes.$12,
-          fontWeight: Resources.fontWeights.medium,
-          color: Resources.colors.luxuryBody,
-        ),
       ),
     );
   }

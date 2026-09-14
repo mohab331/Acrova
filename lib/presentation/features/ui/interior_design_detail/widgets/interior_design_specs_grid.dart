@@ -20,52 +20,45 @@ class InteriorDesignSpec {
 class InteriorDesignSpecsGrid extends StatelessWidget {
   const InteriorDesignSpecsGrid({required this.item, super.key});
 
-  final InteriorDesignResponseModel item;
+  final InteriorDesignResponseModel? item;
 
   @override
   Widget build(BuildContext context) {
     final loc = context.localization;
 
     final specs = [
-      if (item.scope != null)
+      if (item?.scope != null)
         InteriorDesignSpec(
           label: loc.interiorDesignScopeTitle,
-          value: item.scope!.localizedLabel(context),
+          value: item?.scope?.localizedLabel(context) ?? '',
           icon: Icons.fullscreen,
         ),
-      if (item.budgetTier != null)
+      if (item?.budgetTier != null)
         InteriorDesignSpec(
           label: loc.interiorDesignBudgetTier,
-          value: item.budgetTier!.localizedLabel(context),
+          value: item?.budgetTier?.localizedLabel(context) ?? '',
           icon: Icons.monetization_on_outlined,
         ),
-      if (item.timeline != null)
+      if (item?.timeline != null)
         InteriorDesignSpec(
           label: loc.interiorDesignTimeline,
-          value: item.timeline!.localizedLabel(context),
+          value: item?.timeline?.localizedLabel(context) ?? '',
           icon: Icons.schedule_outlined,
         ),
       InteriorDesignSpec(
         label: loc.interiorDesignSpacePlanningTitle,
-        value: item.spacePlanningRequired
+        value: (item?.spacePlanningRequired ?? false)
             ? loc.interiorDesignSpacePlanningIncluded
             : loc.notIncluded,
         icon: Icons.space_dashboard_outlined,
       ),
-      InteriorDesignSpec(
-        label: loc.interiorDesignRooms,
-        value: item.specificRooms.isNotEmpty
-            ? '${item.specificRooms.length} ${loc.interiorDesignRooms}'
-            : loc.interiorDesignNoRoomsSpecified,
-        icon: Icons.meeting_room_outlined,
-      ),
-      if (item.createdAt != null)
+      if (item?.createdAt != null)
         InteriorDesignSpec(
           label: loc.specCreated,
           value: DateFormat(
             'dd MMM yyyy',
             Localizations.localeOf(context).languageCode,
-          ).format(item.createdAt!),
+          ).format(item?.createdAt ?? DateTime.now()),
           icon: Icons.calendar_today_outlined,
         ),
     ];
@@ -77,7 +70,7 @@ class InteriorDesignSpecsGrid extends StatelessWidget {
       itemCount: specs.length,
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 2,
-        childAspectRatio: 8 / 3.4,
+        childAspectRatio: 8 / 3.6,
         crossAxisSpacing: Resources.horizontalDims.$8,
         mainAxisSpacing: Resources.verticalDims.$8,
       ),
@@ -91,53 +84,60 @@ class InteriorDesignSpecsGrid extends StatelessWidget {
 class _SpecCard extends StatelessWidget {
   const _SpecCard({required this.spec});
 
-  final InteriorDesignSpec spec;
+  final InteriorDesignSpec? spec;
 
   @override
   Widget build(BuildContext context) {
     return Container(
+      padding: EdgeInsets.symmetric(
+        horizontal: Resources.horizontalDims.$8,
+        vertical: Resources.verticalDims.$10,
+      ),
       decoration: BoxDecoration(
         color: Resources.colors.luxurySurface,
-        border: Border.all(color: Resources.colors.luxuryBorder),
-        borderRadius: BorderRadius.circular(Resources.radius.$r8),
-      ),
-      padding: EdgeInsets.symmetric(
-        horizontal: Resources.horizontalDims.$12,
-        vertical: Resources.verticalDims.$8,
+        borderRadius: BorderRadius.circular(Resources.radius.$r12),
+        border: Border.all(color: Resources.colors.luxuryGoldBorder),
+        boxShadow: AppShadows.card,
       ),
       child: Row(
+        mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(
-            spec.icon,
-            color: Resources.colors.luxuryNavy,
-            size: Resources.fontSizes.$20,
+          Container(
+            alignment: Alignment.center,
+            width: 30,
+            height: 30,
+            decoration: BoxDecoration(
+              color: Resources.colors.luxuryGoldLight.withValues(alpha: .12),
+              borderRadius: BorderRadius.circular(Resources.radius.$r8),
+            ),
+            child: Icon(
+              spec?.icon,
+              size: Resources.iconSizes.$16,
+              color: Resources.colors.luxuryGoldLight,
+            ),
           ),
           SizedBox(width: Resources.horizontalDims.$8),
-          Expanded(
+          Flexible(
             child: Column(
+              mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  spec.label,
+                  spec?.label.toUpperCase() ?? '',
                   style: context.textTheme.labelSmall?.copyWith(
-                    fontSize: Resources.fontSizes.$10,
-                    fontWeight: Resources.fontWeights.medium,
                     color: Resources.colors.luxuryBodyMuted,
+                    letterSpacing: .8,
+                    fontWeight: FontWeight.w600,
                   ),
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
                 ),
                 SizedBox(height: Resources.verticalDims.$2),
                 Text(
-                  spec.value,
-                  style: context.textTheme.titleSmall?.copyWith(
+                  spec?.value ?? '',
+                  style: context.textTheme.titleMedium?.copyWith(
+                    color: Resources.colors.luxuryNavy,
+                    fontWeight: Resources.fontWeights.semiBold,
                     fontSize: Resources.fontSizes.$12,
-                    fontWeight: Resources.fontWeights.bold,
-                    color: Resources.colors.luxuryInk,
                   ),
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
                 ),
               ],
             ),

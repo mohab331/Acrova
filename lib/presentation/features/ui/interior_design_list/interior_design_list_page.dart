@@ -2,7 +2,7 @@ import 'package:acrova/core/di/dependency_injector.dart';
 import 'package:acrova/presentation/app/navigation/app_route_enum.dart';
 import 'package:acrova/presentation/app/navigation/args/navigation_args.dart';
 import 'package:acrova/presentation/app/resources/resources.dart';
-import 'package:acrova/presentation/features/common_widgets/app_bar/app_app_bar.dart';
+import 'package:acrova/presentation/features/common_widgets/app_bar/app_auth_brand_header.dart';
 import 'package:acrova/presentation/features/common_widgets/common_screen/common_screen.dart';
 import 'package:acrova/presentation/features/common_widgets/feedback/app_empty_state.dart';
 import 'package:acrova/presentation/features/common_widgets/feedback/common_error_widget.dart';
@@ -47,8 +47,9 @@ class _InteriorDesignListView extends StatelessWidget {
 
     return CommonScreen(
       bottomPadding: 0,
-      appBar: AppAppBar(
-        title: loc.interiorDesignListTitle,
+      appBar: AppAuthBrandHeader(
+        label: loc.interiorDesignListTitle,
+        showBack: true,
       ),
       child: BlocBuilder<InteriorDesignListCubit, InteriorDesignListState>(
         builder: (context, state) {
@@ -65,8 +66,9 @@ class _InteriorDesignListView extends StatelessWidget {
           if (state.isError) {
             return CommonErrorWidget(
               error: state.appErrorModel,
-              onRetry: () =>
-                  context.read<InteriorDesignListCubit>().fetchInteriorDesigns(),
+              onRetry: () => context
+                  .read<InteriorDesignListCubit>()
+                  .fetchInteriorDesigns(),
             );
           }
 
@@ -98,24 +100,22 @@ class _InteriorDesignListView extends StatelessWidget {
                       title: loc.interiorDesignEmptyTitle,
                       subtitle: loc.interiorDesignEmptySubtitle,
                       ctaLabel: loc.dashboardActionNewProject,
-                      onCtaTap: () => context.push(
-                        AppRouteEnum.projectsPage.path,
-                      ),
+                      onCtaTap: () =>
+                          context.push(AppRouteEnum.projectsPage.path),
                     ),
                   )
                 else
                   SliverList.separated(
                     itemCount: filtered.length,
-                    separatorBuilder: (_, __) => SizedBox(
-                      height: Resources.verticalDims.$16,
-                    ),
+                    separatorBuilder: (_, __) =>
+                        SizedBox(height: Resources.verticalDims.$16),
                     itemBuilder: (context, index) {
                       final item = filtered[index];
                       return InteriorDesignCard(
                         item: item,
                         onTap: () {
                           context.push(
-                            AppRouteEnum.interiorDesignDetailPage.path,
+                            AppRouteEnum.interiorDesignDetailPage.name,
                             extra: InteriorDesignDetailArgs(
                               id: item.id,
                               interiorDesign: item,

@@ -32,9 +32,10 @@ abstract final class ProfileCompletionGuard {
         AppRouteEnum.phonePage.name,
         extra: const AuthFlowArgs(returnToCaller: true),
       );
+      if (!(authenticated ?? false)) return false;
       if (!context.mounted) return false;
-      if (authenticated == true &&
-          context.read<AuthCubit>().state.isProfileCompleted) {
+
+      if (authenticated == true) {
         return true;
       }
     }
@@ -49,8 +50,6 @@ abstract final class ProfileCompletionGuard {
 
     if (!context.mounted) return false;
 
-    // Check if the profile is now complete (either returned true or state updated)
-    return result == true ||
-        context.read<AuthCubit>().state.isProfileCompleted;
+    return result == true;
   }
 }

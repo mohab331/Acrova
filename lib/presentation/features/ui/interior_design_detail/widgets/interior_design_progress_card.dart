@@ -9,11 +9,11 @@ import 'package:flutter/material.dart';
 class InteriorDesignProgressCard extends StatelessWidget {
   const InteriorDesignProgressCard({required this.item, super.key});
 
-  final InteriorDesignResponseModel item;
+  final InteriorDesignResponseModel? item;
 
   @override
   Widget build(BuildContext context) {
-    final status = item.status ?? InteriorDesignStatus.awaitingPricing;
+    final status = item?.status ?? InteriorDesignStatus.awaitingPricing;
     final currentStep = InteriorDesignStatus.values.indexOf(status);
     final totalSteps = InteriorDesignStatus.values.length;
     final percentage = status.progressPercentage;

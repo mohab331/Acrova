@@ -1,8 +1,4 @@
-import 'dart:async';
-
-import 'package:acrova/core/di/dependency_injector.dart';
 import 'package:acrova/presentation/app/navigation/args/navigation_args.dart';
-import 'package:acrova/presentation/features/cubit/auth/auth_cubit.dart';
 import 'package:acrova/presentation/features/ui/auth/identity_verification/identity_verification_page.dart';
 import 'package:acrova/presentation/features/ui/auth/phone_input/phone_input_page.dart';
 import 'package:acrova/presentation/features/ui/auth/welcome/welcome_page.dart';
@@ -52,15 +48,10 @@ final _shellProfileKey = GlobalKey<NavigatorState>(debugLabel: 'shell-profile');
 class AppRouter {
   AppRouter._();
 
-  static final _authRefresh = _GoRouterRefreshStream(
-    serviceLocatorInstance<AuthCubit>().stream,
-  );
-
   static final router = GoRouter(
     initialLocation: AppRouteEnum.splashPage.path,
     navigatorKey: rootNavigatorKey,
     errorBuilder: (context, state) => const SplashPage(),
-    refreshListenable: Listenable.merge([_authRefresh]),
     routes: [
       // ── Auth & Onboarding ────────────────────────────────────────────────
       GoRoute(
@@ -76,17 +67,14 @@ class AppRouter {
       GoRoute(
         path: AppRouteEnum.phonePage.path,
         name: AppRouteEnum.phonePage.name,
-        builder: (_, state) => PhoneInputPage(
-          args: state.extra as AuthFlowArgs?,
-        ),
+        builder: (_, state) =>
+            PhoneInputPage(args: state.extra as AuthFlowArgs?),
       ),
       GoRoute(
         path: AppRouteEnum.identityVerificationPage.path,
         name: AppRouteEnum.identityVerificationPage.name,
         builder: (_, state) {
-          return IdentityVerificationPage(
-            args: state.extra as AuthFlowArgs?,
-          );
+          return IdentityVerificationPage(args: state.extra as AuthFlowArgs?);
         },
       ),
 
@@ -336,21 +324,4 @@ class AppRouter {
       ),
     ],
   );
-}
-
-class _GoRouterRefreshStream extends ChangeNotifier {
-  _GoRouterRefreshStream(Stream<dynamic> stream) {
-    notifyListeners();
-    _routesStreamer = stream.asBroadcastStream().listen(
-      (dynamic _) => notifyListeners(),
-    );
-  }
-
-  late final StreamSubscription<dynamic> _routesStreamer;
-
-  @override
-  void dispose() {
-    _routesStreamer.cancel();
-    super.dispose();
-  }
 }

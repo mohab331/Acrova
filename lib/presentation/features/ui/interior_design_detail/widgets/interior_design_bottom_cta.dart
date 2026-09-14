@@ -11,15 +11,16 @@ import 'package:go_router/go_router.dart';
 class InteriorDesignBottomCta extends StatelessWidget {
   const InteriorDesignBottomCta({required this.item, super.key});
 
-  final InteriorDesignResponseModel item;
+  final InteriorDesignResponseModel? item;
 
   @override
   Widget build(BuildContext context) {
-    final status = item.status;
-    final bool showCTA = status == InteriorDesignStatus.awaitingPayment ||
+    final status = item?.status;
+    final bool showCTA =
+        status == InteriorDesignStatus.awaitingPayment ||
         status == InteriorDesignStatus.conceptReady ||
         status == InteriorDesignStatus.completed ||
-        (item.projectId != null && item.projectId!.isNotEmpty);
+        (item?.projectId != null && (item?.projectId?.isNotEmpty ?? false));
 
     if (!showCTA) {
       return const SizedBox.shrink();
@@ -50,37 +51,36 @@ class InteriorDesignBottomCta extends StatelessWidget {
 class _CtaButton extends StatelessWidget {
   const _CtaButton({required this.item});
 
-  final InteriorDesignResponseModel item;
+  final InteriorDesignResponseModel? item;
 
   @override
   Widget build(BuildContext context) {
     final loc = context.localization;
 
-    if (item.status == InteriorDesignStatus.awaitingPayment) {
+    if (item?.status == InteriorDesignStatus.awaitingPayment) {
       return AppPrimaryButton(
         label: loc.interiorDesignActionPayNow,
         onPressed: () {
           context.push(AppRouteEnum.makePaymentPage.path);
         },
       );
-    } else if (item.status == InteriorDesignStatus.conceptReady) {
+    } else if (item?.status == InteriorDesignStatus.conceptReady) {
       return AppPrimaryButton(
         label: loc.interiorDesignActionReviewConcepts,
         onPressed: () {
-          context.push(
-            AppRouteEnum.walkthroughPage.path,
-          );
+          context.push(AppRouteEnum.walkthroughPage.path);
         },
       );
-    } else if (item.projectId != null && item.projectId!.isNotEmpty) {
+    } else if (item?.projectId != null &&
+        (item?.projectId?.isNotEmpty ?? false)) {
       return AppPrimaryButton(
         label: loc.viewProject,
         onPressed: () {
           context.push(
             AppRouteEnum.projectDetailPage.path,
             extra: ProjectDetailArgs(
-              id: item.projectId,
-              title: item.projectName,
+              id: item?.projectId,
+              title: item?.projectName,
             ),
           );
         },

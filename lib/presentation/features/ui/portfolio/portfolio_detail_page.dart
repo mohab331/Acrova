@@ -32,12 +32,10 @@ class _PortfolioDetailPageState extends State<PortfolioDetailPage> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider<PortfolioDetailsCubit>(
-      create: (context) =>
-          serviceLocatorInstance<PortfolioDetailsCubit>()
-            ..fetchPortfolio(
-              portfolioId:
-                  widget.args?.portfolioId ?? widget.portfolioItem?.id,
-            ),
+      create: (context) => serviceLocatorInstance<PortfolioDetailsCubit>()
+        ..fetchPortfolio(
+          portfolioId: widget.args?.portfolioId ?? widget.portfolioItem?.id,
+        ),
 
       child: CommonScreen(
         padding: EdgeInsets.zero,
@@ -95,6 +93,7 @@ class _PortfolioDetailSuccessWidgetState
       onRefresh: () => context.read<PortfolioDetailsCubit>().fetchPortfolio(
         portfolioId: widget.item?.id,
       ),
+      color: Resources.colors.luxuryGoldLight,
       child: Stack(
         children: [
           SingleChildScrollView(
