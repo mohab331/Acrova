@@ -3,14 +3,15 @@ import 'package:flutter/widgets.dart';
 
 /// Architectural and interior design style options.
 enum DesignStyle {
-  modern('modern'),
-  classic('classic'),
-  contemporary('contemporary'),
-  minimalist('minimalist'),
-  neoClassical('neo_classical');
+  modern('modern', 0),
+  classic('classic', 1),
+  contemporary('contemporary', 2),
+  minimalist('minimalist', 3),
+  neoClassical('neo_classical', 4);
 
   final String value;
-  const DesignStyle(this.value);
+  final int id;
+  const DesignStyle(this.value, this.id);
 
   static List<DesignStyle> get all => values;
 
@@ -40,10 +41,10 @@ enum DesignStyle {
     };
   }
 
-  static DesignStyle? fromValue(String? value) {
-    if (value == null) return null;
+  static DesignStyle? fromValue(int? id) {
+    if (id == null) return null;
     for (final item in DesignStyle.values) {
-      if (item.value == value || item.name == value) {
+      if (item.id == id) {
         return item;
       }
     }

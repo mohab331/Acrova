@@ -3,12 +3,13 @@ import 'package:flutter/widgets.dart';
 
 /// Smart home integration automation levels.
 enum SmartHomeLevel {
-  basic('basic'),
-  intermediate('intermediate'),
-  advanced('advanced');
+  basic('basic', 0),
+  intermediate('intermediate', 1),
+  advanced('advanced', 2);
 
   final String value;
-  const SmartHomeLevel(this.value);
+  final int id;
+  const SmartHomeLevel(this.value, this.id);
 
   String localizedLabel(BuildContext context) {
     final l10n = context.localization;
@@ -19,10 +20,11 @@ enum SmartHomeLevel {
     };
   }
 
-  static SmartHomeLevel? fromValue(String? value) {
+  static SmartHomeLevel? fromValue(int? value) {
     if (value == null) return null;
+
     for (final item in SmartHomeLevel.values) {
-      if (item.value == value || item.name == value) {
+      if (item.id == value) {
         return item;
       }
     }

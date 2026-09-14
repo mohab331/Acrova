@@ -7,7 +7,6 @@ import 'package:acrova/core/error/error_codes_enum.dart';
 import 'package:acrova/data/data_source/local/local_storage/base_local_storage.dart';
 import 'package:acrova/data/data_source/local/secure_storage/base_secure_storage.dart';
 import 'package:acrova/data/data_source/remote/network/models/network_response.dart';
-import 'package:acrova/data/models/request/auth/save_profile_request_model.dart';
 import 'package:acrova/data/models/request/auth/send_otp_request_model.dart';
 import 'package:acrova/data/models/request/auth/verify_otp_request_model.dart';
 import 'package:acrova/data/models/request/billing/get_payment_details_request_model.dart';
@@ -51,9 +50,11 @@ import 'package:acrova/domain/repository/portfolio/base_portfolio_repo.dart';
 import 'package:acrova/domain/repository/project/base_project_repo.dart';
 import 'package:acrova/domain/repository/revisions/base_revisions_repo.dart';
 import 'package:acrova/presentation/app/resources/resources.dart';
+import 'package:acrova/utils/enums/design_style_enum.dart';
 import 'package:acrova/utils/enums/project_status_enum.dart';
 import 'package:acrova/utils/enums/project_type_enum.dart';
 import 'package:acrova/utils/enums/revision_status_enum.dart';
+import 'package:acrova/utils/enums/smart_home_level_enum.dart';
 import 'package:acrova/utils/helpers/result.dart';
 
 class _MockBase {
@@ -133,28 +134,6 @@ class MockAuthRepo extends _MockBase implements BaseAuthRepo {
   }
 
   @override
-  Future<Result<void>> saveProfile(SaveProfileRequestModel request) async {
-    if (shouldThrow(MockRepositoryKey.auth)) return mockError();
-
-    await simulateDelay();
-
-    _isVisitorMode = false;
-    _currentProfile = UserProfileResponseModel(
-      name: request.name,
-      email: request.email,
-      mobileNumber: request.mobileNumber ?? '+966500000000',
-      nationalId: request.nationalId,
-      language: request.language,
-      memberSince: DateTime.now(),
-      projectsCount: 0,
-      completedCount: 0,
-      avatarUrl: request.avatarPath,
-    );
-
-    return const Success(null);
-  }
-
-  @override
   Future<Result<UserProfileResponseModel?>> getUserProfile() async {
     if (shouldThrow(MockRepositoryKey.auth)) return mockError();
 
@@ -229,7 +208,7 @@ class MockProjectRepo extends _MockBase implements BaseProjectRepo {
       id: 'proj_001',
       name: 'Villa Al-Nakheel',
       type: ProjectType.villa,
-      status: ProjectStatus.awaitingEngineering,
+      status: ProjectStatus.completed,
       location: 'Riyadh, Al-Malqa',
       thumbnailUrl:
           'https://api.alhilwa.com.iq/uploads/projects/1774287086738-7ff23182f9452cf20ab58038546a.jpg',
@@ -245,9 +224,9 @@ class MockProjectRepo extends _MockBase implements BaseProjectRepo {
       hasBasement: false,
       hasPool: true,
       hasRooftop: true,
-      architecturalStyle: 'Modern Neoclassical',
-      smartHomeLevel: 'Full Integration',
-      description:
+      architecturalStyle: DesignStyle.modern,
+      smartHomeLevel: SmartHomeLevel.advanced,
+      additionalNotes:
           'An exceptional contemporary residence blending minimalist lines with premium materials. Designed to maximize natural light while maintaining absolute privacy.',
       engineer: const EngineerResponseModel(
         name: 'Eng. Abdullah Al-Rashid',
@@ -255,14 +234,6 @@ class MockProjectRepo extends _MockBase implements BaseProjectRepo {
         avatarUrl:
             'https://png.pngtree.com/png-vector/20231019/ourmid/pngtree-user-profile-avatar-png-image_10211467.png',
       ),
-      provisions: const [
-        'تكامل المنزل الذكي',
-        'مسبح خاص',
-        'جاهز للطاقة الشمسية',
-        'تكييف مركزي',
-        'تدفئة أرضية',
-        'تشطيبات رخامية فاخرة',
-      ],
       estimatedTimeline: '١٢ يوماً',
       deliverables: [
         DeliverableResponseModel(
@@ -284,16 +255,10 @@ class MockProjectRepo extends _MockBase implements BaseProjectRepo {
       landAreaSqm: 2400,
       landWidthM: 40,
       landLengthM: 60,
-      architecturalStyle: 'Contemporary Commercial',
-      smartHomeLevel: 'BMS Enabled',
-      description:
+      architecturalStyle: DesignStyle.minimalist,
+      smartHomeLevel: SmartHomeLevel.intermediate,
+      additionalNotes:
           'A flagship retail and commercial hub featuring expansive storefronts, underground parking, and flexible office layouts tailored for high-profile tenants.',
-      provisions: const [
-        'تكييف مركزي',
-        'نظام إدارة المباني الذكي',
-        'مواقف سيارات سفلية',
-        'شبكة مراقبة أمنية',
-      ],
       estimatedTimeline: '٢٤ يوماً',
       createdAt: DateTime(2024, 2, 1),
     ),
@@ -339,26 +304,72 @@ class MockProjectRepo extends _MockBase implements BaseProjectRepo {
     final newProject = ProjectResponseModel(
       id: 'ARC-2024-${DateTime.now().millisecondsSinceEpoch % 100000}',
       name: '${request.projectType.displayLabel} Project',
+
+      /// [Vila, House/Apartment, Commercial] at step 1 - chosen by user
       type: request.projectType,
+
+      /// initial Status -> ProjectStatus.awaitingPricing - not chosen set automatically
       status: ProjectStatus.awaitingPricing,
+
+      /// [Location / Address] field at step 2 - written by user
       location: request.location,
+
+      /// [Land Area (m2)] field at step 2 - written by user
       landAreaSqm: request.landAreaSqm,
+
+      /// [Width(m)] field at step 2 - written by user
       landWidthM: request.landWidthM,
+
+      /// [Length(m)] field at step 2 - written by user
       landLengthM: request.landLengthM,
+
+      /// [Number of Floors] field  at step 2 - defaulted to 1 - written by user
       floors: request.floors,
+
+      /// [Bedrooms] field  at step 3 - defaulted to 3 - written by user
       bedrooms: request.bedrooms,
+
+      /// [Bathrooms] field  at step 3 - defaulted to 2 - written by user
       bathrooms: request.bathrooms,
+
+      /// [Additional Spaces] field  at step 3 - defaulted to false - written by user
       hasMajlis: request.hasMajlis,
       hasMaidRoom: request.hasMaidRoom,
       hasDriverRoom: request.hasDriverRoom,
       hasBasement: request.hasBasement,
       hasPool: request.hasPool,
       hasRooftop: request.hasRooftop,
+
+      /// [Smart home integration] at step 3 - defaulted to Basic(Lightning & AC) - written by user
       smartHomeLevel: request.smartHomeLevel,
+
+      /// [Architecture Style] at step 3 - written by user - mapped to design style enum
       architecturalStyle: request.architecturalStyle,
       thumbnailUrl:
           'https://api.alhilwa.com.iq/uploads/projects/1774287086738-7ff23182f9452cf20ab58038546a.jpg',
       createdAt: DateTime.now(),
+
+      /// in case of Commercial chosen only at step 1
+      employeeCount: 0,
+
+      /// [AdditionalNotes] at step 4 - written by user
+      additionalNotes: 'Test Additional Notes',
+
+      /// fetched during runtime
+      deliverables: [],
+
+      /// fetched during runtime
+      engineer: const EngineerResponseModel(
+        email: 'mohabosama@gmail.com',
+        avatarUrl: '',
+        id: '1',
+        name: 'Mohab Osama',
+        phone: '+96656783714',
+        specialization: 'Lead Enginner',
+      ),
+
+      /// fetched during runtime
+      estimatedTimeline: '50 Days',
     );
 
     return Success(newProject);

@@ -1,16 +1,30 @@
+import 'package:acrova/data/models/project/project_model.dart';
 import 'package:acrova/presentation/app/resources/resources.dart';
 import 'package:acrova/utils/extensions/localization_extension.dart';
 import 'package:acrova/utils/extensions/theme_extension.dart';
 import 'package:flutter/material.dart';
 
 class ProjectProvisionsList extends StatelessWidget {
-  const ProjectProvisionsList({this.provisions, super.key});
+  const ProjectProvisionsList({required this.projectResponseModel, super.key});
 
-  final List<String>? provisions;
+  final ProjectResponseModel projectResponseModel;
 
   @override
   Widget build(BuildContext context) {
-    final items = provisions ?? const [];
+    final items = [
+      if (projectResponseModel.hasBasement ?? false)
+        context.localization.requirementsSpaceBasement,
+      if (projectResponseModel.hasDriverRoom ?? false)
+        context.localization.requirementsSpaceDriver,
+      if (projectResponseModel.hasMaidRoom ?? false)
+        context.localization.requirementsSpaceMaid,
+      if (projectResponseModel.hasMajlis ?? false)
+        context.localization.requirementsSpaceMajlis,
+      if (projectResponseModel.hasPool ?? false)
+        context.localization.requirementsSpacePool,
+      if (projectResponseModel.hasRooftop ?? false)
+        context.localization.requirementsSpaceRooftop,
+    ];
     if (items.isEmpty) return const SizedBox.shrink();
 
     return Column(

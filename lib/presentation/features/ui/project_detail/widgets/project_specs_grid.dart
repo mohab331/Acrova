@@ -38,7 +38,7 @@ class ProjectSpecsGrid extends StatelessWidget {
       ),
       ProjectSpec(
         label: loc.specStyle,
-        value: project.architecturalStyle ?? '',
+        value: project.architecturalStyle?.localizedLabel(context) ?? '',
         icon: Icons.architecture_outlined,
       ),
       ProjectSpec(

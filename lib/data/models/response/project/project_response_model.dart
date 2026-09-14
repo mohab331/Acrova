@@ -1,5 +1,7 @@
+import 'package:acrova/utils/enums/design_style_enum.dart';
 import 'package:acrova/utils/enums/project_status_enum.dart';
 import 'package:acrova/utils/enums/project_type_enum.dart';
+import 'package:acrova/utils/enums/smart_home_level_enum.dart';
 import 'package:equatable/equatable.dart';
 
 import 'deliverable_response_model.dart';
@@ -33,9 +35,8 @@ class ProjectResponseModel extends Equatable {
     this.architecturalStyle,
     this.thumbnailUrl,
     this.deliverables,
-    this.description,
+    this.additionalNotes,
     this.engineer,
-    this.provisions,
     this.estimatedTimeline,
   });
 
@@ -62,19 +63,18 @@ class ProjectResponseModel extends Equatable {
   final bool? hasBasement;
   final bool? hasPool;
   final bool? hasRooftop;
-  final String? smartHomeLevel;
+  final SmartHomeLevel? smartHomeLevel;
 
   // Design preferences
-  final String? architecturalStyle;
+  final DesignStyle? architecturalStyle;
 
   // Media
   final String? thumbnailUrl;
 
   // Project details
   final List<DeliverableResponseModel>? deliverables;
-  final String? description;
+  final String? additionalNotes;
   final EngineerResponseModel? engineer;
-  final List<String>? provisions;
   final String? estimatedTimeline;
 
   double get progressRatio => status?.progressRatio ?? 0.0;
@@ -86,7 +86,9 @@ class ProjectResponseModel extends Equatable {
       id: json['id']?.toString(),
       name: json['name']?.toString(),
       status: json['status'] != null
-          ? ProjectStatusX.fromJson(json['status'].toString())
+          ? ProjectStatusX.fromJson(
+              int.tryParse(json['status']?.toString() ?? ''),
+            )
           : null,
       type: json['type'] != null
           ? ProjectType.fromJson(json['type'].toString())
@@ -106,20 +108,23 @@ class ProjectResponseModel extends Equatable {
       hasBasement: _parseBool(json['has_basement']),
       hasPool: _parseBool(json['has_pool']),
       hasRooftop: _parseBool(json['has_rooftop']),
-      smartHomeLevel: json['smart_home_level']?.toString(),
-      architecturalStyle: json['architectural_style']?.toString(),
+      smartHomeLevel: SmartHomeLevel.fromValue(
+        int.tryParse(json['smart_home_level'].toString()) ?? 0,
+      ),
+      architecturalStyle: DesignStyle.fromValue(
+        int.tryParse(json['architectural_style']?.toString() ?? ''),
+      ),
       thumbnailUrl: json['thumbnail_url']?.toString(),
       deliverables: _parseList(
         json['deliverables'],
         (item) => DeliverableResponseModel.fromJson(item),
       ),
-      description: json['description']?.toString(),
+      additionalNotes: json['additionalNotes']?.toString(),
       engineer: json['engineer'] is Map
           ? EngineerResponseModel.fromJson(
               Map<String, dynamic>.from(json['engineer'] as Map),
             )
           : null,
-      provisions: _parseStringList(json['provisions']),
       estimatedTimeline: json['estimated_timeline']?.toString(),
     );
   }
@@ -146,12 +151,11 @@ class ProjectResponseModel extends Equatable {
       'has_pool': hasPool,
       'has_rooftop': hasRooftop,
       'smart_home_level': smartHomeLevel,
-      'architectural_style': architecturalStyle,
+      'architectural_style': architecturalStyle?.id,
       'thumbnail_url': thumbnailUrl,
       'deliverables': deliverables?.map((e) => e.toJson()).toList(),
-      'description': description,
+      'additionalNotes': additionalNotes,
       'engineer': engineer?.toJson(),
-      'provisions': provisions,
       'estimated_timeline': estimatedTimeline,
     };
   }
@@ -176,13 +180,12 @@ class ProjectResponseModel extends Equatable {
     bool? hasBasement,
     bool? hasPool,
     bool? hasRooftop,
-    String? smartHomeLevel,
-    String? architecturalStyle,
+    SmartHomeLevel? smartHomeLevel,
+    DesignStyle? architecturalStyle,
     String? thumbnailUrl,
     List<DeliverableResponseModel>? deliverables,
-    String? description,
+    String? additionalNotes,
     EngineerResponseModel? engineer,
-    List<String>? provisions,
     String? estimatedTimeline,
   }) {
     return ProjectResponseModel(
@@ -209,9 +212,8 @@ class ProjectResponseModel extends Equatable {
       architecturalStyle: architecturalStyle ?? this.architecturalStyle,
       thumbnailUrl: thumbnailUrl ?? this.thumbnailUrl,
       deliverables: deliverables ?? this.deliverables,
-      description: description ?? this.description,
+      additionalNotes: additionalNotes ?? this.additionalNotes,
       engineer: engineer ?? this.engineer,
-      provisions: provisions ?? this.provisions,
       estimatedTimeline: estimatedTimeline ?? this.estimatedTimeline,
     );
   }
@@ -241,9 +243,8 @@ class ProjectResponseModel extends Equatable {
     architecturalStyle,
     thumbnailUrl,
     deliverables,
-    description,
+    additionalNotes,
     engineer,
-    provisions,
     estimatedTimeline,
   ];
 
@@ -283,11 +284,6 @@ class ProjectResponseModel extends Equatable {
         .whereType<Map>()
         .map((item) => mapper(Map<String, dynamic>.from(item)))
         .toList();
-  }
-
-  static List<String>? _parseStringList(dynamic value) {
-    if (value is! List) return null;
-    return value.map((item) => item.toString()).toList();
   }
 
   @override

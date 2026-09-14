@@ -79,19 +79,19 @@ class ProjectCreationCubit extends Cubit<ProjectCreationState> {
   void togglePool(bool value) => emit(state.copyWith(hasPool: value));
   void toggleRooftop(bool value) => emit(state.copyWith(hasRooftop: value));
 
-  void updateSmartHomeLevel(String level) =>
+  void updateSmartHomeLevel(int level) =>
       emit(state.copyWith(smartHomeLevel: level));
 
   void setSmartHomeLevel(SmartHomeLevel level) =>
-      emit(state.copyWith(smartHomeLevel: level.value));
+      emit(state.copyWith(smartHomeLevel: level.id));
 
   // ── Step 4: Design preferences ────────────────────────────────────────────
 
-  void selectStyle(String style) =>
-      emit(state.copyWith(architecturalStyle: style));
+  void selectStyle(DesignStyle style) =>
+      emit(state.copyWith(architecturalStyle: style.id));
 
   void setDesignStyle(DesignStyle style) =>
-      emit(state.copyWith(architecturalStyle: style.value));
+      emit(state.copyWith(architecturalStyle: style.id));
 
   void updateNotes(String value) =>
       emit(state.copyWith(additionalNotes: value));
