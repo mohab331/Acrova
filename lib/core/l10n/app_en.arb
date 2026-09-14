@@ -635,5 +635,6 @@
   "login_visitor" : "Log in to unlock your personalized experience.",
   "login" : "Log in",
   "continueAsGuest": "Continue as a guest?",
-  "submit": "Submit"
+  "submit": "Submit",
+  "updatedSuccessfully": "Updated successfully"
 }

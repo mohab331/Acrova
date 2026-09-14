@@ -572,7 +572,7 @@
   "login_visitor" : "سجّل الدخول لفتح تجربتك الشخصية.",
   "login" : "تسجيل الدخول",
   "continueAsGuest": "المتابعة كزائر؟",
-  "submit": "إرسال"
-
+  "submit": "إرسال",
+  "updatedSuccessfully": "تم التحديث بنجاح"
 
 }

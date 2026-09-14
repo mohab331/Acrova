@@ -1,4 +1,3 @@
-import 'package:acrova/data/models/request/auth/save_profile_request_model.dart';
 import 'package:acrova/data/models/request/auth/send_otp_request_model.dart';
 import 'package:acrova/data/models/request/auth/verify_otp_request_model.dart';
 import 'package:acrova/data/models/request/profile/update_profile_request_model.dart';
@@ -12,9 +11,6 @@ abstract class BaseAuthRepo {
   Future<Result<VerifyOTPResponseModel>> verifyOtp(
     VerifyOTPRequestModel verifyOTPRequestModel,
   );
-
-  /// Saves KYC profile after first login. Marks user as no longer new.
-  Future<Result<void>> saveProfile(SaveProfileRequestModel request);
 
   /// Fetch the signed-in user's profile.
   Future<Result<UserProfileResponseModel?>> getUserProfile();

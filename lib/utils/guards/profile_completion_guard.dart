@@ -1,6 +1,7 @@
 import 'package:acrova/presentation/app/navigation/app_route_enum.dart';
 import 'package:acrova/presentation/app/navigation/args/navigation_args.dart';
 import 'package:acrova/presentation/features/cubit/auth/auth_cubit.dart';
+import 'package:acrova/utils/extensions/localization_extension.dart';
 import 'package:acrova/utils/extensions/navigation_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -20,18 +21,18 @@ abstract final class ProfileCompletionGuard {
   /// and waits for completion.
   ///
   /// Returns `true` if the profile was successfully completed, `false` otherwise.
-  static Future<bool> ensureComplete(
-    BuildContext context, {
-    String? returnRoute,
-  }) async {
+  static Future<bool> ensureComplete(BuildContext context) async {
     final authState = context.read<AuthCubit>().state;
     if (authState.isProfileCompleted) {
       return true;
     }
 
     final result = await context.push<bool>(
-      AppRouteEnum.profileSetupPage.name,
-      extra: ProfileCompletionArgs(returnRoute: returnRoute),
+      AppRouteEnum.editProfilePage.name,
+      extra: EditProfileArgs(
+        title: context.localization.completeProfile,
+        profile: authState.userModel,
+      ),
     );
 
     if (!context.mounted) return false;

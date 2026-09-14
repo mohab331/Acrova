@@ -36,14 +36,14 @@ class EditProfilePage extends StatelessWidget {
         imagePicker: serviceLocatorInstance<BaseImagePickerService>(),
         initialProfile: profile,
       ),
-      child: _EditProfileView(profile: profile),
+      child: _EditProfileView(args: args),
     );
   }
 }
 
 class _EditProfileView extends StatefulWidget {
-  const _EditProfileView({required this.profile});
-  final UserProfileModel profile;
+  const _EditProfileView({required this.args});
+  final EditProfileArgs? args;
 
   @override
   State<_EditProfileView> createState() => _EditProfileViewState();
@@ -99,7 +99,7 @@ class _EditProfileViewState extends State<_EditProfileView> {
         padding: EdgeInsets.zero,
         appBar: AppAuthBrandHeader(
           showBack: true,
-          label: context.localization.editProfile,
+          label: widget.args?.title ?? '',
         ),
         child: Expanded(
           child: SingleChildScrollView(
@@ -116,7 +116,7 @@ class _EditProfileViewState extends State<_EditProfileView> {
                   buildWhen: (p, c) => p.avatarPath != c.avatarPath,
                   builder: (context, state) {
                     return EditProfilePhotoSection(
-                      avatarUrl: widget.profile.avatarUrl,
+                      avatarUrl: widget.args?.profile?.avatarUrl,
                       avatarPath: state.avatarPath,
                       onChangePhoto: () => _onChangePhoto(context),
                     );
@@ -144,9 +144,9 @@ class _EditProfileViewState extends State<_EditProfileView> {
     if (state.cubitStatus == CubitStatus.success) {
       CustomToastification.success(
         context: context,
-        message: 'Updated Successfully',
+        message: context.localization.updatedSuccessfully,
       ).showToast();
-      context.pop();
+      context.pop(true);
       context.read<AuthCubit>().getUser();
     }
     if (state.cubitStatus == CubitStatus.error) {

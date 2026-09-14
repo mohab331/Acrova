@@ -41,9 +41,10 @@ class PortfolioDetailArgs extends Equatable {
 
 /// Navigation arguments for Edit Profile Page.
 class EditProfileArgs extends Equatable {
-  const EditProfileArgs({this.profile});
+  const EditProfileArgs({required this.title, this.profile});
 
   final UserProfileResponseModel? profile;
+  final String title;
 
   @override
   List<Object?> get props => [profile];

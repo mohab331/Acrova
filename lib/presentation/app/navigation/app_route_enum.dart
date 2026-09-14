@@ -6,7 +6,6 @@ enum AppRouteEnum {
     name: 'identity_verification_page',
     path: '/identity_verification_page',
   ),
-  profileSetupPage(name: 'profile_setup_page', path: '/profile_setup_page'),
   authPage(name: 'auth_page', path: '/auth_page'),
 
   // ── Shell (bottom nav) ───────────────────────────────────────────────────────

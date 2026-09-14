@@ -5,7 +5,6 @@ import 'package:acrova/presentation/app/navigation/args/navigation_args.dart';
 import 'package:acrova/presentation/features/cubit/auth/auth_cubit.dart';
 import 'package:acrova/presentation/features/ui/auth/identity_verification/identity_verification_page.dart';
 import 'package:acrova/presentation/features/ui/auth/phone_input/phone_input_page.dart';
-import 'package:acrova/presentation/features/ui/auth/profile_setup/profile_setup_page.dart';
 import 'package:acrova/presentation/features/ui/auth/welcome/welcome_page.dart';
 import 'package:acrova/presentation/features/ui/billing/make_payment/make_payment_view.dart';
 import 'package:acrova/presentation/features/ui/billing/make_payment/payment_success_view.dart';
@@ -84,14 +83,6 @@ class AppRouter {
         name: AppRouteEnum.identityVerificationPage.name,
         builder: (_, state) {
           return const IdentityVerificationPage();
-        },
-      ),
-      GoRoute(
-        path: AppRouteEnum.profileSetupPage.path,
-        name: AppRouteEnum.profileSetupPage.name,
-        builder: (_, state) {
-          final extra = state.extra as ProfileCompletionArgs?;
-          return ProfileSetupPage(args: extra);
         },
       ),
 

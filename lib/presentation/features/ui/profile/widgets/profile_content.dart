@@ -120,7 +120,10 @@ class _ProfileContentState extends State<ProfileContent> {
   void _openEdit(BuildContext context, UserProfileModel? profile) {
     context.push(
       AppRouteEnum.editProfilePage.name,
-      extra: EditProfileArgs(profile: profile),
+      extra: EditProfileArgs(
+        title: context.localization.editProfile,
+        profile: profile,
+      ),
     );
   }
 

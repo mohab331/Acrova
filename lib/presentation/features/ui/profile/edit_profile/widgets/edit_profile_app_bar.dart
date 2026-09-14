@@ -25,7 +25,7 @@ class EditProfileAppBar extends StatelessWidget implements PreferredSizeWidget {
               fontSize: Resources.fontSizes.$14,
               fontWeight: Resources.fontWeights.semiBold,
               letterSpacing: Resources.letterSpacing.$0_8,
-              color: Resources.colors.luxuryGold,
+              color: Resources.colors.black,
             ),
           ),
         ),
