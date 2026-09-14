@@ -1,0 +1,4 @@
+enum RevisionRequestFieldError {
+  categoryRequired,
+  detailsRequired,
+}

@@ -1,38 +1,7 @@
+import 'package:acrova/utils/enums/deliverable_type_enum.dart';
 import 'package:equatable/equatable.dart';
 
-enum DeliverableType { image, video, pdf, document, other }
-
-extension DeliverableTypeX on DeliverableType {
-  String get jsonKey {
-    switch (this) {
-      case DeliverableType.image:
-        return 'image';
-      case DeliverableType.video:
-        return 'video';
-      case DeliverableType.pdf:
-        return 'pdf';
-      case DeliverableType.document:
-        return 'document';
-      case DeliverableType.other:
-        return 'other';
-    }
-  }
-
-  static DeliverableType fromJson(String key) {
-    switch (key) {
-      case 'image':
-        return DeliverableType.image;
-      case 'video':
-        return DeliverableType.video;
-      case 'pdf':
-        return DeliverableType.pdf;
-      case 'document':
-        return DeliverableType.document;
-      default:
-        return DeliverableType.other;
-    }
-  }
-}
+export 'package:acrova/utils/enums/deliverable_type_enum.dart';
 
 class DeliverableResponseModel extends Equatable {
   const DeliverableResponseModel({

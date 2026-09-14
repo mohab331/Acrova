@@ -3,13 +3,14 @@ import 'package:acrova/data/models/request/revision/create_revision_request_mode
 import 'package:acrova/domain/repository/revisions/base_revisions_repo.dart';
 import 'package:acrova/utils/enums/cubit_status.dart';
 import 'package:acrova/utils/enums/revision_category_enum.dart';
+import 'package:acrova/utils/enums/revision_request_field_error_enum.dart';
 import 'package:acrova/utils/helpers/safe_async_call.dart';
 import 'package:acrova/utils/logging/app_logger.dart';
 import 'package:bloc/bloc.dart';
 
 import 'revision_request_state.dart';
 
-enum RevisionRequestFieldError { categoryRequired, detailsRequired }
+export 'package:acrova/utils/enums/revision_request_field_error_enum.dart';
 
 class RevisionRequestCubit extends Cubit<RevisionRequestState> {
   RevisionRequestCubit({

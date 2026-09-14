@@ -1,4 +1,5 @@
 import 'package:acrova/presentation/app/resources/resources.dart';
+import 'package:acrova/utils/enums/app_secondary_button_variant_enum.dart';
 import 'package:flutter/material.dart';
 
 /// Full-width ghost / outline button.
@@ -9,8 +10,6 @@ import 'package:flutter/material.dart';
 /// - Text: Manrope 600, 16px, letter-spacing +0.4
 /// - Radius: 2px
 /// - Height: 55px
-enum AppSecondaryButtonVariant { navy, gold }
-
 class AppSecondaryButton extends StatelessWidget {
   const AppSecondaryButton({
     required this.label,

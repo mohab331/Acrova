@@ -1,13 +1,13 @@
 import 'package:acrova/data/models/request/contact_us/submit_inquiry_request_model.dart';
 import 'package:acrova/domain/repository/contact_us/base_contact_us_repo.dart';
+import 'package:acrova/utils/enums/contact_us_field_error_enum.dart';
 import 'package:acrova/utils/enums/cubit_status.dart';
 import 'package:acrova/utils/validation/app_validators.dart';
 import 'package:bloc/bloc.dart';
 
 import 'contact_us_state.dart';
 
-/// Validation error codes — resolved to localized strings in the UI layer.
-enum ContactUsFieldError { emailInvalid, detailsRequired }
+export 'package:acrova/utils/enums/contact_us_field_error_enum.dart';
 
 class ContactUsCubit extends Cubit<ContactUsState> {
   ContactUsCubit({

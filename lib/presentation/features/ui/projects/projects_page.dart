@@ -14,6 +14,7 @@ import 'package:acrova/presentation/features/ui/projects/widgets/projects_skelet
 import 'package:acrova/presentation/features/ui/projects/widgets/standard_project_card.dart';
 import 'package:acrova/presentation/features/ui/shell/widgets/bottom_nav_reselect_scope.dart';
 import 'package:acrova/utils/enums/cubit_status.dart';
+import 'package:acrova/utils/enums/project_filter_enum.dart';
 import 'package:acrova/utils/enums/project_status_enum.dart';
 import 'package:acrova/utils/extensions/localization_extension.dart';
 import 'package:acrova/utils/extensions/navigation_extension.dart';

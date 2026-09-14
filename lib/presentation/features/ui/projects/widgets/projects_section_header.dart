@@ -1,10 +1,9 @@
 import 'package:acrova/presentation/app/resources/resources.dart';
 import 'package:acrova/presentation/features/common_widgets/chips/app_filter_chip.dart';
+import 'package:acrova/utils/enums/project_filter_enum.dart';
 import 'package:acrova/utils/extensions/localization_extension.dart';
 import 'package:acrova/utils/extensions/theme_extension.dart';
 import 'package:flutter/material.dart';
-
-enum ProjectFilter { all, active, completed }
 
 class ProjectsSectionHeader extends StatelessWidget {
   const ProjectsSectionHeader({
