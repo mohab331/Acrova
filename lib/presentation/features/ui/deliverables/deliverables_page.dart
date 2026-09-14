@@ -6,6 +6,8 @@ import 'package:acrova/presentation/features/common_widgets/buttons/app_primary_
 import 'package:acrova/presentation/features/common_widgets/buttons/app_secondary_button.dart';
 import 'package:acrova/presentation/features/common_widgets/common_screen/common_screen.dart';
 import 'package:acrova/presentation/features/common_widgets/feedback/common_error_widget.dart';
+import 'package:acrova/presentation/features/common_widgets/feedback/visitor_empty_state.dart';
+import 'package:acrova/presentation/features/cubit/auth/auth_cubit.dart';
 import 'package:acrova/presentation/features/ui/deliverables/cubit/deliverables_cubit.dart';
 import 'package:acrova/presentation/features/ui/deliverables/cubit/deliverables_state.dart';
 import 'package:acrova/presentation/features/ui/deliverables/widgets/blueprints_section.dart';
@@ -23,8 +25,11 @@ class DeliverablesPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) =>
-          serviceLocatorInstance<DeliverablesCubit>()..fetchDeliverables(),
+      create: (context) {
+        final cubit = serviceLocatorInstance<DeliverablesCubit>();
+        if (!context.read<AuthCubit>().state.isGuest) cubit.fetchDeliverables();
+        return cubit;
+      },
       child: const _DeliverablesView(),
     );
   }
@@ -39,9 +44,10 @@ class _DeliverablesView extends StatelessWidget {
 
     return BlocBuilder<DeliverablesCubit, DeliverablesState>(
       builder: (context, state) {
+        final isGuest = context.watch<AuthCubit>().state.isGuest;
         return CommonScreen(
           bottomPadding: 0,
-          bottomNavigationBar: state.isError || state.isLoading
+          bottomNavigationBar: isGuest || state.isError || state.isLoading
               ? null
               : Container(
                   padding: EdgeInsetsDirectional.only(
@@ -88,7 +94,12 @@ class _DeliverablesView extends StatelessWidget {
             showBack: true,
             label: loc.deliverablesTitle,
           ),
-          child: _DeliverablesBody(state: state),
+          child: isGuest
+              ? VisitorEmptyState(
+                  icon: Icons.inventory_2_outlined,
+                  title: loc.visitorDeliverablesTitle,
+                )
+              : _DeliverablesBody(state: state),
         );
       },
     );

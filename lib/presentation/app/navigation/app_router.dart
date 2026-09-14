@@ -76,13 +76,17 @@ class AppRouter {
       GoRoute(
         path: AppRouteEnum.phonePage.path,
         name: AppRouteEnum.phonePage.name,
-        builder: (_, __) => const PhoneInputPage(),
+        builder: (_, state) => PhoneInputPage(
+          args: state.extra as AuthFlowArgs?,
+        ),
       ),
       GoRoute(
         path: AppRouteEnum.identityVerificationPage.path,
         name: AppRouteEnum.identityVerificationPage.name,
         builder: (_, state) {
-          return const IdentityVerificationPage();
+          return IdentityVerificationPage(
+            args: state.extra as AuthFlowArgs?,
+          );
         },
       ),
 

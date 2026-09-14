@@ -1,4 +1,5 @@
 import 'package:acrova/presentation/app/navigation/app_route_enum.dart';
+import 'package:acrova/presentation/app/navigation/args/navigation_args.dart';
 import 'package:acrova/presentation/app/resources/resources.dart';
 import 'package:acrova/presentation/features/common_widgets/app_bar/app_auth_brand_header.dart';
 import 'package:acrova/presentation/features/common_widgets/buttons/app_primary_button.dart';
@@ -20,7 +21,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class IdentityVerificationContent extends StatelessWidget {
-  const IdentityVerificationContent({super.key});
+  const IdentityVerificationContent({this.args, super.key});
+
+  final AuthFlowArgs? args;
 
   @override
   Widget build(BuildContext context) {
@@ -38,6 +41,12 @@ class IdentityVerificationContent extends StatelessWidget {
           listenWhen: (previous, current) =>
               previous.verifyOTPCubitStatus != current.verifyOTPCubitStatus,
           listener: _handleVerifyOTPStateListener,
+        ),
+        BlocListener<AuthCubit, AuthCubitState>(
+          listenWhen: (previous, current) =>
+              previous.getUserCubitStatus != current.getUserCubitStatus,
+          listener: (context, state) =>
+              _handleGetUserStateListener(context, state),
         ),
 
         BlocListener<AuthCubit, AuthCubitState>(
@@ -99,7 +108,8 @@ class IdentityVerificationContent extends StatelessWidget {
             BlocBuilder<OTPCubit, OTPState>(
               builder: (context, state) {
                 final isLoading =
-                    (authState.verifyOTPCubitStatus == CubitStatus.loading);
+                    authState.verifyOTPCubitStatus == CubitStatus.loading ||
+                    authState.getUserCubitStatus == CubitStatus.loading;
                 var isEnabled = ((state.otp?.length ?? 0) >= 6);
                 return SizedBox(
                   height: Resources.verticalDims.$55,
@@ -143,7 +153,44 @@ class IdentityVerificationContent extends StatelessWidget {
   ) {
     if (state.verifyOTPCubitStatus == CubitStatus.success) {
       context.read<AuthCubit>().getUser();
-      context.goTo(AppRouteEnum.homePage.name);
     }
+  }
+
+  Future<void> _handleGetUserStateListener(
+    BuildContext context,
+    AuthCubitState state,
+  ) async {
+    if (state.getUserCubitStatus != CubitStatus.success ||
+        state.verifyOTPCubitStatus != CubitStatus.success) {
+      return;
+    }
+    context.read<AuthCubit>().markPostLoginRoutingHandled();
+    if (state.isProfileCompleted) {
+      if (args?.returnToCaller ?? false) {
+        context.pop(true);
+      } else {
+        context.goTo(AppRouteEnum.homePage.name);
+      }
+      return;
+    }
+    if (args?.returnToCaller ?? false) {
+      final completed = await context.push<bool>(
+        AppRouteEnum.editProfilePage.name,
+        extra: EditProfileArgs(
+          title: context.localization.completeProfile,
+          profile: state.userModel,
+        ),
+      );
+      if (completed == true && context.mounted) context.pop(true);
+      return;
+    }
+    context.goTo(
+      AppRouteEnum.editProfilePage.name,
+      extra: EditProfileArgs(
+        title: context.localization.completeProfile,
+        profile: state.userModel,
+        completionRouteName: AppRouteEnum.homePage.name,
+      ),
+    );
   }
 }

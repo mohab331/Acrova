@@ -569,8 +569,8 @@
   "bankAccountNameDefault": "شركة أركوفا العقارية",
   "resend_otp_success": " تم إرسال رمز تحقق جديد.",
   "resend_otp_limit": "لقد وصلت إلى الحد المسموح لإعادة الإرسال. يرجى المحاولة مرة أخرى بعد قليل.",
-  "login_visitor" : "سجّل الدخول لفتح تجربتك الشخصية.",
-  "login" : "تسجيل الدخول",
+  "login_visitor": "سجّل الدخول لفتح تجربتك الشخصية.",
+  "login": "تسجيل الدخول",
   "continueAsGuest": "المتابعة كزائر؟",
   "submit": "إرسال",
   "updatedSuccessfully": "تم التحديث بنجاح",
@@ -602,5 +602,10 @@
   "interiorDesignActionRequestRevision": "طلب مراجعة",
   "included": "مشمول",
   "notIncluded": "غير مشمول",
-  "sar": "ر.س"
+  "sar": "ر.س",
+  "visitorProfileTitle": "ملفك الشخصي",
+  "visitorPaymentHistoryTitle": "سجل المدفوعات",
+  "visitorDeliverablesTitle": "التسليمات",
+  "visitorRevisionsTitle": "المراجعات",
+  "visitorInteriorDesignsTitle": "التصاميم الداخلية"
 }

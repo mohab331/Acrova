@@ -1,4 +1,5 @@
 import 'package:acrova/presentation/app/navigation/app_route_enum.dart';
+import 'package:acrova/presentation/app/navigation/args/navigation_args.dart';
 import 'package:acrova/presentation/app/resources/resources.dart';
 import 'package:acrova/presentation/features/common_widgets/app_bar/app_auth_brand_header.dart';
 import 'package:acrova/presentation/features/common_widgets/common_screen/common_screen.dart';
@@ -15,7 +16,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class PhoneInputView extends StatelessWidget {
-  const PhoneInputView({super.key});
+  const PhoneInputView({this.args, super.key});
+
+  final AuthFlowArgs? args;
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +27,7 @@ class PhoneInputView extends StatelessWidget {
     return BlocListener<AuthCubit, AuthCubitState>(
       listenWhen: (prev, curr) =>
           prev.sendOTPCubitStatus != curr.sendOTPCubitStatus,
-      listener: _handleAuthStateListener,
+      listener: (context, state) => _handleAuthStateListener(context, state),
       child: CommonScreen(
         resizeToAvoidBottomInset: false,
         appBar: const AppAuthBrandHeader(),
@@ -95,9 +98,16 @@ class PhoneInputView extends StatelessWidget {
     );
   }
 
-  void _handleAuthStateListener(BuildContext context, AuthCubitState state) {
+  Future<void> _handleAuthStateListener(
+    BuildContext context,
+    AuthCubitState state,
+  ) async {
     if (state.sendOTPCubitStatus == CubitStatus.success) {
-      context.push(AppRouteEnum.identityVerificationPage.name);
+      final completed = await context.push<bool>(
+        AppRouteEnum.identityVerificationPage.name,
+        extra: args,
+      );
+      if (completed == true && context.mounted) context.pop(true);
     }
   }
 }

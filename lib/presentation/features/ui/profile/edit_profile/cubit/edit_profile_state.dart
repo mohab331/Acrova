@@ -70,7 +70,8 @@ class EditProfileState extends Equatable {
     final nationalIDTrimmed = nationalID.trim();
 
     final bool isNameValid = AppValidators.name(nameTrimmed) == null;
-    final bool isEmailValid = AppValidators.isValidEmail(emailTrimmed);
+    final bool isEmailValid =
+        emailTrimmed.isEmpty || AppValidators.isValidEmail(emailTrimmed);
     final bool isMobileValid = AppValidators.isValidSaudiPhone(mobileTrimmed);
     final bool isNationalValid = AppValidators.isValidSaudiNationalId(
       nationalIDTrimmed,

@@ -10,7 +10,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 abstract final class ProfileCompletionGuard {
   /// Checks if the current user has a fully completed profile.
   static bool isComplete(BuildContext context) {
-    return context.read<AuthCubit>().state.isFullyAuthenticated;
+    return context.read<AuthCubit>().state.isProfileCompleted;
   }
 
   /// Ensures the user has a completed profile before proceeding with an action.
@@ -27,6 +27,18 @@ abstract final class ProfileCompletionGuard {
       return true;
     }
 
+    if (authState.isGuest) {
+      final authenticated = await context.push<bool>(
+        AppRouteEnum.phonePage.name,
+        extra: const AuthFlowArgs(returnToCaller: true),
+      );
+      if (!context.mounted) return false;
+      if (authenticated == true &&
+          context.read<AuthCubit>().state.isProfileCompleted) {
+        return true;
+      }
+    }
+
     final result = await context.push<bool>(
       AppRouteEnum.editProfilePage.name,
       extra: EditProfileArgs(
@@ -39,6 +51,6 @@ abstract final class ProfileCompletionGuard {
 
     // Check if the profile is now complete (either returned true or state updated)
     return result == true ||
-        context.read<AuthCubit>().state.isFullyAuthenticated;
+        context.read<AuthCubit>().state.isProfileCompleted;
   }
 }

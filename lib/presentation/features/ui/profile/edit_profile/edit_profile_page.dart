@@ -17,6 +17,7 @@ import 'package:acrova/utils/enums/cubit_status.dart';
 import 'package:acrova/utils/extensions/localization_extension.dart';
 import 'package:acrova/utils/extensions/navigation_extension.dart';
 import 'package:acrova/utils/helpers/ui_helper.dart';
+import 'package:acrova/utils/validation/app_validators.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -128,6 +129,11 @@ class _EditProfileViewState extends State<_EditProfileView> {
                   emailController: _emailController,
                   mobileController: _mobileController,
                   nationalIDController: _nationalIdController,
+                  isMobileReadOnly:
+                      widget.args?.profile?.mobileNumber != null &&
+                      AppValidators.isValidSaudiPhone(
+                        widget.args!.profile!.mobileNumber!.trim(),
+                      ),
                 ),
               ],
             ),
@@ -137,17 +143,23 @@ class _EditProfileViewState extends State<_EditProfileView> {
     );
   }
 
-  void _handleEditProfileListener(
+  Future<void> _handleEditProfileListener(
     BuildContext context,
     EditProfileState state,
-  ) {
+  ) async {
     if (state.cubitStatus == CubitStatus.success) {
       CustomToastification.success(
         context: context,
         message: context.localization.updatedSuccessfully,
       ).showToast();
-      context.pop(true);
-      context.read<AuthCubit>().getUser();
+      await context.read<AuthCubit>().getUser();
+      if (!context.mounted) return;
+      final completionRoute = widget.args?.completionRouteName;
+      if (completionRoute != null) {
+        context.goTo(completionRoute);
+      } else {
+        context.pop(true);
+      }
     }
     if (state.cubitStatus == CubitStatus.error) {
       CustomToastification.error(

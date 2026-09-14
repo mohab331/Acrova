@@ -1,12 +1,14 @@
 import 'package:acrova/core/di/dependency_injector.dart';
 import 'package:acrova/presentation/features/common_widgets/common_screen/common_screen.dart';
 import 'package:acrova/presentation/features/common_widgets/feedback/common_error_widget.dart';
+import 'package:acrova/presentation/features/common_widgets/feedback/visitor_empty_state.dart';
 import 'package:acrova/presentation/features/cubit/auth/auth_cubit.dart';
 import 'package:acrova/presentation/features/ui/profile/cubit/profile_cubit.dart';
 import 'package:acrova/presentation/features/ui/profile/cubit/profile_state.dart';
 import 'package:acrova/presentation/features/ui/profile/widgets/profile_content.dart';
 import 'package:acrova/presentation/features/ui/profile/widgets/profile_skeleton.dart';
 import 'package:acrova/utils/enums/cubit_status.dart';
+import 'package:acrova/utils/extensions/localization_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -21,7 +23,9 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      context.read<AuthCubit>().getUser();
+      if (!context.read<AuthCubit>().state.isGuest) {
+        context.read<AuthCubit>().getUser();
+      }
     });
     super.initState();
   }
@@ -36,6 +40,12 @@ class _ProfilePageState extends State<ProfilePage> {
         resizeToAvoidBottomInset: true,
         child: BlocBuilder<ProfileCubit, ProfileCubitState>(
           builder: (context, state) {
+            if (authState.isGuest) {
+              return VisitorEmptyState(
+                icon: Icons.person_outline,
+                title: context.localization.visitorProfileTitle,
+              );
+            }
             if (authState.getUserCubitStatus == CubitStatus.loading) {
               return const ProfileSkeleton();
             }
@@ -46,13 +56,6 @@ class _ProfilePageState extends State<ProfilePage> {
               );
             }
             final profile = authState.userModel;
-            // if (profile == null || authState.isVisitor) {
-            //   return VisitorEmptyState(
-            //     icon: Icons.person_outline,
-            //     title: context.localization.profileCompletionTitle,
-            //   );
-            // }
-
             return ProfileContent(profile: profile);
           },
         ),

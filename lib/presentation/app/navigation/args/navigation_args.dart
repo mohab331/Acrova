@@ -53,13 +53,29 @@ class PortfolioDetailArgs extends Equatable {
 
 /// Navigation arguments for Edit Profile Page.
 class EditProfileArgs extends Equatable {
-  const EditProfileArgs({required this.title, this.profile});
+  const EditProfileArgs({
+    required this.title,
+    this.profile,
+    this.completionRouteName,
+  });
 
   final UserProfileResponseModel? profile;
   final String title;
+  final String? completionRouteName;
 
   @override
-  List<Object?> get props => [profile];
+  List<Object?> get props => [profile, title, completionRouteName];
+}
+
+/// Identifies an authentication flow that must return to its caller instead of
+/// replacing it, such as project submission from the creation wizard.
+class AuthFlowArgs extends Equatable {
+  const AuthFlowArgs({this.returnToCaller = false});
+
+  final bool returnToCaller;
+
+  @override
+  List<Object?> get props => [returnToCaller];
 }
 
 /// Navigation arguments for Profile Setup / Completion Page.

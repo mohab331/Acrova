@@ -10,7 +10,8 @@ class AppFilledField extends StatelessWidget {
   const AppFilledField({
     required this.label,
     required this.controller,
-    required this.onChanged,
+    this.onChanged,
+    this.readOnly = false,
     this.hint,
     this.validator,
     this.keyboardType,
@@ -22,7 +23,8 @@ class AppFilledField extends StatelessWidget {
 
   final String label;
   final TextEditingController controller;
-  final ValueChanged<String> onChanged;
+  final ValueChanged<String>? onChanged;
+  final bool readOnly;
   final String? hint;
   final String? Function(String?)? validator;
   final TextInputType? keyboardType;
@@ -46,6 +48,8 @@ class AppFilledField extends StatelessWidget {
         ),
         SizedBox(height: Resources.verticalDims.$4),
         TextFormField(
+          readOnly: readOnly,
+          enabled: !readOnly,
           inputFormatters: inputFormatters,
           validator: validator,
           autovalidateMode: AutovalidateMode.onUserInteraction,
@@ -60,7 +64,7 @@ class AppFilledField extends StatelessWidget {
             ),
           ),
           controller: controller,
-          onChanged: onChanged,
+          onChanged: readOnly ? null : onChanged,
           keyboardType: keyboardType,
           maxLines: maxLines,
           style: TextStyle(
@@ -87,6 +91,9 @@ class AppFilledField extends StatelessWidget {
             ),
             border: _border(Resources.colors.luxuryBorder),
             enabledBorder: _border(Resources.colors.luxuryBorder),
+            disabledBorder: _border(
+              Resources.colors.luxuryBorder.withValues(alpha: 0.5),
+            ),
             focusedBorder: _border(Resources.colors.luxuryGoldLight),
             errorBorder: _border(Resources.colors.luxuryError),
           ),
