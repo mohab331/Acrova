@@ -21,8 +21,8 @@ class RevisionQuotaResponseModel extends Equatable {
 
   factory RevisionQuotaResponseModel.fromJson(Map<String, dynamic> json) =>
       RevisionQuotaResponseModel(
-        used: _parseInt(json['used']),
-        total: _parseInt(json['total']),
+        used: int.tryParse(json['used'].toString()),
+        total: int.tryParse(json['total'].toString()),
         paidCost: json['paid_cost'] as num?,
         currency: json['currency']?.toString(),
       );
@@ -33,12 +33,6 @@ class RevisionQuotaResponseModel extends Equatable {
     'paid_cost': paidCost,
     'currency': currency,
   };
-
-  static int? _parseInt(dynamic value) {
-    if (value == null) return null;
-    if (value is num) return value.toInt();
-    return int.tryParse(value.toString());
-  }
 
   @override
   List<Object?> get props => [used, total, paidCost, currency];

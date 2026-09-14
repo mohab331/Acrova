@@ -64,12 +64,12 @@ class UserProfileResponseModel extends Equatable {
         email: json['email']?.toString(),
         mobileNumber: json['mobile_number']?.toString(),
         nationalId: json['national_id']?.toString(),
-        language: LanguageCodes.fromId(_parseInt(json['language'])),
+        language: LanguageCodes.fromValue(json['language']),
         memberSince: json['member_since'] != null
             ? DateTime.tryParse(json['member_since'].toString())
             : null,
-        projectsCount: _parseInt(json['projects_count']),
-        completedCount: _parseInt(json['completed_count']),
+        projectsCount: int.tryParse(json['projects_count'].toString()),
+        completedCount: int.tryParse(json['completed_count'].toString()),
         avatarUrl: json['avatar_url']?.toString(),
       );
 
@@ -85,12 +85,6 @@ class UserProfileResponseModel extends Equatable {
     'completed_count': completedCount,
     'avatar_url': avatarUrl,
   };
-
-  static int? _parseInt(dynamic value) {
-    if (value == null) return null;
-    if (value is num) return value.toInt();
-    return int.tryParse(value.toString());
-  }
 
   @override
   List<Object?> get props => [

@@ -26,8 +26,6 @@ enum ProjectStatus {
     }
     return null;
   }
-
-  static ProjectStatus? fromStepId(int? stepId) => fromId(stepId);
 }
 
 extension ProjectStatusX on ProjectStatus {

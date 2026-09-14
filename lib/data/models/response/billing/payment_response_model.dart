@@ -41,14 +41,7 @@ class PaymentResponseModel extends Equatable {
         projectName: json['projectName']?.toString(),
         amount: (json['amount'] as num?)?.toDouble(),
         currency: json['currency']?.toString(),
-        status: PaymentStatus.fromId(
-          int.tryParse(
-            json['status_id']?.toString() ??
-                json['payment_status_id']?.toString() ??
-                json['status']?.toString() ??
-                '',
-          ),
-        ) ?? PaymentStatus.fromValue(json['status']),
+        status: PaymentStatus.fromValue(json['status']),
         date: json['date'] != null
             ? DateTime.tryParse(json['date'].toString())
             : null,

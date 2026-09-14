@@ -12,7 +12,7 @@ class DashboardResponseModel extends Equatable {
   factory DashboardResponseModel.fromJson(Map<String, dynamic> json) {
     return DashboardResponseModel(
       userName: json['userName']?.toString(),
-      notificationCount: _parseInt(json['notificationCount']),
+      notificationCount: int.tryParse(json['notificationCount'].toString()),
     );
   }
 
@@ -20,12 +20,6 @@ class DashboardResponseModel extends Equatable {
     'userName': userName,
     'notificationCount': notificationCount,
   };
-
-  static int? _parseInt(dynamic value) {
-    if (value == null) return null;
-    if (value is num) return value.toInt();
-    return int.tryParse(value.toString());
-  }
 
   @override
   List<Object?> get props => [userName, notificationCount];

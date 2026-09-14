@@ -37,21 +37,8 @@ class RevisionResponseModel extends Equatable {
   factory RevisionResponseModel.fromJson(Map<String, dynamic> json) =>
       RevisionResponseModel(
         id: json['id']?.toString(),
-        status:
-            RevisionStatus.fromId(
-              int.tryParse(json['status_id']?.toString() ?? ''),
-            ) ??
-            RevisionStatus.fromValue(json['status']),
-        category:
-            RevisionCategory.fromId(
-              int.tryParse(
-                json['category_id']?.toString() ??
-                    json['revision_category_id']?.toString() ??
-                    json['category']?.toString() ??
-                    '',
-              ),
-            ) ??
-            RevisionCategory.fromValue(json['category']),
+        status: RevisionStatus.fromJson(json['status']),
+        category: RevisionCategory.fromValue(json['category_id']?.toString()),
         createdAt: json['created_at'] != null
             ? DateTime.tryParse(json['created_at'].toString())
             : null,

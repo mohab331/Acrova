@@ -36,7 +36,7 @@ class PortfolioItemResponseModel extends Equatable {
     Map<String, dynamic> json,
   ) => PortfolioItemResponseModel(
     id: json['id']?.toString(),
-    style: DesignStyle.fromId(_parseInt(json['style_id'])),
+    style: DesignStyle.fromValue(json['style_id']),
     category: json['category']?.toString(),
     title: json['title']?.toString(),
     location: json['location']?.toString(),
@@ -67,11 +67,7 @@ class PortfolioItemResponseModel extends Equatable {
     'walkthroughModel': walkthroughModel?.toJson(),
   };
 
-  static int? _parseInt(dynamic value) {
-    if (value == null) return null;
-    if (value is num) return value.toInt();
-    return int.tryParse(value.toString());
-  }
+
 
   @override
   List<Object?> get props => [

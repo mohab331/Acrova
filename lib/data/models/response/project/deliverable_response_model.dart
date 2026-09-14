@@ -24,11 +24,7 @@ class DeliverableResponseModel extends Equatable {
       DeliverableResponseModel(
         id: json['id']?.toString(),
         title: json['title']?.toString(),
-        type:
-            DeliverableType.fromId(
-              int.tryParse(json['type_id']?.toString() ?? ''),
-            ) ??
-            DeliverableType.fromValue(json['type']),
+        type: DeliverableType.fromValue(json['type']),
         url: json['url']?.toString(),
         thumbnailUrl: json['thumbnail_url']?.toString(),
         createdAt: json['created_at'] != null

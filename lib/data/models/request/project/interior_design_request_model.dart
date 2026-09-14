@@ -65,7 +65,7 @@ class InteriorDesignRequestModel extends BaseRequestModel {
     return InteriorDesignRequestModel(
       projectId: json['projectId'] as String? ?? '',
       scope:
-          InteriorDesignScope.fromId(_parseInt(json['scope_id'])) ??
+          InteriorDesignScope.fromValue(json['scope_id']) ??
           InteriorDesignScope.all,
       specificRooms:
           (json['specificRooms'] as List<dynamic>?)
@@ -89,12 +89,8 @@ class InteriorDesignRequestModel extends BaseRequestModel {
               ?.map((e) => e.toString())
               .toList() ??
           const [],
-      budgetTier: BudgetTier.fromId(
-        _parseInt(
-          json['budget_tier_id'] ?? json['budget_tier'] ?? json['budgetTier'],
-        ),
-      ),
-      timeline: ProjectTimeline.fromId(_parseInt(json['timeline_id'])),
+      budgetTier: BudgetTier.fromValue(json['budget_tier']),
+      timeline: ProjectTimeline.fromValue(json['timeline_id']),
       extraNotes: json['extraNotes'] as String? ?? '',
       inspirationMediaPaths:
           (json['inspirationMediaPaths'] as List<dynamic>?)
@@ -109,11 +105,7 @@ class InteriorDesignRequestModel extends BaseRequestModel {
     );
   }
 
-  static int? _parseInt(dynamic value) {
-    if (value == null) return null;
-    if (value is num) return value.toInt();
-    return int.tryParse(value.toString());
-  }
+
 
   InteriorDesignRequestModel copyWith({
     String? projectId,

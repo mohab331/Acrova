@@ -1,6 +1,5 @@
 import 'package:acrova/data/data_source/local/local_storage/base_local_storage.dart';
 import 'package:acrova/data/data_source/local/secure_storage/base_secure_storage.dart';
-import 'package:acrova/data/models/request/auth/save_profile_request_model.dart';
 import 'package:acrova/data/models/request/auth/send_otp_request_model.dart';
 import 'package:acrova/data/models/request/auth/verify_otp_request_model.dart';
 import 'package:acrova/data/models/request/profile/update_profile_request_model.dart';
@@ -58,10 +57,6 @@ class AuthRepoImpl implements BaseAuthRepo {
       return response;
     });
   }
-
-  @override
-  Future<Result<void>> saveProfile(SaveProfileRequestModel request) =>
-      safeAsyncCall(() => _authDataSource.saveUserProfile(request));
 
   @override
   Future<Result<UserProfileResponseModel?>> getUserProfile() =>
