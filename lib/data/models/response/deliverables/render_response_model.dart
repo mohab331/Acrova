@@ -1,10 +1,7 @@
 import 'package:equatable/equatable.dart';
 
 class RenderResponseModel extends Equatable {
-  const RenderResponseModel({
-    this.resolution,
-    this.imageAsset,
-  });
+  const RenderResponseModel({this.resolution, this.imageAsset});
 
   final String? resolution;
   final String? imageAsset;
@@ -12,8 +9,7 @@ class RenderResponseModel extends Equatable {
   factory RenderResponseModel.fromJson(Map<String, dynamic> json) =>
       RenderResponseModel(
         resolution: json['resolution']?.toString(),
-        imageAsset:
-            json['imageAsset']?.toString() ?? json['image_asset']?.toString(),
+        imageAsset: json['imageAsset']?.toString(),
       );
 
   Map<String, dynamic> toJson() => {

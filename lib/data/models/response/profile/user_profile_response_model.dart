@@ -64,9 +64,7 @@ class UserProfileResponseModel extends Equatable {
         email: json['email']?.toString(),
         mobileNumber: json['mobile_number']?.toString(),
         nationalId: json['national_id']?.toString(),
-        language: LanguageCodes.fromId(
-          _parseInt(json['language_id'] ?? json['language']),
-        ),
+        language: LanguageCodes.fromId(_parseInt(json['language'])),
         memberSince: json['member_since'] != null
             ? DateTime.tryParse(json['member_since'].toString())
             : null,

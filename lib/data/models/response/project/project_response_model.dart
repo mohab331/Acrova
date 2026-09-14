@@ -81,21 +81,17 @@ class ProjectResponseModel extends Equatable {
 
   String get progressLabel => '${(progressRatio * 100).round()}%';
 
-    factory ProjectResponseModel.fromJson(Map<String, dynamic> json) {
+  factory ProjectResponseModel.fromJson(Map<String, dynamic> json) {
     return ProjectResponseModel(
       id: json['id']?.toString(),
       name: json['name']?.toString(),
-      status: ProjectStatus.fromId(
-        _parseInt(json['status_id'] ?? json['status']),
-      ),
-      type: ProjectType.fromId(
-        _parseInt(json['type_id'] ?? json['project_type_id'] ?? json['type']),
-      ),
+      status: ProjectStatus.fromId(_parseInt(json['status_id'])),
+      type: ProjectType.fromId(_parseInt(json['type_id'])),
       createdAt: _parseDateTime(json['created_at']),
       location: json['location']?.toString(),
-      landAreaSqm: _parseDouble(json['land_area_sqm'] ?? json['land_area']),
-      landWidthM: _parseDouble(json['land_width_m'] ?? json['land_width']),
-      landLengthM: _parseDouble(json['land_length_m'] ?? json['land_length']),
+      landAreaSqm: _parseDouble(json['land_area_sqm']),
+      landWidthM: _parseDouble(json['land_width_m']),
+      landLengthM: _parseDouble(json['land_length_m']),
       floors: _parseInt(json['floors']),
       employeeCount: _parseInt(json['employee_count']),
       bedrooms: _parseInt(json['bedrooms']),
@@ -107,14 +103,10 @@ class ProjectResponseModel extends Equatable {
       hasPool: _parseBool(json['has_pool']),
       hasRooftop: _parseBool(json['has_rooftop']),
       smartHomeLevel: SmartHomeLevel.fromId(
-        _parseInt(json['smart_home_level_id'] ?? json['smart_home_level']),
+        _parseInt(json['smart_home_level_id'] ?? ''),
       ),
       architecturalStyle: DesignStyle.fromId(
-        _parseInt(
-          json['architectural_style_id'] ??
-              json['style_id'] ??
-              json['architectural_style'],
-        ),
+        _parseInt(json['architectural_style_id'] ?? ''),
       ),
       thumbnailUrl: json['thumbnail_url']?.toString(),
       deliverables: _parseList(

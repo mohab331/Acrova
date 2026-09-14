@@ -32,30 +32,25 @@ class PortfolioItemResponseModel extends Equatable {
 
   String? get styleLabel => style?.label;
 
-  factory PortfolioItemResponseModel.fromJson(Map<String, dynamic> json) =>
-      PortfolioItemResponseModel(
-        id: json['id']?.toString(),
-        style: DesignStyle.fromId(
-          _parseInt(json['style_id'] ?? json['style']),
-        ),
-        category: json['category']?.toString(),
-        title: json['title']?.toString(),
-        location: json['location']?.toString(),
-        area: json['area']?.toString(),
-        floors: json['floors']?.toString(),
-        narrative: json['narrative']?.toString(),
-        imageUrls: (json['imageUrls'] as List?)
-            ?.map((e) => e.toString())
-            .toList(),
-        features: (json['features'] as List?)
-            ?.map((e) => e.toString())
-            .toList(),
-        walkthroughModel: json['walkthroughModel'] is Map
-            ? WalkthroughResponseModel.fromJson(
-                Map<String, dynamic>.from(json['walkthroughModel'] as Map),
-              )
-            : null,
-      );
+  factory PortfolioItemResponseModel.fromJson(
+    Map<String, dynamic> json,
+  ) => PortfolioItemResponseModel(
+    id: json['id']?.toString(),
+    style: DesignStyle.fromId(_parseInt(json['style_id'])),
+    category: json['category']?.toString(),
+    title: json['title']?.toString(),
+    location: json['location']?.toString(),
+    area: json['area']?.toString(),
+    floors: json['floors']?.toString(),
+    narrative: json['narrative']?.toString(),
+    imageUrls: (json['imageUrls'] as List?)?.map((e) => e.toString()).toList(),
+    features: (json['features'] as List?)?.map((e) => e.toString()).toList(),
+    walkthroughModel: json['walkthroughModel'] is Map
+        ? WalkthroughResponseModel.fromJson(
+            Map<String, dynamic>.from(json['walkthroughModel'] as Map),
+          )
+        : null,
+  );
 
   Map<String, dynamic> toJson() => {
     'id': id,

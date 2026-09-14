@@ -64,9 +64,8 @@ class InteriorDesignRequestModel extends BaseRequestModel {
   factory InteriorDesignRequestModel.fromJson(Map<String, dynamic> json) {
     return InteriorDesignRequestModel(
       projectId: json['projectId'] as String? ?? '',
-      scope: InteriorDesignScope.fromId(
-            _parseInt(json['scope_id'] ?? json['scope']),
-          ) ??
+      scope:
+          InteriorDesignScope.fromId(_parseInt(json['scope_id'])) ??
           InteriorDesignScope.all,
       specificRooms:
           (json['specificRooms'] as List<dynamic>?)
@@ -92,14 +91,10 @@ class InteriorDesignRequestModel extends BaseRequestModel {
           const [],
       budgetTier: BudgetTier.fromId(
         _parseInt(
-          json['budget_tier_id'] ??
-              json['budget_tier'] ??
-              json['budgetTier'],
+          json['budget_tier_id'] ?? json['budget_tier'] ?? json['budgetTier'],
         ),
       ),
-      timeline: ProjectTimeline.fromId(
-        _parseInt(json['timeline_id'] ?? json['timeline']),
-      ),
+      timeline: ProjectTimeline.fromId(_parseInt(json['timeline_id'])),
       extraNotes: json['extraNotes'] as String? ?? '',
       inspirationMediaPaths:
           (json['inspirationMediaPaths'] as List<dynamic>?)
